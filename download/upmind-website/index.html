@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upmind - Strategic Consulting for Startups</title>
+  <meta name="description" content="We help startups and growing teams validate ideas, scale products, and make data-driven decisions. Clear insights. Real strategy. Sustainable growth.">
+  <meta name="keywords" content="Upmind, startup consulting, strategy, growth, digital transformation">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Favicon (inline SVG) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%237CFC00'/></svg>">
+</head>
+<body>
+
+  <!-- ============================================
+       NAVBAR
+       ============================================ -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-inner">
+        <!-- Logo -->
+        <a href="#" class="navbar-logo">
+          <span class="dot"></span>
+          <span class="logo-text">Upmind</span>
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="navbar-links">
+          <a href="#hero">HOME</a>
+          <a href="#services">SERVICES</a>
+          <a href="#about">ABOUT US</a>
+          <a href="#" style="display:inline-flex;align-items:center;gap:4px;">MORE
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+        </div>
+
+        <!-- CTA Button -->
+        <div class="navbar-cta">
+          <a href="#">BUY TEMPLATE</a>
+        </div>
+
+        <!-- Mobile Toggle -->
+        <button class="mobile-toggle" aria-label="Toggle menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <use href="#icon-menu" xlink:href="#icon-menu"></use>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+      <a href="#hero">HOME</a>
+      <a href="#services">SERVICES</a>
+      <a href="#about">ABOUT US</a>
+      <a href="#">MORE</a>
+      <a href="#" class="mobile-cta">BUY TEMPLATE</a>
+    </div>
+  </nav>
+
+  <!-- SVG Icons (hidden sprite) -->
+  <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
+    </symbol>
+    <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </symbol>
+    <symbol id="icon-play" viewBox="0 0 24 24" fill="currentColor">
+      <polygon points="5 3 19 12 5 21 5 3"/>
+    </symbol>
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+    </symbol>
+    <symbol id="icon-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </symbol>
+    <symbol id="icon-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"/>
+    </symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </symbol>
+    <symbol id="icon-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+    </symbol>
+    <symbol id="icon-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+    </symbol>
+    <symbol id="icon-lightbulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>
+    </symbol>
+    <symbol id="icon-quote" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/>
+    </symbol>
+    <symbol id="icon-linkedin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+    </symbol>
+    <symbol id="icon-twitter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
+    </symbol>
+    <symbol id="icon-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+    </symbol>
+  </svg>
+
+  <!-- ============================================
+       HERO SECTION
+       ============================================ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <!-- Badges -->
+      <div class="hero-badges fade-in">
+        <span>Build Smart</span>
+        <span>Strategic</span>
+        <span>Professional</span>
+        <span>Grow Faster</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="fade-in delay-1">Clear insights. Real strategy. Sustainable growth.</h1>
+
+      <!-- Subheadline -->
+      <p class="hero-subtitle fade-in delay-2">
+        We help startups and growing teams validate ideas, scale products, and make data-driven decisions.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="hero-buttons fade-in delay-3">
+        <a href="#" class="btn btn-outline">VIEW DEMO</a>
+        <a href="#" class="btn btn-primary">BOOK A CALL</a>
+        <a href="#" class="btn btn-outline">
+          <svg width="16" height="16"><use href="#icon-play"/></svg>
+          Startup Free
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+      <div class="scroll-mouse">
+        <div class="scroll-dot"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       STATS SECTION
+       ============================================ -->
+  <section class="stats" id="stats">
+    <div class="container">
+      <div class="stats-header">
+        <h2 class="fade-in">Over a decade helping early-stage businesses grow.</h2>
+        <p class="fade-in delay-1">From idea validation to advanced growth, we combine strategic insight and modern tools to help your startup make smarter decisions and scale faster in a rapidly changing market.</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card fade-in delay-2">
+          <div class="stat-value">95%</div>
+          <p class="stat-label">Complete customer satisfaction</p>
+        </div>
+        <div class="stat-card fade-in delay-3">
+          <div class="stat-value">20+</div>
+          <p class="stat-label">Innovation and valuable insight</p>
+        </div>
+        <div class="stat-card fade-in delay-4">
+          <div class="stat-value">$5M+</div>
+          <p class="stat-label">Highly efficient strategies</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       PARTNERS SECTION
+       ============================================ -->
+  <section class="partners">
+    <div class="container">
+      <div class="partners-grid">
+        <div class="partner-item fade-in">
+          <span class="partner-icon">&#x1F335;</span>
+          <span class="partner-name">Cactus</span>
+        </div>
+        <div class="partner-item fade-in delay-1">
+          <span class="partner-icon">&#x1F441;</span>
+          <span class="partner-name">Vision</span>
+        </div>
+        <div class="partner-item fade-in delay-2">
+          <span class="partner-icon">&#x1F33F;</span>
+          <span class="partner-name">Greenish</span>
+        </div>
+        <div class="partner-item fade-in delay-3">
+          <span class="partner-icon">&#x2602;</span>
+          <span class="partner-name">Umbrella</span>
+        </div>
+        <div class="partner-item fade-in delay-4">
+          <span class="partner-icon">&#x2B21;</span>
+          <span class="partner-name">Network</span>
+        </div>
+        <div class="partner-item fade-in delay-5">
+          <span class="partner-icon">&#x1F343;</span>
+          <span class="partner-name">Leaf</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       ABOUT SECTION
+       ============================================ -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <!-- Left Content -->
+        <div class="about-content">
+          <h2 class="fade-in-left">We help startups make smarter decisions and grow with clarity.</h2>
+          <p class="fade-in-left delay-1">We bring strategic clarity, actionable insights, and modern processes to help you validate, launch, and scale products with confidence.</p>
+          <a href="#" class="btn btn-dark fade-in-left delay-2">
+            Learn More
+            <svg width="16" height="16"><use href="#icon-arrow-right"/></svg>
+          </a>
+        </div>
+
+        <!-- Right - Performance Card -->
+        <div class="fade-in-right delay-2">
+          <div class="perf-card">
+            <div class="circle-deco-1"></div>
+            <div class="circle-deco-2"></div>
+            <div class="perf-card-inner">
+              <h3>Performance</h3>
+              <div class="perf-value">49%</div>
+              <div class="perf-tags">
+                <span>Strategic</span>
+                <span>AI-Powered</span>
+                <span>Data</span>
+                <span>Growth Focused</span>
+                <span>Build Smart</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SERVICES SECTION
+       ============================================ -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="fade-in">Expertise built on insight & experience</h2>
+        <p class="fade-in delay-1">We deliver strategic solutions grounded in research, experience, and industry best practices.</p>
+        <a href="#" class="btn btn-dark fade-in delay-2">
+          VIEW SERVICES
+          <svg width="16" height="16"><use href="#icon-arrow-right"/></svg>
+        </a>
+      </div>
+
+      <div class="services-grid">
+        <!-- Service 1 -->
+        <div class="service-card fade-in delay-2">
+          <div class="service-icon">
+            <svg><use href="#icon-target"/></svg>
+          </div>
+          <h3>Strategy & Operations</h3>
+          <p>We align your business goals with actionable strategies, streamlining operations and optimizing processes for sustainable, long-term growth.</p>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="service-card fade-in delay-3">
+          <div class="service-icon">
+            <svg><use href="#icon-monitor"/></svg>
+          </div>
+          <h3>Digital Transformation</h3>
+          <p>Embrace modern technology to stay competitive. We guide your digital journey from planning through implementation, ensuring seamless adoption.</p>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="service-card fade-in delay-4">
+          <div class="service-icon">
+            <svg><use href="#icon-lightbulb"/></svg>
+          </div>
+          <h3>Product & Innovation</h3>
+          <p>From concept to launch, we help you build products that resonate. Our innovation-driven approach ensures your ideas reach their full market potential.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       HOW WE WORK SECTION
+       ============================================ -->
+  <section class="howwework" id="howwework">
+    <div class="howwework-grid">
+      <!-- Left Content -->
+      <div class="howwework-content">
+        <span class="howwework-step">1/5</span>
+        <h3 class="howwework-title">Initial Diagnosis</h3>
+        <p class="howwework-desc">We start with a deep-dive assessment of your current business landscape, identifying key challenges and untapped opportunities to build a clear roadmap forward.</p>
+
+        <div class="howwework-nav">
+          <button class="nav-arrow prev-step" aria-label="Previous step">
+            <svg><use href="#icon-chevron-left"/></svg>
+          </button>
+          <button class="nav-arrow next-step" aria-label="Next step">
+            <svg><use href="#icon-chevron-right"/></svg>
+          </button>
+        </div>
+
+        <div class="step-dots">
+          <button class="step-dot active" aria-label="Step 1"></button>
+          <button class="step-dot inactive" aria-label="Step 2"></button>
+          <button class="step-dot inactive" aria-label="Step 3"></button>
+          <button class="step-dot inactive" aria-label="Step 4"></button>
+          <button class="step-dot inactive" aria-label="Step 5"></button>
+        </div>
+      </div>
+
+      <!-- Right Image -->
+      <div class="howwework-image">
+        <div class="howwework-image-bg"></div>
+        <div class="circle-overlay-1"></div>
+        <div class="circle-overlay-2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       TESTIMONIALS SECTION
+       ============================================ -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="testimonials-inner">
+        <span class="testimonials-label fade-in">TESTIMONIALS</span>
+
+        <div class="fade-in-scale delay-1">
+          <svg class="quote-icon"><use href="#icon-quote"/></svg>
+
+          <p class="testimonial-text">"They brought clarity to complex problems, breaking down barriers and delivering innovative solutions."</p>
+
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">
+              <img src="images/testimonial1.jpg" alt="John Doe">
+            </div>
+            <div class="testimonial-author-info">
+              <div class="name">John Doe</div>
+              <div class="role">CEO, Tech Innovations</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-nav">
+          <button class="nav-arrow prev-testimonial" aria-label="Previous testimonial">
+            <svg><use href="#icon-chevron-left"/></svg>
+          </button>
+          <div class="step-dots">
+            <button class="step-dot testimonial-dot active" aria-label="Testimonial 1"></button>
+            <button class="step-dot testimonial-dot inactive" aria-label="Testimonial 2"></button>
+            <button class="step-dot testimonial-dot inactive" aria-label="Testimonial 3"></button>
+          </div>
+          <button class="nav-arrow next-testimonial" aria-label="Next testimonial">
+            <svg><use href="#icon-chevron-right"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       PRICING SECTION
+       ============================================ -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="fade-in">Flexible plans for every business</h2>
+        <p class="fade-in delay-1">Clear pricing, no hidden fees. Choose the plan that works best for your goals.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Starter Plan -->
+        <div class="pricing-card fade-in delay-2">
+          <h3>Starter Plan</h3>
+          <p class="plan-desc">Best for small teams or short-term guidance</p>
+          <ul class="pricing-features">
+            <li>
+              <svg><use href="#icon-check"/></svg>
+              <span>Strategy assessment & roadmap</span>
+            </li>
+            <li>
+              <svg><use href="#icon-check"/></svg>
+              <span>2 consulting sessions per month</span>
+            </li>
+            <li>
+              <svg><use href="#icon-check"/></svg>
+              <span>Market analysis report</span>
+            </li>
+            <li>
+              <svg><use href="#icon-check"/></svg>
+              <span>Email support</span>
+            </li>
+          </ul>
+          <div class="pricing-price">
+            <span class="current">$99.00</span>
+            <span class="original">$149.00</span>
+          </div>
+          <a href="#" class="btn btn-primary">GET STARTED</a>
+        </div>
+
+        <!-- Growth Plan -->
+        <div class="pricing-card fade-in delay-3">
+          <h3>Growth Plan</h3>
+          <p class="plan-desc">Ideal for teams improving operations or scaling up</p>
+          <ul class="pricing-features">
+            <li>
+              <svg><use href="#icon-check"/></svg>
+              <span>Full strategic planning & execution</span>
+            </li>
+            <li>
+              <svg><use href="#icon-check"/></svg>
+              <span>Weekly consulting sessions</span>
+            </li>
+            <li>
+              <svg><use href="#icon-check"/></svg>
+              <span>Custom analytics dashboard</span>
+            </li>
+            <li>
+              <svg><use href="#icon-check"/></svg>
+              <span>Priority support & Slack access</span>
+            </li>
+            <li>
+              <svg><use href="#icon-check"/></svg>
+              <span>Quarterly business review</span>
+            </li>
+          </ul>
+          <div class="pricing-price">
+            <span class="current">$499.00</span>
+            <span class="original">$699.00</span>
+          </div>
+          <a href="#" class="btn btn-primary">GET STARTED</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       BLOG SECTION
+       ============================================ -->
+  <section class="blog" id="blog">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="fade-in">Latest insights and trends</h2>
+        <p class="fade-in delay-1">Whether you're optimizing today or building for tomorrow, we help you move faster with confidence.</p>
+      </div>
+
+      <div class="blog-grid">
+        <!-- Blog 1 -->
+        <article class="blog-card fade-in delay-2">
+          <div class="blog-card-image">
+            <img src="images/blog1.jpg" alt="Turning Data into Strategy">
+          </div>
+          <span class="blog-date">NOV 28, 2025</span>
+          <h3>Turning Data into Strategy: The Power of Predictive Analytics</h3>
+          <p class="blog-desc">Learn how predictive analytics can transform raw data into actionable strategies that drive smarter business decisions.</p>
+          <span class="read-more">
+            Read More
+            <svg><use href="#icon-arrow-right"/></svg>
+          </span>
+        </article>
+
+        <!-- Blog 2 -->
+        <article class="blog-card fade-in delay-3">
+          <div class="blog-card-image">
+            <img src="images/blog2.jpg" alt="5 Ways AI Can Streamline Business Operations">
+          </div>
+          <span class="blog-date">NOV 28, 2025</span>
+          <h3>5 Ways AI Can Streamline Business Operations</h3>
+          <p class="blog-desc">Discover practical applications of AI that can automate workflows, reduce costs, and accelerate your team's productivity.</p>
+          <span class="read-more">
+            Read More
+            <svg><use href="#icon-arrow-right"/></svg>
+          </span>
+        </article>
+
+        <!-- Blog 3 -->
+        <article class="blog-card fade-in delay-4">
+          <div class="blog-card-image">
+            <img src="images/blog3.jpg" alt="Human + Machine: Finding the Perfect Balance">
+          </div>
+          <span class="blog-date">NOV 28, 2025</span>
+          <h3>Human + Machine: Finding the Perfect Balance</h3>
+          <p class="blog-desc">Explore how the synergy between human creativity and machine intelligence is reshaping the future of work.</p>
+          <span class="read-more">
+            Read More
+            <svg><use href="#icon-arrow-right"/></svg>
+          </span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       CTA SECTION
+       ============================================ -->
+  <section class="cta-section">
+    <div class="cta-bg"></div>
+    <div class="cta-overlay"></div>
+
+    <div class="container">
+      <div class="cta-content fade-in">
+        <h2>Ready to elevate your business?</h2>
+        <p>Partner with us to take your digital presence to the next level.</p>
+        <div class="cta-buttons">
+          <a href="#" class="btn btn-outline">VIEW DEMO</a>
+          <a href="#" class="btn btn-primary">BOOK A CALL</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand -->
+        <div class="footer-brand">
+          <a href="#" class="footer-logo">
+            <span class="dot"></span>
+            <span class="logo-text">Upmind</span>
+          </a>
+          <p>Strategic consulting for startups and growing teams. Build smarter, scale faster.</p>
+        </div>
+
+        <!-- Pages 1 -->
+        <div class="footer-col">
+          <h4>PAGES</h4>
+          <a href="#">Home</a>
+          <a href="#">Services</a>
+          <a href="#">About Us</a>
+          <a href="#">Contact</a>
+        </div>
+
+        <!-- Pages 2 -->
+        <div class="footer-col">
+          <h4>PAGES</h4>
+          <a href="#">Blog</a>
+          <a href="#">Case Studies</a>
+          <a href="#">Careers</a>
+          <a href="#">FAQ</a>
+        </div>
+
+        <!-- Pages 3 -->
+        <div class="footer-col">
+          <h4>PAGES</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+
+        <!-- Company -->
+        <div class="footer-col">
+          <h4>COMPANY</h4>
+          <a href="mailto:hello@upmind.io">hello@upmind.io</a>
+          <a href="tel:+1234567890">+1 (234) 567-890</a>
+          <div class="footer-social">
+            <a href="#" aria-label="LinkedIn">
+              <svg><use href="#icon-linkedin"/></svg>
+            </a>
+            <a href="#" aria-label="Twitter">
+              <svg><use href="#icon-twitter"/></svg>
+            </a>
+            <a href="#" aria-label="Instagram">
+              <svg><use href="#icon-instagram"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-bottom">
+        <p>&copy; 2026 Upmind. All rights reserved.</p>
+        <p>Designed with strategy in mind.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
+</body>
+</html>
