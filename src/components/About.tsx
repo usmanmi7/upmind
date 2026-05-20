@@ -53,7 +53,7 @@ export default function About() {
                 <h3 className="text-[#1A1A1A] font-semibold text-lg sm:text-xl mb-2">
                   Performance
                 </h3>
-                <div className="text-6xl sm:text-7xl lg:text-8xl font-bold text-[#7CFC00] mb-6">
+                <div className="text-6xl sm:text-7xl lg:text-8xl font-bold font-heading text-[#7CFC00] mb-6">
                   49%
                 </div>
                 <div className="flex flex-wrap gap-2">

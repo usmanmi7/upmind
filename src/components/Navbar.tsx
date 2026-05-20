@@ -32,7 +32,7 @@ export default function Navbar() {
           {/* Logo */}
           <a href="#" className="flex items-center gap-2 group">
             <span className="w-3 h-3 rounded-full bg-[#7CFC00] group-hover:scale-110 transition-transform" />
-            <span className="text-white font-bold text-xl tracking-tight">
+            <span className="text-white font-bold text-xl tracking-tight font-heading">
               Upmind
             </span>
           </a>

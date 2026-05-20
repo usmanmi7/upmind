@@ -15,7 +15,7 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-4 lg:col-span-1 mb-4 lg:mb-0">
             <a href="#" className="flex items-center gap-2 mb-4">
               <span className="w-3 h-3 rounded-full bg-[#7CFC00]" />
-              <span className="text-[#7CFC00] font-bold text-xl tracking-tight">
+              <span className="text-[#7CFC00] font-bold text-xl tracking-tight font-heading">
                 Upmind
               </span>
             </a>

@@ -59,7 +59,7 @@ export default function Testimonials() {
           >
             <Quote className="w-10 h-10 text-[#7CFC00]/30 mx-auto mb-6" />
 
-            <p className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#1A1A1A] leading-relaxed mb-8 min-h-[100px]">
+            <p className="text-xl sm:text-2xl lg:text-3xl font-semibold font-heading text-[#1A1A1A] leading-relaxed mb-8 min-h-[100px]">
               &ldquo;{testimonials[current].quote}&rdquo;
             </p>
 

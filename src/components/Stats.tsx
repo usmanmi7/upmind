@@ -16,7 +16,7 @@ function StatCard({ value, label, delay }: { value: string; label: string; delay
       transition={{ duration: 0.6, delay }}
       className="text-center p-6 sm:p-8 border border-white/10 rounded-2xl backdrop-blur-sm hover:border-[#7CFC00]/30 transition-colors duration-300"
     >
-      <div className="text-4xl sm:text-5xl font-bold text-[#7CFC00] mb-3">
+      <div className="text-4xl sm:text-5xl font-bold font-heading text-[#7CFC00] mb-3">
         {value}
       </div>
       <p className="text-white/70 text-sm sm:text-base">{label}</p>

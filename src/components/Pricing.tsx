@@ -69,7 +69,7 @@ export default function Pricing() {
               transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }}
               className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-8 hover:border-[#7CFC00]/30 transition-colors duration-300 flex flex-col"
             >
-              <h3 className="text-white font-bold text-lg sm:text-xl mb-2">
+              <h3 className="text-white font-bold font-heading text-lg sm:text-xl mb-2">
                 {plan.name}
               </h3>
               <p className="text-white/60 text-sm sm:text-base mb-6">
@@ -88,7 +88,7 @@ export default function Pricing() {
               </ul>
 
               <div className="mb-6">
-                <span className="text-[#7CFC00] text-3xl sm:text-4xl font-bold">
+                <span className="text-[#7CFC00] text-3xl sm:text-4xl font-bold font-heading">
                   {plan.price}
                 </span>
                 <span className="text-white/40 text-base sm:text-lg line-through ml-3">

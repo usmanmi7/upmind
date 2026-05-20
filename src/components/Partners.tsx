@@ -36,7 +36,7 @@ export default function Partners() {
               className="flex items-center gap-2 text-white/50 hover:text-white/80 transition-colors cursor-pointer group"
             >
               <span className="text-xl sm:text-2xl">{partner.icon}</span>
-              <span className="text-sm sm:text-base font-semibold tracking-wide">
+              <span className="text-sm sm:text-base font-semibold font-heading tracking-wide">
                 {partner.name}
               </span>
             </motion.div>
