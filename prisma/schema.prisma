@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,19 +11,363 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String    @id @default(cuid())
+  name            String
+  email           String    @unique
+  password        String?
+  image           String?
+  role            Role      @default(FREE_USER)
+  phone           String?
+  country          String?
+  bio             String?
+  emailVerified   Boolean   @default(false)
+  twoFactorEnabled Boolean @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  startup         Startup?
+  subscription    Subscription?
+  consultant      Consultant?
+  appointments    Appointment[]
+  messagesSent    Message[]  @relation("SentMessages")
+  documents       Document[]
+  notifications   Notification[]
+  savedResources  SavedResource[]
+  achievements    Achievement[]
+  sessions        Session[]
+  accounts        Account[]
 }
 
-model Post {
-  id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum Role {
+  FREE_USER
+  PAID_USER
+  CONSULTANT
+  ADMIN
+  SUPER_ADMIN
+}
+
+model Startup {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  name          String
+  industry      String?
+  teamSize      String?
+  vision        String?
+  goals         String?
+  pitchDeckUrl  String?
+  businessStage String?
+  revenueStage  String?
+  website       String?
+  socialLinks   String?
+  progress      Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks         Task[]
+  roadmapItems  RoadmapItem[]
+}
+
+model Subscription {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  plan          Plan      @default(FREE)
+  status        SubscriptionStatus @default(ACTIVE)
+  startDate     DateTime  @default(now())
+  endDate       DateTime?
+  autoRenew     Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payments      Payment[]
+}
+
+enum Plan {
+  FREE
+  GROWTH_PRO
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PAST_DUE
+}
+
+model Payment {
+  id             String    @id @default(cuid())
+  subscriptionId String
+  amount         Float
+  currency       String    @default("USD")
+  status         PaymentStatus @default(PENDING)
+  method         String?
+  invoiceUrl     String?
+  createdAt      DateTime  @default(now())
+
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id])
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model Consultant {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  specialties   String?
+  bio           String?
+  rating        Float     @default(0)
+  availability  String?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id])
+  appointments  Appointment[]
+}
+
+model Appointment {
+  id            String    @id @default(cuid())
+  userId        String
+  consultantId  String?
+  date          DateTime
+  duration      Int       @default(60)
+  type          MeetingType @default(VIDEO)
+  status        AppointmentStatus @default(SCHEDULED)
+  notes         String?
+  meetingUrl    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id])
+  consultant    Consultant? @relation(fields: [consultantId], references: [id])
+}
+
+enum MeetingType {
+  VIDEO
+  PHONE
+  IN_PERSON
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  RESCHEDULED
+}
+
+model Resource {
+  id            String    @id @default(cuid())
+  title         String
+  description   String?
+  type          ResourceType
+  category      String?
+  tags          String?
+  fileUrl       String?
+  thumbnailUrl  String?
+  isPremium     Boolean   @default(false)
+  downloadCount Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  savedBy       SavedResource[]
+}
+
+enum ResourceType {
+  BLOG
+  TEMPLATE
+  VIDEO
+  PDF
+  GUIDE
+}
+
+model SavedResource {
+  id          String    @id @default(cuid())
+  userId      String
+  resourceId  String
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resource    Resource  @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, resourceId])
+}
+
+model Message {
+  id          String    @id @default(cuid())
+  senderId    String
+  receiverId  String?
+  content     String
+  isRead      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  sender      User      @relation(fields: [senderId], references: [id], name: "SentMessages")
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  startupId   String
+  title       String
+  description String?
+  status      TaskStatus @default(TODO)
+  dueDate     DateTime?
+  assignedBy  String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  startup     Startup   @relation(fields: [startupId], references: [id], onDelete: Cascade)
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  COMPLETED
+}
+
+model RoadmapItem {
+  id          String    @id @default(cuid())
+  startupId   String
+  phase       String
+  title       String
+  description String?
+  order       Int       @default(0)
+  isCompleted Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  startup     Startup   @relation(fields: [startupId], references: [id], onDelete: Cascade)
+}
+
+model Document {
+  id          String    @id @default(cuid())
+  userId      String
+  name        String
+  fileUrl     String
+  fileType    String
+  size        Int
+  folder      String    @default("General")
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id          String    @id @default(cuid())
+  userId      String
+  title       String
+  message     String
+  type        NotificationType
+  isRead      Boolean   @default(false)
+  link        String?
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum NotificationType {
+  MESSAGE
+  APPOINTMENT
+  PAYMENT
+  RESOURCE
+  SYSTEM
+}
+
+model Blog {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  excerpt     String?
+  content     String
+  coverImage  String?
+  category    String?
+  tags        String?
+  isPublished Boolean   @default(false)
+  authorId    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model FAQ {
+  id          String    @id @default(cuid())
+  question    String
+  answer      String
+  category    String?
+  order       Int       @default(0)
+  isPublished Boolean   @default(true)
+}
+
+model Testimonial {
+  id          String    @id @default(cuid())
+  name        String
+  role        String?
+  company     String?
+  content     String
+  image       String?
+  rating      Int?
+  isPublished Boolean   @default(true)
+  order       Int       @default(0)
+}
+
+model Achievement {
+  id          String          @id @default(cuid())
+  userId      String
+  type        AchievementType
+  title       String
+  description String
+  earnedAt    DateTime        @default(now())
+
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum AchievementType {
+  FIRST_LOGIN
+  PROFILE_COMPLETE
+  FIRST_APPOINTMENT
+  RESOURCE_DOWNLOAD
+  TASK_MASTER
+  MILESTONE_5
+  MILESTONE_10
+  COMMUNITY_MEMBER
+  EARLY_ADOPTER
+}
+
+// NextAuth models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String  @id @default(cuid())
+  sessionToken String  @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }

@@ -60,3 +60,5 @@ server.log
 Caddyfile
 .zscripts/
 worklog.md
+agent-ctx/
+# next-auth types are needed, don't ignore
