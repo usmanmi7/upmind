@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Quote, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 const testimonials = [
   {
@@ -52,6 +53,15 @@ export default function Testimonials() {
             TESTIMONIALS
           </motion.span>
 
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-10"
+          >
+            What our clients say
+          </motion.h2>
+
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
@@ -83,7 +93,7 @@ export default function Testimonials() {
           </motion.div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex items-center justify-center gap-3 mb-10">
             <button
               onClick={prev}
               className="w-11 h-11 rounded-full border border-[#1A2E1A]/20 flex items-center justify-center text-[#1A2E1A]/50 hover:border-[#7CFC00] hover:text-[#1A2E1A] transition-colors duration-300"
@@ -111,6 +121,15 @@ export default function Testimonials() {
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
+
+          {/* CTA */}
+          <Link
+            href="/success-stories"
+            className="inline-flex items-center gap-2 bg-[#1A2E1A] text-white rounded-full px-7 py-3 text-sm sm:text-base font-medium hover:bg-[#243824] transition-colors duration-300 group"
+          >
+            READ SUCCESS STORIES
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </div>
     </section>

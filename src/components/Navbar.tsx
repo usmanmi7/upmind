@@ -6,9 +6,25 @@ import { useSession } from 'next-auth/react';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const navLinks = [
+  { label: 'HOME', href: '/' },
+  { label: 'SERVICES', href: '/services' },
+  { label: 'ABOUT', href: '/success-stories' },
+  { label: 'PRICING', href: '/pricing' },
+];
+
+const moreLinks = [
+  { label: 'Resources', href: '/resources' },
+  { label: 'Success Stories', href: '/success-stories' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'FAQ', href: '/faq' },
+  { label: 'Contact', href: '/contact' },
+];
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -41,56 +57,83 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center gap-8">
-            <Link
-              href="/"
-              className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors relative group"
-            >
-              HOME
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
-            </Link>
-            <Link
-              href="/services"
-              className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors relative group"
-            >
-              SERVICES
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
-            </Link>
-            <Link
-              href="/about"
-              className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors relative group"
-            >
-              ABOUT US
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
-            </Link>
-            <button className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors flex items-center gap-1 group">
-              MORE
-              <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
-            </button>
+          <div className="hidden lg:flex items-center gap-7">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors relative group"
+              >
+                {link.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
+              </Link>
+            ))}
+
+            {/* More Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setMoreOpen(!moreOpen)}
+                onBlur={() => setTimeout(() => setMoreOpen(false), 200)}
+                className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors flex items-center gap-1 group"
+              >
+                MORE
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${moreOpen ? 'rotate-180' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {moreOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full right-0 mt-2 w-48 bg-[#1A2E1A] border border-white/10 rounded-xl shadow-xl overflow-hidden"
+                  >
+                    {moreLinks.map((link) => (
+                      <Link
+                        key={link.label}
+                        href={link.href}
+                        className="block px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 text-sm transition-colors"
+                        onClick={() => setMoreOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* CTA Buttons */}
+          <div className="hidden lg:flex items-center gap-3">
             {session ? (
               <Link
                 href="/dashboard"
-                className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#6BE000] transition-all duration-300"
+                className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20"
               >
                 DASHBOARD
               </Link>
             ) : (
-              <Link
-                href="/auth/login"
-                className="text-white border border-white/60 rounded-full px-6 py-2 text-sm font-medium hover:bg-white hover:text-[#1A2E1A] transition-all duration-300"
-              >
-                SIGN IN
-              </Link>
+              <>
+                <Link
+                  href="/auth/login"
+                  className="text-white border border-white/30 rounded-full px-5 py-2 text-sm font-medium hover:bg-white hover:text-[#1A2E1A] transition-all duration-300"
+                >
+                  SIGN IN
+                </Link>
+                <Link
+                  href="/auth/signup"
+                  className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20"
+                >
+                  GET STARTED
+                </Link>
+              </>
             )}
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white p-2"
+            className="lg:hidden text-white p-2"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -106,32 +149,50 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#1A2E1A] border-t border-white/10"
+            className="lg:hidden bg-[#1A2E1A] border-t border-white/10"
           >
-            <div className="px-4 py-4 space-y-3">
+            <div className="px-4 py-4 space-y-1">
               {[
-                { label: 'HOME', href: '/' },
-                { label: 'SERVICES', href: '/services' },
-                { label: 'ABOUT US', href: '/about' },
-                { label: 'PRICING', href: '/pricing' },
-                { label: 'RESOURCES', href: '/resources' },
+                ...navLinks,
+                ...moreLinks,
               ].map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="block text-white/80 hover:text-white text-sm font-medium tracking-wide py-2 transition-colors"
+                  className="block text-white/80 hover:text-white text-sm font-medium tracking-wide py-2.5 px-3 rounded-lg hover:bg-white/5 transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
                 </Link>
               ))}
-              <Link
-                href={session ? '/dashboard' : '/auth/login'}
-                className="block bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold text-center hover:bg-[#6BE000] transition-all duration-300 mt-4"
-                onClick={() => setMobileOpen(false)}
-              >
-                {session ? 'DASHBOARD' : 'SIGN IN'}
-              </Link>
+              <div className="pt-4 space-y-3 border-t border-white/10 mt-2">
+                {session ? (
+                  <Link
+                    href="/dashboard"
+                    className="block bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-[#6BE000] transition-all duration-300"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    DASHBOARD
+                  </Link>
+                ) : (
+                  <>
+                    <Link
+                      href="/auth/login"
+                      className="block text-white border border-white/30 rounded-full px-6 py-2.5 text-sm font-medium text-center hover:bg-white hover:text-[#1A2E1A] transition-all duration-300"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      SIGN IN
+                    </Link>
+                    <Link
+                      href="/auth/signup"
+                      className="block bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-[#6BE000] transition-all duration-300"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      GET STARTED
+                    </Link>
+                  </>
+                )}
+              </div>
             </div>
           </motion.div>
         )}

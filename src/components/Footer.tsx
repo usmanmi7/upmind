@@ -1,90 +1,65 @@
 'use client';
 
 import Link from 'next/link';
-import { Linkedin, Twitter, Instagram } from 'lucide-react';
+import { Linkedin, Twitter, Instagram, ArrowRight } from 'lucide-react';
 
-const pageLinks1 = [
-  { label: 'Home', href: '/' },
+const productLinks = [
   { label: 'Services', href: '/services' },
-  { label: 'About Us', href: '/about' },
-  { label: 'Contact', href: '/contact' },
-];
-const pageLinks2 = [
-  { label: 'Blog', href: '/resources' },
   { label: 'Pricing', href: '/pricing' },
+  { label: 'Success Stories', href: '/success-stories' },
+  { label: 'Resources', href: '/resources' },
+];
+
+const companyLinks = [
+  { label: 'About Us', href: '/success-stories' },
   { label: 'Careers', href: '/careers' },
+  { label: 'Contact', href: '/contact' },
   { label: 'FAQ', href: '/faq' },
 ];
-const pageLinks3 = [
+
+const legalLinks = [
   { label: 'Privacy Policy', href: '/privacy' },
   { label: 'Terms of Service', href: '/terms' },
-  { label: 'Success Stories', href: '/success-stories' },
 ];
 
 export default function Footer() {
   return (
     <footer className="bg-[#0F1F0F] pt-12 sm:pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Main Footer Content */}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
           {/* Logo & Description */}
-          <div className="col-span-2 md:col-span-4 lg:col-span-1 mb-4 lg:mb-0">
+          <div className="col-span-2 md:col-span-4 lg:col-span-2 mb-4 lg:mb-0">
             <Link href="/" className="flex items-center gap-2 mb-4">
               <span className="w-3 h-3 rounded-full bg-[#7CFC00]" />
               <span className="text-[#7CFC00] font-bold text-xl tracking-tight font-heading">
                 Upmind
               </span>
             </Link>
-            <p className="text-white/40 text-sm leading-relaxed max-w-xs">
+            <p className="text-white/40 text-sm leading-relaxed max-w-xs mb-6">
               Strategic consulting for startups and growing teams. Build smarter,
-              scale faster.
+              scale faster with data-driven insights and expert guidance.
             </p>
+            {/* Newsletter CTA */}
+            <div className="flex items-center gap-2">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#7CFC00]/40 w-full max-w-[220px]"
+              />
+              <button className="bg-[#7CFC00] text-[#1A2E1A] rounded-full p-2.5 hover:bg-[#6BE000] transition-colors shrink-0">
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
-          {/* Pages Column 1 */}
+          {/* Product Column */}
           <div>
             <h4 className="text-white/60 text-xs font-semibold tracking-[0.15em] uppercase mb-4">
-              PAGES
+              PRODUCT
             </h4>
             <ul className="space-y-2.5">
-              {pageLinks1.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-white/50 hover:text-[#7CFC00] text-sm transition-colors duration-200"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Pages Column 2 */}
-          <div>
-            <h4 className="text-white/60 text-xs font-semibold tracking-[0.15em] uppercase mb-4">
-              PAGES
-            </h4>
-            <ul className="space-y-2.5">
-              {pageLinks2.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-white/50 hover:text-[#7CFC00] text-sm transition-colors duration-200"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Pages Column 3 */}
-          <div>
-            <h4 className="text-white/60 text-xs font-semibold tracking-[0.15em] uppercase mb-4">
-              PAGES
-            </h4>
-            <ul className="space-y-2.5">
-              {pageLinks3.map((link) => (
+              {productLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
@@ -101,6 +76,25 @@ export default function Footer() {
           <div>
             <h4 className="text-white/60 text-xs font-semibold tracking-[0.15em] uppercase mb-4">
               COMPANY
+            </h4>
+            <ul className="space-y-2.5">
+              {companyLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-white/50 hover:text-[#7CFC00] text-sm transition-colors duration-200"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Connect Column */}
+          <div>
+            <h4 className="text-white/60 text-xs font-semibold tracking-[0.15em] uppercase mb-4">
+              CONNECT
             </h4>
             <ul className="space-y-2.5">
               <li>
@@ -151,9 +145,17 @@ export default function Footer() {
           <p className="text-white/30 text-xs sm:text-sm">
             &copy; {new Date().getFullYear()} Upmind. All rights reserved.
           </p>
-          <p className="text-white/30 text-xs sm:text-sm">
-            Designed with strategy in mind.
-          </p>
+          <div className="flex items-center gap-6">
+            {legalLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="text-white/30 hover:text-white/50 text-xs sm:text-sm transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 const steps = [
   {
@@ -58,6 +59,9 @@ export default function HowWeWork() {
           className="bg-[#1A2E1A] p-8 sm:p-12 lg:p-16 flex flex-col justify-center relative"
         >
           <span className="text-[#7CFC00] text-sm font-semibold tracking-wider mb-4">
+            HOW WE WORK
+          </span>
+          <span className="text-[#7CFC00]/60 text-sm font-medium tracking-wider mb-4">
             {steps[current].number}
           </span>
           <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#7CFC00] mb-6">
@@ -66,6 +70,15 @@ export default function HowWeWork() {
           <p className="text-white/70 text-base sm:text-lg leading-relaxed mb-8 max-w-md">
             {steps[current].description}
           </p>
+
+          {/* CTA */}
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 bg-[#7CFC00] text-[#1A2E1A] rounded-full px-7 py-3 text-sm sm:text-base font-semibold hover:bg-[#6BE000] transition-colors duration-300 self-start mb-8 group shadow-lg shadow-[#7CFC00]/20"
+          >
+            START YOUR JOURNEY
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
 
           <div className="flex items-center gap-3">
             <button
