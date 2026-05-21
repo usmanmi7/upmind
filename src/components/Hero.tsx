@@ -64,23 +64,23 @@ export default function Hero() {
           className="flex flex-wrap justify-center gap-3 sm:gap-4"
         >
           <a
-            href="#"
+            href="/services"
             className="border border-white text-white rounded-full px-6 sm:px-8 py-3 text-sm sm:text-base font-medium hover:bg-white hover:text-[#1A2E1A] transition-all duration-300"
           >
-            VIEW DEMO
+            VIEW SERVICES
           </a>
           <a
-            href="#"
+            href="/auth/signup"
             className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 sm:px-8 py-3 text-sm sm:text-base font-semibold hover:bg-[#6BE000] transition-all duration-300"
           >
-            BOOK A CALL
+            GET STARTED FREE
           </a>
           <a
-            href="#"
+            href="/pricing"
             className="border border-white text-white rounded-full px-6 sm:px-8 py-3 text-sm sm:text-base font-medium hover:bg-white hover:text-[#1A2E1A] transition-all duration-300 flex items-center gap-2"
           >
             <Play className="w-4 h-4" />
-            Startup Free
+            VIEW PLANS
           </a>
         </motion.div>
       </div>

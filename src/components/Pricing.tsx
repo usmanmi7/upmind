@@ -97,7 +97,7 @@ export default function Pricing() {
               </div>
 
               <a
-                href="#"
+                href="/auth/signup"
                 className="block text-center bg-[#7CFC00] text-[#1A2E1A] rounded-full py-3 text-sm sm:text-base font-semibold hover:bg-[#6BE000] transition-colors duration-300"
               >
                 GET STARTED

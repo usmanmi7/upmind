@@ -1,10 +1,25 @@
 'use client';
 
+import Link from 'next/link';
 import { Linkedin, Twitter, Instagram } from 'lucide-react';
 
-const pageLinks1 = ['Home', 'Services', 'About Us', 'Contact'];
-const pageLinks2 = ['Blog', 'Case Studies', 'Careers', 'FAQ'];
-const pageLinks3 = ['Privacy Policy', 'Terms of Service', 'Cookie Policy'];
+const pageLinks1 = [
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+];
+const pageLinks2 = [
+  { label: 'Blog', href: '/resources' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'FAQ', href: '/faq' },
+];
+const pageLinks3 = [
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms of Service', href: '/terms' },
+  { label: 'Success Stories', href: '/success-stories' },
+];
 
 export default function Footer() {
   return (
@@ -13,12 +28,12 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
           {/* Logo & Description */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1 mb-4 lg:mb-0">
-            <a href="#" className="flex items-center gap-2 mb-4">
+            <Link href="/" className="flex items-center gap-2 mb-4">
               <span className="w-3 h-3 rounded-full bg-[#7CFC00]" />
               <span className="text-[#7CFC00] font-bold text-xl tracking-tight font-heading">
                 Upmind
               </span>
-            </a>
+            </Link>
             <p className="text-white/40 text-sm leading-relaxed max-w-xs">
               Strategic consulting for startups and growing teams. Build smarter,
               scale faster.
@@ -32,13 +47,13 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5">
               {pageLinks1.map((link) => (
-                <li key={link}>
-                  <a
-                    href="#"
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
                     className="text-white/50 hover:text-[#7CFC00] text-sm transition-colors duration-200"
                   >
-                    {link}
-                  </a>
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -51,13 +66,13 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5">
               {pageLinks2.map((link) => (
-                <li key={link}>
-                  <a
-                    href="#"
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
                     className="text-white/50 hover:text-[#7CFC00] text-sm transition-colors duration-200"
                   >
-                    {link}
-                  </a>
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -70,13 +85,13 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5">
               {pageLinks3.map((link) => (
-                <li key={link}>
-                  <a
-                    href="#"
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
                     className="text-white/50 hover:text-[#7CFC00] text-sm transition-colors duration-200"
                   >
-                    {link}
-                  </a>
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>

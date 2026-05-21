@@ -1,12 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,25 +33,36 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-2 group">
             <span className="w-3 h-3 rounded-full bg-[#7CFC00] group-hover:scale-110 transition-transform" />
             <span className="text-white font-bold text-xl tracking-tight font-heading">
               Upmind
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-8">
-            {['HOME', 'SERVICES', 'ABOUT US'].map((link) => (
-              <a
-                key={link}
-                href={`#${link.toLowerCase().replace(' ', '-')}`}
-                className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors relative group"
-              >
-                {link}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
-              </a>
-            ))}
+            <Link
+              href="/"
+              className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors relative group"
+            >
+              HOME
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
+            </Link>
+            <Link
+              href="/services"
+              className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors relative group"
+            >
+              SERVICES
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
+            </Link>
+            <Link
+              href="/about"
+              className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors relative group"
+            >
+              ABOUT US
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
+            </Link>
             <button className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors flex items-center gap-1 group">
               MORE
               <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
@@ -57,12 +71,21 @@ export default function Navbar() {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <a
-              href="#"
-              className="text-white border border-white/60 rounded-full px-6 py-2 text-sm font-medium hover:bg-white hover:text-[#1A2E1A] transition-all duration-300"
-            >
-              BUY TEMPLATE
-            </a>
+            {session ? (
+              <Link
+                href="/dashboard"
+                className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#6BE000] transition-all duration-300"
+              >
+                DASHBOARD
+              </Link>
+            ) : (
+              <Link
+                href="/auth/login"
+                className="text-white border border-white/60 rounded-full px-6 py-2 text-sm font-medium hover:bg-white hover:text-[#1A2E1A] transition-all duration-300"
+              >
+                SIGN IN
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -86,22 +109,29 @@ export default function Navbar() {
             className="md:hidden bg-[#1A2E1A] border-t border-white/10"
           >
             <div className="px-4 py-4 space-y-3">
-              {['HOME', 'SERVICES', 'ABOUT US', 'MORE'].map((link) => (
-                <a
-                  key={link}
-                  href={`#${link.toLowerCase().replace(' ', '-')}`}
+              {[
+                { label: 'HOME', href: '/' },
+                { label: 'SERVICES', href: '/services' },
+                { label: 'ABOUT US', href: '/about' },
+                { label: 'PRICING', href: '/pricing' },
+                { label: 'RESOURCES', href: '/resources' },
+              ].map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
                   className="block text-white/80 hover:text-white text-sm font-medium tracking-wide py-2 transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
-                  {link}
-                </a>
+                  {link.label}
+                </Link>
               ))}
-              <a
-                href="#"
-                className="block text-white border border-white/60 rounded-full px-6 py-2 text-sm font-medium text-center hover:bg-white hover:text-[#1A2E1A] transition-all duration-300 mt-4"
+              <Link
+                href={session ? '/dashboard' : '/auth/login'}
+                className="block bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold text-center hover:bg-[#6BE000] transition-all duration-300 mt-4"
+                onClick={() => setMobileOpen(false)}
               >
-                BUY TEMPLATE
-              </a>
+                {session ? 'DASHBOARD' : 'SIGN IN'}
+              </Link>
             </div>
           </motion.div>
         )}

@@ -33,13 +33,10 @@ import {
   Menu,
   LogOut,
   User,
-  Moon,
-  Sun,
   ChevronLeft,
   Sparkles,
   UsersRound,
 } from "lucide-react"
-import { useTheme } from "next-themes"
 
 const sidebarItems = [
   {
@@ -190,10 +187,6 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
 
 function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
   const { data: session } = useSession()
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = React.useState(false)
-
-  React.useEffect(() => setMounted(true), [])
 
   const userInitials = session?.user?.name
     ? session.user.name
@@ -230,22 +223,6 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
 
         {/* Right side */}
         <div className="flex items-center gap-2">
-          {/* Theme Toggle */}
-          {mounted && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              {theme === "dark" ? (
-                <Sun className="size-5" />
-              ) : (
-                <Moon className="size-5" />
-              )}
-            </Button>
-          )}
-
           {/* Notifications */}
           <Button
             variant="ghost"

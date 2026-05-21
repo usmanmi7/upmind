@@ -32,14 +32,11 @@ import {
   Menu,
   LogOut,
   User,
-  Moon,
-  Sun,
   ChevronLeft,
   ArrowLeft,
   Shield,
   Sparkles,
 } from "lucide-react"
-import { useTheme } from "next-themes"
 
 const adminSidebarItems = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -127,12 +124,8 @@ function AdminSidebarContent({ collapsed = false }: { collapsed?: boolean }) {
 
 function AdminTopBar({ onMenuClick }: { onMenuClick: () => void }) {
   const { data: session } = useSession()
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = React.useState(false)
   const pathname = usePathname()
   const router = useRouter()
-
-  React.useEffect(() => setMounted(true), [])
 
   const userInitials = session?.user?.name
     ? session.user.name.split(" ").map((n) => n[0]).join("").toUpperCase()
@@ -170,18 +163,6 @@ function AdminTopBar({ onMenuClick }: { onMenuClick: () => void }) {
 
         {/* Right side */}
         <div className="flex items-center gap-2">
-          {/* Theme Toggle */}
-          {mounted && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
-            </Button>
-          )}
-
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

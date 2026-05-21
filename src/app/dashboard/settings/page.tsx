@@ -4,7 +4,6 @@ import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
-import { Separator } from "@/components/ui/separator"
 import {
   Select,
   SelectContent,
@@ -23,17 +22,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Settings, Palette, Globe, Trash2, Moon, Sun, Monitor } from "lucide-react"
-import { useTheme } from "next-themes"
+import { Settings, Globe, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 
 export default function SettingsPage() {
-  const { theme, setTheme } = React.useState("")
-  const themeHook = useTheme()
-  const [mounted, setMounted] = React.useState(false)
-
-  React.useEffect(() => setMounted(true), [])
-
   return (
     <div className="space-y-6">
       <div>
@@ -42,7 +34,7 @@ export default function SettingsPage() {
       </div>
 
       {/* General Settings */}
-      <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+      <Card className="border-0 shadow-md shadow-black/5">
         <CardHeader>
           <CardTitle className="text-base font-heading flex items-center gap-2">
             <Settings className="size-4" /> General Settings
@@ -73,44 +65,8 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      {/* Appearance */}
-      <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
-        <CardHeader>
-          <CardTitle className="text-base font-heading flex items-center gap-2">
-            <Palette className="size-4" /> Appearance
-          </CardTitle>
-          <CardDescription>Customize how Upmind looks for you</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {mounted && (
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { value: "light", label: "Light", icon: Sun },
-                { value: "dark", label: "Dark", icon: Moon },
-                { value: "system", label: "System", icon: Monitor },
-              ].map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => themeHook.setTheme(option.value)}
-                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-smooth ${
-                    themeHook.theme === option.value
-                      ? "border-[#7CFC00] bg-[#E8F5E9] dark:bg-[#2D4A2D]/20"
-                      : "border-transparent bg-muted/30 hover:border-muted-foreground/20"
-                  }`}
-                >
-                  <option.icon className={`size-5 ${themeHook.theme === option.value ? "text-[#7CFC00]" : "text-muted-foreground"}`} />
-                  <span className={`text-xs font-medium ${themeHook.theme === option.value ? "text-[#2D4A2D] dark:text-[#7CFC00]" : ""}`}>
-                    {option.label}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
       {/* Language */}
-      <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+      <Card className="border-0 shadow-md shadow-black/5">
         <CardHeader>
           <CardTitle className="text-base font-heading flex items-center gap-2">
             <Globe className="size-4" /> Language & Region
@@ -153,7 +109,7 @@ export default function SettingsPage() {
       </Card>
 
       {/* Danger Zone */}
-      <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20 border-t-4 border-t-red-500">
+      <Card className="border-0 shadow-md shadow-black/5 border-t-4 border-t-red-500">
         <CardHeader>
           <CardTitle className="text-base font-heading text-destructive flex items-center gap-2">
             <Trash2 className="size-4" /> Danger Zone
@@ -161,7 +117,7 @@ export default function SettingsPage() {
           <CardDescription>Irreversible actions that affect your account</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-between p-4 rounded-lg bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800">
+          <div className="flex items-center justify-between p-4 rounded-lg bg-red-50 border border-red-200">
             <div>
               <p className="text-sm font-medium text-destructive">Delete Account</p>
               <p className="text-xs text-muted-foreground">Permanently delete your account and all associated data. This action cannot be undone.</p>
