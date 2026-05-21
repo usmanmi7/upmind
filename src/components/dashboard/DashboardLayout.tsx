@@ -187,6 +187,25 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
 
 function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
   const { data: session } = useSession()
+  const [unreadCount, setUnreadCount] = React.useState(0)
+
+  React.useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const res = await fetch("/api/notifications")
+        if (res.ok) {
+          const data = await res.json()
+          setUnreadCount(data.unreadCount || 0)
+        }
+      } catch {
+        // silent fail
+      }
+    }
+    fetchUnreadCount()
+    // Poll every 30 seconds for updated unread count
+    const interval = setInterval(fetchUnreadCount, 30000)
+    return () => clearInterval(interval)
+  }, [])
 
   const userInitials = session?.user?.name
     ? session.user.name
@@ -232,7 +251,9 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
           >
             <Link href="/dashboard/notifications">
               <Bell className="size-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#7CFC00]" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#7CFC00]" />
+              )}
             </Link>
           </Button>
 

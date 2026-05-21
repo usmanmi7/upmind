@@ -70,6 +70,14 @@ interface AdminUser {
   subscription: { plan: string; status: string } | null
 }
 
+interface AdminContact {
+  id: string
+  name: string
+  email: string
+  image: string | null
+  role: string
+}
+
 export default function MessagesPage() {
   const { data: session } = useSession()
   const currentUserId = session?.user?.id
@@ -102,6 +110,7 @@ export default function MessagesPage() {
   const [adminUsers, setAdminUsers] = React.useState<AdminUser[]>([])
   const [adminUsersLoading, setAdminUsersLoading] = React.useState(false)
   const [userSearch, setUserSearch] = React.useState("")
+  const [adminContact, setAdminContact] = React.useState<AdminContact | null>(null)
 
   const typingTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
   const messagesEndRef = React.useRef<HTMLDivElement>(null)
@@ -135,6 +144,24 @@ export default function MessagesPage() {
       fetchConversations()
     }
   }, [currentUserId, onlineUsers])
+
+  // Fetch admin contact for regular users
+  React.useEffect(() => {
+    if (!isAdmin && currentUserId) {
+      async function fetchAdminContact() {
+        try {
+          const res = await fetch("/api/admin/contact")
+          if (res.ok) {
+            const data = await res.json()
+            setAdminContact(data.admin)
+          }
+        } catch (err) {
+          console.error("Failed to fetch admin contact:", err)
+        }
+      }
+      fetchAdminContact()
+    }
+  }, [isAdmin, currentUserId])
 
   // Fetch messages for active chat
   React.useEffect(() => {
@@ -470,7 +497,7 @@ export default function MessagesPage() {
                 <div className="p-4 text-center text-sm text-muted-foreground">
                   <MessageCircle className="size-8 text-muted-foreground/30 mx-auto mb-2" />
                   <p>No conversations yet</p>
-                  {isAdmin && (
+                  {isAdmin ? (
                     <Button
                       variant="ghost"
                       size="sm"
@@ -479,7 +506,30 @@ export default function MessagesPage() {
                     >
                       Start a new conversation
                     </Button>
-                  )}
+                  ) : adminContact ? (
+                    <div className="mt-4">
+                      <p className="text-xs text-muted-foreground mb-3">Message the admin to get started</p>
+                      <button
+                        className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-[#E8F5E9] dark:hover:bg-[#2D4A2D]/20 transition-colors text-left border border-[#7CFC00]/20"
+                        onClick={() => startNewConversation(adminContact.id, adminContact.name)}
+                      >
+                        <div className="relative shrink-0">
+                          <Avatar className="size-10">
+                            <AvatarImage src={adminContact.image || undefined} />
+                            <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                              {adminContact.name.split(" ").map((n) => n[0]).join("").toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#7CFC00] border-2 border-card" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold truncate">{adminContact.name}</p>
+                          <p className="text-xs text-[#7CFC00]">Admin · Online</p>
+                        </div>
+                        <Send className="size-4 text-[#7CFC00] shrink-0" />
+                      </button>
+                    </div>
+                  ) : null}
                 </div>
               ) : (
                 filteredConversations.map((conv) => (

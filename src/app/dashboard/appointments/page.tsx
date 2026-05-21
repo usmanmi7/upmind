@@ -183,7 +183,7 @@ export default function AppointmentsPage() {
                 <Plus className="size-4 mr-2" /> Book Appointment
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-lg">
+            <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="font-heading">Book New Appointment</DialogTitle>
                 <DialogDescription>Schedule a consultation with one of our experts</DialogDescription>
@@ -192,11 +192,18 @@ export default function AppointmentsPage() {
                 <div>
                   <label className="text-sm font-medium mb-1.5 block">Consultant</label>
                   <Select value={selectedConsultant} onValueChange={setSelectedConsultant}>
-                    <SelectTrigger><SelectValue placeholder="Select a consultant" /></SelectTrigger>
-                    <SelectContent>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a consultant" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[200px]">
                       {consultants.map((c) => (
-                        <SelectItem key={c.id} value={c.id}>
-                          {c.user?.name || "Unknown"} {c.specialties ? `— ${c.specialties}` : ""} ({c.rating.toFixed(1)} ★)
+                        <SelectItem key={c.id} value={c.id} className="py-2">
+                          <span className="flex flex-col items-start gap-0.5">
+                            <span className="font-medium truncate max-w-full">{c.user?.name || "Unknown"}</span>
+                            <span className="text-xs text-muted-foreground truncate max-w-full">
+                              {c.specialties ? `${c.specialties}` : "General Consultant"} · {c.rating.toFixed(1)} ★
+                            </span>
+                          </span>
                         </SelectItem>
                       ))}
                     </SelectContent>
