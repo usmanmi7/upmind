@@ -2,8 +2,9 @@
 
 import Link from "next/link"
 import { useSession } from "next-auth/react"
-import { ChevronDown, Menu, X, HelpCircle, Phone, Briefcase } from "lucide-react"
+import { ChevronDown, Menu, X, HelpCircle, Phone, Briefcase, User, LogOut, LayoutDashboard, Settings } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+import { signOut } from "next-auth/react"
 import * as React from "react"
 
 const navLinks = [
@@ -25,6 +26,7 @@ export default function PublicNavbar() {
   const { data: session } = useSession()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [moreOpen, setMoreOpen] = React.useState(false)
+  const [userMenuOpen, setUserMenuOpen] = React.useState(false)
 
   return (
     <header className="sticky top-0 z-50 bg-[#1A2E1A]/95 backdrop-blur-lg border-b border-white/5">
@@ -91,12 +93,70 @@ export default function PublicNavbar() {
 
             {/* CTA Buttons */}
             {session ? (
-              <Link
-                href="/dashboard"
-                className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20 flex items-center gap-2"
-              >
-                Dashboard
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/dashboard"
+                  className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20 flex items-center gap-2"
+                >
+                  Dashboard
+                </Link>
+                {/* User Icon with Dropdown */}
+                <div className="relative">
+                  <button
+                    onClick={() => setUserMenuOpen(!userMenuOpen)}
+                    onBlur={() => setTimeout(() => setUserMenuOpen(false), 200)}
+                    className="w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-200"
+                    aria-label="User menu"
+                  >
+                    {session.user?.image ? (
+                      <img src={session.user.image} alt={session.user.name || 'User'} className="w-full h-full rounded-full object-cover" />
+                    ) : (
+                      <User className="w-4 h-4 text-white" />
+                    )}
+                  </button>
+                  <AnimatePresence>
+                    {userMenuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute top-full right-0 mt-2 w-56 bg-[#1A2E1A] border border-white/10 rounded-xl shadow-xl overflow-hidden"
+                      >
+                        {/* User Info */}
+                        <div className="px-4 py-3 border-b border-white/10">
+                          <p className="text-white text-sm font-medium truncate">{session.user?.name || 'User'}</p>
+                          <p className="text-white/50 text-xs truncate">{session.user?.email}</p>
+                        </div>
+                        {/* Menu Items */}
+                        <Link
+                          href="/dashboard"
+                          className="flex items-center gap-2.5 px-4 py-2.5 text-white/70 hover:text-white hover:bg-white/5 text-sm transition-colors"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          <LayoutDashboard className="w-4 h-4" />
+                          Dashboard
+                        </Link>
+                        <Link
+                          href="/dashboard/settings"
+                          className="flex items-center gap-2.5 px-4 py-2.5 text-white/70 hover:text-white hover:bg-white/5 text-sm transition-colors"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          <Settings className="w-4 h-4" />
+                          Settings
+                        </Link>
+                        <button
+                          onClick={() => { setUserMenuOpen(false); signOut({ callbackUrl: '/' }); }}
+                          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-red-400 hover:text-red-300 hover:bg-white/5 text-sm transition-colors"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          Log Out
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
             ) : (
               <>
                 <Link
@@ -147,13 +207,35 @@ export default function PublicNavbar() {
                 ))}
                 <div className="pt-4 space-y-3 border-t border-white/10 mt-2">
                   {session ? (
-                    <Link
-                      href="/dashboard"
-                      className="block bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-[#6BE000] transition-all duration-300"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Dashboard
-                    </Link>
+                    <>
+                      <Link
+                        href="/dashboard"
+                        className="block bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-[#6BE000] transition-all duration-300"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Dashboard
+                      </Link>
+                      <div className="flex items-center gap-3 pt-2">
+                        <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center flex-shrink-0">
+                          {session.user?.image ? (
+                            <img src={session.user.image} alt={session.user.name || 'User'} className="w-full h-full rounded-full object-cover" />
+                          ) : (
+                            <User className="w-4 h-4 text-white" />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white text-sm font-medium truncate">{session.user?.name || 'User'}</p>
+                          <p className="text-white/40 text-xs truncate">{session.user?.email}</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => { setMobileMenuOpen(false); signOut({ callbackUrl: '/' }); }}
+                        className="flex items-center gap-2 text-red-400 hover:text-red-300 text-sm py-2 px-3 rounded-lg hover:bg-white/5 transition-colors w-full"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Log Out
+                      </button>
+                    </>
                   ) : (
                     <>
                       <Link
