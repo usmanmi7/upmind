@@ -84,7 +84,7 @@ export default function AdminDashboardPage() {
       change: `+${data?.users.recent || 0} this month`,
       trend: "up" as const,
       icon: Users,
-      color: "from-blue-500 to-cyan-500",
+      color: "from-[#2D4A2D] to-[#8FBC8F]",
     },
     {
       title: "Paid Users",
@@ -92,7 +92,7 @@ export default function AdminDashboardPage() {
       change: `${data?.users.total ? Math.round(((data?.users.paid || 0) / data?.users.total) * 100) : 0}% conversion`,
       trend: "up" as const,
       icon: CreditCard,
-      color: "from-purple-500 to-violet-500",
+      color: "from-[#7CFC00] to-[#2D4A2D]",
     },
     {
       title: "Monthly Revenue",
@@ -113,16 +113,16 @@ export default function AdminDashboardPage() {
   ]
 
   const quickActions = [
-    { title: "Add Resource", icon: BookOpen, href: "/admin/resources", color: "from-blue-500 to-cyan-500" },
-    { title: "Manage Users", icon: Users, href: "/admin/users", color: "from-purple-500 to-violet-500" },
+    { title: "Add Resource", icon: BookOpen, href: "/admin/resources", color: "from-[#2D4A2D] to-[#8FBC8F]" },
+    { title: "Manage Users", icon: Users, href: "/admin/users", color: "from-[#7CFC00] to-[#2D4A2D]" },
     { title: "View Reports", icon: BarChart3, href: "/admin/analytics", color: "from-green-500 to-emerald-500" },
     { title: "Send Notification", icon: Bell, href: "/admin/settings", color: "from-orange-500 to-red-500" },
   ]
 
   const planColors: Record<string, string> = {
     FREE: "#94a3b8",
-    GROWTH_PRO: "#8b5cf6",
-    ENTERPRISE: "#06b6d4",
+    GROWTH_PRO: "#7CFC00",
+    ENTERPRISE: "#2D4A2D",
   }
 
   if (loading) {
@@ -204,8 +204,8 @@ export default function AdminDashboardPage() {
                         borderRadius: "8px",
                       }}
                     />
-                    <Line type="monotone" dataKey="total" stroke="#8b5cf6" strokeWidth={2} dot={{ fill: "#8b5cf6" }} name="Total Users" />
-                    <Line type="monotone" dataKey="new" stroke="#06b6d4" strokeWidth={2} dot={{ fill: "#06b6d4" }} name="New Users" />
+                    <Line type="monotone" dataKey="total" stroke="#7CFC00" strokeWidth={2} dot={{ fill: "#7CFC00" }} name="Total Users" />
+                    <Line type="monotone" dataKey="new" stroke="#2D4A2D" strokeWidth={2} dot={{ fill: "#2D4A2D" }} name="New Users" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -234,7 +234,7 @@ export default function AdminDashboardPage() {
                         borderRadius: "8px",
                       }}
                     />
-                    <Bar dataKey="revenue" fill="#8b5cf6" radius={[4, 4, 0, 0]} name="Revenue ($)" />
+                    <Bar dataKey="revenue" fill="#7CFC00" radius={[4, 4, 0, 0]} name="Revenue ($)" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -303,7 +303,7 @@ export default function AdminDashboardPage() {
                   data?.appointments.today.map((apt) => (
                     <div key={apt.id} className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
                       <Avatar className="size-8">
-                        <AvatarFallback className="bg-purple-500/20 text-purple-400 text-xs">
+                        <AvatarFallback className="bg-[#7CFC00]/20 text-[#7CFC00] text-xs">
                           {apt.user.name.split(" ").map((n) => n[0]).join("")}
                         </AvatarFallback>
                       </Avatar>
@@ -361,12 +361,12 @@ export default function AdminDashboardPage() {
           <CardContent>
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
               {[
-                { label: "Total Resources", value: data?.resources.total || 0, icon: BookOpen, color: "text-blue-500" },
-                { label: "Premium Resources", value: data?.resources.premium || 0, icon: BookOpen, color: "text-purple-500" },
+                { label: "Total Resources", value: data?.resources.total || 0, icon: BookOpen, color: "text-[#7CFC00]" },
+                { label: "Premium Resources", value: data?.resources.premium || 0, icon: BookOpen, color: "text-[#2D4A2D]" },
                 { label: "Total Downloads", value: data?.resources.totalDownloads || 0, icon: TrendingUp, color: "text-green-500" },
-                { label: "Scheduled Appts", value: data?.appointments.scheduled || 0, icon: Calendar, color: "text-cyan-500" },
+                { label: "Scheduled Appts", value: data?.appointments.scheduled || 0, icon: Calendar, color: "text-[#8FBC8F]" },
                 { label: "Completed Appts", value: data?.appointments.completed || 0, icon: Calendar, color: "text-emerald-500" },
-                { label: "Active Consultants", value: data?.users.consultants || 0, icon: Shield, color: "text-violet-500" },
+                { label: "Active Consultants", value: data?.users.consultants || 0, icon: Shield, color: "text-[#7CFC00]" },
               ].map((metric) => (
                 <div key={metric.label} className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
                   <metric.icon className={`size-4 ${metric.color} shrink-0`} />

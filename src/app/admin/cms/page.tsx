@@ -207,7 +207,7 @@ export default function AdminCMSPage() {
                 setBlogForm({ id: "", title: "", slug: "", excerpt: "", content: "", category: "", tags: "", isPublished: false })
                 setBlogDialogOpen(true)
               }}
-              className="bg-gradient-to-r from-purple-500 to-violet-600 text-white"
+              className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white"
             >
               <Plus className="size-4 mr-2" />New Post
             </Button>
@@ -276,7 +276,7 @@ export default function AdminCMSPage() {
                 setFaqForm({ id: "", question: "", answer: "", category: "", order: 0, isPublished: true })
                 setFaqDialogOpen(true)
               }}
-              className="bg-gradient-to-r from-purple-500 to-violet-600 text-white"
+              className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white"
             >
               <Plus className="size-4 mr-2" />New FAQ
             </Button>
@@ -338,7 +338,7 @@ export default function AdminCMSPage() {
                 setTestimonialForm({ id: "", name: "", role: "", company: "", content: "", rating: 5, isPublished: true, order: 0 })
                 setTestimonialDialogOpen(true)
               }}
-              className="bg-gradient-to-r from-purple-500 to-violet-600 text-white"
+              className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white"
             >
               <Plus className="size-4 mr-2" />New Testimonial
             </Button>
@@ -420,7 +420,7 @@ export default function AdminCMSPage() {
               <div><Label>Publish</Label><p className="text-xs text-muted-foreground">Make this post visible to users</p></div>
               <Switch checked={blogForm.isPublished} onCheckedChange={(c) => setBlogForm((p) => ({ ...p, isPublished: c }))} />
             </div>
-            <Button onClick={handleBlogSave} className="w-full bg-gradient-to-r from-purple-500 to-violet-600 text-white">
+            <Button onClick={handleBlogSave} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
               {isEditBlog ? "Update" : "Create"} Post
             </Button>
           </div>
@@ -441,7 +441,7 @@ export default function AdminCMSPage() {
               <Label>Published</Label>
               <Switch checked={faqForm.isPublished} onCheckedChange={(c) => setFaqForm((p) => ({ ...p, isPublished: c }))} />
             </div>
-            <Button onClick={handleFaqSave} className="w-full bg-gradient-to-r from-purple-500 to-violet-600 text-white">
+            <Button onClick={handleFaqSave} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
               {isEditFaq ? "Update" : "Create"} FAQ
             </Button>
           </div>
@@ -466,7 +466,7 @@ export default function AdminCMSPage() {
               <Label>Published</Label>
               <Switch checked={testimonialForm.isPublished} onCheckedChange={(c) => setTestimonialForm((p) => ({ ...p, isPublished: c }))} />
             </div>
-            <Button onClick={handleTestimonialSave} className="w-full bg-gradient-to-r from-purple-500 to-violet-600 text-white">
+            <Button onClick={handleTestimonialSave} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
               {isEditTestimonial ? "Update" : "Create"} Testimonial
             </Button>
           </div>

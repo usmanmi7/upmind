@@ -66,7 +66,7 @@ const caseStudies = [
     challenge: "Struggling to find product-market fit after 8 months of development.",
     solution: "Used Upmind's validation framework to pivot strategy and identify the right customer segment.",
     result: "300% user growth in 3 months, raised $2.5M Series A.",
-    color: "from-blue-500 to-cyan-500",
+    color: "from-[#2D4A2D] to-[#8FBC8F]",
   },
   {
     company: "GreenScale",
@@ -82,7 +82,7 @@ const caseStudies = [
     challenge: "Had the technology but couldn't articulate the business value to investors.",
     solution: "Refined go-to-market strategy and messaging with expert guidance from Upmind.",
     result: "Secured $8M Series A at a $40M valuation.",
-    color: "from-purple-500 to-pink-500",
+    color: "from-[#7CFC00] to-[#2D4A2D]",
   },
 ]
 
@@ -122,8 +122,8 @@ export default function SuccessStoriesPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               {stats.map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-3">
-                    <stat.icon className="size-6 text-blue-600 dark:text-blue-400" />
+                  <div className="w-12 h-12 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center mx-auto mb-3">
+                    <stat.icon className="size-6 text-[#2D4A2D] dark:text-[#7CFC00]" />
                   </div>
                   <p className="text-3xl sm:text-4xl font-bold gradient-text">{stat.value}</p>
                   <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
@@ -156,11 +156,11 @@ export default function SuccessStoriesPage() {
                         <Star key={i} className="size-4 fill-yellow-400 text-yellow-400" />
                       ))}
                     </div>
-                    <Quote className="size-6 text-blue-500/30 mb-2" />
+                    <Quote className="size-6 text-[#7CFC00]/30 mb-2" />
                     <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">&ldquo;{t.content}&rdquo;</p>
                     <div className="border-t pt-4">
                       <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
                           <span className="text-white text-sm font-bold">{t.name[0]}</span>
                         </div>
                         <div>
@@ -170,7 +170,7 @@ export default function SuccessStoriesPage() {
                       </div>
                       <div className="flex gap-4 text-xs">
                         <span className="text-green-600 dark:text-green-400 font-medium">↑ {t.metrics.growth} growth</span>
-                        <span className="text-blue-600 dark:text-blue-400 font-medium">{t.metrics.raised} raised</span>
+                        <span className="text-[#2D4A2D] dark:text-[#7CFC00] font-medium">{t.metrics.raised} raised</span>
                       </div>
                     </div>
                   </div>
@@ -213,7 +213,7 @@ export default function SuccessStoriesPage() {
                       <p className="text-sm text-muted-foreground">{cs.challenge}</p>
                     </div>
                     <div>
-                      <h4 className="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-2">Solution</h4>
+                      <h4 className="text-sm font-semibold text-[#2D4A2D] dark:text-[#7CFC00] mb-2">Solution</h4>
                       <p className="text-sm text-muted-foreground">{cs.solution}</p>
                     </div>
                     <div>
@@ -230,14 +230,14 @@ export default function SuccessStoriesPage() {
         {/* CTA Section */}
         <section className="py-20">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-blue-500 to-purple-600 text-white relative overflow-hidden">
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] relative overflow-hidden">
               <div className="relative z-10">
                 <h2 className="text-3xl sm:text-4xl font-heading font-bold">Write your own success story</h2>
                 <p className="mt-4 text-lg text-white/80 max-w-xl mx-auto">
                   Join 500+ founders who&apos;ve accelerated their growth with Upmind.
                 </p>
                 <div className="mt-8">
-                  <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
+                  <Button asChild size="lg" className="bg-white text-[#2D4A2D] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
                     <Link href="/auth/signup">
                       Start Your Journey
                       <ArrowRight className="size-5" />

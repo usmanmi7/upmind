@@ -94,12 +94,12 @@ export default function SettingsPage() {
                   onClick={() => themeHook.setTheme(option.value)}
                   className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-smooth ${
                     themeHook.theme === option.value
-                      ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                      ? "border-[#7CFC00] bg-[#E8F5E9] dark:bg-[#2D4A2D]/20"
                       : "border-transparent bg-muted/30 hover:border-muted-foreground/20"
                   }`}
                 >
-                  <option.icon className={`size-5 ${themeHook.theme === option.value ? "text-blue-500" : "text-muted-foreground"}`} />
-                  <span className={`text-xs font-medium ${themeHook.theme === option.value ? "text-blue-600 dark:text-blue-400" : ""}`}>
+                  <option.icon className={`size-5 ${themeHook.theme === option.value ? "text-[#7CFC00]" : "text-muted-foreground"}`} />
+                  <span className={`text-xs font-medium ${themeHook.theme === option.value ? "text-[#2D4A2D] dark:text-[#7CFC00]" : ""}`}>
                     {option.label}
                   </span>
                 </button>

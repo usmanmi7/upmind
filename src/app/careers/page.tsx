@@ -21,11 +21,11 @@ import {
 } from "lucide-react"
 
 const openings = [
-  { title: "Senior Full-Stack Engineer", department: "Engineering", location: "Remote", type: "Full-time", color: "from-blue-500 to-cyan-500" },
-  { title: "Product Designer", department: "Design", location: "San Francisco / Remote", type: "Full-time", color: "from-purple-500 to-pink-500" },
+  { title: "Senior Full-Stack Engineer", department: "Engineering", location: "Remote", type: "Full-time", color: "from-[#2D4A2D] to-[#8FBC8F]" },
+  { title: "Product Designer", department: "Design", location: "San Francisco / Remote", type: "Full-time", color: "from-[#7CFC00] to-[#2D4A2D]" },
   { title: "Startup Consultant", department: "Consulting", location: "Remote", type: "Full-time", color: "from-green-500 to-emerald-500" },
   { title: "AI/ML Engineer", department: "Engineering", location: "Remote", type: "Full-time", color: "from-orange-500 to-red-500" },
-  { title: "Content Marketing Manager", department: "Marketing", location: "Remote", type: "Full-time", color: "from-cyan-500 to-blue-500" },
+  { title: "Content Marketing Manager", department: "Marketing", location: "Remote", type: "Full-time", color: "from-[#8FBC8F] to-[#2D4A2D]" },
   { title: "Customer Success Lead", department: "Success", location: "San Francisco", type: "Full-time", color: "from-yellow-500 to-orange-500" },
 ]
 
@@ -93,7 +93,7 @@ export default function CareersPage() {
                         </Badge>
                       </div>
                     </div>
-                    <Button variant="outline" size="sm" className="shrink-0 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20">
+                    <Button variant="outline" size="sm" className="shrink-0 group-hover:bg-[#E8F5E9] dark:group-hover:bg-[#2D4A2D]/20">
                       Apply <ArrowRight className="size-3.5 ml-1" />
                     </Button>
                   </div>
@@ -121,8 +121,8 @@ export default function CareersPage() {
                   transition={{ delay: i * 0.05 }}
                 >
                   <div className="p-5 rounded-2xl bg-card border shadow-sm h-full">
-                    <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-3">
-                      <benefit.icon className="size-5 text-blue-600 dark:text-blue-400" />
+                    <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center mb-3">
+                      <benefit.icon className="size-5 text-[#2D4A2D] dark:text-[#7CFC00]" />
                     </div>
                     <h3 className="text-sm font-heading font-semibold mb-1">{benefit.title}</h3>
                     <p className="text-xs text-muted-foreground leading-relaxed">{benefit.description}</p>
@@ -163,14 +163,14 @@ export default function CareersPage() {
         {/* CTA Section */}
         <section className="py-20 bg-muted/30">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-blue-500 to-purple-600 text-white relative overflow-hidden">
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] relative overflow-hidden">
               <div className="relative z-10">
                 <h2 className="text-3xl sm:text-4xl font-heading font-bold">Don&apos;t see the right role?</h2>
                 <p className="mt-4 text-lg text-white/80 max-w-xl mx-auto">
                   We&apos;re always looking for talented people. Send us your resume and we&apos;ll keep you in mind.
                 </p>
                 <div className="mt-8">
-                  <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
+                  <Button asChild size="lg" className="bg-white text-[#2D4A2D] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
                     <Link href="/contact">
                       Get In Touch
                       <ArrowRight className="size-5" />

@@ -36,14 +36,14 @@ const quickActions = [
     description: "Get startup advice from AI",
     icon: Sparkles,
     href: "/dashboard/ai-assistant",
-    color: "from-blue-500 to-purple-600",
+    color: "from-[#2D4A2D] to-[#1A2E1A]",
   },
   {
     title: "Community",
     description: "Connect with fellow founders",
     icon: UsersRound,
     href: "/dashboard/community",
-    color: "from-cyan-500 to-blue-500",
+    color: "from-[#8FBC8F] to-[#2D4A2D]",
   },
   {
     title: "View Roadmap",
@@ -85,7 +85,7 @@ export default function DashboardPage() {
         </div>
         <Button
           asChild
-          className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg shadow-blue-500/25"
+          className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shadow-lg shadow-[#7CFC00]/25"
         >
           <Link href="/dashboard/startup">
             <Rocket className="size-4" />
@@ -104,8 +104,8 @@ export default function DashboardPage() {
                 <p className="text-sm text-muted-foreground">Startup Progress</p>
                 <p className="text-2xl font-bold mt-1">24%</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                <TrendingUp className="size-5 text-blue-600 dark:text-blue-400" />
+              <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center">
+                <TrendingUp className="size-5 text-[#2D4A2D] dark:text-[#7CFC00]" />
               </div>
             </div>
             <Progress value={24} className="mt-3 h-1.5" />
@@ -134,8 +134,8 @@ export default function DashboardPage() {
                 <p className="text-sm text-muted-foreground">Appointments</p>
                 <p className="text-2xl font-bold mt-1">3</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                <Calendar className="size-5 text-purple-600 dark:text-purple-400" />
+              <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center">
+                <Calendar className="size-5 text-[#1A2E1A] dark:text-[#7CFC00]" />
               </div>
             </div>
             <p className="text-xs text-muted-foreground mt-3">Next: Tomorrow at 2:00 PM</p>
@@ -149,8 +149,8 @@ export default function DashboardPage() {
                 <p className="text-sm text-muted-foreground">Resources</p>
                 <p className="text-2xl font-bold mt-1">15</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center">
-                <BookOpen className="size-5 text-cyan-600 dark:text-cyan-400" />
+              <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center">
+                <BookOpen className="size-5 text-[#2D4A2D] dark:text-[#7CFC00]" />
               </div>
             </div>
             <p className="text-xs text-muted-foreground mt-3">5 new this week</p>
@@ -206,7 +206,7 @@ export default function DashboardPage() {
                       task.status === "COMPLETED"
                         ? "bg-green-500"
                         : task.status === "IN_PROGRESS"
-                        ? "bg-blue-500"
+                        ? "bg-[#7CFC00]"
                         : "bg-muted-foreground/40"
                     }`}
                   />
@@ -269,7 +269,7 @@ export default function DashboardPage() {
                     className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
                       item.completed
                         ? "bg-green-500"
-                        : "border-2 border-muted-foreground/30 group-hover:border-blue-500/50"
+                        : "border-2 border-muted-foreground/30 group-hover:border-[#7CFC00]/50"
                     }`}
                   >
                     {item.completed ? (
@@ -282,25 +282,25 @@ export default function DashboardPage() {
                     className={`text-sm flex-1 ${
                       item.completed
                         ? "line-through text-muted-foreground"
-                        : "font-medium group-hover:text-blue-500"
+                        : "font-medium group-hover:text-[#7CFC00]"
                     }`}
                   >
                     {item.title}
                   </span>
                   {!item.completed && (
-                    <ArrowRight className="size-3 text-muted-foreground/30 group-hover:text-blue-500 transition-colors" />
+                    <ArrowRight className="size-3 text-muted-foreground/30 group-hover:text-[#7CFC00] transition-colors" />
                   )}
                 </Link>
               ))}
             </div>
-            <div className="mt-4 p-4 rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-600/10 border border-blue-200/50 dark:border-blue-800/50">
+            <div className="mt-4 p-4 rounded-xl bg-gradient-to-br from-[#2D4A2D]/10 to-[#1A2E1A]/10 border border-[#7CFC00]/30 dark:border-[#2D4A2D]/50">
               <div className="flex items-center gap-2 mb-2">
-                <Zap className="size-4 text-blue-500" />
+                <Zap className="size-4 text-[#7CFC00]" />
                 <span className="text-sm font-medium">Earn Badges</span>
               </div>
               <p className="text-xs text-muted-foreground">
                 Complete tasks to unlock achievements and earn XP. Visit your{" "}
-                <Link href="/dashboard/profile" className="text-blue-500 hover:underline">
+                <Link href="/dashboard/profile" className="text-[#7CFC00] hover:underline">
                   profile
                 </Link>{" "}
                 to see all badges.

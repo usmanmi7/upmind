@@ -90,7 +90,7 @@ export default function FAQPage() {
                   variant={activeCategory === cat ? "default" : "outline"}
                   size="sm"
                   onClick={() => setActiveCategory(cat)}
-                  className={activeCategory === cat ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white" : ""}
+                  className={activeCategory === cat ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A]" : ""}
                 >
                   {cat}
                 </Button>
@@ -122,7 +122,7 @@ export default function FAQPage() {
         {/* Still Have Questions CTA */}
         <section className="py-20 bg-muted/30">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-blue-500 to-purple-600 text-white relative overflow-hidden">
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] relative overflow-hidden">
               <div className="relative z-10">
                 <MessageCircle className="size-12 mx-auto mb-4 opacity-80" />
                 <h2 className="text-3xl sm:text-4xl font-heading font-bold">Still have questions?</h2>
@@ -130,7 +130,7 @@ export default function FAQPage() {
                   Our team is here to help. Reach out and we&apos;ll get back to you within 24 hours.
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
+                  <Button asChild size="lg" className="bg-white text-[#2D4A2D] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
                     <Link href="/contact">
                       Contact Us
                       <ArrowRight className="size-5" />

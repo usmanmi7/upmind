@@ -53,10 +53,10 @@ const fileTypeIcons: Record<string, React.ElementType> = {
 const fileTypeColors: Record<string, string> = {
   pdf: "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400",
   xlsx: "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400",
-  docx: "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
-  zip: "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
-  png: "bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400",
-  jpg: "bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400",
+  docx: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 text-[#2D4A2D] dark:text-[#7CFC00]",
+  zip: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 text-[#1A2E1A] dark:text-[#7CFC00]",
+  png: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 text-[#2D4A2D] dark:text-[#7CFC00]",
+  jpg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 text-[#2D4A2D] dark:text-[#7CFC00]",
 }
 
 export default function DocumentsPage() {
@@ -78,7 +78,7 @@ export default function DocumentsPage() {
           <p className="text-muted-foreground mt-1">Manage your startup documents and files</p>
         </div>
         <Button
-          className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+          className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
           onClick={() => toast.success("Upload dialog would open here")}
         >
           <Upload className="size-4 mr-2" /> Upload File
@@ -86,7 +86,7 @@ export default function DocumentsPage() {
       </div>
 
       {/* Drag & Drop Upload Area */}
-      <div className="border-2 border-dashed rounded-xl p-8 text-center hover:border-blue-500/50 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-smooth">
+      <div className="border-2 border-dashed rounded-xl p-8 text-center hover:border-[#7CFC00]/50 hover:bg-[#E8F5E9]/50 dark:hover:bg-[#2D4A2D]/10 transition-smooth">
         <Upload className="size-8 text-muted-foreground/40 mx-auto mb-2" />
         <p className="text-sm font-medium">Drag & drop files here</p>
         <p className="text-xs text-muted-foreground mt-1">or click to browse (PDF, DOCX, XLSX, ZIP, max 25MB)</p>

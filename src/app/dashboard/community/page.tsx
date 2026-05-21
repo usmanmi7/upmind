@@ -37,11 +37,11 @@ import {
 import { toast } from "sonner"
 
 const categories = [
-  { id: "general", name: "General Discussion", icon: MessageCircle, count: 128, color: "from-blue-500 to-cyan-500" },
+  { id: "general", name: "General Discussion", icon: MessageCircle, count: 128, color: "from-[#2D4A2D] to-[#8FBC8F]" },
   { id: "fundraising", name: "Fundraising", icon: DollarSign, count: 64, color: "from-green-500 to-emerald-500" },
-  { id: "marketing", name: "Marketing", icon: Megaphone, count: 93, color: "from-purple-500 to-pink-500" },
+  { id: "marketing", name: "Marketing", icon: Megaphone, count: 93, color: "from-[#7CFC00] to-[#2D4A2D]" },
   { id: "product", name: "Product Development", icon: Code2, count: 87, color: "from-orange-500 to-red-500" },
-  { id: "culture", name: "Team & Culture", icon: HeartHandshake, count: 45, color: "from-cyan-500 to-blue-500" },
+  { id: "culture", name: "Team & Culture", icon: HeartHandshake, count: 45, color: "from-[#8FBC8F] to-[#2D4A2D]" },
 ]
 
 const forumPosts = [
@@ -166,7 +166,7 @@ export default function CommunityPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-heading font-bold flex items-center gap-2">
-            <UsersRound className="size-6 text-blue-500" />
+            <UsersRound className="size-6 text-[#7CFC00]" />
             Community
           </h1>
           <p className="text-muted-foreground mt-1">
@@ -175,7 +175,7 @@ export default function CommunityPage() {
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
+            <Button className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]">
               <Plus className="size-4 mr-2" /> New Post
             </Button>
           </DialogTrigger>
@@ -216,7 +216,7 @@ export default function CommunityPage() {
                 />
               </div>
               <Button
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
                 onClick={handleCreatePost}
                 disabled={!newPost.title.trim() || !newPost.content.trim()}
               >
@@ -235,8 +235,8 @@ export default function CommunityPage() {
             onClick={() => setActiveCategory(activeCategory === cat.id ? "all" : cat.id)}
             className={`flex items-center gap-2 p-3 rounded-xl border transition-all duration-200 text-left ${
               activeCategory === cat.id
-                ? "border-blue-500/50 bg-blue-50 dark:bg-blue-900/20 shadow-sm"
-                : "border-border hover:border-blue-500/30 hover:shadow-sm"
+                ? "border-[#7CFC00]/50 bg-[#E8F5E9] dark:bg-[#2D4A2D]/20 shadow-sm"
+                : "border-border hover:border-[#7CFC00]/30 hover:shadow-sm"
             }`}
           >
             <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${cat.color} flex items-center justify-center shrink-0`}>
@@ -289,14 +289,14 @@ export default function CommunityPage() {
                   <CardContent className="p-4">
                     <div className="flex items-start gap-3">
                       <Avatar className="size-10 shrink-0">
-                        <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-xs">
+                        <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
                           {post.author.name.split(" ").map((n) => n[0]).join("")}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2">
                           <div>
-                            <h3 className="text-sm font-semibold group-hover:text-blue-500 transition-colors flex items-center gap-2">
+                            <h3 className="text-sm font-semibold group-hover:text-[#7CFC00] transition-colors flex items-center gap-2">
                               {post.title}
                               {post.isHot && (
                                 <Badge className="bg-red-500/10 text-red-500 text-[10px] border-0 px-1.5 py-0">
@@ -357,7 +357,7 @@ export default function CommunityPage() {
               >
                 <CardContent className="p-4 text-center">
                   <Avatar className="size-16 mx-auto mb-3">
-                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-lg">
+                    <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-lg">
                       {founder.name.split(" ").map((n) => n[0]).join("")}
                     </AvatarFallback>
                   </Avatar>

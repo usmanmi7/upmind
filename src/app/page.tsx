@@ -25,14 +25,14 @@ const features = [
     title: "Startup Validation",
     description:
       "Validate your ideas with data-driven insights and expert guidance before investing time and money.",
-    color: "from-blue-500 to-cyan-500",
+    color: "from-[#2D4A2D] to-[#8FBC8F]",
   },
   {
     icon: BarChart3,
     title: "Growth Analytics",
     description:
       "Track your startup's progress with intuitive dashboards and actionable metrics.",
-    color: "from-purple-500 to-pink-500",
+    color: "from-[#7CFC00] to-[#2D4A2D]",
   },
   {
     icon: MessageSquare,
@@ -53,7 +53,7 @@ const features = [
     title: "Risk Assessment",
     description:
       "Identify and mitigate potential risks early with our structured framework.",
-    color: "from-cyan-500 to-blue-500",
+    color: "from-[#8FBC8F] to-[#2D4A2D]",
   },
   {
     icon: Zap,
@@ -156,9 +156,9 @@ export default function Home() {
         {/* Hero Section */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-3xl" />
-            <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-3xl" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-3xl" />
+            <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-[#7CFC00]/10 rounded-full blur-3xl" />
+            <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-[#2D4A2D]/10 rounded-full blur-3xl" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#8FBC8F]/5 rounded-full blur-3xl" />
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 relative z-10">
@@ -168,7 +168,7 @@ export default function Home() {
               transition={{ duration: 0.5 }}
               className="text-center max-w-4xl mx-auto"
             >
-              <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 text-sm font-medium px-4 py-1.5 rounded-full mb-6">
+              <div className="inline-flex items-center gap-2 bg-[#E8F5E9] dark:bg-[#2D4A2D]/30 text-[#2D4A2D] dark:text-[#7CFC00] text-sm font-medium px-4 py-1.5 rounded-full mb-6">
                 <Globe className="size-4" />
                 Trusted by 500+ startups worldwide
               </div>
@@ -183,7 +183,7 @@ export default function Home() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-xl shadow-blue-500/25 w-full sm:w-auto text-base px-8 h-12"
+                  className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shadow-xl shadow-[#7CFC00]/25 w-full sm:w-auto text-base px-8 h-12"
                 >
                   <Link href={session ? "/dashboard" : "/auth/signup"}>
                     {session ? "Go to Dashboard" : "Start Free Trial"}
@@ -287,7 +287,7 @@ export default function Home() {
                     &quot;{testimonial.content}&quot;
                   </p>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
                       <span className="text-white text-sm font-bold">
                         {testimonial.name[0]}
                       </span>
@@ -323,13 +323,13 @@ export default function Home() {
                   key={plan.name}
                   className={`relative p-6 rounded-2xl border shadow-sm ${
                     plan.popular
-                      ? "border-purple-500 shadow-lg shadow-purple-500/10 scale-105"
+                      ? "border-[#7CFC00] shadow-lg shadow-[#7CFC00]/10 scale-105"
                       : ""
                   }`}
                 >
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs font-bold px-4 py-1 rounded-full">
+                      <span className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs font-bold px-4 py-1 rounded-full">
                         MOST POPULAR
                       </span>
                     </div>
@@ -361,7 +361,7 @@ export default function Home() {
                     asChild
                     className={`w-full ${
                       plan.popular
-                        ? "bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                        ? "bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
                         : ""
                     }`}
                     variant={plan.popular ? "default" : "outline"}
@@ -387,7 +387,7 @@ export default function Home() {
         {/* CTA Section */}
         <section className="py-20 sm:py-28">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-blue-500 to-purple-600 text-white relative overflow-hidden">
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] relative overflow-hidden">
               <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iYSIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVHJhbnNmb3JtPSJyb3RhdGUoNDUpIj48cGF0aCBkPSJNLTEwIDMwaDYwdi0yMGgtNjB6IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDMpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCBmaWxsPSJ1cmwoI2EpIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+PC9zdmc+')] opacity-50" />
               <div className="relative z-10">
                 <h2 className="text-3xl sm:text-4xl font-heading font-bold">
@@ -400,7 +400,7 @@ export default function Home() {
                   <Button
                     asChild
                     size="lg"
-                    className="bg-white text-blue-600 hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12"
+                    className="bg-white text-[#2D4A2D] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12"
                   >
                     <Link href={session ? "/dashboard" : "/auth/signup"}>
                       {session ? "Go to Dashboard" : "Start Free Trial"}

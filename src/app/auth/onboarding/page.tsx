@@ -180,21 +180,21 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-green-50 dark:from-[#0F1F0F] dark:via-[#1A2E1A] dark:to-[#2D4A2D] p-4">
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#7CFC00]/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#2D4A2D]/10 rounded-full blur-3xl" />
       </div>
 
       <div className="w-full max-w-2xl relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <span className="text-white font-bold text-lg">U</span>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+              <span className="font-bold text-lg text-[#1A2E1A]">U</span>
             </div>
-            <span className="text-2xl font-bold font-heading text-navy dark:text-white">
+            <span className="text-2xl font-bold font-heading text-[#1A2E1A] dark:text-white">
               Upmind
             </span>
           </div>
@@ -212,7 +212,7 @@ export default function OnboardingPage() {
                 key={step.id}
                 className={`flex items-center gap-2 text-sm transition-smooth ${
                   currentStep >= step.id
-                    ? "text-blue-600 dark:text-blue-400"
+                    ? "text-[#2D4A2D] dark:text-[#7CFC00]"
                     : "text-muted-foreground"
                 }`}
               >
@@ -221,7 +221,7 @@ export default function OnboardingPage() {
                     currentStep > step.id
                       ? "bg-green-500 text-white"
                       : currentStep === step.id
-                      ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white"
+                      ? "bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A]"
                       : "bg-muted text-muted-foreground"
                   }`}
                 >
@@ -405,15 +405,15 @@ export default function OnboardingPage() {
                         onClick={() => toggleGoal(goal)}
                         className={`text-left p-3 rounded-lg border text-sm transition-smooth ${
                           selectedGoals.includes(goal)
-                            ? "border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-300 dark:border-blue-500"
-                            : "border-border hover:border-blue-300 dark:hover:border-blue-700"
+                            ? "border-[#7CFC00] bg-[#E8F5E9] text-[#1A2E1A] dark:bg-[#2D4A2D]/30 dark:text-[#8FBC8F] dark:border-[#7CFC00]"
+                            : "border-border hover:border-[#7CFC00] dark:hover:border-[#2D4A2D]"
                         }`}
                       >
                         <div className="flex items-center gap-2">
                           <div
                             className={`w-4 h-4 rounded border flex items-center justify-center transition-smooth ${
                               selectedGoals.includes(goal)
-                                ? "bg-blue-500 border-blue-500"
+                                ? "bg-[#7CFC00] border-[#7CFC00]"
                                 : "border-muted-foreground/30"
                             }`}
                           >
@@ -440,8 +440,8 @@ export default function OnboardingPage() {
                     onClick={() => setSelectedPlan("FREE")}
                     className={`relative text-left p-6 rounded-xl border-2 transition-smooth ${
                       selectedPlan === "FREE"
-                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/20"
-                        : "border-border hover:border-blue-300"
+                        ? "border-[#7CFC00] bg-[#E8F5E9]/50 dark:bg-[#2D4A2D]/20"
+                        : "border-border hover:border-[#7CFC00]"
                     }`}
                   >
                     <div className="mb-3">
@@ -480,12 +480,12 @@ export default function OnboardingPage() {
                     onClick={() => setSelectedPlan("GROWTH_PRO")}
                     className={`relative text-left p-6 rounded-xl border-2 transition-smooth ${
                       selectedPlan === "GROWTH_PRO"
-                        ? "border-purple-500 bg-purple-50/50 dark:bg-purple-950/20"
-                        : "border-border hover:border-purple-300"
+                        ? "border-[#7CFC00] bg-[#E8F5E9]/50 dark:bg-[#2D4A2D]/20"
+                        : "border-border hover:border-[#7CFC00]"
                     }`}
                   >
                     <div className="absolute -top-3 right-4">
-                      <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                      <span className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs font-bold px-3 py-1 rounded-full">
                         POPULAR
                       </span>
                     </div>
@@ -517,7 +517,7 @@ export default function OnboardingPage() {
                         Custom roadmap
                       </li>
                       <li className="flex items-center gap-2">
-                        <Sparkles className="size-4 text-purple-500" />
+                        <Sparkles className="size-4 text-[#2D4A2D]" />
                         AI-powered insights
                       </li>
                     </ul>
@@ -551,7 +551,7 @@ export default function OnboardingPage() {
                 {currentStep < steps.length ? (
                   <Button
                     onClick={handleNext}
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                    className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
                   >
                     Next
                     <ArrowRight className="size-4" />
@@ -559,7 +559,7 @@ export default function OnboardingPage() {
                 ) : (
                   <Button
                     onClick={handleComplete}
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg shadow-blue-500/25"
+                    className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shadow-lg shadow-[#7CFC00]/25"
                     disabled={isLoading}
                   >
                     {isLoading ? (

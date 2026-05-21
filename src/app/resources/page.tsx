@@ -113,7 +113,7 @@ export default function ResourcesPage() {
                   variant={activeCategory === cat ? "default" : "outline"}
                   size="sm"
                   onClick={() => setActiveCategory(cat)}
-                  className={activeCategory === cat ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white" : ""}
+                  className={activeCategory === cat ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A]" : ""}
                 >
                   {cat}
                 </Button>
@@ -149,20 +149,20 @@ export default function ResourcesPage() {
                     <div className="relative p-6 rounded-2xl bg-card border shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
                       {resource.isPremium && (
                         <div className="absolute top-4 right-4">
-                          <Badge className="bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs">
+                          <Badge className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
                             <Lock className="size-3 mr-1" /> Premium
                           </Badge>
                         </div>
                       )}
-                      <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4">
-                        <Icon className="size-5 text-blue-600 dark:text-blue-400" />
+                      <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center mb-4">
+                        <Icon className="size-5 text-[#2D4A2D] dark:text-[#7CFC00]" />
                       </div>
                       <Badge variant="outline" className="w-fit text-xs mb-2">{resource.category}</Badge>
                       <h3 className="text-base font-heading font-semibold mb-2 leading-snug">{resource.title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">{resource.description}</p>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-muted-foreground">{resource.readTime}</span>
-                        <Button variant="ghost" size="sm" className="text-blue-600 dark:text-blue-400 p-0 h-auto">
+                        <Button variant="ghost" size="sm" className="text-[#2D4A2D] dark:text-[#7CFC00] p-0 h-auto">
                           {resource.isPremium ? "Unlock" : "Read"}
                           <ArrowRight className="size-3.5 ml-1" />
                         </Button>
@@ -184,14 +184,14 @@ export default function ResourcesPage() {
         {/* CTA Section */}
         <section className="py-20 bg-muted/30">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-blue-500 to-purple-600 text-white relative overflow-hidden">
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] relative overflow-hidden">
               <div className="relative z-10">
                 <h2 className="text-3xl sm:text-4xl font-heading font-bold">Unlock all premium resources</h2>
                 <p className="mt-4 text-lg text-white/80 max-w-xl mx-auto">
                   Get unlimited access to templates, guides, and tools with a Growth Pro plan.
                 </p>
                 <div className="mt-8">
-                  <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
+                  <Button asChild size="lg" className="bg-white text-[#2D4A2D] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
                     <Link href="/pricing">
                       View Plans
                       <ArrowRight className="size-5" />

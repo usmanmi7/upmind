@@ -39,13 +39,13 @@ const quickPrompts = [
     label: "Analyze my startup",
     icon: BarChart3,
     prompt: "Can you analyze my startup and give me an overall assessment?",
-    color: "from-blue-500 to-cyan-500",
+    color: "from-[#2D4A2D] to-[#8FBC8F]",
   },
   {
     label: "Business plan help",
     icon: FileText,
     prompt: "Help me create a business plan for my startup. What sections should I include?",
-    color: "from-purple-500 to-pink-500",
+    color: "from-[#7CFC00] to-[#2D4A2D]",
   },
   {
     label: "Pitch feedback",
@@ -66,15 +66,15 @@ const insightCards = [
     title: "Market Opportunity",
     description: "Your industry is growing 23% YoY. Focus on underserved segments.",
     icon: Target,
-    color: "text-blue-500",
-    bg: "bg-blue-100 dark:bg-blue-900/30",
+    color: "text-[#7CFC00]",
+    bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30",
   },
   {
     title: "Team Strength",
     description: "Consider adding a technical co-founder to strengthen your execution capability.",
     icon: Sparkles,
-    color: "text-purple-500",
-    bg: "bg-purple-100 dark:bg-purple-900/30",
+    color: "text-[#2D4A2D]",
+    bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30",
   },
   {
     title: "Revenue Model",
@@ -249,7 +249,7 @@ export default function AIAssistantPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-heading font-bold flex items-center gap-2">
-            <Sparkles className="size-6 text-blue-500" />
+            <Sparkles className="size-6 text-[#7CFC00]" />
             AI Assistant
           </h1>
           <p className="text-muted-foreground mt-1">
@@ -311,7 +311,7 @@ export default function AIAssistantPage() {
                 <ScrollArea className="flex-1 p-4">
                   {messages.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-center space-y-6 py-8">
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
                         <Sparkles className="size-8 text-white" />
                       </div>
                       <div>
@@ -359,7 +359,7 @@ export default function AIAssistantPage() {
                           >
                             {msg.role === "assistant" && (
                               <div className="flex items-center gap-2 mb-1">
-                                <div className="w-5 h-5 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                                <div className="w-5 h-5 rounded-md bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
                                   <Sparkles className="size-3 text-white" />
                                 </div>
                                 <span className="text-xs font-medium text-muted-foreground">
@@ -370,7 +370,7 @@ export default function AIAssistantPage() {
                             <div
                               className={`px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${
                                 msg.role === "user"
-                                  ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-br-md"
+                                  ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-br-md"
                                   : "bg-muted/50 rounded-bl-md"
                               }`}
                             >
@@ -429,7 +429,7 @@ export default function AIAssistantPage() {
                     />
                     <Button
                       size="icon"
-                      className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shrink-0"
+                      className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shrink-0"
                       disabled={!input.trim() || loading}
                       onClick={() => sendMessage(input)}
                     >
@@ -451,7 +451,7 @@ export default function AIAssistantPage() {
           <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
             <CardHeader>
               <CardTitle className="text-base font-heading flex items-center gap-2">
-                <BarChart3 className="size-5 text-blue-500" /> Startup Score
+                <BarChart3 className="size-5 text-[#7CFC00]" /> Startup Score
               </CardTitle>
               <CardDescription>
                 Get an AI-powered evaluation of your startup across key dimensions
@@ -460,8 +460,8 @@ export default function AIAssistantPage() {
             <CardContent>
               {!startupScore.data && !startupScore.loading && (
                 <div className="text-center py-8">
-                  <div className="w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-4">
-                    <Zap className="size-8 text-blue-500" />
+                  <div className="w-16 h-16 rounded-2xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center mx-auto mb-4">
+                    <Zap className="size-8 text-[#7CFC00]" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">
                     Evaluate Your Startup
@@ -472,7 +472,7 @@ export default function AIAssistantPage() {
                   </p>
                   <Button
                     onClick={generateStartupScore}
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                    className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
                   >
                     <Zap className="size-4 mr-2" /> Generate Score
                   </Button>
@@ -481,7 +481,7 @@ export default function AIAssistantPage() {
 
               {startupScore.loading && (
                 <div className="flex flex-col items-center py-12">
-                  <Loader2 className="size-8 animate-spin text-blue-500 mb-4" />
+                  <Loader2 className="size-8 animate-spin text-[#7CFC00] mb-4" />
                   <p className="text-sm text-muted-foreground">
                     Analyzing your startup...
                   </p>
@@ -515,8 +515,8 @@ export default function AIAssistantPage() {
                         />
                         <defs>
                           <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#3B82F6" />
-                            <stop offset="100%" stopColor="#8B5CF6" />
+                            <stop offset="0%" stopColor="#7CFC00" />
+                            <stop offset="100%" stopColor="#2D4A2D" />
                           </linearGradient>
                         </defs>
                       </svg>
@@ -546,14 +546,14 @@ export default function AIAssistantPage() {
                           financials: Star,
                         }
                         const colors: Record<string, string> = {
-                          market: "from-blue-500 to-cyan-500",
-                          team: "from-purple-500 to-pink-500",
+                          market: "from-[#2D4A2D] to-[#8FBC8F]",
+                          team: "from-[#7CFC00] to-[#2D4A2D]",
                           product: "from-green-500 to-emerald-500",
                           traction: "from-orange-500 to-red-500",
-                          financials: "from-cyan-500 to-blue-500",
+                          financials: "from-[#8FBC8F] to-[#2D4A2D]",
                         }
                         const Icon = icons[key] || Target
-                        const color = colors[key] || "from-blue-500 to-cyan-500"
+                        const color = colors[key] || "from-[#2D4A2D] to-[#8FBC8F]"
 
                         return (
                           <Card
@@ -609,7 +609,7 @@ export default function AIAssistantPage() {
           <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
             <CardHeader>
               <CardTitle className="text-base font-heading flex items-center gap-2">
-                <FileText className="size-5 text-purple-500" /> Business Plan Generator
+                <FileText className="size-5 text-[#2D4A2D]" /> Business Plan Generator
               </CardTitle>
               <CardDescription>
                 Generate a structured business plan with AI
@@ -618,8 +618,8 @@ export default function AIAssistantPage() {
             <CardContent>
               {!businessPlan.data && !businessPlan.loading && (
                 <div className="text-center py-8">
-                  <div className="w-16 h-16 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mx-auto mb-4">
-                    <FileText className="size-8 text-purple-500" />
+                  <div className="w-16 h-16 rounded-2xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center mx-auto mb-4">
+                    <FileText className="size-8 text-[#2D4A2D]" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">
                     Generate Your Business Plan
@@ -630,7 +630,7 @@ export default function AIAssistantPage() {
                   </p>
                   <Button
                     onClick={generateBusinessPlan}
-                    className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                    className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
                   >
                     <FileText className="size-4 mr-2" /> Generate Plan
                   </Button>
@@ -639,7 +639,7 @@ export default function AIAssistantPage() {
 
               {businessPlan.loading && (
                 <div className="flex flex-col items-center py-12">
-                  <Loader2 className="size-8 animate-spin text-purple-500 mb-4" />
+                  <Loader2 className="size-8 animate-spin text-[#2D4A2D] mb-4" />
                   <p className="text-sm text-muted-foreground">
                     Generating your business plan...
                   </p>
@@ -653,7 +653,7 @@ export default function AIAssistantPage() {
                       title: "Executive Summary",
                       content: businessPlan.data.executiveSummary,
                       icon: Star,
-                      color: "text-blue-500",
+                      color: "text-[#7CFC00]",
                     },
                     {
                       title: "Market Analysis",
@@ -665,7 +665,7 @@ export default function AIAssistantPage() {
                       title: "Strategy",
                       content: businessPlan.data.strategy,
                       icon: Lightbulb,
-                      color: "text-purple-500",
+                      color: "text-[#2D4A2D]",
                     },
                     {
                       title: "Financial Projections",
@@ -677,7 +677,7 @@ export default function AIAssistantPage() {
                       title: "Timeline",
                       content: businessPlan.data.timeline,
                       icon: Rocket,
-                      color: "text-cyan-500",
+                      color: "text-[#8FBC8F]",
                     },
                   ].map((section) => (
                     <Card key={section.title} className="shadow-sm">
@@ -764,10 +764,10 @@ export default function AIAssistantPage() {
                   {/* Scores */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {[
-                      { label: "Overall", score: pitchFeedback.data.score, color: "from-blue-500 to-purple-600" },
+                      { label: "Overall", score: pitchFeedback.data.score, color: "from-[#2D4A2D] to-[#1A2E1A]" },
                       { label: "Clarity", score: pitchFeedback.data.clarity, color: "from-green-500 to-emerald-500" },
                       { label: "Impact", score: pitchFeedback.data.impact, color: "from-orange-500 to-red-500" },
-                      { label: "Structure", score: pitchFeedback.data.structure, color: "from-cyan-500 to-blue-500" },
+                      { label: "Structure", score: pitchFeedback.data.structure, color: "from-[#8FBC8F] to-[#2D4A2D]" },
                     ].map((item) => (
                       <div
                         key={item.label}

@@ -29,10 +29,10 @@ const typeIcons: Record<string, React.ElementType> = {
 }
 
 const typeColors: Record<string, string> = {
-  MESSAGE: "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
-  APPOINTMENT: "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
+  MESSAGE: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 text-[#2D4A2D] dark:text-[#7CFC00]",
+  APPOINTMENT: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 text-[#1A2E1A] dark:text-[#7CFC00]",
   PAYMENT: "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400",
-  RESOURCE: "bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400",
+  RESOURCE: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 text-[#2D4A2D] dark:text-[#7CFC00]",
   SYSTEM: "bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400",
 }
 
@@ -106,7 +106,7 @@ export default function NotificationsPage() {
             <Card
               key={notif.id}
               className={`border-0 shadow-md shadow-black/5 dark:shadow-black/20 transition-smooth ${
-                !notif.isRead ? "bg-blue-50/50 dark:bg-blue-900/10" : ""
+                !notif.isRead ? "bg-[#E8F5E9]/50 dark:bg-[#2D4A2D]/10" : ""
               }`}
             >
               <CardContent className="p-4">
@@ -117,7 +117,7 @@ export default function NotificationsPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <p className={`text-sm font-medium ${!notif.isRead ? "font-semibold" : ""}`}>{notif.title}</p>
-                      {!notif.isRead && <div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />}
+                      {!notif.isRead && <div className="w-2 h-2 rounded-full bg-[#7CFC00] shrink-0" />}
                     </div>
                     <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{notif.message}</p>
                     <p className="text-[10px] text-muted-foreground mt-1">{notif.time}</p>

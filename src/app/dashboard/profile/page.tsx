@@ -35,15 +35,15 @@ import {
 import { toast } from "sonner"
 
 const allAchievements = [
-  { type: "FIRST_LOGIN", title: "Welcome Aboard", description: "Logged in for the first time", icon: Rocket, color: "from-blue-500 to-cyan-500", xp: 10 },
-  { type: "PROFILE_COMPLETE", title: "Profile Perfectionist", description: "Completed your full profile", icon: Star, color: "from-purple-500 to-pink-500", xp: 25 },
+  { type: "FIRST_LOGIN", title: "Welcome Aboard", description: "Logged in for the first time", icon: Rocket, color: "from-[#2D4A2D] to-[#8FBC8F]", xp: 10 },
+  { type: "PROFILE_COMPLETE", title: "Profile Perfectionist", description: "Completed your full profile", icon: Star, color: "from-[#7CFC00] to-[#2D4A2D]", xp: 25 },
   { type: "FIRST_APPOINTMENT", title: "First Step", description: "Booked your first consultation", icon: CheckCircle2, color: "from-green-500 to-emerald-500", xp: 30 },
   { type: "RESOURCE_DOWNLOAD", title: "Knowledge Seeker", description: "Downloaded your first resource", icon: Download, color: "from-orange-500 to-red-500", xp: 15 },
   { type: "TASK_MASTER", title: "Task Master", description: "Completed 10 tasks on your roadmap", icon: Zap, color: "from-yellow-500 to-orange-500", xp: 50 },
-  { type: "MILESTONE_5", title: "5 Milestones Strong", description: "Reached 5 startup milestones", icon: Trophy, color: "from-cyan-500 to-blue-500", xp: 40 },
-  { type: "MILESTONE_10", title: "Double Digits", description: "Reached 10 startup milestones", icon: Trophy, color: "from-pink-500 to-purple-500", xp: 75 },
+  { type: "MILESTONE_5", title: "5 Milestones Strong", description: "Reached 5 startup milestones", icon: Trophy, color: "from-[#8FBC8F] to-[#2D4A2D]", xp: 40 },
+  { type: "MILESTONE_10", title: "Double Digits", description: "Reached 10 startup milestones", icon: Trophy, color: "from-[#8FBC8F] to-[#2D4A2D]", xp: 75 },
   { type: "COMMUNITY_MEMBER", title: "Community Builder", description: "Joined the community forum", icon: UsersRound, color: "from-emerald-500 to-green-500", xp: 20 },
-  { type: "EARLY_ADOPTER", title: "Early Adopter", description: "Joined Upmind during early access", icon: Clock, color: "from-blue-500 to-purple-600", xp: 35 },
+  { type: "EARLY_ADOPTER", title: "Early Adopter", description: "Joined Upmind during early access", icon: Clock, color: "from-[#2D4A2D] to-[#1A2E1A]", xp: 35 },
 ]
 
 function AchievementGrid() {
@@ -87,7 +87,7 @@ function AchievementGrid() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-blue-500/10 to-purple-600/10 border border-blue-200/50 dark:border-blue-800/50">
+      <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-[#2D4A2D]/10 to-[#1A2E1A]/10 border border-[#7CFC00]/30 dark:border-[#2D4A2D]/50">
         <div className="flex items-center gap-2">
           <Trophy className="size-5 text-yellow-500" />
           <span className="text-sm font-medium">Total XP</span>
@@ -104,7 +104,7 @@ function AchievementGrid() {
               key={achievement.type}
               className={`relative rounded-xl p-4 text-center transition-all duration-200 ${
                 isEarned
-                  ? "bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200/50 dark:border-blue-800/50"
+                  ? "bg-gradient-to-br from-[#E8F5E9] to-[#C8E6C9] dark:from-[#2D4A2D]/20 dark:to-[#1A2E1A]/20 border border-[#7CFC00]/30 dark:border-[#2D4A2D]/50"
                   : "bg-muted/20 opacity-60"
               }`}
             >
@@ -186,7 +186,7 @@ export default function ProfilePage() {
                 <div className="relative">
                   <Avatar className="size-20">
                     <AvatarImage src={session?.user?.image || undefined} />
-                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-2xl">
+                    <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-2xl">
                       {userInitials}
                     </AvatarFallback>
                   </Avatar>
@@ -229,7 +229,7 @@ export default function ProfilePage() {
                 <Textarea placeholder="Tell us about yourself..." rows={3} />
               </div>
               <Button
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
                 onClick={() => toast.success("Profile updated successfully!")}
               >
                 <Save className="size-4 mr-2" /> Save Changes
@@ -299,7 +299,7 @@ export default function ProfilePage() {
                 </div>
               </div>
               <Button
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
                 onClick={() => toast.success("Company profile updated!")}
               >
                 <Save className="size-4 mr-2" /> Save Changes
@@ -345,7 +345,7 @@ export default function ProfilePage() {
                 </div>
               </div>
               <Button
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
                 onClick={() => toast.success("Password updated successfully!")}
               >
                 Update Password

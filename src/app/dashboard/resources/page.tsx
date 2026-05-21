@@ -131,19 +131,19 @@ export default function ResourcesPage() {
               <Card key={resource.id} className="border-0 shadow-md shadow-black/5 dark:shadow-black/20 group relative">
                 <CardContent className="p-5">
                   {resource.isPremium && (
-                    <Badge className="absolute top-3 right-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-[10px]">
+                    <Badge className="absolute top-3 right-3 bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-[10px]">
                       <Lock className="size-2.5 mr-0.5" /> Premium
                     </Badge>
                   )}
-                  <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-3">
-                    <Icon className="size-5 text-blue-600 dark:text-blue-400" />
+                  <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center mb-3">
+                    <Icon className="size-5 text-[#2D4A2D] dark:text-[#7CFC00]" />
                   </div>
                   <Badge variant="outline" className="text-[10px] mb-2">{resource.category}</Badge>
                   <h3 className="text-sm font-heading font-semibold mb-1 leading-snug">{resource.title}</h3>
                   <div className="flex items-center justify-between mt-3">
                     <span className="text-[10px] text-muted-foreground">{resource.readTime}</span>
                     <Button variant="ghost" size="icon" className="size-7" onClick={() => toggleSave(resource.id)}>
-                      {isSaved ? <BookmarkCheck className="size-4 text-blue-500" /> : <Bookmark className="size-4 text-muted-foreground" />}
+                      {isSaved ? <BookmarkCheck className="size-4 text-[#7CFC00]" /> : <Bookmark className="size-4 text-muted-foreground" />}
                     </Button>
                   </div>
                 </CardContent>
@@ -158,18 +158,18 @@ export default function ResourcesPage() {
             const isSaved = savedItems.has(resource.id)
             return (
               <div key={resource.id} className="flex items-center gap-3 p-3 rounded-lg bg-card border shadow-sm hover:shadow-md transition-smooth">
-                <div className="w-9 h-9 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
-                  <Icon className="size-4 text-blue-600 dark:text-blue-400" />
+                <div className="w-9 h-9 rounded-lg bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center shrink-0">
+                  <Icon className="size-4 text-[#2D4A2D] dark:text-[#7CFC00]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <h3 className="text-sm font-medium truncate">{resource.title}</h3>
-                    {resource.isPremium && <Lock className="size-3 text-purple-500 shrink-0" />}
+                    {resource.isPremium && <Lock className="size-3 text-[#2D4A2D] shrink-0" />}
                   </div>
                   <p className="text-xs text-muted-foreground">{resource.category} &middot; {resource.readTime}</p>
                 </div>
                 <Button variant="ghost" size="icon" className="size-7 shrink-0" onClick={() => toggleSave(resource.id)}>
-                  {isSaved ? <BookmarkCheck className="size-4 text-blue-500" /> : <Bookmark className="size-4 text-muted-foreground" />}
+                  {isSaved ? <BookmarkCheck className="size-4 text-[#7CFC00]" /> : <Bookmark className="size-4 text-muted-foreground" />}
                 </Button>
               </div>
             )

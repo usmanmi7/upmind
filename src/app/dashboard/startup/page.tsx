@@ -36,9 +36,9 @@ const startupData = {
 
 const quickStats = [
   { icon: CheckCircle2, label: "Tasks Completed", value: "7/12", color: "text-green-600 dark:text-green-400", bg: "bg-green-100 dark:bg-green-900/30" },
-  { icon: Calendar, label: "Upcoming Appointments", value: "2", color: "text-purple-600 dark:text-purple-400", bg: "bg-purple-100 dark:bg-purple-900/30" },
-  { icon: BookOpen, label: "Resources Used", value: "15", color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-100 dark:bg-cyan-900/30" },
-  { icon: TrendingUp, label: "Startup Score", value: "72/100", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-100 dark:bg-blue-900/30" },
+  { icon: Calendar, label: "Upcoming Appointments", value: "2", color: "text-[#1A2E1A] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
+  { icon: BookOpen, label: "Resources Used", value: "15", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
+  { icon: TrendingUp, label: "Startup Score", value: "72/100", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
 ]
 
 const stages = [
@@ -65,7 +65,7 @@ export default function StartupPage() {
             if (editing) toast.success("Startup updated successfully!")
             setEditing(!editing)
           }}
-          className={editing ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white" : ""}
+          className={editing ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A]" : ""}
         >
           {editing ? <><Save className="size-4 mr-2" /> Save Changes</> : <><Edit3 className="size-4 mr-2" /> Edit Details</>}
         </Button>
@@ -75,7 +75,7 @@ export default function StartupPage() {
       <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row sm:items-start gap-4 mb-6">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0">
               <Rocket className="size-7 text-white" />
             </div>
             <div className="flex-1">
@@ -95,7 +95,7 @@ export default function StartupPage() {
                 <>
                   <div className="flex items-center gap-2 flex-wrap">
                     <h2 className="text-xl font-heading font-bold">{startupData.name}</h2>
-                    <Badge className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs">{startupData.stage}</Badge>
+                    <Badge className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">{startupData.stage}</Badge>
                     <Badge variant="outline" className="text-xs">{startupData.industry}</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mt-1">{startupData.vision}</p>
@@ -153,7 +153,7 @@ export default function StartupPage() {
                     stage.progress === 100
                       ? "bg-green-500 text-white"
                       : stage.progress > 0
-                        ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white"
+                        ? "bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A]"
                         : "bg-muted text-muted-foreground"
                   }`}>
                     {stage.progress === 100 ? <CheckCircle2 className="size-5" /> : i + 1}
@@ -184,8 +184,8 @@ export default function StartupPage() {
               { title: "Define product-market fit", progress: 45, icon: Lightbulb },
             ].map((goal) => (
               <div key={goal.title} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
-                <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
-                  <goal.icon className="size-4 text-blue-600 dark:text-blue-400" />
+                <div className="w-8 h-8 rounded-lg bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center shrink-0">
+                  <goal.icon className="size-4 text-[#2D4A2D] dark:text-[#7CFC00]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium">{goal.title}</p>
@@ -202,7 +202,7 @@ export default function StartupPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Button asChild variant="outline" className="h-auto p-4 justify-start">
           <Link href="/dashboard/roadmap">
-            <Target className="size-5 mr-3 text-blue-500" />
+            <Target className="size-5 mr-3 text-[#7CFC00]" />
             <div className="text-left">
               <p className="text-sm font-medium">View Roadmap</p>
               <p className="text-xs text-muted-foreground">Track your milestones</p>
@@ -211,7 +211,7 @@ export default function StartupPage() {
         </Button>
         <Button asChild variant="outline" className="h-auto p-4 justify-start">
           <Link href="/dashboard/appointments">
-            <Calendar className="size-5 mr-3 text-purple-500" />
+            <Calendar className="size-5 mr-3 text-[#2D4A2D]" />
             <div className="text-left">
               <p className="text-sm font-medium">Book Consultation</p>
               <p className="text-xs text-muted-foreground">Get expert advice</p>
@@ -220,7 +220,7 @@ export default function StartupPage() {
         </Button>
         <Button asChild variant="outline" className="h-auto p-4 justify-start">
           <Link href="/dashboard/resources">
-            <BookOpen className="size-5 mr-3 text-cyan-500" />
+            <BookOpen className="size-5 mr-3 text-[#8FBC8F]" />
             <div className="text-left">
               <p className="text-sm font-medium">Browse Resources</p>
               <p className="text-xs text-muted-foreground">Templates & guides</p>

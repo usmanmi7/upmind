@@ -57,7 +57,7 @@ interface Appointment {
 }
 
 const statusColors: Record<string, string> = {
-  SCHEDULED: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  SCHEDULED: "bg-[#7CFC00]/20 text-[#7CFC00] border-[#7CFC00]/30",
   COMPLETED: "bg-green-500/20 text-green-400 border-green-500/30",
   CANCELLED: "bg-red-500/20 text-red-400 border-red-500/30",
   RESCHEDULED: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
@@ -159,8 +159,8 @@ export default function AdminAppointmentsPage() {
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         {[
-          { title: "Total", value: total, icon: CalendarDays, color: "from-purple-500 to-violet-500" },
-          { title: "Scheduled", value: stats.scheduled, icon: Clock, color: "from-blue-500 to-cyan-500" },
+          { title: "Total", value: total, icon: CalendarDays, color: "from-[#7CFC00] to-[#2D4A2D]" },
+          { title: "Scheduled", value: stats.scheduled, icon: Clock, color: "from-[#2D4A2D] to-[#8FBC8F]" },
           { title: "Completed", value: stats.completed, icon: CheckCircle, color: "from-green-500 to-emerald-500" },
           { title: "Cancelled", value: stats.cancelled, icon: XCircle, color: "from-red-500 to-orange-500" },
         ].map((stat) => (
@@ -234,7 +234,7 @@ export default function AdminAppointmentsPage() {
                         <TableCell>
                           <div className="flex items-center gap-3">
                             <Avatar className="size-8">
-                              <AvatarFallback className="bg-gradient-to-br from-purple-500 to-violet-600 text-white text-xs">
+                              <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white text-xs">
                                 {apt.user.name.split(" ").map((n) => n[0]).join("")}
                               </AvatarFallback>
                             </Avatar>
@@ -299,7 +299,7 @@ export default function AdminAppointmentsPage() {
             <div className="space-y-4">
               <div className="flex items-center gap-4">
                 <Avatar className="size-14">
-                  <AvatarFallback className="bg-gradient-to-br from-purple-500 to-violet-600 text-white">
+                  <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white">
                     {selectedAppointment.user.name.split(" ").map((n) => n[0]).join("")}
                   </AvatarFallback>
                 </Avatar>

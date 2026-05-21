@@ -116,8 +116,8 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className="flex items-center gap-2 px-4 h-16 border-b border-sidebar-border">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shrink-0">
-          <span className="text-white font-bold text-base">U</span>
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0">
+          <span className="text-[#1A2E1A] font-bold text-base">U</span>
         </div>
         {!collapsed && (
           <span className="text-xl font-bold font-heading text-sidebar-foreground">
@@ -164,7 +164,7 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
       {/* Upgrade Card */}
       {!collapsed && (
         <div className="px-3 pb-4">
-          <div className="rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-600/20 border border-sidebar-border p-4">
+          <div className="rounded-xl bg-gradient-to-br from-[#7CFC00]/20 to-[#2D4A2D]/20 border border-sidebar-border p-4">
             <div className="flex items-center gap-2 mb-2">
               <Sparkles className="size-4 text-sidebar-primary" />
               <span className="text-sm font-medium text-sidebar-foreground">
@@ -176,7 +176,7 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
             </p>
             <Button
               size="sm"
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-xs"
+              className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] text-xs"
               asChild
             >
               <Link href="/dashboard/subscription">Upgrade Now</Link>
@@ -255,7 +255,7 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
           >
             <Link href="/dashboard/notifications">
               <Bell className="size-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-500" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#7CFC00]" />
             </Link>
           </Button>
 
@@ -271,7 +271,7 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
                     src={session?.user?.image || undefined}
                     alt={session?.user?.name || "User"}
                   />
-                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-xs">
+                  <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
                     {userInitials}
                   </AvatarFallback>
                 </Avatar>

@@ -27,14 +27,14 @@ const services = [
     title: "Startup Strategy & Validation",
     description: "Validate your idea before investing time and money. We help you test assumptions, identify your market, and build a solid foundation.",
     features: ["Market Research & Analysis", "Idea Validation Sprints", "Business Model Canvas", "Competitive Landscape Mapping"],
-    color: "from-blue-500 to-cyan-500",
+    color: "from-[#2D4A2D] to-[#8FBC8F]",
   },
   {
     icon: BarChart3,
     title: "Product Development & Growth",
     description: "From MVP to scale. Get expert guidance on product strategy, user acquisition, and growth loops that actually work.",
     features: ["MVP Roadmap Planning", "Product-Market Fit Analysis", "Growth Hacking Strategies", "User Retention Optimization"],
-    color: "from-purple-500 to-pink-500",
+    color: "from-[#7CFC00] to-[#2D4A2D]",
   },
   {
     icon: Megaphone,
@@ -55,7 +55,7 @@ const services = [
     title: "Team Building & Culture",
     description: "Your startup is only as strong as your team. Learn to hire, retain, and build a culture that scales.",
     features: ["Hiring Frameworks", "Culture Playbook", "Compensation Strategy", "Remote Team Management"],
-    color: "from-cyan-500 to-blue-500",
+    color: "from-[#8FBC8F] to-[#2D4A2D]",
   },
   {
     icon: Bot,
@@ -172,8 +172,8 @@ export default function ServicesPage() {
                 >
                   <div className="p-6 rounded-2xl bg-card border shadow-sm text-center">
                     <div className="text-4xl font-bold gradient-text mb-4">{step.step}</div>
-                    <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-4">
-                      <step.icon className="size-6 text-blue-600 dark:text-blue-400" />
+                    <div className="w-12 h-12 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center mx-auto mb-4">
+                      <step.icon className="size-6 text-[#2D4A2D] dark:text-[#7CFC00]" />
                     </div>
                     <h3 className="text-lg font-heading font-semibold mb-2">{step.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
@@ -192,7 +192,7 @@ export default function ServicesPage() {
         {/* CTA Section */}
         <section className="py-20">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-blue-500 to-purple-600 text-white relative overflow-hidden">
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] relative overflow-hidden">
               <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iYSIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVHJhbnNmb3JtPSJyb3RhdGUoNDUpIj48cGF0aCBkPSJNLTEwIDMwaDYwdi0yMGgtNjB6IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDMpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCBmaWxsPSJ1cmwoI2EpIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+PC9zdmc+')] opacity-50" />
               <div className="relative z-10">
                 <h2 className="text-3xl sm:text-4xl font-heading font-bold">Ready to transform your startup?</h2>
@@ -200,7 +200,7 @@ export default function ServicesPage() {
                   Book a free consultation and discover how our services can accelerate your growth.
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
+                  <Button asChild size="lg" className="bg-white text-[#2D4A2D] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
                     <Link href="/auth/signup">
                       Book Free Consultation
                       <ArrowRight className="size-5" />

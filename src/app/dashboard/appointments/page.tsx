@@ -44,7 +44,7 @@ const past = [
 
 const typeIcons: Record<string, React.ElementType> = { VIDEO: Video, PHONE: Phone, IN_PERSON: MapPin }
 const statusColors: Record<string, string> = {
-  SCHEDULED: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+  SCHEDULED: "bg-[#C8E6C9] text-[#1A2E1A] dark:bg-[#2D4A2D]/30 dark:text-[#7CFC00]",
   COMPLETED: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
   CANCELLED: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
   RESCHEDULED: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
@@ -62,7 +62,7 @@ export default function AppointmentsPage() {
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
+            <Button className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]">
               <Plus className="size-4 mr-2" /> Book Appointment
             </Button>
           </DialogTrigger>
@@ -118,7 +118,7 @@ export default function AppointmentsPage() {
                 <Textarea placeholder="What would you like to discuss?" rows={3} />
               </div>
               <Button
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
                 onClick={() => {
                   toast.success("Appointment booked successfully!")
                   setDialogOpen(false)
@@ -143,7 +143,7 @@ export default function AppointmentsPage() {
                   <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                     <div className="flex items-center gap-3 flex-1">
                       <Avatar className="size-10">
-                        <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-xs">
+                        <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
                           {apt.consultant.split(" ").map((n) => n[0]).join("")}
                         </AvatarFallback>
                       </Avatar>
@@ -187,7 +187,7 @@ export default function AppointmentsPage() {
                   <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                     <div className="flex items-center gap-3 flex-1">
                       <Avatar className="size-10">
-                        <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-xs">
+                        <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
                           {apt.consultant.split(" ").map((n) => n[0]).join("")}
                         </AvatarFallback>
                       </Avatar>

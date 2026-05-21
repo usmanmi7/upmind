@@ -55,15 +55,15 @@ interface User {
 const roleColors: Record<string, string> = {
   FREE_USER: "bg-slate-500/20 text-slate-400 border-slate-500/30",
   PAID_USER: "bg-green-500/20 text-green-400 border-green-500/30",
-  CONSULTANT: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  ADMIN: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+  CONSULTANT: "bg-[#7CFC00]/20 text-[#7CFC00] border-[#7CFC00]/30",
+  ADMIN: "bg-[#7CFC00]/20 text-[#7CFC00] border-[#7CFC00]/30",
   SUPER_ADMIN: "bg-orange-500/20 text-orange-400 border-orange-500/30",
 }
 
 const planColors: Record<string, string> = {
   FREE: "bg-slate-500/20 text-slate-400",
-  GROWTH_PRO: "bg-purple-500/20 text-purple-400",
-  ENTERPRISE: "bg-cyan-500/20 text-cyan-400",
+  GROWTH_PRO: "bg-[#7CFC00]/20 text-[#7CFC00]",
+  ENTERPRISE: "bg-[#8FBC8F]/20 text-[#7CFC00]",
 }
 
 export default function AdminUsersPage() {
@@ -215,7 +215,7 @@ export default function AdminUsersPage() {
                         <div className="flex items-center gap-3">
                           <Avatar className="size-9">
                             <AvatarImage src={user.image || undefined} />
-                            <AvatarFallback className="bg-gradient-to-br from-purple-500 to-violet-600 text-white text-xs">
+                            <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white text-xs">
                               {user.name.split(" ").map((n) => n[0]).join("")}
                             </AvatarFallback>
                           </Avatar>
@@ -325,7 +325,7 @@ export default function AdminUsersPage() {
               <div className="flex items-center gap-4">
                 <Avatar className="size-16">
                   <AvatarImage src={selectedUser.image || undefined} />
-                  <AvatarFallback className="bg-gradient-to-br from-purple-500 to-violet-600 text-white text-xl">
+                  <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white text-xl">
                     {selectedUser.name.split(" ").map((n) => n[0]).join("")}
                   </AvatarFallback>
                 </Avatar>

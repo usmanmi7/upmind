@@ -37,7 +37,7 @@ const phases = [
     id: "research",
     name: "Research",
     icon: Search,
-    color: "from-blue-500 to-cyan-500",
+    color: "from-[#2D4A2D] to-[#8FBC8F]",
     progress: 75,
     items: [
       { id: "1", title: "Market research & analysis", completed: true },
@@ -50,7 +50,7 @@ const phases = [
     id: "build",
     name: "Build",
     icon: Wrench,
-    color: "from-purple-500 to-pink-500",
+    color: "from-[#7CFC00] to-[#2D4A2D]",
     progress: 40,
     items: [
       { id: "5", title: "Define MVP features", completed: true },
@@ -150,7 +150,7 @@ export default function RoadmapPage() {
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
+            <Button className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]">
               <Plus className="size-4 mr-2" /> Add Task
             </Button>
           </DialogTrigger>
@@ -182,7 +182,7 @@ export default function RoadmapPage() {
                 />
               </div>
               <Button
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
                 onClick={addTask}
               >
                 Add Task
@@ -208,7 +208,7 @@ export default function RoadmapPage() {
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <CardTitle className="text-base font-heading flex items-center gap-2">
-              <Flag className="size-5 text-blue-500" /> Startup Milestones
+              <Flag className="size-5 text-[#7CFC00]" /> Startup Milestones
             </CardTitle>
             <Badge variant="secondary" className="text-xs">
               <PartyPopper className="size-3 mr-1" />
@@ -233,7 +233,7 @@ export default function RoadmapPage() {
                         className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
                           isReached
                             ? isCurrent
-                              ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white ring-4 ring-blue-500/20 shadow-lg shadow-blue-500/25"
+                              ? "bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] ring-4 ring-[#7CFC00]/20 shadow-lg shadow-[#7CFC00]/25"
                               : "bg-gradient-to-br from-green-500 to-emerald-500 text-white"
                             : "bg-muted/50 text-muted-foreground/40 border-2 border-dashed border-muted-foreground/20"
                         }`}
@@ -249,8 +249,8 @@ export default function RoadmapPage() {
                       </p>
                       {isCurrent && (
                         <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500" />
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7CFC00] opacity-75" />
+                          <span className="relative inline-flex rounded-full h-3 w-3 bg-[#7CFC00]" />
                         </span>
                       )}
                     </div>
@@ -262,7 +262,7 @@ export default function RoadmapPage() {
                             isReached && index < currentMilestoneIndex
                               ? "bg-gradient-to-r from-green-500 to-emerald-500"
                               : isReached && index === currentMilestoneIndex
-                              ? "bg-gradient-to-r from-green-500 to-blue-500"
+                              ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D]"
                               : "bg-muted-foreground/20"
                           }`}
                           style={{

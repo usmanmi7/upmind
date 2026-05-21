@@ -30,9 +30,9 @@ import {
 
 const overviewCards = [
   { icon: CheckCircle2, label: "Tasks Completed", value: "7", change: "+3 this week", trend: "up", color: "text-green-600 dark:text-green-400", bg: "bg-green-100 dark:bg-green-900/30" },
-  { icon: Calendar, label: "Appointments Attended", value: "12", change: "+2 this month", trend: "up", color: "text-purple-600 dark:text-purple-400", bg: "bg-purple-100 dark:bg-purple-900/30" },
-  { icon: BookOpen, label: "Resources Used", value: "23", change: "+5 this week", trend: "up", color: "text-cyan-600 dark:text-cyan-400", bg: "bg-cyan-100 dark:bg-cyan-900/30" },
-  { icon: TrendingUp, label: "Startup Score", value: "72/100", change: "+8 from last month", trend: "up", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-100 dark:bg-blue-900/30" },
+  { icon: Calendar, label: "Appointments Attended", value: "12", change: "+2 this month", trend: "up", color: "text-[#1A2E1A] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
+  { icon: BookOpen, label: "Resources Used", value: "23", change: "+5 this week", trend: "up", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
+  { icon: TrendingUp, label: "Startup Score", value: "72/100", change: "+8 from last month", trend: "up", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
 ]
 
 const progressData = [
@@ -53,7 +53,7 @@ const resourceData = [
 
 const taskCompletionData = [
   { name: "Completed", value: 7, color: "#10B981" },
-  { name: "In Progress", value: 3, color: "#3B82F6" },
+  { name: "In Progress", value: 3, color: "#7CFC00" },
   { name: "To Do", value: 2, color: "#94A3B8" },
 ]
 
@@ -122,10 +122,10 @@ export default function AnalyticsPage() {
                   <Line
                     type="monotone"
                     dataKey="score"
-                    stroke="#3B82F6"
+                    stroke="#7CFC00"
                     strokeWidth={2.5}
-                    dot={{ fill: "#3B82F6", strokeWidth: 0, r: 4 }}
-                    activeDot={{ r: 6, fill: "#3B82F6" }}
+                    dot={{ fill: "#7CFC00", strokeWidth: 0, r: 4 }}
+                    activeDot={{ r: 6, fill: "#7CFC00" }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -154,7 +154,7 @@ export default function AnalyticsPage() {
                       fontSize: "12px",
                     }}
                   />
-                  <Bar dataKey="used" fill="#3B82F6" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="used" fill="#7CFC00" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -226,8 +226,8 @@ export default function AnalyticsPage() {
                 />
                 <defs>
                   <linearGradient id="healthGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#3B82F6" />
-                    <stop offset="100%" stopColor="#8B5CF6" />
+                    <stop offset="0%" stopColor="#7CFC00" />
+                    <stop offset="100%" stopColor="#2D4A2D" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -267,8 +267,8 @@ export default function AnalyticsPage() {
             <div className="space-y-3">
               {recommendations.map((rec, i) => (
                 <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
-                  <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
-                    <rec.icon className="size-4 text-blue-600 dark:text-blue-400" />
+                  <div className="w-8 h-8 rounded-lg bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center shrink-0">
+                    <rec.icon className="size-4 text-[#2D4A2D] dark:text-[#7CFC00]" />
                   </div>
                   <div>
                     <p className="text-sm font-medium">{rec.title}</p>

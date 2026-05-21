@@ -31,8 +31,8 @@ export default function PublicNavbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <span className="text-white font-bold text-base">U</span>
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+              <span className="text-[#1A2E1A] font-bold text-base">U</span>
             </div>
             <span className="text-xl font-bold font-heading">Upmind</span>
           </Link>
@@ -94,7 +94,7 @@ export default function PublicNavbar() {
             {session ? (
               <Button
                 asChild
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] hover:from-[#6BE000] hover:to-[#1A2E1A] text-white"
               >
                 <Link href="/dashboard">
                   Dashboard
@@ -108,7 +108,7 @@ export default function PublicNavbar() {
                 </Button>
                 <Button
                   asChild
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                  className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] hover:from-[#6BE000] hover:to-[#1A2E1A] text-white"
                 >
                   <Link href="/auth/signup">
                     Get Started
@@ -157,7 +157,7 @@ export default function PublicNavbar() {
               {session ? (
                 <Button
                   asChild
-                  className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                  className="w-full bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] hover:from-[#6BE000] hover:to-[#1A2E1A] text-white"
                 >
                   <Link href="/dashboard">Dashboard</Link>
                 </Button>
@@ -168,7 +168,7 @@ export default function PublicNavbar() {
                   </Button>
                   <Button
                     asChild
-                    className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                    className="flex-1 bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] hover:from-[#6BE000] hover:to-[#1A2E1A] text-white"
                   >
                     <Link href="/auth/signup">Get Started</Link>
                   </Button>

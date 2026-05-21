@@ -70,13 +70,13 @@ const paymentStatusColors: Record<string, string> = {
   PENDING: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
   COMPLETED: "bg-green-500/20 text-green-400 border-green-500/30",
   FAILED: "bg-red-500/20 text-red-400 border-red-500/30",
-  REFUNDED: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+  REFUNDED: "bg-[#7CFC00]/20 text-[#7CFC00] border-[#7CFC00]/30",
 }
 
 const planColors: Record<string, string> = {
   FREE: "#94a3b8",
-  GROWTH_PRO: "#8b5cf6",
-  ENTERPRISE: "#06b6d4",
+  GROWTH_PRO: "#7CFC00",
+  ENTERPRISE: "#2D4A2D",
 }
 
 export default function AdminPaymentsPage() {
@@ -161,8 +161,8 @@ export default function AdminPaymentsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { title: "Total Revenue", value: `$${stats.totalRevenue.toLocaleString()}`, icon: DollarSign, color: "from-green-500 to-emerald-500", change: "+12.5%" },
-          { title: "MRR", value: `$${stats.mrr.toLocaleString()}`, icon: TrendingUp, color: "from-purple-500 to-violet-500", change: "+8.3%" },
-          { title: "ARPU", value: `$${stats.arpu.toFixed(2)}`, icon: Users, color: "from-blue-500 to-cyan-500", change: "+2.1%" },
+          { title: "MRR", value: `$${stats.mrr.toLocaleString()}`, icon: TrendingUp, color: "from-[#7CFC00] to-[#2D4A2D]", change: "+8.3%" },
+          { title: "ARPU", value: `$${stats.arpu.toFixed(2)}`, icon: Users, color: "from-[#2D4A2D] to-[#8FBC8F]", change: "+2.1%" },
           { title: "Transactions", value: stats.totalTransactions, icon: CreditCard, color: "from-orange-500 to-red-500", change: "+5.7%" },
         ].map((stat) => (
           <Card key={stat.title} className="border-0 bg-gradient-to-br from-background to-muted/30 shadow-sm">
@@ -201,7 +201,7 @@ export default function AdminPaymentsPage() {
                   <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
                   <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
                   <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px" }} />
-                  <Bar dataKey="revenue" fill="#8b5cf6" radius={[4, 4, 0, 0]} name="Revenue ($)" />
+                  <Bar dataKey="revenue" fill="#7CFC00" radius={[4, 4, 0, 0]} name="Revenue ($)" />
                 </BarChart>
               </ResponsiveContainer>
             </div>

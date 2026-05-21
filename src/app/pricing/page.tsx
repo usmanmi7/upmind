@@ -132,13 +132,13 @@ export default function PricingPage() {
                   viewport={{ once: true }}
                   className={`relative p-6 rounded-2xl border shadow-sm ${
                     plan.popular
-                      ? "border-purple-500 shadow-lg shadow-purple-500/10 md:scale-105"
+                      ? "border-[#7CFC00] shadow-lg shadow-[#7CFC00]/10 md:scale-105"
                       : ""
                   }`}
                 >
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs font-bold px-4 py-1 rounded-full">
+                      <span className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs font-bold px-4 py-1 rounded-full">
                         MOST POPULAR
                       </span>
                     </div>
@@ -163,7 +163,7 @@ export default function PricingPage() {
                     asChild
                     className={`w-full ${
                       plan.popular
-                        ? "bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                        ? "bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
                         : ""
                     }`}
                     variant={plan.popular ? "default" : "outline"}
@@ -191,7 +191,7 @@ export default function PricingPage() {
                     <tr className="border-b bg-muted/50">
                       <th className="text-left p-4 font-semibold">Feature</th>
                       <th className="text-center p-4 font-semibold">Free</th>
-                      <th className="text-center p-4 font-semibold text-purple-600">Growth Pro</th>
+                      <th className="text-center p-4 font-semibold text-[#1A2E1A]">Growth Pro</th>
                       <th className="text-center p-4 font-semibold">Enterprise</th>
                     </tr>
                   </thead>
@@ -249,14 +249,14 @@ export default function PricingPage() {
         {/* CTA Section */}
         <section className="py-20 bg-muted/30">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-blue-500 to-purple-600 text-white relative overflow-hidden">
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] relative overflow-hidden">
               <div className="relative z-10">
                 <h2 className="text-3xl sm:text-4xl font-heading font-bold">Start your free trial today</h2>
                 <p className="mt-4 text-lg text-white/80 max-w-xl mx-auto">
                   No credit card required. 14 days free on all paid plans.
                 </p>
                 <div className="mt-8">
-                  <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
+                  <Button asChild size="lg" className="bg-white text-[#2D4A2D] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
                     <Link href="/auth/signup">
                       Get Started Free
                       <ArrowRight className="size-5" />

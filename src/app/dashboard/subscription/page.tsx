@@ -45,7 +45,7 @@ export default function SubscriptionPage() {
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
                 <Crown className="size-6 text-white" />
               </div>
               <div>
@@ -98,13 +98,13 @@ export default function SubscriptionPage() {
               <div
                 key={plan.name}
                 className={`p-5 rounded-xl border ${
-                  plan.popular ? "border-blue-500 bg-blue-50/50 dark:bg-blue-900/10" : "bg-muted/30"
+                  plan.popular ? "border-[#7CFC00] bg-[#E8F5E9]/50 dark:bg-[#2D4A2D]/10" : "bg-muted/30"
                 }`}
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <plan.icon className="size-5 text-blue-500" />
+                  <plan.icon className="size-5 text-[#7CFC00]" />
                   <h3 className="font-heading font-semibold">{plan.name}</h3>
-                  {plan.popular && <Badge className="bg-blue-500 text-white text-[10px]">Current</Badge>}
+                  {plan.popular && <Badge className="bg-[#7CFC00] text-white text-[10px]">Current</Badge>}
                 </div>
                 <p className="text-lg font-bold mb-3">{plan.price}</p>
                 <ul className="space-y-2">
@@ -117,7 +117,7 @@ export default function SubscriptionPage() {
                 <Button
                   variant={plan.popular ? "default" : "outline"}
                   size="sm"
-                  className={`w-full mt-4 ${plan.popular ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white" : ""}`}
+                  className={`w-full mt-4 ${plan.popular ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A]" : ""}`}
                   disabled={plan.popular}
                 >
                   {plan.popular ? "Current Plan" : plan.name === "Free" ? "Downgrade" : "Upgrade"}

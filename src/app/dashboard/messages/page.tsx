@@ -367,14 +367,14 @@ export default function MessagesPage() {
                     }}
                     className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-all duration-200 ${
                       activeChat === conv.id
-                        ? "bg-blue-50 dark:bg-blue-900/20"
+                        ? "bg-[#E8F5E9] dark:bg-[#2D4A2D]/20"
                         : "hover:bg-muted/50"
                     }`}
                   >
                     <div className="relative shrink-0">
                       <Avatar className="size-10">
                         <AvatarImage src={conv.user.image || undefined} />
-                        <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-xs">
+                        <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
                           {conv.user.name
                             .split(" ")
                             .map((n) => n[0])
@@ -395,13 +395,13 @@ export default function MessagesPage() {
                       <div className="flex items-center justify-between">
                         <p className="text-xs text-muted-foreground truncate">
                           {typingUsers[conv.id] ? (
-                            <span className="text-blue-500 italic">typing...</span>
+                            <span className="text-[#7CFC00] italic">typing...</span>
                           ) : (
                             conv.lastMessage
                           )}
                         </p>
                         {conv.unread > 0 && (
-                          <Badge className="bg-blue-500 text-white text-[10px] ml-2 shrink-0 h-5 min-w-5 flex items-center justify-center p-0">
+                          <Badge className="bg-[#7CFC00] text-white text-[10px] ml-2 shrink-0 h-5 min-w-5 flex items-center justify-center p-0">
                             {conv.unread}
                           </Badge>
                         )}
@@ -439,7 +439,7 @@ export default function MessagesPage() {
                   <div className="relative">
                     <Avatar className="size-9">
                       <AvatarImage src={activeConv.user.image || undefined} />
-                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-xs">
+                      <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
                         {activeConv.user.name
                           .split(" ")
                           .map((n) => n[0])
@@ -454,7 +454,7 @@ export default function MessagesPage() {
                     <p className="text-sm font-semibold">{activeConv.user.name}</p>
                     <p className="text-xs text-muted-foreground">
                       {isPartnerTyping ? (
-                        <span className="text-blue-500">typing...</span>
+                        <span className="text-[#7CFC00]">typing...</span>
                       ) : onlineUsers.includes(activeConv.user.id) ? (
                         "Online"
                       ) : (
@@ -490,7 +490,7 @@ export default function MessagesPage() {
                           <div
                             className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
                               isMe
-                                ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-br-md"
+                                ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-br-md"
                                 : "bg-muted/50 rounded-bl-md"
                             }`}
                           >
@@ -511,7 +511,7 @@ export default function MessagesPage() {
                                 {msg.status === "sending" ? (
                                   <span className="text-[10px]">...</span>
                                 ) : msg.status === "read" || msg.isRead ? (
-                                  <CheckCheck className="size-3 text-blue-500" />
+                                  <CheckCheck className="size-3 text-[#7CFC00]" />
                                 ) : (
                                   <Check className="size-3" />
                                 )}
@@ -563,7 +563,7 @@ export default function MessagesPage() {
                   />
                   <Button
                     size="icon"
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shrink-0"
+                    className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shrink-0"
                     disabled={!message.trim()}
                     onClick={handleSend}
                   >
