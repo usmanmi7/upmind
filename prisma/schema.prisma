@@ -33,6 +33,7 @@ model User {
   documents       Document[]
   notifications   Notification[]
   savedResources  SavedResource[]
+  resourceAuthor  Resource[]
   achievements    Achievement[]
   sessions        Session[]
   accounts        Account[]
@@ -164,17 +165,23 @@ enum AppointmentStatus {
 model Resource {
   id            String    @id @default(cuid())
   title         String
+  slug          String?   @unique
   description   String?
+  content       String?   @db.Text
   type          ResourceType
   category      String?
   tags          String?
+  readTime      String?   @default("5 min")
+  coverImage    String?
   fileUrl       String?
   thumbnailUrl  String?
   isPremium     Boolean   @default(false)
   downloadCount Int       @default(0)
+  authorId      String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  author        User?     @relation(fields: [authorId], references: [id])
   savedBy       SavedResource[]
 }
 
