@@ -3,30 +3,57 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Target, Monitor, Lightbulb, ArrowRight } from 'lucide-react';
+import { Rocket, BarChart3, Megaphone, DollarSign, Users, Bot, ArrowRight, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 
 const services = [
   {
-    icon: Target,
-    title: 'Strategy & Operations',
+    icon: Rocket,
+    title: 'Startup Strategy & Validation',
     description:
-      'We align your business goals with actionable strategies, streamlining operations and optimizing processes for sustainable, long-term growth.',
-    link: '/services',
+      'Validate your idea before investing time and money. We help you test assumptions, identify your market, and build a solid foundation.',
+    features: ['Market Research & Analysis', 'Idea Validation Sprints', 'Business Model Canvas', 'Competitive Landscape Mapping'],
+    color: 'from-[#2D4A2D] to-[#8FBC8F]',
   },
   {
-    icon: Monitor,
-    title: 'Digital Transformation',
+    icon: BarChart3,
+    title: 'Product Development & Growth',
     description:
-      'Embrace modern technology to stay competitive. We guide your digital journey from planning through implementation, ensuring seamless adoption.',
-    link: '/services',
+      'From MVP to scale. Get expert guidance on product strategy, user acquisition, and growth loops that actually work.',
+    features: ['MVP Roadmap Planning', 'Product-Market Fit Analysis', 'Growth Hacking Strategies', 'User Retention Optimization'],
+    color: 'from-[#7CFC00] to-[#2D4A2D]',
   },
   {
-    icon: Lightbulb,
-    title: 'Product & Innovation',
+    icon: Megaphone,
+    title: 'Marketing & Brand Building',
     description:
-      'From concept to launch, we help you build products that resonate. Our innovation-driven approach ensures your ideas reach their full market potential.',
-    link: '/services',
+      'Build a brand that resonates and a marketing engine that scales. From content strategy to paid acquisition.',
+    features: ['Brand Identity & Positioning', 'Content Marketing Strategy', 'Paid Acquisition Playbook', 'Social Media Growth'],
+    color: 'from-green-500 to-emerald-500',
+  },
+  {
+    icon: DollarSign,
+    title: 'Fundraising & Investor Relations',
+    description:
+      'Navigate the fundraising landscape with confidence. We help you prepare, pitch, and close your next round.',
+    features: ['Pitch Deck Optimization', 'Financial Model Building', 'Investor Introduction', 'Due Diligence Prep'],
+    color: 'from-orange-500 to-red-500',
+  },
+  {
+    icon: Users,
+    title: 'Team Building & Culture',
+    description:
+      'Your startup is only as strong as your team. Learn to hire, retain, and build a culture that scales.',
+    features: ['Hiring Frameworks', 'Culture Playbook', 'Compensation Strategy', 'Remote Team Management'],
+    color: 'from-[#8FBC8F] to-[#2D4A2D]',
+  },
+  {
+    icon: Bot,
+    title: 'AI & Digital Transformation',
+    description:
+      'Leverage AI to automate, optimize, and innovate. Stay ahead of the curve with practical AI implementation.',
+    features: ['AI Strategy Assessment', 'Automation Roadmap', 'AI-Powered Product Features', 'Data Infrastructure'],
+    color: 'from-yellow-500 to-orange-500',
   },
 ];
 
@@ -52,7 +79,7 @@ export default function Services() {
             transition={{ duration: 0.6 }}
             className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-4"
           >
-            Expertise built on insight & experience
+            Everything you need to <span className="text-[#1A2E1A]">build & scale</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
@@ -60,36 +87,36 @@ export default function Services() {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="text-[#666666] text-base sm:text-lg"
           >
-            We deliver strategic solutions grounded in research, experience, and
-            industry best practices.
+            From idea validation to global expansion, our expert consultants guide you through every stage of your startup journey.
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, i) => (
             <motion.div
               key={service.title}
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }}
-              className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-lg transition-all duration-300 group cursor-pointer border border-transparent hover:border-[#7CFC00]/20"
+              transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
+              className="bg-white rounded-2xl p-6 sm:p-7 shadow-sm hover:shadow-lg transition-all duration-300 group cursor-default border border-transparent hover:border-[#7CFC00]/20 flex flex-col"
             >
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#1A2E1A] flex items-center justify-center mb-5 group-hover:bg-[#7CFC00] transition-colors duration-300">
-                <service.icon className="w-6 h-6 text-white group-hover:text-[#1A2E1A] transition-colors duration-300" />
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                <service.icon className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-lg sm:text-xl font-bold text-[#1A1A1A] mb-3">
+              <h3 className="text-lg font-bold text-[#1A1A1A] mb-2">
                 {service.title}
               </h3>
-              <p className="text-[#666666] text-sm sm:text-base leading-relaxed mb-5">
+              <p className="text-[#666666] text-sm leading-relaxed mb-4">
                 {service.description}
               </p>
-              <Link
-                href={service.link}
-                className="inline-flex items-center gap-1.5 text-[#1A2E1A] text-sm font-semibold group-hover:text-[#7CFC00] transition-colors"
-              >
-                Learn More
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <ul className="space-y-2 mt-auto">
+                {service.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2 text-sm text-[#666666]">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#7CFC00] shrink-0" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
             </motion.div>
           ))}
         </div>
@@ -105,7 +132,7 @@ export default function Services() {
             href="/services"
             className="inline-flex items-center gap-2 bg-[#1A2E1A] text-white rounded-full px-8 py-3.5 text-sm sm:text-base font-medium hover:bg-[#243824] transition-colors duration-300 group shadow-lg shadow-[#1A2E1A]/10"
           >
-            VIEW ALL SERVICES
+            View All Services
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>

@@ -11,7 +11,7 @@ import Services from "@/components/Services"
 import HowWeWork from "@/components/HowWeWork"
 import Testimonials from "@/components/Testimonials"
 import Pricing from "@/components/Pricing"
-import Blog from "@/components/Blog"
+import Resources from "@/components/Resources"
 import CTASection from "@/components/CTASection"
 import Footer from "@/components/Footer"
 
@@ -25,12 +25,12 @@ export default function Home() {
         <Hero />
         <Stats />
         <Partners />
-        <About />
         <Services />
+        <About />
         <HowWeWork />
         <Testimonials />
         <Pricing />
-        <Blog />
+        <Resources />
         <CTASection />
       </main>
       <Footer />

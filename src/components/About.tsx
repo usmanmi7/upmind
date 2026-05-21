@@ -51,7 +51,7 @@ export default function About() {
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-3">
               <Link
-                href="/success-stories"
+                href="/about"
                 className="inline-flex items-center gap-2 bg-[#1A2E1A] text-white rounded-full px-7 py-3 text-sm sm:text-base font-medium hover:bg-[#243824] transition-colors duration-300 group"
               >
                 Learn More
