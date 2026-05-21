@@ -62,7 +62,7 @@ export default function CareersPage() {
 
         {/* Open Positions */}
         <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="text-2xl sm:text-3xl font-heading font-bold">
                 Open <span className="gradient-text">Positions</span>
@@ -105,7 +105,7 @@ export default function CareersPage() {
 
         {/* Benefits */}
         <section className="py-20 bg-muted/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="text-2xl sm:text-3xl font-heading font-bold">
                 Benefits & <span className="gradient-text">Perks</span>
@@ -135,7 +135,7 @@ export default function CareersPage() {
 
         {/* Culture */}
         <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="text-2xl sm:text-3xl font-heading font-bold">
                 Our <span className="gradient-text">Culture</span>

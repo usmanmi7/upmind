@@ -46,7 +46,7 @@ export default function Navbar() {
           : 'bg-[#1A2E1A]/80 backdrop-blur-md'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
@@ -62,7 +62,7 @@ export default function Navbar() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-white/80 hover:text-white text-sm font-medium capitalize transition-colors relative group"
+                className="text-white/80 hover:text-white text-base font-medium capitalize transition-colors relative group"
               >
                 {link.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
@@ -74,7 +74,7 @@ export default function Navbar() {
               <button
                 onClick={() => setMoreOpen(!moreOpen)}
                 onBlur={() => setTimeout(() => setMoreOpen(false), 200)}
-                className="text-white/80 hover:text-white text-sm font-medium capitalize transition-colors flex items-center gap-1 group"
+                className="text-white/80 hover:text-white text-base font-medium capitalize transition-colors flex items-center gap-1 group"
               >
                 More
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${moreOpen ? 'rotate-180' : ''}`} />
@@ -160,7 +160,7 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="block text-white/80 hover:text-white text-sm font-medium capitalize py-2.5 px-3 rounded-lg hover:bg-white/5 transition-colors"
+                  className="block text-white/80 hover:text-white text-base font-medium capitalize py-2.5 px-3 rounded-lg hover:bg-white/5 transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}

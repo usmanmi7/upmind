@@ -85,7 +85,7 @@ export default function AboutPage() {
 
         {/* Story Section */}
         <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
@@ -130,7 +130,7 @@ export default function AboutPage() {
 
         {/* Values Section */}
         <section className="py-20 bg-[#F5F5F5]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <span className="text-[#7CFC00] text-sm font-semibold tracking-[0.15em] uppercase block mb-4">
                 Our Values
@@ -165,7 +165,7 @@ export default function AboutPage() {
 
         {/* Team Section */}
         <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <span className="text-[#7CFC00] text-sm font-semibold tracking-[0.15em] uppercase block mb-4">
                 Our Team

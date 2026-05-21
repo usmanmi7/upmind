@@ -19,7 +19,7 @@ export default function Partners() {
 
   return (
     <section className="bg-[#1A2E1A] py-12 sm:py-16 border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
           initial={{ opacity: 0 }}

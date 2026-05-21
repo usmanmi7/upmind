@@ -39,7 +39,7 @@ export default function Resources() {
 
   return (
     <section className="bg-white py-16 sm:py-20 lg:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={ref} className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <motion.span
             initial={{ opacity: 0, y: 20 }}

@@ -16,7 +16,7 @@ export default function PageHero({ badge, title, highlight, description }: PageH
         <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-[#7CFC00]/10 rounded-full blur-3xl" />
         <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-[#2D4A2D]/10 rounded-full blur-3xl" />
       </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

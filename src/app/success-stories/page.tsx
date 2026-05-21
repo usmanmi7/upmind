@@ -118,7 +118,7 @@ export default function SuccessStoriesPage() {
 
         {/* Stats */}
         <section className="py-16 border-y bg-muted/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               {stats.map((stat) => (
                 <div key={stat.label} className="text-center">
@@ -135,7 +135,7 @@ export default function SuccessStoriesPage() {
 
         {/* Testimonials */}
         <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="text-2xl sm:text-3xl font-heading font-bold">
                 What <span className="gradient-text">founders</span> say
@@ -182,7 +182,7 @@ export default function SuccessStoriesPage() {
 
         {/* Case Studies */}
         <section className="py-20 bg-muted/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="text-2xl sm:text-3xl font-heading font-bold">
                 Case <span className="gradient-text">Studies</span>

@@ -118,7 +118,7 @@ export default function ServicesPage() {
 
         {/* Services Grid */}
         <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               variants={container}
               initial="hidden"
@@ -151,7 +151,7 @@ export default function ServicesPage() {
 
         {/* How We Work */}
         <section className="py-20 bg-muted/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="text-2xl sm:text-3xl font-heading font-bold">
                 How We <span className="gradient-text">Work</span>

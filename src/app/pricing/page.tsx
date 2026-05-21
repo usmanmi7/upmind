@@ -108,7 +108,7 @@ export default function PricingPage() {
 
         {/* Billing Toggle */}
         <section className="pb-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-center gap-3">
               <span className={`text-sm font-medium ${!annual ? "text-foreground" : "text-muted-foreground"}`}>Monthly</span>
               <Switch checked={annual} onCheckedChange={setAnnual} />
@@ -122,7 +122,7 @@ export default function PricingPage() {
 
         {/* Pricing Cards */}
         <section className="pb-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
               {plans.map((plan) => (
                 <motion.div
