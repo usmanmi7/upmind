@@ -7,15 +7,15 @@ import { ChevronDown, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
-  { label: 'HOME', href: '/' },
-  { label: 'SERVICES', href: '/services' },
-  { label: 'ABOUT', href: '/success-stories' },
-  { label: 'PRICING', href: '/pricing' },
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: 'About', href: '/success-stories' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Resources', href: '/resources' },
+  { label: 'Success Stories', href: '/success-stories' },
 ];
 
 const moreLinks = [
-  { label: 'Resources', href: '/resources' },
-  { label: 'Success Stories', href: '/success-stories' },
   { label: 'Careers', href: '/careers' },
   { label: 'FAQ', href: '/faq' },
   { label: 'Contact', href: '/contact' },
@@ -62,7 +62,7 @@ export default function Navbar() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors relative group"
+                className="text-white/80 hover:text-white text-sm font-medium capitalize transition-colors relative group"
               >
                 {link.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
@@ -74,9 +74,9 @@ export default function Navbar() {
               <button
                 onClick={() => setMoreOpen(!moreOpen)}
                 onBlur={() => setTimeout(() => setMoreOpen(false), 200)}
-                className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors flex items-center gap-1 group"
+                className="text-white/80 hover:text-white text-sm font-medium capitalize transition-colors flex items-center gap-1 group"
               >
-                MORE
+                More
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${moreOpen ? 'rotate-180' : ''}`} />
               </button>
               <AnimatePresence>
@@ -92,7 +92,7 @@ export default function Navbar() {
                       <Link
                         key={link.label}
                         href={link.href}
-                        className="block px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 text-sm transition-colors"
+                        className="block px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 text-sm capitalize transition-colors"
                         onClick={() => setMoreOpen(false)}
                       >
                         {link.label}
@@ -111,7 +111,7 @@ export default function Navbar() {
                 href="/dashboard"
                 className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20"
               >
-                DASHBOARD
+                Dashboard
               </Link>
             ) : (
               <>
@@ -119,13 +119,13 @@ export default function Navbar() {
                   href="/auth/login"
                   className="text-white border border-white/30 rounded-full px-5 py-2 text-sm font-medium hover:bg-white hover:text-[#1A2E1A] transition-all duration-300"
                 >
-                  SIGN IN
+                  Sign In
                 </Link>
                 <Link
                   href="/auth/signup"
                   className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20"
                 >
-                  GET STARTED
+                  Get Started
                 </Link>
               </>
             )}
@@ -159,7 +159,7 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="block text-white/80 hover:text-white text-sm font-medium tracking-wide py-2.5 px-3 rounded-lg hover:bg-white/5 transition-colors"
+                  className="block text-white/80 hover:text-white text-sm font-medium capitalize py-2.5 px-3 rounded-lg hover:bg-white/5 transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
@@ -172,7 +172,7 @@ export default function Navbar() {
                     className="block bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-[#6BE000] transition-all duration-300"
                     onClick={() => setMobileOpen(false)}
                   >
-                    DASHBOARD
+                    Dashboard
                   </Link>
                 ) : (
                   <>
@@ -181,14 +181,14 @@ export default function Navbar() {
                       className="block text-white border border-white/30 rounded-full px-6 py-2.5 text-sm font-medium text-center hover:bg-white hover:text-[#1A2E1A] transition-all duration-300"
                       onClick={() => setMobileOpen(false)}
                     >
-                      SIGN IN
+                      Sign In
                     </Link>
                     <Link
                       href="/auth/signup"
                       className="block bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-[#6BE000] transition-all duration-300"
                       onClick={() => setMobileOpen(false)}
                     >
-                      GET STARTED
+                      Get Started
                     </Link>
                   </>
                 )}
