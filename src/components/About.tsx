@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function About() {
@@ -11,11 +11,6 @@ export default function About() {
   const isInView = useInView(ref, { once: true, margin: '-50px' });
 
   const tags = ['Strategic', 'AI-Powered', 'Data', 'Growth Focused', 'Build Smart'];
-  const highlights = [
-    'Data-driven strategy development',
-    'Expert-led consulting sessions',
-    'Measurable growth outcomes',
-  ];
 
   return (
     <section className="bg-white py-16 sm:py-20 lg:py-24">
@@ -28,25 +23,27 @@ export default function About() {
             transition={{ duration: 0.7 }}
           >
             <span className="text-[#7CFC00] text-sm font-semibold tracking-[0.15em] uppercase mb-4 block">
-              ABOUT US
+              OUR STORY
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-6 leading-tight">
-              We help startups make smarter decisions and grow with clarity.
+              Born from the trenches of startup life
             </h2>
             <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">
-              We bring strategic clarity, actionable insights, and modern processes
-              to help you validate, launch, and scale products with confidence.
+              Upmind was founded by a team of entrepreneurs, consultants, and technologists
+              who experienced firsthand the challenges of building and scaling startups.
+              We saw too many promising ideas fail — not because of bad products, but
+              because of bad strategy.
             </p>
-
-            {/* Highlights */}
-            <div className="space-y-3 mb-8">
-              {highlights.map((item) => (
-                <div key={item} className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-[#7CFC00] shrink-0" />
-                  <span className="text-[#1A1A1A] text-sm sm:text-base">{item}</span>
-                </div>
-              ))}
-            </div>
+            <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">
+              That&apos;s why we built Upmind: a platform that bridges the gap between raw
+              ambition and structured execution. We combine the human expertise of seasoned
+              consultants with AI-powered tools that give founders the insights they need,
+              when they need them.
+            </p>
+            <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-8">
+              Today, we&apos;ve helped over 500 startups across 20+ industries turn their
+              visions into viable, growing businesses. And we&apos;re just getting started.
+            </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-3">
