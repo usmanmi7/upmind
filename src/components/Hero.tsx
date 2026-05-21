@@ -1,194 +1,209 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
 export default function Hero() {
   const { data: session } = useSession();
-  const badges = ['Build Smart', 'Strategic', 'Professional', 'Grow Faster'];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/hero.jpg')" }}
-      />
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#1A2E1A]/90 via-[#1A2E1A]/70 to-[#1A2E1A]/50" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#1A2E1A]">
+      {/* Subtle gradient background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[#7CFC00]/8 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#7CFC00]/5 rounded-full blur-[100px]" />
+      </div>
 
-      {/* Decorative Elements */}
-      <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full bg-[#7CFC00]/5 blur-3xl" />
-      <div className="absolute bottom-1/4 left-1/6 w-72 h-72 rounded-full bg-[#7CFC00]/5 blur-3xl" />
+      {/* Grid pattern overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px',
+        }}
+      />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <div>
-            {/* Badges */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex flex-wrap gap-2 sm:gap-3 mb-8"
-            >
-              {badges.map((badge) => (
-                <span
-                  key={badge}
-                  className="border border-[#7CFC00]/40 text-[#7CFC00] text-xs sm:text-sm px-3 sm:px-4 py-1 sm:py-1.5 rounded-full backdrop-blur-sm bg-[#7CFC00]/5 font-medium"
-                >
-                  {badge}
-                </span>
-              ))}
-            </motion.div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 w-full">
+        <div className="max-w-3xl mx-auto text-center">
+          {/* Pill Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-8"
+          >
+            <span className="inline-flex items-center gap-2 bg-[#7CFC00]/10 border border-[#7CFC00]/20 text-[#7CFC00] text-sm px-4 py-1.5 rounded-full font-medium">
+              <span className="w-1.5 h-1.5 bg-[#7CFC00] rounded-full animate-pulse" />
+              Now with AI-powered insights
+            </span>
+          </motion.div>
 
-            {/* Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-6"
-            >
-              Clear insights.{' '}
-              <span className="text-[#7CFC00]">Real strategy.</span>{' '}
-              Sustainable growth.
-            </motion.h1>
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-6 tracking-tight"
+          >
+            Strategy that{' '}
+            <span className="text-[#7CFC00]">scales</span>{' '}
+            with you
+          </motion.h1>
 
-            {/* Subheadline */}
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.6 }}
-              className="text-white/80 text-base sm:text-lg md:text-xl max-w-xl mb-10 leading-relaxed"
-            >
-              We help startups and growing teams validate ideas, scale products,
-              and make data-driven decisions that drive real results.
-            </motion.p>
+          {/* Subheadline */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-white/60 text-lg sm:text-xl max-w-xl mx-auto mb-10 leading-relaxed"
+          >
+            From validation to growth — get the tools, insights, and expert guidance your startup needs, all in one platform.
+          </motion.p>
 
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.8 }}
-              className="flex flex-wrap gap-3 sm:gap-4 mb-10"
-            >
-              {session ? (
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.45 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-14"
+          >
+            {session ? (
+              <Link
+                href="/dashboard"
+                className="w-full sm:w-auto bg-[#7CFC00] text-[#1A2E1A] rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20 flex items-center justify-center gap-2 group"
+              >
+                Go to Dashboard
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            ) : (
+              <>
                 <Link
-                  href="/dashboard"
-                  className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-8 py-3.5 text-sm sm:text-base font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/25 flex items-center gap-2 group"
+                  href="/auth/signup"
+                  className="w-full sm:w-auto bg-[#7CFC00] text-[#1A2E1A] rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20 flex items-center justify-center gap-2 group"
                 >
-                  GO TO DASHBOARD
+                  Get Started Free
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
-              ) : (
-                <>
-                  <Link
-                    href="/auth/signup"
-                    className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-8 py-3.5 text-sm sm:text-base font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/25 flex items-center gap-2 group"
-                  >
-                    GET STARTED FREE
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                  <Link
-                    href="/services"
-                    className="border border-white/40 text-white rounded-full px-8 py-3.5 text-sm sm:text-base font-medium hover:bg-white hover:text-[#1A2E1A] transition-all duration-300 backdrop-blur-sm"
-                  >
-                    VIEW SERVICES
-                  </Link>
-                </>
-              )}
-            </motion.div>
+                <Link
+                  href="/contact"
+                  className="w-full sm:w-auto text-white/80 border border-white/15 rounded-full px-8 py-3.5 text-base font-medium hover:bg-white/5 hover:border-white/25 transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                  Book a Demo
+                </Link>
+              </>
+            )}
+          </motion.div>
 
-            {/* Trust Indicators */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 1.0 }}
-              className="flex flex-wrap items-center gap-6 text-white/50 text-sm"
-            >
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-[#7CFC00]" />
-                <span>No credit card required</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-[#7CFC00]" />
-                <span>Free 14-day trial</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-[#7CFC00]" />
-                <span>Cancel anytime</span>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Right Content - Stats Card */}
+          {/* App Preview */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="hidden lg:block"
+            className="relative"
           >
-            <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-3xl p-8 space-y-6">
-              {/* Stat Row 1 */}
-              <div className="flex items-center gap-6">
-                <div className="flex-1">
-                  <div className="text-4xl font-bold text-[#7CFC00] font-heading">95%</div>
-                  <p className="text-white/60 text-sm mt-1">Client satisfaction rate</p>
+            <div className="bg-white/[0.04] border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-black/20">
+              {/* Browser bar */}
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-white/10" />
+                  <div className="w-3 h-3 rounded-full bg-white/10" />
+                  <div className="w-3 h-3 rounded-full bg-white/10" />
                 </div>
-                <div className="flex-1">
-                  <div className="text-4xl font-bold text-[#7CFC00] font-heading">500+</div>
-                  <p className="text-white/60 text-sm mt-1">Projects delivered</p>
-                </div>
-              </div>
-              {/* Divider */}
-              <div className="border-t border-white/10" />
-              {/* Stat Row 2 */}
-              <div className="flex items-center gap-6">
-                <div className="flex-1">
-                  <div className="text-4xl font-bold text-[#7CFC00] font-heading">$5M+</div>
-                  <p className="text-white/60 text-sm mt-1">Revenue generated</p>
-                </div>
-                <div className="flex-1">
-                  <div className="text-4xl font-bold text-[#7CFC00] font-heading">20+</div>
-                  <p className="text-white/60 text-sm mt-1">Industry experts</p>
+                <div className="flex-1 mx-8">
+                  <div className="bg-white/5 rounded-md px-3 py-1.5 text-white/30 text-xs text-center max-w-sm mx-auto">
+                    app.upmind.io/dashboard
+                  </div>
                 </div>
               </div>
-              {/* Divider */}
-              <div className="border-t border-white/10" />
-              {/* Mini CTA */}
-              <Link
-                href="/success-stories"
-                className="flex items-center justify-between bg-[#7CFC00]/10 border border-[#7CFC00]/20 rounded-xl px-5 py-3 group hover:bg-[#7CFC00]/15 transition-all duration-300"
-              >
-                <div>
-                  <div className="text-white text-sm font-medium">See Success Stories</div>
-                  <div className="text-white/50 text-xs">Real results from real clients</div>
+
+              {/* Dashboard Preview Content */}
+              <div className="p-5 sm:p-6">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
+                  {/* Stat cards */}
+                  <div className="bg-white/[0.03] border border-white/5 rounded-xl p-4">
+                    <div className="text-white/40 text-xs mb-1">Revenue Growth</div>
+                    <div className="text-white text-xl font-bold">+127%</div>
+                    <div className="mt-2 h-1 bg-white/5 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: '72%' }}
+                        transition={{ duration: 1.5, delay: 1 }}
+                        className="h-full bg-[#7CFC00]/60 rounded-full"
+                      />
+                    </div>
+                  </div>
+                  <div className="bg-white/[0.03] border border-white/5 rounded-xl p-4">
+                    <div className="text-white/40 text-xs mb-1">Active Projects</div>
+                    <div className="text-white text-xl font-bold">24</div>
+                    <div className="mt-2 h-1 bg-white/5 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: '58%' }}
+                        transition={{ duration: 1.5, delay: 1.2 }}
+                        className="h-full bg-[#7CFC00]/60 rounded-full"
+                      />
+                    </div>
+                  </div>
+                  <div className="bg-white/[0.03] border border-white/5 rounded-xl p-4">
+                    <div className="text-white/40 text-xs mb-1">Client Score</div>
+                    <div className="text-white text-xl font-bold">9.4/10</div>
+                    <div className="mt-2 h-1 bg-white/5 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: '94%' }}
+                        transition={{ duration: 1.5, delay: 1.4 }}
+                        className="h-full bg-[#7CFC00]/60 rounded-full"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <ArrowRight className="w-5 h-5 text-[#7CFC00] group-hover:translate-x-1 transition-transform" />
-              </Link>
+
+                {/* Chart placeholder */}
+                <div className="bg-white/[0.03] border border-white/5 rounded-xl p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-white/40 text-xs">Growth Overview</div>
+                    <div className="flex gap-2">
+                      <span className="text-[#7CFC00]/60 text-xs px-2 py-0.5 bg-[#7CFC00]/10 rounded">Monthly</span>
+                      <span className="text-white/30 text-xs px-2 py-0.5">Weekly</span>
+                    </div>
+                  </div>
+                  <div className="flex items-end gap-1.5 h-20">
+                    {[40, 55, 35, 65, 50, 80, 60, 90, 70, 95, 85, 100].map((h, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ height: 0 }}
+                        animate={{ height: `${h}%` }}
+                        transition={{ duration: 0.8, delay: 0.8 + i * 0.05 }}
+                        className={`flex-1 rounded-sm ${i >= 9 ? 'bg-[#7CFC00]/50' : 'bg-white/10'}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
+
+            {/* Glow effect under the preview */}
+            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-3/4 h-16 bg-[#7CFC00]/10 blur-3xl rounded-full" />
+          </motion.div>
+
+          {/* Trust line */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 1.2 }}
+            className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-white/30 text-sm"
+          >
+            <span>No credit card required</span>
+            <span className="hidden sm:inline text-white/10">|</span>
+            <span>14-day free trial</span>
+            <span className="hidden sm:inline text-white/10">|</span>
+            <span>Cancel anytime</span>
           </motion.div>
         </div>
       </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-1.5">
-          <motion.div
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-1.5 h-1.5 bg-[#7CFC00] rounded-full"
-          />
-        </div>
-      </motion.div>
     </section>
   );
 }
