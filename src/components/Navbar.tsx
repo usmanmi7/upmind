@@ -56,7 +56,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Nav Links */}
+          {/* Desktop Nav Links + CTA - Right Aligned */}
           <div className="hidden lg:flex items-center gap-7">
             {navLinks.map((link) => (
               <Link
@@ -102,10 +102,11 @@ export default function Navbar() {
                 )}
               </AnimatePresence>
             </div>
-          </div>
 
-          {/* CTA Buttons */}
-          <div className="hidden lg:flex items-center gap-3">
+            {/* Divider */}
+            <div className="w-px h-6 bg-white/15" />
+
+            {/* CTA Buttons */}
             {session ? (
               <Link
                 href="/dashboard"
