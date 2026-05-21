@@ -89,11 +89,19 @@ A full-stack SaaS startup consulting platform built with **Next.js 16**, **TypeS
 
 ## Quick Start
 
-### Prerequisites
-- Node.js 18+ or Bun
-- npm, yarn, or bun
+### Step 1: Get a Free Database (Neon)
 
-### Install & Run
+You need a PostgreSQL database for this project. **Neon** is free and perfect for Vercel:
+
+1. Go to **[neon.tech](https://neon.tech)** → Sign up (free, no credit card)
+2. Click **"Create Project"** → Name it "Upmind" → Select a region close to you
+3. Click **"Create Project"**
+4. Copy the **connection string** — it looks like:
+   ```
+   postgresql://username:password@ep-xxx.us-east-2.aws.neon.tech/upmind?sslmode=require
+   ```
+
+### Step 2: Install & Run
 
 ```bash
 # Clone the repository
@@ -103,10 +111,14 @@ cd upmind
 # Install dependencies
 bun install
 
-# Set up the database
+# Create .env file with your database URL
+cp .env.example .env
+# Edit .env and paste your Neon connection string as DATABASE_URL
+
+# Set up the database (creates all tables)
 bun run db:push
 
-# Seed the database (optional, for demo data)
+# Seed the database with demo data (optional but recommended)
 bunx prisma db seed
 
 # Run development server
@@ -252,11 +264,26 @@ src/
 
 ## Deploy to Vercel
 
+### Step 1: Get Your Free Neon Database
+1. Go to **[neon.tech](https://neon.tech)** → Sign up (free)
+2. Create a project → Copy the connection string
+
+### Step 2: Deploy on Vercel
 1. Push your code to GitHub
 2. Go to [vercel.com](https://vercel.com) → Sign in with GitHub
-3. Click **"New Project"** → Import your repo
-4. Vercel auto-detects Next.js → Click **Deploy**
-5. Your site is live! 🎉
+3. Click **"New Project"** → Import your `upmind` repo
+4. Vercel auto-detects Next.js
+5. **Add Environment Variables:**
+   - `DATABASE_URL` = Your Neon connection string
+   - `NEXTAUTH_SECRET` = Any random string (e.g., `my-super-secret-key-2024`)
+   - `NEXTAUTH_URL` = Your Vercel URL (e.g., `https://upmind.vercel.app`)
+6. Click **Deploy**
+7. After deployment, seed the database:
+   ```bash
+   # Run locally with your Neon URL:
+   DATABASE_URL="your-neon-connection-string" bunx prisma db seed
+   ```
+8. Your platform is live! 🎉
 
 ## License
 
