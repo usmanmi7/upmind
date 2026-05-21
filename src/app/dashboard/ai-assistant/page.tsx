@@ -117,10 +117,13 @@ export default function AIAssistantPage() {
 
       const data = await res.json()
 
+      // Even on error, use the fallback response if provided
+      const responseText = data.response || data.details || "I'm sorry, I couldn't generate a response. Please try again."
+
       const assistantMsg: ChatMessage = {
         id: `msg-${Date.now()}-ai`,
         role: "assistant",
-        content: data.response || "I'm sorry, I couldn't generate a response.",
+        content: responseText,
         timestamp: new Date(),
       }
 

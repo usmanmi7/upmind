@@ -89,6 +89,41 @@ export async function PUT(request: NextRequest) {
       },
     })
 
+    // Notify the user about appointment status change
+    if (status) {
+      const statusMessages: Record<string, { title: string; message: string }> = {
+        SCHEDULED: {
+          title: "Appointment Approved!",
+          message: `Your appointment has been approved and scheduled`,
+        },
+        CANCELLED: {
+          title: "Appointment Cancelled",
+          message: `Your appointment has been cancelled by admin`,
+        },
+        RESCHEDULED: {
+          title: "Appointment Rescheduled",
+          message: `Your appointment has been rescheduled`,
+        },
+        COMPLETED: {
+          title: "Appointment Completed",
+          message: `Your appointment has been marked as completed`,
+        },
+      }
+
+      const notifData = statusMessages[status]
+      if (notifData && appointment.user) {
+        await db.notification.create({
+          data: {
+            userId: appointment.user.id,
+            title: notifData.title,
+            message: notifData.message,
+            type: "APPOINTMENT",
+            link: "/dashboard/appointments",
+          },
+        })
+      }
+    }
+
     return NextResponse.json({ appointment })
   } catch (error) {
     console.error("Admin appointments PUT error:", error)

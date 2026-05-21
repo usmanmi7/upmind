@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
@@ -10,64 +10,111 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    // Get user's subscription
     const subscription = await db.subscription.findUnique({
       where: { userId: session.user.id },
-      include: { payments: { orderBy: { createdAt: "desc" } } },
     })
 
-    if (!subscription) {
-      const newSub = await db.subscription.create({
-        data: { userId: session.user.id },
-        include: { payments: true },
-      })
-      return NextResponse.json(newSub)
+    const plan = subscription?.plan || "FREE"
+
+    // Get real usage metrics
+    const now = new Date()
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+
+    // Consultations this month (appointments in current month)
+    const consultationsThisMonth = await db.appointment.count({
+      where: {
+        userId: session.user.id,
+        date: { gte: startOfMonth },
+        status: { in: ["SCHEDULED", "COMPLETED"] },
+      },
+    })
+
+    // Resources downloaded (saved resources count)
+    const resourcesDownloaded = await db.savedResource.count({
+      where: { userId: session.user.id },
+    })
+
+    // Documents count
+    const documentsCount = await db.document.count({
+      where: { userId: session.user.id },
+    })
+
+    // Team members (for now, just 1 since it's a single user startup)
+    const startup = await db.startup.findUnique({
+      where: { userId: session.user.id },
+    })
+
+    // Payment history from actual payments
+    const payments = await db.payment.findMany({
+      where: {
+        subscription: { userId: session.user.id },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+    })
+
+    // Plan limits
+    const planLimits: Record<string, { consultations: number; resources: number; documents: number; teamMembers: number }> = {
+      FREE: { consultations: 1, resources: 5, documents: 5, teamMembers: 1 },
+      GROWTH_PRO: { consultations: 4, resources: Infinity, documents: 50, teamMembers: 5 },
+      ENTERPRISE: { consultations: Infinity, resources: Infinity, documents: Infinity, teamMembers: Infinity },
     }
 
-    return NextResponse.json(subscription)
+    const limits = planLimits[plan] || planLimits.FREE
+
+    return NextResponse.json({
+      subscription: subscription ? {
+        id: subscription.id,
+        plan: subscription.plan,
+        status: subscription.status,
+        startDate: subscription.startDate,
+        endDate: subscription.endDate,
+        autoRenew: subscription.autoRenew,
+      } : null,
+      usage: {
+        consultations: { used: consultationsThisMonth, limit: limits.consultations },
+        resources: { used: resourcesDownloaded, limit: limits.resources },
+        documents: { used: documentsCount, limit: limits.documents },
+        teamMembers: { used: startup ? 1 : 0, limit: limits.teamMembers },
+      },
+      payments: payments.map((p) => ({
+        id: p.id,
+        amount: p.amount,
+        currency: p.currency,
+        status: p.status,
+        method: p.method,
+        date: p.createdAt,
+      })),
+    })
   } catch (error) {
     console.error("Subscription GET error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
 
-export async function PUT(req: NextRequest) {
+export async function PUT() {
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const body = await req.json()
-    const { plan, autoRenew, status } = body
-
-    const subscription = await db.subscription.upsert({
+    // Toggle auto-renew
+    const subscription = await db.subscription.findUnique({
       where: { userId: session.user.id },
-      update: {
-        ...(plan !== undefined && { plan }),
-        ...(autoRenew !== undefined && { autoRenew }),
-        ...(status !== undefined && { status }),
-      },
-      create: {
-        userId: session.user.id,
-        plan: plan || "FREE",
-        autoRenew: autoRenew ?? true,
-      },
-      include: { payments: true },
     })
 
-    if (plan) {
-      const roleMap: Record<string, string> = {
-        FREE: "FREE_USER",
-        GROWTH_PRO: "PAID_USER",
-        ENTERPRISE: "PAID_USER",
-      }
-      await db.user.update({
-        where: { id: session.user.id },
-        data: { role: (roleMap[plan] || "FREE_USER") as "FREE_USER" | "PAID_USER" | "CONSULTANT" | "ADMIN" | "SUPER_ADMIN" },
-      })
+    if (!subscription) {
+      return NextResponse.json({ error: "No subscription found" }, { status: 404 })
     }
 
-    return NextResponse.json(subscription)
+    const updated = await db.subscription.update({
+      where: { userId: session.user.id },
+      data: { autoRenew: !subscription.autoRenew },
+    })
+
+    return NextResponse.json({ subscription: updated })
   } catch (error) {
     console.error("Subscription PUT error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })

@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Consultant and date are required" }, { status: 400 })
     }
 
+    // Create appointment with PENDING status - requires admin approval
     const appointment = await db.appointment.create({
       data: {
         userId: session.user.id,
@@ -53,7 +54,24 @@ export async function POST(req: NextRequest) {
         duration: duration || 60,
         type: type || "VIDEO",
         notes,
+        status: "PENDING",
       },
+    })
+
+    // Notify admins about the new appointment
+    const admins = await db.user.findMany({
+      where: { role: { in: ["ADMIN", "SUPER_ADMIN"] } },
+      select: { id: true },
+    })
+
+    await db.notification.createMany({
+      data: admins.map((admin) => ({
+        userId: admin.id,
+        title: "New Appointment Request",
+        message: `${session.user.name || "A user"} requested an appointment`,
+        type: "APPOINTMENT",
+        link: "/dashboard/appointments",
+      })),
     })
 
     return NextResponse.json(appointment, { status: 201 })

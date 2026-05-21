@@ -56,10 +56,17 @@ export async function POST(req: NextRequest) {
       "I'm sorry, I couldn't generate a response. Please try again."
 
     return NextResponse.json({ response })
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("AI Chat error:", error)
+    const errorMessage = error instanceof Error ? error.message : "Unknown error"
+
+    // Return a more helpful error so the frontend can show something
     return NextResponse.json(
-      { error: "Failed to generate response" },
+      {
+        error: "Failed to generate response",
+        details: errorMessage,
+        response: "I'm having trouble connecting right now. Please try again in a moment."
+      },
       { status: 500 }
     )
   }
