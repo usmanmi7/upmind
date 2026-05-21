@@ -13,13 +13,6 @@ const highlights = [
   'AI-powered insights & tools',
 ];
 
-const stats = [
-  { value: '500+', label: 'Startups Served' },
-  { value: '95%', label: 'Client Satisfaction' },
-  { value: '12+', label: 'Years Experience' },
-  { value: '$5M+', label: 'Revenue Generated' },
-];
-
 export default function About() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
@@ -79,54 +72,25 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* Right - Stats Grid */}
+          {/* Right - Real Office Photo */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
             className="relative"
           >
-            <div className="bg-[#1A2E1A] rounded-3xl p-8 sm:p-10 relative overflow-hidden">
-              {/* Decorative circles */}
-              <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full border-[3px] border-[#7CFC00]/20" />
-              <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full border-[3px] border-[#7CFC00]/10" />
-
-              <div className="relative z-10">
-                <h3 className="text-white font-semibold text-lg sm:text-xl mb-2">
-                  Our Impact
-                </h3>
-                <p className="text-white/50 text-sm mb-8">
-                  Numbers that speak for themselves
-                </p>
-
-                <div className="grid grid-cols-2 gap-5">
-                  {stats.map((stat) => (
-                    <div key={stat.label} className="bg-white/5 rounded-2xl p-5 text-center border border-white/5 hover:border-[#7CFC00]/20 transition-colors">
-                      <div className="text-2xl sm:text-3xl font-bold text-[#7CFC00] font-heading">
-                        {stat.value}
-                      </div>
-                      <div className="text-white/60 text-xs sm:text-sm mt-1">{stat.label}</div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-8 pt-6 border-t border-white/10">
-                  <div className="flex items-center gap-3">
-                    <div className="flex -space-x-2">
-                      {['S', 'D', 'A', 'J'].map((initial, i) => (
-                        <div
-                          key={i}
-                          className="w-8 h-8 rounded-full bg-[#7CFC00]/20 border-2 border-[#1A2E1A] flex items-center justify-center text-[#7CFC00] text-xs font-bold"
-                        >
-                          {initial}
-                        </div>
-                      ))}
-                    </div>
-                    <span className="text-white/50 text-sm">Join 500+ founders</span>
-                  </div>
-                </div>
-              </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-xl">
+              <img
+                src="/images/about-office.jpg"
+                alt="Team working on strategy in modern office"
+                className="w-full h-[340px] sm:h-[400px] lg:h-[460px] object-cover"
+              />
+              {/* Subtle overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1A2E1A]/30 via-transparent to-transparent" />
             </div>
+            {/* Decorative accents */}
+            <div className="absolute -bottom-4 -right-4 w-24 h-24 rounded-full border-[3px] border-[#7CFC00]/20 hidden lg:block" />
+            <div className="absolute -top-4 -left-4 w-16 h-16 rounded-full bg-[#7CFC00]/10 hidden lg:block" />
           </motion.div>
         </div>
       </div>
