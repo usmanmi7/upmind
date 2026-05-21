@@ -112,17 +112,20 @@ export default function HowWeWork() {
           </div>
         </motion.div>
 
-        {/* Right Side - Image */}
+        {/* Right Side - Real Stock Photo */}
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.2 }}
           className="relative min-h-[300px] lg:min-h-0"
         >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url('/images/howwework.jpg')" }}
+          <img
+            src="/images/howwework-team.jpg"
+            alt="Team working together on strategy"
+            className="absolute inset-0 w-full h-full object-cover"
           />
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#1A2E1A]/20 lg:bg-gradient-to-l lg:from-transparent lg:to-[#1A2E1A]/10" />
           {/* Green circular overlay graphic */}
           <div className="absolute -left-16 top-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-[3px] border-[#7CFC00]/30 hidden lg:block" />
           <div className="absolute -left-8 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-[#7CFC00]/10 hidden lg:block" />
