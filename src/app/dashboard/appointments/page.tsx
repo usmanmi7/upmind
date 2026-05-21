@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -22,25 +22,33 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Calendar as CalendarIcon, Clock, Video, Phone, MapPin, Plus, MoreVertical, X, CheckCircle2 } from "lucide-react"
+import { Calendar as CalendarIcon, Clock, Video, Phone, MapPin, Plus, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 
-const consultants = [
-  { id: "1", name: "Dr. Sarah Chen", specialty: "Startup Strategy", rating: 4.9 },
-  { id: "2", name: "Marcus Johnson", specialty: "Fundraising", rating: 4.8 },
-  { id: "3", name: "Priya Sharma", specialty: "Product Development", rating: 5.0 },
-]
+interface Appointment {
+  id: string
+  date: string
+  duration: number
+  type: string
+  status: string
+  notes: string | null
+  meetingUrl: string | null
+  consultant: {
+    user: {
+      name: string
+      image: string | null
+    }
+    specialties: string | null
+    rating: number
+  } | null
+}
 
-const upcoming = [
-  { id: 1, consultant: "Dr. Sarah Chen", date: "Tomorrow, Mar 15", time: "2:00 PM", duration: "60 min", type: "VIDEO", status: "SCHEDULED" },
-  { id: 2, consultant: "Marcus Johnson", date: "Fri, Mar 17", time: "10:00 AM", duration: "45 min", type: "PHONE", status: "SCHEDULED" },
-]
-
-const past = [
-  { id: 3, consultant: "Dr. Sarah Chen", date: "Mar 10, 2024", time: "2:00 PM", duration: "60 min", type: "VIDEO", status: "COMPLETED", notes: "Discussed market validation strategy and identified 3 key customer segments to target." },
-  { id: 4, consultant: "Priya Sharma", date: "Mar 5, 2024", time: "11:00 AM", duration: "45 min", type: "VIDEO", status: "COMPLETED", notes: "Reviewed product roadmap and prioritized features for MVP launch." },
-  { id: 5, consultant: "Marcus Johnson", date: "Feb 28, 2024", time: "3:00 PM", duration: "30 min", type: "PHONE", status: "CANCELLED", notes: "" },
-]
+interface Consultant {
+  id: string
+  user: { name: string; image: string | null }
+  specialties: string | null
+  rating: number
+}
 
 const typeIcons: Record<string, React.ElementType> = { VIDEO: Video, PHONE: Phone, IN_PERSON: MapPin }
 const statusColors: Record<string, string> = {
@@ -51,7 +59,115 @@ const statusColors: Record<string, string> = {
 }
 
 export default function AppointmentsPage() {
+  const [appointments, setAppointments] = React.useState<Appointment[]>([])
+  const [consultants, setConsultants] = React.useState<Consultant[]>([])
+  const [loading, setLoading] = React.useState(true)
   const [dialogOpen, setDialogOpen] = React.useState(false)
+  const [booking, setBooking] = React.useState(false)
+
+  // Form state
+  const [selectedConsultant, setSelectedConsultant] = React.useState("")
+  const [selectedDate, setSelectedDate] = React.useState("")
+  const [selectedTime, setSelectedTime] = React.useState("")
+  const [selectedType, setSelectedType] = React.useState("VIDEO")
+  const [notes, setNotes] = React.useState("")
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [aptRes, consulRes] = await Promise.all([
+          fetch("/api/appointments"),
+          fetch("/api/consultants"),
+        ])
+
+        if (aptRes.ok) {
+          const data = await aptRes.json()
+          setAppointments(data)
+        }
+
+        if (consulRes.ok) {
+          const data = await consulRes.json()
+          setConsultants(data)
+        }
+      } catch (error) {
+        console.error("Failed to fetch appointments:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const handleBook = async () => {
+    if (!selectedConsultant || !selectedDate || !selectedTime) {
+      toast.error("Please fill in all required fields")
+      return
+    }
+
+    setBooking(true)
+    try {
+      const dateTime = new Date(`${selectedDate}T${selectedTime}`)
+      const res = await fetch("/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          consultantId: selectedConsultant,
+          date: dateTime.toISOString(),
+          duration: 60,
+          type: selectedType,
+          notes,
+        }),
+      })
+
+      if (res.ok) {
+        const newApt = await res.json()
+        setAppointments((prev) => [...prev, newApt])
+        toast.success("Appointment booked successfully!")
+        setDialogOpen(false)
+        // Reset form
+        setSelectedConsultant("")
+        setSelectedDate("")
+        setSelectedTime("")
+        setSelectedType("VIDEO")
+        setNotes("")
+      } else {
+        toast.error("Failed to book appointment")
+      }
+    } catch (error) {
+      console.error("Failed to book appointment:", error)
+      toast.error("Failed to book appointment")
+    } finally {
+      setBooking(false)
+    }
+  }
+
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr)
+    return date.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric", year: "numeric" })
+  }
+
+  const formatTime = (dateStr: string) => {
+    const date = new Date(dateStr)
+    return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
+  }
+
+  const isUpcoming = (dateStr: string, status: string) => {
+    return status === "SCHEDULED" && new Date(dateStr) > new Date()
+  }
+
+  const upcoming = appointments.filter((a) => isUpcoming(a.date, a.status))
+  const past = appointments.filter((a) => !isUpcoming(a.date, a.status))
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <p className="text-sm text-muted-foreground">Loading appointments...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -60,158 +176,176 @@ export default function AppointmentsPage() {
           <h1 className="text-2xl font-heading font-bold">Appointments</h1>
           <p className="text-muted-foreground mt-1">Manage your consultations with experts</p>
         </div>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]">
-              <Plus className="size-4 mr-2" /> Book Appointment
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-lg">
-            <DialogHeader>
-              <DialogTitle className="font-heading">Book New Appointment</DialogTitle>
-              <DialogDescription>Schedule a consultation with one of our experts</DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 mt-2">
-              <div>
-                <label className="text-sm font-medium mb-1.5 block">Consultant</label>
-                <Select>
-                  <SelectTrigger><SelectValue placeholder="Select a consultant" /></SelectTrigger>
-                  <SelectContent>
-                    {consultants.map((c) => (
-                      <SelectItem key={c.id} value={c.id}>
-                        {c.name} — {c.specialty} (★ {c.rating})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
+        {consultants.length > 0 && (
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]">
+                <Plus className="size-4 mr-2" /> Book Appointment
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-lg">
+              <DialogHeader>
+                <DialogTitle className="font-heading">Book New Appointment</DialogTitle>
+                <DialogDescription>Schedule a consultation with one of our experts</DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4 mt-2">
                 <div>
-                  <label className="text-sm font-medium mb-1.5 block">Date</label>
-                  <Input type="date" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-1.5 block">Time</label>
-                  <Select>
-                    <SelectTrigger><SelectValue placeholder="Select time" /></SelectTrigger>
+                  <label className="text-sm font-medium mb-1.5 block">Consultant</label>
+                  <Select value={selectedConsultant} onValueChange={setSelectedConsultant}>
+                    <SelectTrigger><SelectValue placeholder="Select a consultant" /></SelectTrigger>
                     <SelectContent>
-                      {["9:00 AM", "10:00 AM", "11:00 AM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM"].map((t) => (
-                        <SelectItem key={t} value={t}>{t}</SelectItem>
+                      {consultants.map((c) => (
+                        <SelectItem key={c.id} value={c.id}>
+                          {c.user?.name || "Unknown"} {c.specialties ? `— ${c.specialties}` : ""} ({c.rating.toFixed(1)} ★)
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-sm font-medium mb-1.5 block">Date</label>
+                    <Input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} min={new Date().toISOString().split("T")[0]} />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-1.5 block">Time</label>
+                    <Select value={selectedTime} onValueChange={setSelectedTime}>
+                      <SelectTrigger><SelectValue placeholder="Select time" /></SelectTrigger>
+                      <SelectContent>
+                        {["9:00 AM", "10:00 AM", "11:00 AM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM"].map((t) => (
+                          <SelectItem key={t} value={t}>{t}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-1.5 block">Meeting Type</label>
+                  <Select value={selectedType} onValueChange={setSelectedType}>
+                    <SelectTrigger><SelectValue placeholder="Select type" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="VIDEO">Video Call</SelectItem>
+                      <SelectItem value="PHONE">Phone Call</SelectItem>
+                      <SelectItem value="IN_PERSON">In-Person</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-1.5 block">Notes</label>
+                  <Textarea placeholder="What would you like to discuss?" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} />
+                </div>
+                <Button
+                  className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+                  onClick={handleBook}
+                  disabled={booking || !selectedConsultant || !selectedDate || !selectedTime}
+                >
+                  {booking ? <><Loader2 className="size-4 mr-2 animate-spin" /> Booking...</> : "Book Appointment"}
+                </Button>
               </div>
-              <div>
-                <label className="text-sm font-medium mb-1.5 block">Meeting Type</label>
-                <Select>
-                  <SelectTrigger><SelectValue placeholder="Select type" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="VIDEO">Video Call</SelectItem>
-                    <SelectItem value="PHONE">Phone Call</SelectItem>
-                    <SelectItem value="IN_PERSON">In-Person</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="text-sm font-medium mb-1.5 block">Notes</label>
-                <Textarea placeholder="What would you like to discuss?" rows={3} />
-              </div>
-              <Button
-                className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
-                onClick={() => {
-                  toast.success("Appointment booked successfully!")
-                  setDialogOpen(false)
-                }}
-              >
-                Book Appointment
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
 
       {/* Upcoming */}
       <div>
         <h2 className="text-lg font-heading font-semibold mb-4">Upcoming Appointments</h2>
-        <div className="space-y-3">
-          {upcoming.map((apt) => {
-            const TypeIcon = typeIcons[apt.type] || Video
-            return (
-              <Card key={apt.id} className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
-                <CardContent className="p-5">
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                    <div className="flex items-center gap-3 flex-1">
-                      <Avatar className="size-10">
-                        <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
-                          {apt.consultant.split(" ").map((n) => n[0]).join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="text-sm font-semibold">{apt.consultant}</p>
-                        <div className="flex flex-wrap gap-2 mt-1">
-                          <span className="text-xs text-muted-foreground flex items-center gap-1">
-                            <CalendarIcon className="size-3" /> {apt.date}
-                          </span>
-                          <span className="text-xs text-muted-foreground flex items-center gap-1">
-                            <Clock className="size-3" /> {apt.time}
-                          </span>
-                          <span className="text-xs text-muted-foreground flex items-center gap-1">
-                            <TypeIcon className="size-3" /> {apt.duration}
-                          </span>
+        {upcoming.length > 0 ? (
+          <div className="space-y-3">
+            {upcoming.map((apt) => {
+              const TypeIcon = typeIcons[apt.type] || Video
+              const consultantName = apt.consultant?.user?.name || "Consultant"
+              return (
+                <Card key={apt.id} className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+                  <CardContent className="p-5">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                      <div className="flex items-center gap-3 flex-1">
+                        <Avatar className="size-10">
+                          <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                            {consultantName.split(" ").map((n) => n[0]).join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-sm font-semibold">{consultantName}</p>
+                          <div className="flex flex-wrap gap-2 mt-1">
+                            <span className="text-xs text-muted-foreground flex items-center gap-1">
+                              <CalendarIcon className="size-3" /> {formatDate(apt.date)}
+                            </span>
+                            <span className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Clock className="size-3" /> {formatTime(apt.date)}
+                            </span>
+                            <span className="text-xs text-muted-foreground flex items-center gap-1">
+                              <TypeIcon className="size-3" /> {apt.duration} min
+                            </span>
+                          </div>
                         </div>
                       </div>
+                      <div className="flex items-center gap-2">
+                        <Badge className={statusColors[apt.status] || ""}>{apt.status}</Badge>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Badge className={statusColors[apt.status]}>{apt.status}</Badge>
-                      <Button variant="outline" size="sm" className="text-xs">Reschedule</Button>
-                      <Button variant="ghost" size="sm" className="text-xs text-destructive">Cancel</Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+        ) : (
+          <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+            <CardContent className="p-8 text-center">
+              <CalendarIcon className="size-10 text-muted-foreground/40 mx-auto mb-3" />
+              <p className="text-sm font-medium">No upcoming appointments</p>
+              <p className="text-xs text-muted-foreground mt-1">Book a consultation with one of our experts to get started</p>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* Past */}
       <div>
         <h2 className="text-lg font-heading font-semibold mb-4">Past Appointments</h2>
-        <div className="space-y-3">
-          {past.map((apt) => {
-            const TypeIcon = typeIcons[apt.type] || Video
-            return (
-              <Card key={apt.id} className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
-                <CardContent className="p-5">
-                  <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-                    <div className="flex items-center gap-3 flex-1">
-                      <Avatar className="size-10">
-                        <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
-                          {apt.consultant.split(" ").map((n) => n[0]).join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="text-sm font-semibold">{apt.consultant}</p>
-                        <div className="flex flex-wrap gap-2 mt-1">
-                          <span className="text-xs text-muted-foreground">{apt.date} at {apt.time}</span>
-                          <span className="text-xs text-muted-foreground flex items-center gap-1"><TypeIcon className="size-3" /> {apt.duration}</span>
+        {past.length > 0 ? (
+          <div className="space-y-3">
+            {past.map((apt) => {
+              const TypeIcon = typeIcons[apt.type] || Video
+              const consultantName = apt.consultant?.user?.name || "Consultant"
+              return (
+                <Card key={apt.id} className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+                  <CardContent className="p-5">
+                    <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                      <div className="flex items-center gap-3 flex-1">
+                        <Avatar className="size-10">
+                          <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                            {consultantName.split(" ").map((n) => n[0]).join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-sm font-semibold">{consultantName}</p>
+                          <div className="flex flex-wrap gap-2 mt-1">
+                            <span className="text-xs text-muted-foreground">{formatDate(apt.date)} at {formatTime(apt.date)}</span>
+                            <span className="text-xs text-muted-foreground flex items-center gap-1"><TypeIcon className="size-3" /> {apt.duration} min</span>
+                          </div>
                         </div>
                       </div>
+                      <Badge className={statusColors[apt.status] || ""}>{apt.status}</Badge>
                     </div>
-                    <Badge className={statusColors[apt.status]}>{apt.status}</Badge>
-                  </div>
-                  {apt.notes && (
-                    <div className="mt-3 p-3 rounded-lg bg-muted/30">
-                      <p className="text-xs font-medium mb-1">Meeting Notes</p>
-                      <p className="text-xs text-muted-foreground">{apt.notes}</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
+                    {apt.notes && (
+                      <div className="mt-3 p-3 rounded-lg bg-muted/30">
+                        <p className="text-xs font-medium mb-1">Meeting Notes</p>
+                        <p className="text-xs text-muted-foreground">{apt.notes}</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+        ) : (
+          <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+            <CardContent className="p-8 text-center">
+              <p className="text-sm text-muted-foreground">No past appointments</p>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   )

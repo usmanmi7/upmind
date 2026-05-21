@@ -53,3 +53,28 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const { searchParams } = new URL(req.url)
+    const id = searchParams.get("id")
+
+    if (!id) {
+      return NextResponse.json({ error: "Document ID required" }, { status: 400 })
+    }
+
+    await db.document.delete({
+      where: { id, userId: session.user.id },
+    })
+
+    return NextResponse.json({ message: "Document deleted" })
+  } catch (error) {
+    console.error("Documents DELETE error:", error)
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+  }
+}

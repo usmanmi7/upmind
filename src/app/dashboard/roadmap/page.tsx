@@ -29,104 +29,140 @@ import {
   Flag,
   Star,
   PartyPopper,
+  Loader2,
+  Trash2,
 } from "lucide-react"
 import { toast } from "sonner"
 
-const phases = [
-  {
-    id: "research",
-    name: "Research",
-    icon: Search,
-    color: "from-[#2D4A2D] to-[#8FBC8F]",
-    progress: 75,
-    items: [
-      { id: "1", title: "Market research & analysis", completed: true },
-      { id: "2", title: "Competitive landscape mapping", completed: true },
-      { id: "3", title: "Customer persona development", completed: true },
-      { id: "4", title: "Industry trend analysis", completed: false },
-    ],
-  },
-  {
-    id: "build",
-    name: "Build",
-    icon: Wrench,
-    color: "from-[#7CFC00] to-[#2D4A2D]",
-    progress: 40,
-    items: [
-      { id: "5", title: "Define MVP features", completed: true },
-      { id: "6", title: "Create wireframes & prototypes", completed: true },
-      { id: "7", title: "Develop MVP", completed: false },
-      { id: "8", title: "Internal testing & QA", completed: false },
-      { id: "9", title: "Beta user onboarding", completed: false },
-    ],
-  },
-  {
-    id: "launch",
-    name: "Launch",
-    icon: Zap,
-    color: "from-green-500 to-emerald-500",
-    progress: 10,
-    items: [
-      { id: "10", title: "Launch marketing campaign", completed: false },
-      { id: "11", title: "Product Hunt launch", completed: false },
-      { id: "12", title: "Press & media outreach", completed: false },
-      { id: "13", title: "Monitor & iterate on feedback", completed: false },
-    ],
-  },
-  {
-    id: "grow",
-    name: "Grow",
-    icon: TrendingUp,
-    color: "from-orange-500 to-red-500",
-    progress: 0,
-    items: [
-      { id: "14", title: "Optimize conversion funnel", completed: false },
-      { id: "15", title: "Scale paid acquisition", completed: false },
-      { id: "16", title: "Build referral program", completed: false },
-      { id: "17", title: "Prepare for Series A", completed: false },
-    ],
-  },
-]
+const phaseConfig: Record<string, { name: string; icon: React.ElementType; color: string }> = {
+  research: { name: "Research", icon: Search, color: "from-[#2D4A2D] to-[#8FBC8F]" },
+  build: { name: "Build", icon: Wrench, color: "from-[#7CFC00] to-[#2D4A2D]" },
+  launch: { name: "Launch", icon: Zap, color: "from-green-500 to-emerald-500" },
+  grow: { name: "Grow", icon: TrendingUp, color: "from-orange-500 to-red-500" },
+}
+
+interface RoadmapItem {
+  id: string
+  title: string
+  phase: string
+  description: string | null
+  order: number
+  isCompleted: boolean
+}
 
 export default function RoadmapPage() {
-  const [phaseItems, setPhaseItems] = React.useState(phases)
+  const [phases, setPhases] = React.useState<Record<string, RoadmapItem[]>>({})
+  const [overallProgress, setOverallProgress] = React.useState(0)
+  const [loading, setLoading] = React.useState(true)
   const [dialogOpen, setDialogOpen] = React.useState(false)
   const [newTask, setNewTask] = React.useState("")
-  const [selectedPhase, setSelectedPhase] = React.useState("")
+  const [selectedPhase, setSelectedPhase] = React.useState("research")
+  const [togglingId, setTogglingId] = React.useState<string | null>(null)
+  const [deletingId, setDeletingId] = React.useState<string | null>(null)
 
-  const toggleItem = (phaseId: string, itemId: string) => {
-    setPhaseItems((prev) =>
-      prev.map((phase) => {
-        if (phase.id !== phaseId) return phase
-        const items = phase.items.map((item) =>
-          item.id === itemId ? { ...item, completed: !item.completed } : item
-        )
-        const completed = items.filter((i) => i.completed).length
-        const progress = Math.round((completed / items.length) * 100)
-        return { ...phase, items, progress }
+  const fetchRoadmap = React.useCallback(async () => {
+    try {
+      const res = await fetch("/api/roadmap")
+      if (res.ok) {
+        const data = await res.json()
+        setPhases(data.phases || {})
+        setOverallProgress(data.progress || 0)
+      }
+    } catch (error) {
+      console.error("Failed to fetch roadmap:", error)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  React.useEffect(() => {
+    fetchRoadmap()
+  }, [fetchRoadmap])
+
+  const toggleItem = async (itemId: string, currentCompleted: boolean) => {
+    setTogglingId(itemId)
+    try {
+      const res = await fetch("/api/roadmap", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: itemId, isCompleted: !currentCompleted }),
       })
-    )
+      if (res.ok) {
+        const data = await res.json()
+        // Optimistically update UI
+        setPhases((prev) => {
+          const newPhases = { ...prev }
+          for (const phaseKey of Object.keys(newPhases)) {
+            newPhases[phaseKey] = newPhases[phaseKey].map((item) =>
+              item.id === itemId ? { ...item, isCompleted: !currentCompleted } : item
+            )
+          }
+          return newPhases
+        })
+        setOverallProgress(data.progress || 0)
+      }
+    } catch (error) {
+      console.error("Failed to toggle item:", error)
+      toast.error("Failed to update task")
+    } finally {
+      setTogglingId(null)
+    }
   }
 
-  const addTask = () => {
+  const addTask = async () => {
     if (!newTask.trim() || !selectedPhase) return
-    setPhaseItems((prev) =>
-      prev.map((phase) => {
-        if (phase.id !== selectedPhase) return phase
-        const items = [...phase.items, { id: String(Date.now()), title: newTask, completed: false }]
-        const completed = items.filter((i) => i.completed).length
-        const progress = Math.round((completed / items.length) * 100)
-        return { ...phase, items, progress }
+    try {
+      const res = await fetch("/api/roadmap", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: newTask.trim(), phase: selectedPhase }),
       })
-    )
-    setNewTask("")
-    setDialogOpen(false)
-    toast.success("Task added to roadmap!")
+      if (res.ok) {
+        const item = await res.json()
+        setPhases((prev) => ({
+          ...prev,
+          [selectedPhase]: [...(prev[selectedPhase] || []), item],
+        }))
+        setNewTask("")
+        setDialogOpen(false)
+        toast.success("Task added to roadmap!")
+        // Refresh to get updated progress
+        fetchRoadmap()
+      }
+    } catch (error) {
+      console.error("Failed to add task:", error)
+      toast.error("Failed to add task")
+    }
   }
 
-  const totalCompleted = phaseItems.reduce((acc, p) => acc + p.items.filter((i) => i.completed).length, 0)
-  const totalItems = phaseItems.reduce((acc, p) => acc + p.items.length, 0)
-  const totalProgress = Math.round((totalCompleted / totalItems) * 100)
+  const deleteItem = async (itemId: string) => {
+    setDeletingId(itemId)
+    try {
+      const res = await fetch(`/api/roadmap?id=${itemId}`, { method: "DELETE" })
+      if (res.ok) {
+        setPhases((prev) => {
+          const newPhases = { ...prev }
+          for (const phaseKey of Object.keys(newPhases)) {
+            newPhases[phaseKey] = newPhases[phaseKey].filter((item) => item.id !== itemId)
+          }
+          return newPhases
+        })
+        toast.success("Task deleted")
+        fetchRoadmap()
+      }
+    } catch (error) {
+      console.error("Failed to delete item:", error)
+      toast.error("Failed to delete task")
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
+  // Calculate totals
+  const allItems = Object.values(phases).flat()
+  const totalCompleted = allItems.filter((i) => i.isCompleted).length
+  const totalItems = allItems.length
+  const calculatedProgress = totalItems > 0 ? Math.round((totalCompleted / totalItems) * 100) : 0
 
   // Milestone tracker
   const milestones = [
@@ -139,7 +175,35 @@ export default function RoadmapPage() {
     { id: "scale", label: "Scale", icon: Flag, description: "Scale operations globally", threshold: 100 },
   ]
 
-  const currentMilestoneIndex = milestones.reduce((acc, m, i) => (totalProgress >= m.threshold ? i : acc), 0)
+  const currentMilestoneIndex = milestones.reduce((acc, m, i) => (calculatedProgress >= m.threshold ? i : acc), 0)
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <p className="text-sm text-muted-foreground">Loading roadmap...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Default phases if none exist
+  const displayPhases = Object.keys(phases).length > 0
+    ? Object.entries(phases).map(([key, items]) => {
+        const config = phaseConfig[key] || { name: key.charAt(0).toUpperCase() + key.slice(1), icon: Rocket, color: "from-[#2D4A2D] to-[#8FBC8F]" }
+        const completed = items.filter((i) => i.isCompleted).length
+        const progress = items.length > 0 ? Math.round((completed / items.length) * 100) : 0
+        return { id: key, name: config.name, icon: config.icon, color: config.color, progress, items }
+      })
+    : Object.entries(phaseConfig).map(([key, config]) => ({
+        id: key,
+        name: config.name,
+        icon: config.icon,
+        color: config.color,
+        progress: 0,
+        items: [] as RoadmapItem[],
+      }))
 
   return (
     <div className="space-y-6">
@@ -166,9 +230,8 @@ export default function RoadmapPage() {
                   value={selectedPhase}
                   onChange={(e) => setSelectedPhase(e.target.value)}
                 >
-                  <option value="">Select a phase</option>
-                  {phaseItems.map((p) => (
-                    <option key={p.id} value={p.id}>{p.name}</option>
+                  {Object.entries(phaseConfig).map(([key, config]) => (
+                    <option key={key} value={key}>{config.name}</option>
                   ))}
                 </select>
               </div>
@@ -197,9 +260,9 @@ export default function RoadmapPage() {
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium">Overall Progress</span>
-            <span className="text-sm font-bold gradient-text">{totalProgress}% ({totalCompleted}/{totalItems} tasks)</span>
+            <span className="text-sm font-bold gradient-text">{calculatedProgress}% ({totalCompleted}/{totalItems} tasks)</span>
           </div>
-          <Progress value={totalProgress} className="h-2.5" />
+          <Progress value={calculatedProgress} className="h-2.5" />
         </CardContent>
       </Card>
 
@@ -217,17 +280,15 @@ export default function RoadmapPage() {
           </div>
         </CardHeader>
         <CardContent>
-          {/* Visual Milestone Timeline */}
           <div className="relative overflow-x-auto pb-2">
             <div className="flex items-center min-w-[600px] px-2">
               {milestones.map((milestone, index) => {
-                const isReached = totalProgress >= milestone.threshold
+                const isReached = calculatedProgress >= milestone.threshold
                 const isCurrent = index === currentMilestoneIndex
                 const Icon = milestone.icon
 
                 return (
                   <div key={milestone.id} className="flex items-center flex-1">
-                    {/* Milestone Node */}
                     <div className="flex flex-col items-center relative">
                       <div
                         className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
@@ -254,7 +315,6 @@ export default function RoadmapPage() {
                         </span>
                       )}
                     </div>
-                    {/* Connector Line */}
                     {index < milestones.length - 1 && (
                       <div className="flex-1 h-0.5 mx-1 mt-[-18px]">
                         <div
@@ -268,7 +328,7 @@ export default function RoadmapPage() {
                           style={{
                             width:
                               isReached && index === currentMilestoneIndex
-                                ? `${((totalProgress - milestone.threshold) / (milestones[index + 1]?.threshold - milestone.threshold)) * 100}%`
+                                ? `${((calculatedProgress - milestone.threshold) / (milestones[index + 1]?.threshold - milestone.threshold)) * 100}%`
                                 : isReached
                                 ? "100%"
                                 : "0%",
@@ -291,7 +351,7 @@ export default function RoadmapPage() {
 
       {/* Timeline */}
       <div className="space-y-6">
-        {phaseItems.map((phase, phaseIndex) => (
+        {displayPhases.map((phase, phaseIndex) => (
           <Card key={phase.id} className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-3">
@@ -300,7 +360,7 @@ export default function RoadmapPage() {
                     <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${phase.color} flex items-center justify-center`}>
                       <phase.icon className="size-5 text-white" />
                     </div>
-                    {phaseIndex < phaseItems.length - 1 && (
+                    {phaseIndex < displayPhases.length - 1 && (
                       <div className="hidden sm:block w-8 h-0.5 bg-muted ml-2" />
                     )}
                   </div>
@@ -324,23 +384,54 @@ export default function RoadmapPage() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                {phase.items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/30 transition-smooth"
+              {phase.items.length > 0 ? (
+                <div className="space-y-2">
+                  {phase.items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/30 transition-all duration-200 group"
+                    >
+                      <Checkbox
+                        checked={item.isCompleted}
+                        onCheckedChange={() => toggleItem(item.id, item.isCompleted)}
+                        disabled={togglingId === item.id}
+                        className={item.isCompleted ? "data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500" : ""}
+                      />
+                      <span className={`text-sm flex-1 ${item.isCompleted ? "line-through text-muted-foreground" : ""}`}>
+                        {item.title}
+                      </span>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="size-7 opacity-0 group-hover:opacity-100 text-destructive"
+                        onClick={() => deleteItem(item.id)}
+                        disabled={deletingId === item.id}
+                      >
+                        {deletingId === item.id ? (
+                          <Loader2 className="size-3.5 animate-spin" />
+                        ) : (
+                          <Trash2 className="size-3.5" />
+                        )}
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-6">
+                  <p className="text-sm text-muted-foreground">No tasks in this phase yet</p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="mt-2 text-[#7CFC00]"
+                    onClick={() => {
+                      setSelectedPhase(phase.id)
+                      setDialogOpen(true)
+                    }}
                   >
-                    <Checkbox
-                      checked={item.completed}
-                      onCheckedChange={() => toggleItem(phase.id, item.id)}
-                      className={item.completed ? "data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500" : ""}
-                    />
-                    <span className={`text-sm ${item.completed ? "line-through text-muted-foreground" : ""}`}>
-                      {item.title}
-                    </span>
-                  </div>
-                ))}
-              </div>
+                    <Plus className="size-3 mr-1" /> Add first task
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
         ))}

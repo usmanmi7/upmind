@@ -19,38 +19,154 @@ import {
   Users,
   Target,
   Lightbulb,
+  Loader2,
 } from "lucide-react"
 import { toast } from "sonner"
 import Link from "next/link"
 
-const startupData = {
-  name: "My Startup",
-  industry: "SaaS",
-  stage: "Early Stage",
-  progress: 35,
-  vision: "Building the future of work with AI-powered productivity tools.",
-  goals: "Launch MVP by Q2, acquire first 100 users, raise seed round.",
-  teamSize: "1-5",
-  website: "https://mystartup.com",
+interface StartupData {
+  id: string
+  name: string
+  industry: string | null
+  teamSize: string | null
+  vision: string | null
+  goals: string | null
+  pitchDeckUrl: string | null
+  businessStage: string | null
+  revenueStage: string | null
+  website: string | null
+  progress: number
+  tasks: Array<{ id: string; status: string }>
+  roadmapItems: Array<{ id: string; isCompleted: boolean }>
 }
 
-const quickStats = [
-  { icon: CheckCircle2, label: "Tasks Completed", value: "7/12", color: "text-green-600 dark:text-green-400", bg: "bg-green-100 dark:bg-green-900/30" },
-  { icon: Calendar, label: "Upcoming Appointments", value: "2", color: "text-[#1A2E1A] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
-  { icon: BookOpen, label: "Resources Used", value: "15", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
-  { icon: TrendingUp, label: "Startup Score", value: "72/100", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
-]
-
-const stages = [
-  { name: "Ideation", progress: 100 },
-  { name: "Validation", progress: 100 },
-  { name: "Early Stage", progress: 35 },
-  { name: "Growth", progress: 0 },
-  { name: "Scale", progress: 0 },
-]
+interface AnalyticsOverview {
+  tasksCompleted: number
+  totalTasks: number
+  appointmentsAttended: number
+  scheduledAppointments: number
+  resourcesUsed: number
+  startupScore: number
+}
 
 export default function StartupPage() {
   const [editing, setEditing] = React.useState(false)
+  const [startup, setStartup] = React.useState<StartupData | null>(null)
+  const [analytics, setAnalytics] = React.useState<AnalyticsOverview | null>(null)
+  const [loading, setLoading] = React.useState(true)
+  const [saving, setSaving] = React.useState(false)
+
+  // Form state
+  const [formName, setFormName] = React.useState("")
+  const [formIndustry, setFormIndustry] = React.useState("")
+  const [formTeamSize, setFormTeamSize] = React.useState("")
+  const [formVision, setFormVision] = React.useState("")
+  const [formGoals, setFormGoals] = React.useState("")
+  const [formWebsite, setFormWebsite] = React.useState("")
+  const [formBusinessStage, setFormBusinessStage] = React.useState("")
+
+  const fetchData = React.useCallback(async () => {
+    try {
+      const [startupRes, analyticsRes] = await Promise.all([
+        fetch("/api/startup"),
+        fetch("/api/analytics"),
+      ])
+
+      if (startupRes.ok) {
+        const data = await startupRes.json()
+        if (data.error === "Startup not found") {
+          // No startup yet - will be created on first save
+          setStartup(null)
+        } else {
+          setStartup(data)
+          setFormName(data.name || "")
+          setFormIndustry(data.industry || "")
+          setFormTeamSize(data.teamSize || "")
+          setFormVision(data.vision || "")
+          setFormGoals(data.goals || "")
+          setFormWebsite(data.website || "")
+          setFormBusinessStage(data.businessStage || "")
+        }
+      }
+
+      if (analyticsRes.ok) {
+        const data = await analyticsRes.json()
+        setAnalytics(data.overview)
+      }
+    } catch (error) {
+      console.error("Failed to fetch startup data:", error)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  React.useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  const handleSave = async () => {
+    setSaving(true)
+    try {
+      const res = await fetch("/api/startup", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formName,
+          industry: formIndustry,
+          teamSize: formTeamSize,
+          vision: formVision,
+          goals: formGoals,
+          website: formWebsite,
+          businessStage: formBusinessStage,
+        }),
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        setStartup(data)
+        toast.success("Startup updated successfully!")
+        setEditing(false)
+        fetchData()
+      } else {
+        toast.error("Failed to update startup")
+      }
+    } catch (error) {
+      console.error("Failed to save startup:", error)
+      toast.error("Failed to update startup")
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <p className="text-sm text-muted-foreground">Loading startup data...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const completedTasks = startup?.tasks?.filter((t) => t.status === "COMPLETED").length || analytics?.tasksCompleted || 0
+  const totalTasks = startup?.tasks?.length || analytics?.totalTasks || 0
+  const progress = startup?.progress || 0
+
+  const quickStats = [
+    { icon: CheckCircle2, label: "Tasks Completed", value: `${completedTasks}/${totalTasks}`, color: "text-green-600 dark:text-green-400", bg: "bg-green-100 dark:bg-green-900/30" },
+    { icon: Calendar, label: "Upcoming Appointments", value: String(analytics?.scheduledAppointments || 0), color: "text-[#1A2E1A] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
+    { icon: BookOpen, label: "Resources Used", value: String(analytics?.resourcesUsed || 0), color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
+    { icon: TrendingUp, label: "Startup Score", value: `${analytics?.startupScore || 0}/100`, color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
+  ]
+
+  const stages = [
+    { name: "Ideation", progress: progress >= 10 ? 100 : progress >= 0 && startup ? progress * 10 : 0 },
+    { name: "Validation", progress: progress >= 25 ? 100 : progress >= 10 ? (progress - 10) * 6.67 : 0 },
+    { name: "Early Stage", progress: progress >= 50 ? 100 : progress >= 25 ? (progress - 25) * 4 : 0 },
+    { name: "Growth", progress: progress >= 75 ? 100 : progress >= 50 ? (progress - 50) * 4 : 0 },
+    { name: "Scale", progress: progress >= 100 ? 100 : progress >= 75 ? (progress - 75) * 4 : 0 },
+  ]
 
   return (
     <div className="space-y-6">
@@ -62,12 +178,19 @@ export default function StartupPage() {
         <Button
           variant={editing ? "default" : "outline"}
           onClick={() => {
-            if (editing) toast.success("Startup updated successfully!")
-            setEditing(!editing)
+            if (editing) handleSave()
+            else setEditing(true)
           }}
+          disabled={saving}
           className={editing ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A]" : ""}
         >
-          {editing ? <><Save className="size-4 mr-2" /> Save Changes</> : <><Edit3 className="size-4 mr-2" /> Edit Details</>}
+          {saving ? (
+            <><Loader2 className="size-4 mr-2 animate-spin" /> Saving...</>
+          ) : editing ? (
+            <><Save className="size-4 mr-2" /> Save Changes</>
+          ) : (
+            <><Edit3 className="size-4 mr-2" /> Edit Details</>
+          )}
         </Button>
       </div>
 
@@ -81,29 +204,34 @@ export default function StartupPage() {
             <div className="flex-1">
               {editing ? (
                 <div className="space-y-3">
-                  <Input defaultValue={startupData.name} className="text-lg font-heading font-bold" />
+                  <Input value={formName} onChange={(e) => setFormName(e.target.value)} className="text-lg font-heading font-bold" placeholder="Startup name" />
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <Input defaultValue={startupData.industry} placeholder="Industry" />
-                    <Input defaultValue={startupData.teamSize} placeholder="Team Size" />
-                    <Input defaultValue={startupData.website} placeholder="Website" />
-                    <Input defaultValue={startupData.stage} placeholder="Business Stage" />
+                    <Input value={formIndustry} onChange={(e) => setFormIndustry(e.target.value)} placeholder="Industry" />
+                    <Input value={formTeamSize} onChange={(e) => setFormTeamSize(e.target.value)} placeholder="Team Size" />
+                    <Input value={formWebsite} onChange={(e) => setFormWebsite(e.target.value)} placeholder="Website" />
+                    <Input value={formBusinessStage} onChange={(e) => setFormBusinessStage(e.target.value)} placeholder="Business Stage" />
                   </div>
-                  <Textarea defaultValue={startupData.vision} placeholder="Vision" rows={2} />
-                  <Textarea defaultValue={startupData.goals} placeholder="Goals" rows={2} />
+                  <Textarea value={formVision} onChange={(e) => setFormVision(e.target.value)} placeholder="Vision" rows={2} />
+                  <Textarea value={formGoals} onChange={(e) => setFormGoals(e.target.value)} placeholder="Goals" rows={2} />
                 </div>
-              ) : (
+              ) : startup ? (
                 <>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h2 className="text-xl font-heading font-bold">{startupData.name}</h2>
-                    <Badge className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">{startupData.stage}</Badge>
-                    <Badge variant="outline" className="text-xs">{startupData.industry}</Badge>
+                    <h2 className="text-xl font-heading font-bold">{startup.name || "My Startup"}</h2>
+                    <Badge className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">{startup.businessStage || "Idea"}</Badge>
+                    {startup.industry && <Badge variant="outline" className="text-xs">{startup.industry}</Badge>}
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">{startupData.vision}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{startup.vision || "Add your startup vision to get started."}</p>
                   <div className="flex flex-wrap gap-4 mt-3 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1"><Users className="size-3.5" /> {startupData.teamSize} team</span>
-                    <span className="flex items-center gap-1"><Globe className="size-3.5" /> {startupData.website}</span>
+                    {startup.teamSize && <span className="flex items-center gap-1"><Users className="size-3.5" /> {startup.teamSize} team</span>}
+                    {startup.website && <span className="flex items-center gap-1"><Globe className="size-3.5" /> {startup.website}</span>}
                   </div>
                 </>
+              ) : (
+                <div className="text-center py-4">
+                  <h2 className="text-xl font-heading font-bold">Set Up Your Startup</h2>
+                  <p className="text-sm text-muted-foreground mt-1">Click &quot;Edit Details&quot; to create your startup profile and begin tracking progress.</p>
+                </div>
               )}
             </div>
           </div>
@@ -112,9 +240,9 @@ export default function StartupPage() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium">Overall Progress</span>
-              <span className="text-sm font-bold gradient-text">{startupData.progress}%</span>
+              <span className="text-sm font-bold gradient-text">{progress}%</span>
             </div>
-            <Progress value={startupData.progress} className="h-2" />
+            <Progress value={progress} className="h-2" />
           </div>
         </CardContent>
       </Card>
@@ -159,7 +287,7 @@ export default function StartupPage() {
                     {stage.progress === 100 ? <CheckCircle2 className="size-5" /> : i + 1}
                   </div>
                   <span className="text-xs font-medium mt-1.5 text-center">{stage.name}</span>
-                  <span className="text-[10px] text-muted-foreground">{stage.progress}%</span>
+                  <span className="text-[10px] text-muted-foreground">{Math.round(stage.progress)}%</span>
                 </div>
                 {i < stages.length - 1 && (
                   <div className={`h-0.5 w-8 shrink-0 ${stage.progress === 100 ? "bg-green-500" : "bg-muted"}`} />
@@ -176,25 +304,17 @@ export default function StartupPage() {
           <CardTitle className="text-base font-heading">Goals & Targets</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            {[
-              { title: "Launch MVP by Q2", progress: 60, icon: Target },
-              { title: "Acquire first 100 users", progress: 25, icon: Users },
-              { title: "Raise seed round", progress: 10, icon: TrendingUp },
-              { title: "Define product-market fit", progress: 45, icon: Lightbulb },
-            ].map((goal) => (
-              <div key={goal.title} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
-                <div className="w-8 h-8 rounded-lg bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center shrink-0">
-                  <goal.icon className="size-4 text-[#2D4A2D] dark:text-[#7CFC00]" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium">{goal.title}</p>
-                  <Progress value={goal.progress} className="h-1.5 mt-1.5" />
-                </div>
-                <span className="text-xs font-medium text-muted-foreground shrink-0">{goal.progress}%</span>
-              </div>
-            ))}
-          </div>
+          {startup?.goals ? (
+            <div className="p-4 rounded-lg bg-muted/30">
+              <p className="text-sm whitespace-pre-wrap">{startup.goals}</p>
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <Target className="size-8 text-muted-foreground/40 mx-auto mb-2" />
+              <p className="text-sm text-muted-foreground">No goals set yet</p>
+              <p className="text-xs text-muted-foreground mt-1">Edit your startup details to add goals and targets</p>
+            </div>
+          )}
         </CardContent>
       </Card>
 

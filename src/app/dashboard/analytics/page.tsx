@@ -9,13 +9,11 @@ import {
   BookOpen,
   TrendingUp,
   ArrowUpRight,
-  ArrowDownRight,
   Lightbulb,
   Target,
+  Loader2,
 } from "lucide-react"
 import {
-  LineChart,
-  Line,
   BarChart,
   Bar,
   PieChart,
@@ -28,42 +26,111 @@ import {
   ResponsiveContainer,
 } from "recharts"
 
-const overviewCards = [
-  { icon: CheckCircle2, label: "Tasks Completed", value: "7", change: "+3 this week", trend: "up", color: "text-green-600 dark:text-green-400", bg: "bg-green-100 dark:bg-green-900/30" },
-  { icon: Calendar, label: "Appointments Attended", value: "12", change: "+2 this month", trend: "up", color: "text-[#1A2E1A] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
-  { icon: BookOpen, label: "Resources Used", value: "23", change: "+5 this week", trend: "up", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
-  { icon: TrendingUp, label: "Startup Score", value: "72/100", change: "+8 from last month", trend: "up", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
-]
-
-const progressData = [
-  { month: "Oct", score: 25 },
-  { month: "Nov", score: 35 },
-  { month: "Dec", score: 42 },
-  { month: "Jan", score: 55 },
-  { month: "Feb", score: 65 },
-  { month: "Mar", score: 72 },
-]
-
-const resourceData = [
-  { name: "Templates", used: 8 },
-  { name: "Guides", used: 6 },
-  { name: "Videos", used: 5 },
-  { name: "PDFs", used: 4 },
-]
-
-const taskCompletionData = [
-  { name: "Completed", value: 7, color: "#10B981" },
-  { name: "In Progress", value: 3, color: "#7CFC00" },
-  { name: "To Do", value: 2, color: "#94A3B8" },
-]
-
-const recommendations = [
-  { icon: Target, title: "Focus on Market Validation", description: "Complete your customer interview tasks to strengthen your market positioning." },
-  { icon: Lightbulb, title: "Try the Pitch Deck Template", description: "Your fundraising phase is approaching. Prepare your pitch deck early." },
-  { icon: Calendar, title: "Book a Strategy Session", description: "Schedule a consultation to discuss your progress and next steps." },
-]
+interface AnalyticsData {
+  overview: {
+    tasksCompleted: number
+    totalTasks: number
+    appointmentsAttended: number
+    totalAppointments: number
+    scheduledAppointments: number
+    resourcesUsed: number
+    startupScore: number
+    unreadNotifications: number
+  }
+  taskBreakdown: {
+    completed: number
+    inProgress: number
+    todo: number
+  }
+  resourceByType: Record<string, number>
+  healthDimensions: {
+    product: number
+    market: number
+    team: number
+    financials: number
+  }
+  progress: number
+}
 
 export default function AnalyticsPage() {
+  const [data, setData] = React.useState<AnalyticsData | null>(null)
+  const [loading, setLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/analytics")
+        if (res.ok) {
+          const json = await res.json()
+          setData(json)
+        }
+      } catch (error) {
+        console.error("Failed to fetch analytics:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <p className="text-sm text-muted-foreground">Loading analytics...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const overview = data?.overview
+  const taskBreakdown = data?.taskBreakdown || { completed: 0, inProgress: 0, todo: 0 }
+  const healthDimensions = data?.healthDimensions || { product: 0, market: 0, team: 0, financials: 0 }
+  const startupScore = overview?.startupScore || 0
+
+  const overviewCards = [
+    { icon: CheckCircle2, label: "Tasks Completed", value: String(overview?.tasksCompleted || 0), change: `${overview?.totalTasks || 0} total`, color: "text-green-600 dark:text-green-400", bg: "bg-green-100 dark:bg-green-900/30" },
+    { icon: Calendar, label: "Appointments Attended", value: String(overview?.appointmentsAttended || 0), change: `${overview?.scheduledAppointments || 0} scheduled`, color: "text-[#1A2E1A] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
+    { icon: BookOpen, label: "Resources Used", value: String(overview?.resourcesUsed || 0), change: "saved resources", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
+    { icon: TrendingUp, label: "Startup Score", value: `${startupScore}/100`, change: startupScore >= 70 ? "Strong" : startupScore >= 40 ? "Growing" : "Getting started", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
+  ]
+
+  // Build resource data from actual types
+  const resourceData = Object.entries(data?.resourceByType || {}).map(([name, used]) => ({
+    name: name.charAt(0) + name.slice(1).toLowerCase(),
+    used,
+  }))
+  if (resourceData.length === 0) {
+    // Show empty state chart
+    resourceData.push({ name: "No data yet", used: 0 })
+  }
+
+  const taskCompletionData = [
+    { name: "Completed", value: taskBreakdown.completed, color: "#10B981" },
+    { name: "In Progress", value: taskBreakdown.inProgress, color: "#7CFC00" },
+    { name: "To Do", value: taskBreakdown.todo, color: "#94A3B8" },
+  ].filter((d) => d.value > 0)
+
+  if (taskCompletionData.length === 0) {
+    taskCompletionData.push({ name: "No tasks", value: 1, color: "#94A3B8" })
+  }
+
+  const recommendations = []
+  if (startupScore < 30) {
+    recommendations.push({ icon: Target, title: "Complete your startup profile", description: "Add your startup details, vision, and goals to improve your score." })
+    recommendations.push({ icon: Lightbulb, title: "Start building your roadmap", description: "Define tasks and milestones to track your progress." })
+    recommendations.push({ icon: Calendar, title: "Book a consultation", description: "Get expert guidance to accelerate your startup journey." })
+  } else if (startupScore < 60) {
+    recommendations.push({ icon: Target, title: "Focus on completing tasks", description: "You have a good start. Focus on completing your roadmap items." })
+    recommendations.push({ icon: Lightbulb, title: "Try the Pitch Deck Template", description: "Your fundraising phase may be approaching. Prepare your pitch deck early." })
+    recommendations.push({ icon: Calendar, title: "Book a Strategy Session", description: "Schedule a consultation to discuss your progress and next steps." })
+  } else {
+    recommendations.push({ icon: TrendingUp, title: "Scale your operations", description: "You are making great progress. Consider scaling your team and operations." })
+    recommendations.push({ icon: Lightbulb, title: "Refine your strategy", description: "Use analytics insights to optimize your growth channels." })
+    recommendations.push({ icon: Calendar, title: "Seek investment advice", description: "Your progress is strong. Consider speaking with a fundraising expert." })
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -81,11 +148,7 @@ export default function AnalyticsPage() {
                   <card.icon className={`size-5 ${card.color}`} />
                 </div>
                 <div className="flex items-center gap-1 text-xs">
-                  {card.trend === "up" ? (
-                    <ArrowUpRight className="size-3 text-green-500" />
-                  ) : (
-                    <ArrowDownRight className="size-3 text-red-500" />
-                  )}
+                  <ArrowUpRight className="size-3 text-green-500" />
                   <span className="text-muted-foreground">{card.change}</span>
                 </div>
               </div>
@@ -98,37 +161,41 @@ export default function AnalyticsPage() {
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Progress Over Time */}
+        {/* Startup Score Over Time - simplified since we don't have historical data */}
         <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
           <CardHeader>
-            <CardTitle className="text-base font-heading">Progress Over Time</CardTitle>
-            <CardDescription>Your startup score over the past 6 months</CardDescription>
+            <CardTitle className="text-base font-heading">Startup Score</CardTitle>
+            <CardDescription>Your current startup evaluation score</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={progressData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                  <XAxis dataKey="month" stroke="var(--muted-foreground)" fontSize={12} />
-                  <YAxis stroke="var(--muted-foreground)" fontSize={12} domain={[0, 100]} />
-                  <Tooltip
-                    contentStyle={{
-                      background: "var(--card)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "8px",
-                      fontSize: "12px",
-                    }}
+            <div className="h-64 flex flex-col items-center justify-center">
+              <div className="relative w-48 h-48">
+                <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="50" fill="none" stroke="var(--muted)" strokeWidth="10" />
+                  <circle
+                    cx="60" cy="60" r="50" fill="none"
+                    stroke="url(#scoreGradient)"
+                    strokeWidth="10"
+                    strokeLinecap="round"
+                    strokeDasharray={`${(startupScore / 100) * 314} ${314}`}
                   />
-                  <Line
-                    type="monotone"
-                    dataKey="score"
-                    stroke="#7CFC00"
-                    strokeWidth={2.5}
-                    dot={{ fill: "#7CFC00", strokeWidth: 0, r: 4 }}
-                    activeDot={{ r: 6, fill: "#7CFC00" }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+                  <defs>
+                    <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#7CFC00" />
+                      <stop offset="100%" stopColor="#2D4A2D" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <span className="text-4xl font-bold gradient-text">{startupScore}</span>
+                    <p className="text-xs text-muted-foreground">out of 100</p>
+                  </div>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground mt-4 text-center">
+                {startupScore >= 70 ? "Excellent progress! Keep up the momentum." : startupScore >= 40 ? "Good start! Complete more tasks to improve your score." : "Get started by completing your profile and roadmap tasks."}
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -141,22 +208,30 @@ export default function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={resourceData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                  <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} />
-                  <YAxis stroke="var(--muted-foreground)" fontSize={12} />
-                  <Tooltip
-                    contentStyle={{
-                      background: "var(--card)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "8px",
-                      fontSize: "12px",
-                    }}
-                  />
-                  <Bar dataKey="used" fill="#7CFC00" radius={[6, 6, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+              {overview?.resourcesUsed && overview.resourcesUsed > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={resourceData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                    <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} />
+                    <YAxis stroke="var(--muted-foreground)" fontSize={12} />
+                    <Tooltip
+                      contentStyle={{
+                        background: "var(--card)",
+                        border: "1px solid var(--border)",
+                        borderRadius: "8px",
+                        fontSize: "12px",
+                      }}
+                    />
+                    <Bar dataKey="used" fill="#7CFC00" radius={[6, 6, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center text-center">
+                  <BookOpen className="size-10 text-muted-foreground/30 mb-3" />
+                  <p className="text-sm text-muted-foreground">No resources used yet</p>
+                  <p className="text-xs text-muted-foreground mt-1">Save resources to see usage analytics</p>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -222,7 +297,7 @@ export default function AnalyticsPage() {
                   stroke="url(#healthGradient)"
                   strokeWidth="10"
                   strokeLinecap="round"
-                  strokeDasharray={`${72 * 3.14} ${100 * 3.14}`}
+                  strokeDasharray={`${(startupScore / 100) * 314} ${314}`}
                 />
                 <defs>
                   <linearGradient id="healthGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -233,17 +308,17 @@ export default function AnalyticsPage() {
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
-                  <span className="text-3xl font-bold gradient-text">72</span>
+                  <span className="text-3xl font-bold gradient-text">{startupScore}</span>
                   <p className="text-xs text-muted-foreground">out of 100</p>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3 mt-6 w-full">
               {[
-                { label: "Product", value: 80 },
-                { label: "Market", value: 65 },
-                { label: "Team", value: 70 },
-                { label: "Financials", value: 55 },
+                { label: "Product", value: healthDimensions.product },
+                { label: "Market", value: healthDimensions.market },
+                { label: "Team", value: healthDimensions.team },
+                { label: "Financials", value: healthDimensions.financials },
               ].map((item) => (
                 <div key={item.label}>
                   <div className="flex items-center justify-between text-xs mb-1">

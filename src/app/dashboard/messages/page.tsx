@@ -8,6 +8,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
   Send,
   Paperclip,
   MessageCircle,
@@ -21,6 +28,8 @@ import {
   ArrowLeft,
   Wifi,
   WifiOff,
+  Plus,
+  Loader2,
 } from "lucide-react"
 import { useSocket, type NewMessageData, type TypingData } from "@/hooks/useSocket"
 import { formatDistanceToNow } from "date-fns"
@@ -51,9 +60,20 @@ interface ChatMessage {
   status?: "sending" | "sent" | "delivered" | "read"
 }
 
+interface AdminUser {
+  id: string
+  name: string
+  email: string
+  image: string | null
+  role: string
+  startup: { name: string; industry: string | null; progress: number } | null
+  subscription: { plan: string; status: string } | null
+}
+
 export default function MessagesPage() {
   const { data: session } = useSession()
   const currentUserId = session?.user?.id
+  const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "SUPER_ADMIN"
 
   const {
     isConnected,
@@ -64,7 +84,6 @@ export default function MessagesPage() {
     emitTyping,
     markAsRead,
     onNewMessage,
-    onMessageNotification,
     onUserTyping,
     onMessagesRead,
   } = useSocket()
@@ -78,6 +97,12 @@ export default function MessagesPage() {
   const [mobileShowChat, setMobileShowChat] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
 
+  // Admin: new conversation dialog
+  const [newConvDialogOpen, setNewConvDialogOpen] = React.useState(false)
+  const [adminUsers, setAdminUsers] = React.useState<AdminUser[]>([])
+  const [adminUsersLoading, setAdminUsersLoading] = React.useState(false)
+  const [userSearch, setUserSearch] = React.useState("")
+
   const typingTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
   const messagesEndRef = React.useRef<HTMLDivElement>(null)
 
@@ -88,28 +113,17 @@ export default function MessagesPage() {
         const res = await fetch("/api/messages")
         if (res.ok) {
           const data = await res.json()
-          // Group messages by conversation partner
-          const convMap = new Map<string, Conversation>()
-          for (const msg of data) {
-            const partnerId = msg.senderId === currentUserId ? msg.receiverId : msg.senderId
-            if (!partnerId) continue
-            if (!convMap.has(partnerId)) {
-              convMap.set(partnerId, {
-                id: partnerId,
-                user: {
-                  id: partnerId,
-                  name: msg.senderId === currentUserId ? msg.receiverName || "User" : msg.senderName || "User",
-                  image: msg.senderId === currentUserId ? msg.receiverImage : msg.senderImage,
-                  role: "CONSULTANT",
-                },
-                lastMessage: msg.content,
-                lastMessageTime: msg.createdAt,
-                unread: 0,
-                online: onlineUsers.includes(partnerId),
-              })
-            }
+          if (data.conversations && Array.isArray(data.conversations)) {
+            const convs: Conversation[] = data.conversations.map((c: { id: string; user: ConversationUser; lastMessage: string; lastMessageTime: string; unread: number }) => ({
+              id: c.id,
+              user: c.user || { id: c.id, name: "User", role: "FREE_USER" },
+              lastMessage: c.lastMessage || "",
+              lastMessageTime: c.lastMessageTime || new Date().toISOString(),
+              unread: c.unread || 0,
+              online: onlineUsers.includes(c.id),
+            }))
+            setConversations(convs)
           }
-          setConversations(Array.from(convMap.values()))
         }
       } catch (err) {
         console.error("Failed to fetch conversations:", err)
@@ -130,7 +144,7 @@ export default function MessagesPage() {
         const res = await fetch(`/api/messages?partnerId=${activeChat}`)
         if (res.ok) {
           const data = await res.json()
-          setMessages(data)
+          setMessages(Array.isArray(data) ? data : [])
         }
       } catch (err) {
         console.error("Failed to fetch messages:", err)
@@ -138,6 +152,24 @@ export default function MessagesPage() {
     }
     fetchMessages()
   }, [activeChat])
+
+  // Admin: fetch users for new conversation
+  const fetchAdminUsers = React.useCallback(async () => {
+    if (!isAdmin) return
+    setAdminUsersLoading(true)
+    try {
+      const res = await("/api/admin/users")
+      const response = await fetch("/api/admin/users")
+      if (response.ok) {
+        const data = await response.json()
+        setAdminUsers(data.users || [])
+      }
+    } catch (err) {
+      console.error("Failed to fetch admin users:", err)
+    } finally {
+      setAdminUsersLoading(false)
+    }
+  }, [isAdmin])
 
   // Join/leave room when active chat changes
   React.useEffect(() => {
@@ -165,12 +197,10 @@ export default function MessagesPage() {
         status: "delivered",
       }
       setMessages((prev) => {
-        // Avoid duplicates
         if (prev.some((m) => m.id === data.messageId)) return prev
         return [...prev, newMsg]
       })
 
-      // Update conversations list
       setConversations((prev) => {
         const partnerId = data.senderId === currentUserId ? data.receiverId : data.senderId
         const existing = prev.find((c) => c.id === partnerId)
@@ -189,7 +219,6 @@ export default function MessagesPage() {
         return prev
       })
 
-      // Mark as read if in active chat
       if (data.senderId !== currentUserId && data.senderId === activeChat) {
         markAsRead(currentUserId!, data.senderId)
       }
@@ -255,7 +284,6 @@ export default function MessagesPage() {
     setMessages((prev) => [...prev, optimisticMsg])
     setMessage("")
 
-    // Save to DB
     fetch("/api/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -263,7 +291,6 @@ export default function MessagesPage() {
     })
       .then((res) => res.json())
       .then((savedMsg) => {
-        // Replace optimistic message with saved one
         setMessages((prev) =>
           prev.map((m) =>
             m.id === tempId ? { ...m, id: savedMsg.id, status: "sent", createdAt: savedMsg.createdAt } : m
@@ -276,22 +303,47 @@ export default function MessagesPage() {
         )
       })
 
-    // Send via socket
     sendMessage({
       senderId: currentUserId,
       receiverId: activeChat,
       content: message.trim(),
     })
 
-    // Emit typing stop
     emitTyping(currentUserId, activeChat, false)
   }, [message, activeChat, currentUserId, sendMessage, emitTyping])
+
+  // Start new conversation (admin)
+  const startNewConversation = (userId: string, userName: string) => {
+    // Add to conversations if not already there
+    if (!conversations.find((c) => c.id === userId)) {
+      setConversations((prev) => [
+        {
+          id: userId,
+          user: { id: userId, name: userName, role: "FREE_USER" },
+          lastMessage: "",
+          lastMessageTime: new Date().toISOString(),
+          unread: 0,
+          online: onlineUsers.includes(userId),
+        },
+        ...prev,
+      ])
+    }
+    setActiveChat(userId)
+    setMobileShowChat(true)
+    setNewConvDialogOpen(false)
+  }
 
   const filteredConversations = conversations.filter(
     (c) =>
       c.user.name.toLowerCase().includes(search.toLowerCase()) ||
       c.lastMessage.toLowerCase().includes(search.toLowerCase())
   )
+
+  // Filter admin users for new conversation (exclude existing conversations)
+  const filteredAdminUsers = adminUsers.filter((u) => {
+    const matchSearch = !userSearch || u.name?.toLowerCase().includes(userSearch.toLowerCase()) || u.email?.toLowerCase().includes(userSearch.toLowerCase())
+    return matchSearch
+  })
 
   const activeConv = conversations.find((c) => c.id === activeChat)
   const isPartnerTyping = activeChat ? typingUsers[activeChat] : false
@@ -303,7 +355,7 @@ export default function MessagesPage() {
         <div>
           <h1 className="text-2xl font-heading font-bold">Messages</h1>
           <p className="text-muted-foreground mt-1 flex items-center gap-2">
-            Chat with your consultants
+            {isAdmin ? "Chat with your users" : "Chat with your consultants"}
             {isConnected ? (
               <span className="flex items-center gap-1 text-xs text-green-500">
                 <Wifi className="size-3" /> Live
@@ -315,6 +367,72 @@ export default function MessagesPage() {
             )}
           </p>
         </div>
+        {isAdmin && (
+          <Dialog open={newConvDialogOpen} onOpenChange={(open) => {
+            setNewConvDialogOpen(open)
+            if (open) fetchAdminUsers()
+          }}>
+            <DialogTrigger asChild>
+              <Button className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]">
+                <Plus className="size-4 mr-2" /> New Conversation
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle className="font-heading">Start New Conversation</DialogTitle>
+              </DialogHeader>
+              <div className="mt-2">
+                <div className="relative mb-3">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search users by name or email..."
+                    className="pl-9"
+                    value={userSearch}
+                    onChange={(e) => setUserSearch(e.target.value)}
+                  />
+                </div>
+                <ScrollArea className="h-[300px]">
+                  {adminUsersLoading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="size-6 animate-spin text-[#7CFC00]" />
+                    </div>
+                  ) : filteredAdminUsers.length === 0 ? (
+                    <div className="text-center py-8">
+                      <p className="text-sm text-muted-foreground">No users found</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-1">
+                      {filteredAdminUsers.map((user) => (
+                        <button
+                          key={user.id}
+                          className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors text-left"
+                          onClick={() => startNewConversation(user.id, user.name || user.email)}
+                        >
+                          <Avatar className="size-9">
+                            <AvatarImage src={user.image || undefined} />
+                            <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                              {(user.name || user.email).split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">{user.name || user.email}</p>
+                            <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <Badge variant="outline" className="text-[10px]">{user.subscription?.plan || "FREE"}</Badge>
+                            {user.startup && (
+                              <p className="text-[10px] text-muted-foreground mt-1">{user.startup.name}</p>
+                            )}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </ScrollArea>
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
 
       {/* Chat Container */}
@@ -339,7 +457,6 @@ export default function MessagesPage() {
           <ScrollArea className="flex-1">
             <div className="p-2 space-y-1">
               {loading ? (
-                // Loading skeletons
                 Array.from({ length: 4 }).map((_, i) => (
                   <div key={i} className="flex items-center gap-3 p-3">
                     <div className="size-10 rounded-full bg-muted animate-pulse" />
@@ -351,7 +468,18 @@ export default function MessagesPage() {
                 ))
               ) : filteredConversations.length === 0 ? (
                 <div className="p-4 text-center text-sm text-muted-foreground">
-                  No conversations yet
+                  <MessageCircle className="size-8 text-muted-foreground/30 mx-auto mb-2" />
+                  <p>No conversations yet</p>
+                  {isAdmin && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="mt-2 text-[#7CFC00]"
+                      onClick={() => setNewConvDialogOpen(true)}
+                    >
+                      Start a new conversation
+                    </Button>
+                  )}
                 </div>
               ) : (
                 filteredConversations.map((conv) => (
@@ -523,7 +651,6 @@ export default function MessagesPage() {
                     )
                   })}
 
-                  {/* Typing indicator */}
                   {isPartnerTyping && (
                     <div className="flex justify-start">
                       <div className="bg-muted/50 rounded-2xl rounded-bl-md px-4 py-3">
@@ -578,8 +705,16 @@ export default function MessagesPage() {
                 <MessageCircle className="size-12 text-muted-foreground/30 mx-auto mb-3" />
                 <p className="text-muted-foreground font-medium">Select a conversation</p>
                 <p className="text-sm text-muted-foreground/60 mt-1">
-                  Choose from your existing conversations or start a new one
+                  {isAdmin ? "Choose a user to start chatting with" : "Choose from your existing conversations or start a new one"}
                 </p>
+                {isAdmin && (
+                  <Button
+                    className="mt-4 bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+                    onClick={() => setNewConvDialogOpen(true)}
+                  >
+                    <Plus className="size-4 mr-2" /> New Conversation
+                  </Button>
+                )}
               </div>
             </div>
           )}

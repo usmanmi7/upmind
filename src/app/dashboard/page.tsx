@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import {
   Rocket,
@@ -28,6 +27,7 @@ import {
   UsersRound,
   Trophy,
   Zap,
+  Loader2,
 } from "lucide-react"
 
 const quickActions = [
@@ -61,15 +61,96 @@ const quickActions = [
   },
 ]
 
-const recentTasks = [
-  { title: "Complete business model canvas", status: "IN_PROGRESS", dueDate: "2 days" },
-  { title: "Review competitive analysis template", status: "TODO", dueDate: "5 days" },
-  { title: "Set up metrics dashboard", status: "COMPLETED", dueDate: "Done" },
-  { title: "Prepare pitch deck outline", status: "TODO", dueDate: "1 week" },
-]
+interface AnalyticsData {
+  overview: {
+    tasksCompleted: number
+    totalTasks: number
+    appointmentsAttended: number
+    totalAppointments: number
+    scheduledAppointments: number
+    resourcesUsed: number
+    startupScore: number
+    unreadNotifications: number
+  }
+  recentTasks: Array<{
+    id: string
+    title: string
+    status: string
+    dueDate: string | null
+  }>
+  upcomingAppointments: Array<{
+    id: string
+    date: string
+    consultant?: { user?: { name?: string } }
+  }>
+  checklist: Array<{
+    title: string
+    completed: boolean
+    href: string
+  }>
+  checklistCompleted: number
+  progress: number
+  startup: {
+    name: string
+    progress: number
+  } | null
+}
 
 export default function DashboardPage() {
   const { data: session } = useSession()
+  const [data, setData] = React.useState<AnalyticsData | null>(null)
+  const [loading, setLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/analytics")
+        if (res.ok) {
+          const json = await res.json()
+          setData(json)
+        }
+      } catch (error) {
+        console.error("Failed to fetch dashboard data:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const firstName = session?.user?.name?.split(" ")[0] || "Founder"
+  const overview = data?.overview
+  const progress = data?.progress || 0
+  const totalTasks = overview?.totalTasks || 0
+  const completedTasks = overview?.tasksCompleted || 0
+  const taskPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
+
+  const formatNextAppointment = () => {
+    if (!data?.upcomingAppointments || data.upcomingAppointments.length === 0) return null
+    const apt = data.upcomingAppointments[0]
+    const date = new Date(apt.date)
+    const now = new Date()
+    const tomorrow = new Date(now)
+    tomorrow.setDate(tomorrow.getDate() + 1)
+
+    if (date.toDateString() === now.toDateString()) {
+      return `Today at ${date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`
+    } else if (date.toDateString() === tomorrow.toDateString()) {
+      return `Tomorrow at ${date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`
+    }
+    return date.toLocaleDateString([], { month: "short", day: "numeric" }) + ` at ${date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <p className="text-sm text-muted-foreground">Loading your dashboard...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -77,7 +158,7 @@ export default function DashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-heading font-bold">
-            Welcome back, {session?.user?.name?.split(" ")[0] || "Founder"} 👋
+            Welcome back, {firstName} 👋
           </h1>
           <p className="text-muted-foreground mt-1">
             Here&apos;s what&apos;s happening with your startup journey
@@ -102,13 +183,13 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Startup Progress</p>
-                <p className="text-2xl font-bold mt-1">24%</p>
+                <p className="text-2xl font-bold mt-1">{progress}%</p>
               </div>
               <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center">
                 <TrendingUp className="size-5 text-[#2D4A2D] dark:text-[#7CFC00]" />
               </div>
             </div>
-            <Progress value={24} className="mt-3 h-1.5" />
+            <Progress value={progress} className="mt-3 h-1.5" />
           </CardContent>
         </Card>
 
@@ -117,13 +198,13 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Tasks Completed</p>
-                <p className="text-2xl font-bold mt-1">7/12</p>
+                <p className="text-2xl font-bold mt-1">{completedTasks}/{totalTasks}</p>
               </div>
               <div className="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
                 <CheckCircle2 className="size-5 text-green-600 dark:text-green-400" />
               </div>
             </div>
-            <Progress value={58} className="mt-3 h-1.5" />
+            <Progress value={taskPercent} className="mt-3 h-1.5" />
           </CardContent>
         </Card>
 
@@ -132,13 +213,15 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Appointments</p>
-                <p className="text-2xl font-bold mt-1">3</p>
+                <p className="text-2xl font-bold mt-1">{overview?.scheduledAppointments || 0}</p>
               </div>
               <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center">
                 <Calendar className="size-5 text-[#1A2E1A] dark:text-[#7CFC00]" />
               </div>
             </div>
-            <p className="text-xs text-muted-foreground mt-3">Next: Tomorrow at 2:00 PM</p>
+            <p className="text-xs text-muted-foreground mt-3">
+              {formatNextAppointment() || "No upcoming appointments"}
+            </p>
           </CardContent>
         </Card>
 
@@ -147,13 +230,15 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Resources</p>
-                <p className="text-2xl font-bold mt-1">15</p>
+                <p className="text-2xl font-bold mt-1">{overview?.resourcesUsed || 0}</p>
               </div>
               <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center">
                 <BookOpen className="size-5 text-[#2D4A2D] dark:text-[#7CFC00]" />
               </div>
             </div>
-            <p className="text-xs text-muted-foreground mt-3">5 new this week</p>
+            <p className="text-xs text-muted-foreground mt-3">
+              {overview?.resourcesUsed ? `${overview.resourcesUsed} saved` : "Start exploring resources"}
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -195,44 +280,60 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {recentTasks.map((task, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-smooth"
-                >
+            {data?.recentTasks && data.recentTasks.length > 0 ? (
+              <div className="space-y-3">
+                {data.recentTasks.map((task) => (
                   <div
-                    className={`w-2 h-2 rounded-full shrink-0 ${
-                      task.status === "COMPLETED"
-                        ? "bg-green-500"
-                        : task.status === "IN_PROGRESS"
-                        ? "bg-[#7CFC00]"
-                        : "bg-muted-foreground/40"
-                    }`}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{task.title}</p>
-                  </div>
-                  <Badge
-                    variant={
-                      task.status === "COMPLETED"
-                        ? "default"
-                        : task.status === "IN_PROGRESS"
-                        ? "secondary"
-                        : "outline"
-                    }
-                    className="text-xs shrink-0"
+                    key={task.id}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-all duration-200"
                   >
-                    {task.status === "COMPLETED" ? (
-                      <CheckCircle2 className="size-3 mr-1" />
-                    ) : task.status === "IN_PROGRESS" ? (
-                      <Clock className="size-3 mr-1" />
-                    ) : null}
-                    {task.dueDate}
-                  </Badge>
-                </div>
-              ))}
-            </div>
+                    <div
+                      className={`w-2 h-2 rounded-full shrink-0 ${
+                        task.status === "COMPLETED"
+                          ? "bg-green-500"
+                          : task.status === "IN_PROGRESS"
+                          ? "bg-[#7CFC00]"
+                          : "bg-muted-foreground/40"
+                      }`}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm font-medium truncate ${task.status === "COMPLETED" ? "line-through text-muted-foreground" : ""}`}>
+                        {task.title}
+                      </p>
+                    </div>
+                    <Badge
+                      variant={
+                        task.status === "COMPLETED"
+                          ? "default"
+                          : task.status === "IN_PROGRESS"
+                          ? "secondary"
+                          : "outline"
+                      }
+                      className="text-xs shrink-0"
+                    >
+                      {task.status === "COMPLETED" ? (
+                        <CheckCircle2 className="size-3 mr-1" />
+                      ) : task.status === "IN_PROGRESS" ? (
+                        <Clock className="size-3 mr-1" />
+                      ) : null}
+                      {task.status === "COMPLETED" ? "Done" : task.status === "IN_PROGRESS" ? "In Progress" : "To Do"}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <Target className="size-8 text-muted-foreground/40 mx-auto mb-2" />
+                <p className="text-sm text-muted-foreground">No tasks yet</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Create tasks in your{" "}
+                  <Link href="/dashboard/roadmap" className="text-[#7CFC00] hover:underline">
+                    roadmap
+                  </Link>{" "}
+                  to track progress
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -247,19 +348,19 @@ export default function DashboardPage() {
                 </CardDescription>
               </div>
               <Badge variant="secondary" className="text-xs">
-                <Trophy className="size-3 mr-1" /> 2/5
+                <Trophy className="size-3 mr-1" /> {data?.checklistCompleted || 0}/5
               </Badge>
             </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {[
-                { title: "Create your startup profile", completed: true, href: "/dashboard/startup" },
-                { title: "Define your vision & goals", completed: true, href: "/dashboard/startup" },
+              {(data?.checklist || [
+                { title: "Create your startup profile", completed: false, href: "/dashboard/startup" },
+                { title: "Define your vision & goals", completed: false, href: "/dashboard/startup" },
                 { title: "Try the AI Assistant", completed: false, href: "/dashboard/ai-assistant" },
                 { title: "Build your first roadmap", completed: false, href: "/dashboard/roadmap" },
                 { title: "Book a consultation", completed: false, href: "/dashboard/appointments" },
-              ].map((item, i) => (
+              ]).map((item, i) => (
                 <Link
                   key={i}
                   href={item.href}
