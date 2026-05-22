@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { initZAI } from "@/lib/ai"
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,9 +20,23 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Import z-ai-web-dev-sdk
-    const ZAI = (await import("z-ai-web-dev-sdk")).default
-    const zai = await ZAI.create()
+    // Initialize ZAI SDK
+    let zai: InstanceType<typeof import("z-ai-web-dev-sdk").default>
+    try {
+      zai = await initZAI()
+    } catch (initError) {
+      console.error("Failed to initialize AI SDK:", initError)
+      return NextResponse.json(
+        {
+          error: "AI service unavailable",
+          details:
+            initError instanceof Error
+              ? initError.message
+              : "SDK initialization failed",
+        },
+        { status: 503 }
+      )
+    }
 
     // Web search if requested or if the question seems to need current info
     let searchContext = ""
@@ -38,20 +53,19 @@ export async function POST(req: NextRequest) {
           num: 5,
         })
 
-        if (
-          Array.isArray(searchResult) &&
-          searchResult.length > 0
-        ) {
+        if (Array.isArray(searchResult) && searchResult.length > 0) {
           searchContext = searchResult
             .map(
-              (r: { name?: string; snippet?: string; url?: string }, i: number) =>
-                `[${i + 1}] ${r.name || ""}: ${r.snippet || ""} (${r.url || ""})`
+              (
+                r: { name?: string; snippet?: string; url?: string },
+                i: number
+              ) => `[${i + 1}] ${r.name || ""}: ${r.snippet || ""} (${r.url || ""})`
             )
             .join("\n")
         }
       } catch (searchError) {
         console.error("Web search failed:", searchError)
-        // Continue without search results
+        // Continue without search results — still answer with AI knowledge
       }
     }
 
@@ -83,31 +97,45 @@ Format your responses clearly. Use markdown formatting when helpful (headers, bu
 
     messages.push({ role: "user", content: message })
 
-    const completion = await zai.chat.completions.create({
-      messages: messages.map((m) => ({
-        role: m.role as "system" | "user" | "assistant",
-        content: m.content,
-      })),
-    })
+    // Call the LLM with error handling
+    let response: string
+    try {
+      const completion = await zai.chat.completions.create({
+        messages: messages.map((m) => ({
+          role: m.role as "system" | "user" | "assistant",
+          content: m.content,
+        })),
+      })
 
-    const response =
-      completion.choices?.[0]?.message?.content ||
-      "I'm sorry, I couldn't generate a response. Please try again."
+      response =
+        completion.choices?.[0]?.message?.content ||
+        "I'm sorry, I couldn't generate a response. Please try again."
+    } catch (llmError) {
+      console.error("LLM completion failed:", llmError)
+      const errMsg =
+        llmError instanceof Error ? llmError.message : "Unknown LLM error"
+      return NextResponse.json(
+        {
+          error: "AI generation failed",
+          details: errMsg,
+        },
+        { status: 502 }
+      )
+    }
 
     return NextResponse.json({
       response,
       searched: shouldSearch && !!searchContext,
     })
   } catch (error: unknown) {
-    console.error("AI Chat error:", error)
-    const errorMessage = error instanceof Error ? error.message : "Unknown error"
+    console.error("AI Chat unexpected error:", error)
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error"
 
     return NextResponse.json(
       {
-        error: "Failed to generate response",
+        error: "Internal server error",
         details: errorMessage,
-        response:
-          "I'm having trouble connecting right now. Please try again in a moment.",
       },
       { status: 500 }
     )

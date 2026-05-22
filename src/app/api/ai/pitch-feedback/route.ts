@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { initZAI } from "@/lib/ai"
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,8 +20,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const ZAI = (await import("z-ai-web-dev-sdk")).default
-    const zai = await ZAI.create()
+    const zai = await initZAI()
 
     const completion = await zai.chat.completions.create({
       messages: [

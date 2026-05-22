@@ -177,9 +177,21 @@ export default function AIAssistantPage() {
 
       const data = await res.json()
 
+      if (!res.ok) {
+        // API returned an error — show meaningful message
+        const errorDetail = data.details || data.error || "Unknown error"
+        const errorMsg: ChatMessage = {
+          id: `msg-${Date.now()}-error`,
+          role: "assistant",
+          content: `Sorry, I encountered an error: ${errorDetail}. Please try again.`,
+          timestamp: new Date(),
+        }
+        setMessages((prev) => [...prev, errorMsg])
+        return
+      }
+
       const responseText =
         data.response ||
-        data.details ||
         "I'm sorry, I couldn't generate a response. Please try again."
 
       const assistantMsg: ChatMessage = {
