@@ -161,6 +161,37 @@ export async function PUT(req: NextRequest) {
         data: { role },
       })
 
+      // If promoting to CONSULTANT, create a Consultant record if one doesn't exist
+      if (role === "CONSULTANT") {
+        const existingConsultant = await db.consultant.findUnique({
+          where: { userId },
+        })
+        if (!existingConsultant) {
+          await db.consultant.create({
+            data: {
+              userId,
+              specialties: "General Consulting",
+              bio: null,
+              availability: "Mon-Fri, 9am-5pm",
+              isActive: true,
+            },
+          })
+        }
+      }
+
+      // If demoting from CONSULTANT, deactivate their Consultant record
+      if (role !== "CONSULTANT" && targetUser.role === "CONSULTANT") {
+        const existingConsultant = await db.consultant.findUnique({
+          where: { userId },
+        })
+        if (existingConsultant) {
+          await db.consultant.update({
+            where: { userId },
+            data: { isActive: false },
+          })
+        }
+      }
+
       await db.notification.create({
         data: {
           userId,
