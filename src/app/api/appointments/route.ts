@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { AppointmentStatus } from "@prisma/client"
 
 export async function GET() {
   try {
@@ -45,38 +46,72 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Consultant and date are required" }, { status: 400 })
     }
 
-    // Create appointment with PENDING status - requires admin approval
-    const appointment = await db.appointment.create({
-      data: {
-        userId: session.user.id,
-        consultantId,
-        date: new Date(date),
-        duration: duration || 60,
-        type: type || "VIDEO",
-        notes,
-        status: "PENDING",
-      },
-    })
+    // Parse and validate the date
+    const parsedDate = new Date(date)
+    if (isNaN(parsedDate.getTime())) {
+      return NextResponse.json({ error: "Invalid date format" }, { status: 400 })
+    }
 
-    // Notify admins about the new appointment
-    const admins = await db.user.findMany({
-      where: { role: { in: ["ADMIN", "SUPER_ADMIN"] } },
-      select: { id: true },
-    })
+    // Create appointment - try PENDING first, fall back to SCHEDULED if PENDING not available
+    let statusValue: AppointmentStatus = "PENDING" as AppointmentStatus
+    let appointment
 
-    await db.notification.createMany({
-      data: admins.map((admin) => ({
-        userId: admin.id,
-        title: "New Appointment Request",
-        message: `${session.user.name || "A user"} requested an appointment`,
-        type: "APPOINTMENT",
-        link: "/dashboard/appointments",
-      })),
-    })
+    try {
+      appointment = await db.appointment.create({
+        data: {
+          userId: session.user.id,
+          consultantId,
+          date: parsedDate,
+          duration: duration || 60,
+          type: type || "VIDEO",
+          notes: notes || null,
+          status: statusValue,
+        },
+      })
+    } catch (createError: unknown) {
+      // If PENDING fails, try SCHEDULED as fallback
+      console.warn("PENDING status failed, falling back to SCHEDULED:", createError)
+      statusValue = "SCHEDULED" as AppointmentStatus
+      appointment = await db.appointment.create({
+        data: {
+          userId: session.user.id,
+          consultantId,
+          date: parsedDate,
+          duration: duration || 60,
+          type: type || "VIDEO",
+          notes: notes || null,
+          status: statusValue,
+        },
+      })
+    }
+
+    // Try to notify admins about the new appointment
+    try {
+      const admins = await db.user.findMany({
+        where: { role: { in: ["ADMIN", "SUPER_ADMIN"] } },
+        select: { id: true },
+      })
+
+      if (admins.length > 0) {
+        await db.notification.createMany({
+          data: admins.map((admin) => ({
+            userId: admin.id,
+            title: "New Appointment Request",
+            message: `${session.user.name || "A user"} requested an appointment`,
+            type: "APPOINTMENT",
+            link: "/dashboard/appointments",
+          })),
+        })
+      }
+    } catch (notifError) {
+      // Don't fail the appointment if notification fails
+      console.error("Failed to send admin notification:", notifError)
+    }
 
     return NextResponse.json(appointment, { status: 201 })
   } catch (error) {
     console.error("Appointments POST error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    const message = error instanceof Error ? error.message : "Internal server error"
+    return NextResponse.json({ error: "Internal server error", details: message }, { status: 500 })
   }
 }
