@@ -2,38 +2,76 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Quote, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-const testimonials = [
+// Fallback testimonials used when database is empty
+const fallbackTestimonials = [
   {
     quote:
       'They brought clarity to complex problems, breaking down barriers and delivering innovative solutions.',
     author: 'John Doe',
     role: 'CEO, Tech Innovations',
-    image: '/images/testimonial1.jpg',
   },
   {
     quote:
       'Working with Upmind transformed our approach to growth. Their strategic insights were invaluable.',
     author: 'Sarah Chen',
     role: 'COO, GrowthLabs',
-    image: '/images/testimonial1.jpg',
   },
   {
     quote:
       'The team delivered beyond expectations. Our product launch was smoother than we ever imagined.',
     author: 'Marcus Rivera',
     role: 'Founder, ScaleUp',
-    image: '/images/testimonial1.jpg',
   },
 ];
+
+interface DBTestimonial {
+  id: string
+  name: string
+  role: string | null
+  company: string | null
+  content: string
+  rating: number | null
+  isPublished: boolean
+}
 
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const [testimonials, setTestimonials] = useState(fallbackTestimonials);
+
+  useEffect(() => {
+    async function fetchTestimonials() {
+      try {
+        const res = await fetch('/api/testimonials');
+        if (res.ok) {
+          const data = await res.json();
+          const dbTestimonials = data.testimonials as DBTestimonial[];
+          if (dbTestimonials && dbTestimonials.length > 0) {
+            // Use only published testimonials from the database
+            const published = dbTestimonials
+              .filter((t) => t.isPublished)
+              .map((t) => ({
+                quote: t.content,
+                author: t.name,
+                role: `${t.role || ''}${t.company ? (t.role ? ', ' : '') + t.company : ''}`,
+              }));
+            if (published.length > 0) {
+              setTestimonials(published);
+              setCurrent(0);
+            }
+          }
+        }
+      } catch {
+        // Use fallback on error
+      }
+    }
+    fetchTestimonials();
+  }, []);
 
   const prev = () =>
     setCurrent((c) => (c > 0 ? c - 1 : testimonials.length - 1));
@@ -74,12 +112,10 @@ export default function Testimonials() {
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-8">
-              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#7CFC00]/30">
-                <img
-                  src={testimonials[current].image}
-                  alt={testimonials[current].author}
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+                <span className="text-white font-bold text-sm">
+                  {testimonials[current].author.split(' ').map((n) => n[0]).join('')}
+                </span>
               </div>
               <div className="text-left">
                 <div className="font-semibold text-[#1A1A1A]">
