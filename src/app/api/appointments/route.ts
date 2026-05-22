@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
-import { AppointmentStatus } from "@prisma/client"
 
 export async function GET() {
   try {
@@ -28,7 +27,10 @@ export async function GET() {
     return NextResponse.json(appointments)
   } catch (error) {
     console.error("Appointments GET error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    )
   }
 }
 
@@ -42,47 +44,76 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { consultantId, date, duration, type, notes } = body
 
-    if (!consultantId || !date) {
-      return NextResponse.json({ error: "Consultant and date are required" }, { status: 400 })
+    if (!date) {
+      return NextResponse.json(
+        { error: "Date is required" },
+        { status: 400 }
+      )
     }
 
     // Parse and validate the date
     const parsedDate = new Date(date)
     if (isNaN(parsedDate.getTime())) {
-      return NextResponse.json({ error: "Invalid date format" }, { status: 400 })
+      return NextResponse.json(
+        { error: "Invalid date format" },
+        { status: 400 }
+      )
     }
 
-    // Create appointment - try PENDING first, fall back to SCHEDULED if PENDING not available
-    let statusValue: AppointmentStatus = "PENDING" as AppointmentStatus
-    let appointment
+    // Validate meeting type
+    const validTypes = ["VIDEO", "PHONE", "IN_PERSON"]
+    const meetingType = validTypes.includes(type) ? type : "VIDEO"
 
+    // Try to create appointment with PENDING status
+    // If PENDING enum is not in the DB yet, fall back to SCHEDULED
+    let appointment
     try {
       appointment = await db.appointment.create({
         data: {
           userId: session.user.id,
-          consultantId,
+          consultantId: consultantId || null,
           date: parsedDate,
           duration: duration || 60,
-          type: type || "VIDEO",
+          type: meetingType,
           notes: notes || null,
-          status: statusValue,
+          status: "PENDING",
         },
       })
     } catch (createError: unknown) {
-      // If PENDING fails, try SCHEDULED as fallback
-      console.warn("PENDING status failed, falling back to SCHEDULED:", createError)
-      statusValue = "SCHEDULED" as AppointmentStatus
-      appointment = await db.appointment.create({
-        data: {
-          userId: session.user.id,
-          consultantId,
-          date: parsedDate,
-          duration: duration || 60,
-          type: type || "VIDEO",
-          notes: notes || null,
-          status: statusValue,
-        },
-      })
+      const errMsg =
+        createError instanceof Error ? createError.message : String(createError)
+      console.warn(
+        "PENDING status failed, falling back to SCHEDULED:",
+        errMsg
+      )
+
+      // If PENDING doesn't exist in the enum, fall back to SCHEDULED
+      try {
+        appointment = await db.appointment.create({
+          data: {
+            userId: session.user.id,
+            consultantId: consultantId || null,
+            date: parsedDate,
+            duration: duration || 60,
+            type: meetingType,
+            notes: notes || null,
+            status: "SCHEDULED",
+          },
+        })
+      } catch (fallbackError: unknown) {
+        const fallbackMsg =
+          fallbackError instanceof Error
+            ? fallbackError.message
+            : String(fallbackError)
+        console.error("SCHEDULED fallback also failed:", fallbackMsg)
+        return NextResponse.json(
+          {
+            error: "Failed to create appointment",
+            details: fallbackMsg,
+          },
+          { status: 500 }
+        )
+      }
     }
 
     // Try to notify admins about the new appointment
@@ -111,7 +142,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(appointment, { status: 201 })
   } catch (error) {
     console.error("Appointments POST error:", error)
-    const message = error instanceof Error ? error.message : "Internal server error"
-    return NextResponse.json({ error: "Internal server error", details: message }, { status: 500 })
+    const message =
+      error instanceof Error ? error.message : "Internal server error"
+    return NextResponse.json(
+      { error: "Internal server error", details: message },
+      { status: 500 }
+    )
   }
 }
