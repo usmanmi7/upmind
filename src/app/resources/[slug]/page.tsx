@@ -8,6 +8,7 @@ import PublicFooter from "@/components/PublicFooter"
 import SubscriptionModal from "@/components/SubscriptionModal"
 import { motion } from "framer-motion"
 import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 import {
   ArrowLeft,
   BookOpen,
@@ -261,9 +262,9 @@ export default function ResourceDetailPage() {
                 )}
 
                 {/* Content */}
-                <div className={`prose prose-lg max-w-none ${isLocked ? "relative" : ""}`}>
+                <div className="article-content">
                   {resource.content ? (
-                    <ReactMarkdown>{resource.content}</ReactMarkdown>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{resource.content}</ReactMarkdown>
                   ) : (
                     <p className="text-gray-500">No content available for this resource.</p>
                   )}

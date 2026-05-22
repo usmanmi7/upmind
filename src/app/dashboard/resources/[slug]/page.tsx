@@ -23,6 +23,8 @@ import {
   Eye,
 } from "lucide-react"
 import Link from "next/link"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 import { toast } from "sonner"
 
 const typeIcons: Record<string, React.ElementType> = {
@@ -183,10 +185,12 @@ export default function ResourceDetailPage() {
         <CardContent className="p-6 sm:p-8">
           {isLocked ? (
             <div className="space-y-4">
-              {/* Show preview content */}
+              {/* Show preview content with proper markdown */}
               {resource.content && (
-                <div className="prose prose-sm dark:prose-invert max-w-none">
-                  <div className="text-sm leading-relaxed whitespace-pre-wrap">{resource.content}</div>
+                <div className="article-content">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {resource.content}
+                  </ReactMarkdown>
                 </div>
               )}
 
@@ -226,8 +230,10 @@ export default function ResourceDetailPage() {
               </div>
             </div>
           ) : (
-            <div className="prose prose-sm dark:prose-invert max-w-none">
-              <div className="text-sm leading-relaxed whitespace-pre-wrap">{resource.content}</div>
+            <div className="article-content">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {resource.content || ""}
+              </ReactMarkdown>
             </div>
           )}
         </CardContent>
