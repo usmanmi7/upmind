@@ -41,6 +41,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           image: user.image,
           role: user.role,
+          banned: user.banned,
         }
       },
     }),
@@ -50,6 +51,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.role = (user as { role: string }).role
         token.id = user.id
+        token.banned = (user as { banned: boolean }).banned
       }
       return token
     },
@@ -57,6 +59,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         (session.user as { role: string }).role = token.role as string
         session.user.id = token.id as string
+        ;(session.user as { banned: boolean }).banned = token.banned as boolean
       }
       return session
     },

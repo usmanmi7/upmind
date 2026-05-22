@@ -22,8 +22,23 @@ export default withAuth({
         return true
       }
 
+      // No token = not authenticated
+      if (!token) return false
+
+      // Banned users are blocked from all protected routes
+      // They can only access public pages and the login page
+      if (token.banned) {
+        // Allow access to auth pages so they can see login page
+        if (pathname.startsWith("/auth/")) return true
+        // Redirect banned users to login with error
+        const url = req.nextUrl.clone()
+        url.pathname = "/auth/login"
+        url.searchParams.set("error", "banned")
+        return NextResponse.redirect(url) as unknown as boolean
+      }
+
       // Redirect admins from /dashboard to /admin
-      const isAdmin = token?.role === "ADMIN" || token?.role === "SUPER_ADMIN"
+      const isAdmin = token.role === "ADMIN" || token.role === "SUPER_ADMIN"
       if (pathname.startsWith("/dashboard") && isAdmin) {
         // Allow admin to access /dashboard/settings (for account settings)
         // but redirect everything else to /admin
@@ -37,7 +52,7 @@ export default withAuth({
 
       // Protected routes require authentication
       if (pathname.startsWith("/dashboard") || pathname.startsWith("/auth/onboarding")) {
-        return !!token
+        return true
       }
 
       // Admin routes require ADMIN or SUPER_ADMIN role

@@ -58,10 +58,6 @@ export async function GET() {
     const totalMessages = await db.message.count()
     const unreadMessages = await db.message.count({ where: { isRead: false } })
 
-    // Blog stats
-    const totalBlogs = await db.blog.count()
-    const publishedBlogs = await db.blog.count({ where: { isPublished: true } })
-
     // Recent users (last 30 days)
     const thirtyDaysAgo = new Date()
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
@@ -187,7 +183,6 @@ export async function GET() {
         topDownloads: topResources,
       },
       messages: { total: totalMessages, unread: unreadMessages },
-      blogs: { total: totalBlogs, published: publishedBlogs },
     })
   } catch (error) {
     console.error("Admin analytics GET error:", error)

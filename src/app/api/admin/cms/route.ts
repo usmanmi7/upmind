@@ -17,20 +17,6 @@ export async function GET(request: NextRequest) {
 
     const result: Record<string, unknown> = {}
 
-    if (contentType === "all" || contentType === "blogs") {
-      const [blogs, blogTotal] = await Promise.all([
-        db.blog.findMany({
-          skip: contentType === "blogs" ? (page - 1) * limit : 0,
-          take: contentType === "blogs" ? limit : 50,
-          orderBy: { createdAt: "desc" },
-          include: { _count: { select: { id: true } } },
-        }),
-        db.blog.count(),
-      ])
-      result.blogs = blogs
-      result.blogTotal = blogTotal
-    }
-
     if (contentType === "all" || contentType === "faqs") {
       const [faqs, faqTotal] = await Promise.all([
         db.fAQ.findMany({
@@ -70,17 +56,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { contentType } = body
 
-    if (contentType === "blog") {
-      const { title, slug, excerpt, content, category, tags, coverImage, isPublished } = body
-      if (!title || !slug || !content) {
-        return NextResponse.json({ error: "Title, slug, and content are required" }, { status: 400 })
-      }
-      const blog = await db.blog.create({
-        data: { title, slug, excerpt, content, category, tags, coverImage, isPublished: isPublished || false, authorId: session.user.id },
-      })
-      return NextResponse.json({ blog }, { status: 201 })
-    }
-
     if (contentType === "faq") {
       const { question, answer, category, order, isPublished } = body
       if (!question || !answer) {
@@ -115,16 +90,6 @@ export async function PUT(request: NextRequest) {
 
     const body = await request.json()
     const { contentType } = body
-
-    if (contentType === "blog") {
-      const { id, title, slug, excerpt, content, category, tags, coverImage, isPublished } = body
-      if (!id) return NextResponse.json({ error: "ID is required" }, { status: 400 })
-      const blog = await db.blog.update({
-        where: { id },
-        data: { title, slug, excerpt, content, category, tags, coverImage, isPublished },
-      })
-      return NextResponse.json({ blog })
-    }
 
     if (contentType === "faq") {
       const { id, question, answer, category, order, isPublished } = body
@@ -162,9 +127,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "Content type and ID are required" }, { status: 400 })
     }
 
-    if (contentType === "blog") {
-      await db.blog.delete({ where: { id } })
-    } else if (contentType === "faq") {
+    if (contentType === "faq") {
       await db.fAQ.delete({ where: { id } })
     } else if (contentType === "testimonial") {
       await db.testimonial.delete({ where: { id } })

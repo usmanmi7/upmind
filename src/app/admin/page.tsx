@@ -10,7 +10,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   Users,
   CreditCard,
-  MessageSquare,
   TrendingUp,
   UserPlus,
   Calendar,
@@ -103,11 +102,11 @@ export default function AdminDashboardPage() {
       color: "from-green-500 to-emerald-500",
     },
     {
-      title: "Active Chats",
-      value: data?.messages.unread || 0,
-      change: `${data?.messages.total || 0} total messages`,
-      trend: data?.messages.unread ? "up" as const : "down" as const,
-      icon: MessageSquare,
+      title: "Resources",
+      value: data?.resources.total || 0,
+      change: `${data?.resources.premium || 0} premium`,
+      trend: "up" as const,
+      icon: BookOpen,
       color: "from-orange-500 to-red-500",
     },
   ]
@@ -116,7 +115,7 @@ export default function AdminDashboardPage() {
     { title: "Add Resource", icon: BookOpen, href: "/admin/resources", color: "from-[#2D4A2D] to-[#8FBC8F]" },
     { title: "Manage Users", icon: Users, href: "/admin/users", color: "from-[#7CFC00] to-[#2D4A2D]" },
     { title: "View Reports", icon: BarChart3, href: "/admin/analytics", color: "from-green-500 to-emerald-500" },
-    { title: "Send Notification", icon: Bell, href: "/admin/settings", color: "from-orange-500 to-red-500" },
+    { title: "Edit FAQs", icon: FileText, href: "/admin/cms", color: "from-orange-500 to-red-500" },
   ]
 
   const planColors: Record<string, string> = {
