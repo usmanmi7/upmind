@@ -23,7 +23,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Title and type are required" }, { status: 400 })
     }
 
-    // Generate slug from title
     const slug = title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")

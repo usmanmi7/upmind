@@ -114,7 +114,6 @@ export default function CommunityPage() {
         const data = await res.json()
         setPosts(data.posts || [])
 
-        // Build category counts
         const counts: Record<string, number> = {}
         categories.forEach((c) => { counts[c.id] = 0 })
         data.posts?.forEach((p: Post) => {
@@ -351,32 +350,30 @@ export default function CommunityPage() {
                 >
                   <CardContent className="p-4">
                     <div className="flex items-start gap-3">
-                      <Avatar className="size-10 shrink-0">
+                      <Avatar className="size-10 shrink-0 mt-0.5">
                         <AvatarImage src={post.author.image || undefined} />
                         <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
                           {post.author.name.split(" ").map((n) => n[0]).join("")}
                         </AvatarFallback>
                       </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2">
-                          <h3 className="text-sm font-semibold group-hover:text-[#7CFC00] transition-colors flex items-center gap-2">
-                            {post.title}
-                            {post.likeCount >= 10 && (
-                              <Badge className="bg-red-500/10 text-red-500 text-[10px] border-0 px-1.5 py-0">
-                                <TrendingUp className="size-3 mr-0.5" /> Hot
-                              </Badge>
-                            )}
-                          </h3>
-                        </div>
+                      <div className="flex-1 min-w-0 overflow-hidden">
+                        <h3 className="text-sm font-semibold group-hover:text-[#7CFC00] transition-colors flex items-center gap-2 truncate">
+                          <span className="truncate">{post.title}</span>
+                          {post.likeCount >= 10 && (
+                            <Badge className="bg-red-500/10 text-red-500 text-[10px] border-0 px-1.5 py-0 shrink-0">
+                              <TrendingUp className="size-3 mr-0.5" /> Hot
+                            </Badge>
+                          )}
+                        </h3>
                         <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
                           {post.content}
                         </p>
-                        <div className="flex items-center gap-4 mt-2">
-                          <Badge variant="outline" className="text-[10px]">
+                        <div className="flex items-center gap-3 mt-2 flex-wrap">
+                          <Badge variant="outline" className="text-[10px] shrink-0">
                             {categories.find((c) => c.id === post.category)?.name || "General"}
                           </Badge>
                           <button
-                            className="text-[10px] text-muted-foreground flex items-center gap-1 hover:text-[#7CFC00] transition-colors"
+                            className="text-[10px] text-muted-foreground flex items-center gap-1 hover:text-[#7CFC00] transition-colors shrink-0"
                             onClick={(e) => {
                               e.stopPropagation()
                               handleLike(post.id)
@@ -384,14 +381,14 @@ export default function CommunityPage() {
                           >
                             <Heart className={`size-3 ${post.isLikedByUser ? "fill-red-500 text-red-500" : ""}`} /> {post.likeCount}
                           </button>
-                          <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+                          <span className="text-[10px] text-muted-foreground flex items-center gap-1 shrink-0">
                             <MessageCircle className="size-3" /> {post.commentCount}
                           </span>
-                          <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+                          <span className="text-[10px] text-muted-foreground flex items-center gap-1 shrink-0">
                             <Clock className="size-3" /> {formatTimeAgo(post.createdAt)}
                           </span>
-                          <span className="text-[10px] text-muted-foreground ml-auto">
-                            {post.author.name} {post.author.startup ? `· ${post.author.startup.name}` : ""}
+                          <span className="text-[10px] text-muted-foreground ml-auto shrink-0 truncate max-w-[180px]">
+                            {post.author.name}{post.author.startup ? ` · ${post.author.startup.name}` : ""}
                           </span>
                         </div>
                       </div>
@@ -460,7 +457,7 @@ export default function CommunityPage() {
               <label className="text-sm font-medium mb-1.5 block">Content</label>
               <Textarea
                 placeholder="Share your thoughts, questions, or insights..."
-                className="min-h-[120px]"
+                className="min-h-[120px] max-h-[200px]"
                 value={newPost.content}
                 onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
               />
@@ -479,13 +476,13 @@ export default function CommunityPage() {
 
       {/* Post Detail Dialog */}
       <Dialog open={!!expandedPost} onOpenChange={(open) => { if (!open) setExpandedPost(null) }}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[85vh] flex flex-col">
           {expandedPost && (
             <>
               <DialogHeader>
-                <DialogTitle className="font-heading text-lg">{expandedPost.title}</DialogTitle>
+                <DialogTitle className="font-heading text-lg pr-8">{expandedPost.title}</DialogTitle>
               </DialogHeader>
-              <div className="space-y-4 mt-2">
+              <div className="flex-1 overflow-y-auto space-y-4 mt-2 min-h-0">
                 {/* Author Info */}
                 <div className="flex items-center gap-3">
                   <Avatar className="size-9">
@@ -513,7 +510,7 @@ export default function CommunityPage() {
                 </div>
 
                 {/* Post Content */}
-                <div className="text-sm leading-relaxed whitespace-pre-wrap">{expandedPost.content}</div>
+                <div className="text-sm leading-relaxed whitespace-pre-wrap break-words">{expandedPost.content}</div>
 
                 {/* Like & Stats */}
                 <div className="flex items-center gap-4 py-2 border-t border-b">
@@ -542,47 +539,49 @@ export default function CommunityPage() {
                   ) : comments.length === 0 ? (
                     <p className="text-sm text-muted-foreground py-2">No comments yet. Be the first to share your thoughts!</p>
                   ) : (
-                    comments.map((comment) => (
-                      <div key={comment.id} className="flex gap-2.5">
-                        <Avatar className="size-7 shrink-0">
-                          <AvatarImage src={comment.author.image || undefined} />
-                          <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-[10px]">
-                            {comment.author.name.split(" ").map((n) => n[0]).join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-medium">{comment.author.name}</span>
-                            <span className="text-[10px] text-muted-foreground">{formatTimeAgo(comment.createdAt)}</span>
+                    <div className="space-y-3">
+                      {comments.map((comment) => (
+                        <div key={comment.id} className="flex gap-2.5">
+                          <Avatar className="size-7 shrink-0">
+                            <AvatarImage src={comment.author.image || undefined} />
+                            <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-[10px]">
+                              {comment.author.name.split(" ").map((n) => n[0]).join("")}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-medium">{comment.author.name}</span>
+                              <span className="text-[10px] text-muted-foreground">{formatTimeAgo(comment.createdAt)}</span>
+                            </div>
+                            <p className="text-sm mt-0.5 break-words">{comment.content}</p>
                           </div>
-                          <p className="text-sm mt-0.5">{comment.content}</p>
                         </div>
-                      </div>
-                    ))
+                      ))}
+                    </div>
                   )}
                 </div>
-
-                {/* Add Comment */}
-                {canPost && (
-                  <div className="flex gap-2 pt-2">
-                    <Input
-                      placeholder="Write a comment..."
-                      value={newComment}
-                      onChange={(e) => setNewComment(e.target.value)}
-                      onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleAddComment() } }}
-                      disabled={submittingComment}
-                    />
-                    <Button
-                      className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shrink-0"
-                      size="icon"
-                      onClick={handleAddComment}
-                      disabled={!newComment.trim() || submittingComment}
-                    >
-                      {submittingComment ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
-                    </Button>
-                  </div>
-                )}
               </div>
+
+              {/* Add Comment - fixed at bottom */}
+              {canPost && (
+                <div className="flex gap-2 pt-3 border-t mt-3 shrink-0">
+                  <Input
+                    placeholder="Write a comment..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleAddComment() } }}
+                    disabled={submittingComment}
+                  />
+                  <Button
+                    className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shrink-0"
+                    size="icon"
+                    onClick={handleAddComment}
+                    disabled={!newComment.trim() || submittingComment}
+                  >
+                    {submittingComment ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
+                  </Button>
+                </div>
+              )}
             </>
           )}
         </DialogContent>

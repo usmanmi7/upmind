@@ -26,7 +26,6 @@ export async function POST(
     })
 
     if (existingLike) {
-      // Unlike
       await db.postLike.delete({ where: { id: existingLike.id } })
       await db.communityPost.update({
         where: { id: postId },
@@ -34,7 +33,6 @@ export async function POST(
       })
       return NextResponse.json({ liked: false, likeCount: post.likes - 1 })
     } else {
-      // Like
       await db.postLike.create({
         data: { postId, userId: session.user.id },
       })

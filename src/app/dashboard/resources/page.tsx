@@ -71,7 +71,7 @@ export default function ResourcesPage() {
   const [loading, setLoading] = React.useState(true)
   const [savingId, setSavingId] = React.useState<string | null>(null)
 
-  // Consultant resource creation state
+  // Consultant resource creation
   const [addDialogOpen, setAddDialogOpen] = React.useState(false)
   const [creating, setCreating] = React.useState(false)
   const [newResource, setNewResource] = React.useState({
@@ -222,7 +222,6 @@ export default function ResourcesPage() {
         </div>
       ) : (
         <>
-          {/* Resources Grid/List */}
           {viewMode === "grid" ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filtered.map((resource) => {
@@ -245,11 +244,9 @@ export default function ResourcesPage() {
                           <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{resource.description}</p>
                         )}
                         <div className="flex items-center justify-between mt-3">
-                          <div className="flex items-center gap-2">
-                            <span className="text-[10px] text-muted-foreground flex items-center gap-1">
-                              <Clock className="size-3" /> {resource.readTime || "5 min"}
-                            </span>
-                          </div>
+                          <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+                            <Clock className="size-3" /> {resource.readTime || "5 min"}
+                          </span>
                           <Button
                             variant="ghost"
                             size="icon"
