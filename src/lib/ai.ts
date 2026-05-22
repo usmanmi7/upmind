@@ -100,6 +100,68 @@ function getGemini(): GoogleGenerativeAI | null {
   return geminiInstance
 }
 
+// Models to try in order — each has separate quota limits
+const GEMINI_MODELS = [
+  "gemini-2.0-flash",
+  "gemini-2.0-flash-lite",
+  "gemini-1.5-flash",
+  "gemini-1.5-flash-8b",
+]
+
+function isRateLimitError(error: unknown): boolean {
+  if (error instanceof Error) {
+    const msg = error.message.toLowerCase()
+    return (
+      msg.includes("429") ||
+      msg.includes("quota") ||
+      msg.includes("rate limit") ||
+      msg.includes("too many requests") ||
+      msg.includes("resource exhausted")
+    )
+  }
+  return false
+}
+
+async function geminiChatWithModel(
+  gemini: GoogleGenerativeAI,
+  modelName: string,
+  messages: Array<{ role: string; content: string }>,
+  systemPrompt?: string
+): Promise<string> {
+  const model = gemini.getGenerativeModel({
+    model: modelName,
+    systemInstruction: systemPrompt || undefined,
+  })
+
+  // Convert OpenAI-style messages to Gemini format
+  const history: Array<{ role: "user" | "model"; parts: Array<{ text: string }> }> = []
+  let lastUserMessage = ""
+
+  for (const msg of messages) {
+    if (msg.role === "system") continue
+    if (msg.role === "user") {
+      lastUserMessage = msg.content
+      history.push({ role: "user", parts: [{ text: msg.content }] })
+    } else if (msg.role === "assistant") {
+      history.push({ role: "model", parts: [{ text: msg.content }] })
+    }
+  }
+
+  // Single message — use simple generateContent
+  if (history.length <= 1) {
+    const result = await model.generateContent(lastUserMessage)
+    return result.response.text()
+  }
+
+  // Multi-turn conversation — use chat
+  const chat = model.startChat({
+    history: history.slice(0, -1),
+  })
+
+  const result = await chat.sendMessage(lastUserMessage)
+  return result.response.text()
+}
+
 async function geminiChat(
   messages: Array<{ role: string; content: string }>,
   systemPrompt?: string
@@ -109,44 +171,27 @@ async function geminiChat(
     throw new Error("Google AI API key not configured. Set GOOGLE_AI_API_KEY environment variable.")
   }
 
-  const model = gemini.getGenerativeModel({
-    model: "gemini-2.0-flash",
-    systemInstruction: systemPrompt || undefined,
-  })
+  // Try each model in order — fall back if quota is exceeded
+  let lastError: unknown = null
 
-  // Convert OpenAI-style messages to Gemini format
-  // Gemini uses a "history" format where user/model alternate
-  const history: Array<{ role: "user" | "model"; parts: Array<{ text: string }> }> = []
-  let lastUserMessage = ""
-
-  for (const msg of messages) {
-    if (msg.role === "system") {
-      // System messages are handled via systemInstruction above
-      continue
-    }
-    if (msg.role === "user") {
-      lastUserMessage = msg.content
-      history.push({ role: "user", parts: [{ text: msg.content }] })
-    } else if (msg.role === "assistant") {
-      history.push({ role: "model", parts: [{ text: msg.content }] })
+  for (const modelName of GEMINI_MODELS) {
+    try {
+      const response = await geminiChatWithModel(gemini, modelName, messages, systemPrompt)
+      console.log(`Gemini model ${modelName} succeeded`)
+      return response
+    } catch (error) {
+      lastError = error
+      if (isRateLimitError(error)) {
+        console.warn(`Gemini model ${modelName} hit rate limit, trying next model...`)
+        continue // Try the next model
+      }
+      // Non-rate-limit error — throw immediately
+      throw error
     }
   }
 
-  // If there's only one message, use the simpler generateContent
-  if (history.length <= 1) {
-    const result = await model.generateContent(lastUserMessage)
-    const response = result.response.text()
-    return response
-  }
-
-  // For multi-turn conversations, use chat
-  const chat = model.startChat({
-    history: history.slice(0, -1), // All but the last message
-  })
-
-  const result = await chat.sendMessage(lastUserMessage)
-  const response = result.response.text()
-  return response
+  // All models hit rate limits
+  throw lastError
 }
 
 // ─── Unified AI Response Function ─────────────────────────────────────────────
