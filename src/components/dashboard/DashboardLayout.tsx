@@ -36,6 +36,7 @@ import {
   ChevronLeft,
   Sparkles,
   UsersRound,
+  Users,
 } from "lucide-react"
 
 const sidebarItems = [
@@ -63,11 +64,6 @@ const sidebarItems = [
     title: "Messages",
     href: "/dashboard/messages",
     icon: MessageSquare,
-  },
-  {
-    title: "AI Assistant",
-    href: "/dashboard/ai-assistant",
-    icon: Sparkles,
   },
   {
     title: "Community",

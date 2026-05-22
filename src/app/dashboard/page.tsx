@@ -32,13 +32,6 @@ import {
 
 const quickActions = [
   {
-    title: "AI Assistant",
-    description: "Get startup advice from AI",
-    icon: Sparkles,
-    href: "/dashboard/ai-assistant",
-    color: "from-[#2D4A2D] to-[#1A2E1A]",
-  },
-  {
     title: "Community",
     description: "Connect with fellow founders",
     icon: UsersRound,
@@ -357,7 +350,7 @@ export default function DashboardPage() {
               {(data?.checklist || [
                 { title: "Create your startup profile", completed: false, href: "/dashboard/startup" },
                 { title: "Define your vision & goals", completed: false, href: "/dashboard/startup" },
-                { title: "Try the AI Assistant", completed: false, href: "/dashboard/ai-assistant" },
+                { title: "Try the Community", completed: false, href: "/dashboard/community" },
                 { title: "Build your first roadmap", completed: false, href: "/dashboard/roadmap" },
                 { title: "Book a consultation", completed: false, href: "/dashboard/appointments" },
               ]).map((item, i) => (

@@ -74,7 +74,7 @@ export async function GET() {
     const checklist = [
       { title: "Create your startup profile", completed: hasStartupProfile, href: "/dashboard/startup" },
       { title: "Define your vision & goals", completed: hasVision, href: "/dashboard/startup" },
-      { title: "Try the AI Assistant", completed: hasUsedAI, href: "/dashboard/ai-assistant" },
+      { title: "Try the Community", completed: hasUsedAI, href: "/dashboard/community" },
       { title: "Build your first roadmap", completed: hasRoadmapItems, href: "/dashboard/roadmap" },
       { title: "Book a consultation", completed: hasBookedAppointment, href: "/dashboard/appointments" },
     ]
