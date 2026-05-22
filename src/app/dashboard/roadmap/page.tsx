@@ -12,7 +12,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import {
   Plus,
@@ -31,14 +30,15 @@ import {
   PartyPopper,
   Loader2,
   Trash2,
+  Sparkles,
 } from "lucide-react"
 import { toast } from "sonner"
 
-const phaseConfig: Record<string, { name: string; icon: React.ElementType; color: string }> = {
-  research: { name: "Research", icon: Search, color: "from-[#2D4A2D] to-[#8FBC8F]" },
-  build: { name: "Build", icon: Wrench, color: "from-[#7CFC00] to-[#2D4A2D]" },
-  launch: { name: "Launch", icon: Zap, color: "from-green-500 to-emerald-500" },
-  grow: { name: "Grow", icon: TrendingUp, color: "from-orange-500 to-red-500" },
+const phaseConfig: Record<string, { name: string; icon: React.ElementType; color: string; description: string }> = {
+  research: { name: "Research", icon: Search, color: "from-[#2D4A2D] to-[#8FBC8F]", description: "Validate your idea and understand your market" },
+  build: { name: "Build", icon: Wrench, color: "from-[#7CFC00] to-[#2D4A2D]", description: "Create your minimum viable product" },
+  launch: { name: "Launch", icon: Zap, color: "from-green-500 to-emerald-500", description: "Get your product to market and first customers" },
+  grow: { name: "Grow", icon: TrendingUp, color: "from-orange-500 to-red-500", description: "Scale your business and optimize performance" },
 }
 
 interface RoadmapItem {
@@ -59,6 +59,7 @@ export default function RoadmapPage() {
   const [selectedPhase, setSelectedPhase] = React.useState("research")
   const [togglingId, setTogglingId] = React.useState<string | null>(null)
   const [deletingId, setDeletingId] = React.useState<string | null>(null)
+  const [populating, setPopulating] = React.useState(false)
 
   const fetchRoadmap = React.useCallback(async () => {
     try {
@@ -89,7 +90,6 @@ export default function RoadmapPage() {
       })
       if (res.ok) {
         const data = await res.json()
-        // Optimistically update UI
         setPhases((prev) => {
           const newPhases = { ...prev }
           for (const phaseKey of Object.keys(newPhases)) {
@@ -126,7 +126,6 @@ export default function RoadmapPage() {
         setNewTask("")
         setDialogOpen(false)
         toast.success("Task added to roadmap!")
-        // Refresh to get updated progress
         fetchRoadmap()
       }
     } catch (error) {
@@ -158,11 +157,30 @@ export default function RoadmapPage() {
     }
   }
 
+  const handlePopulateDefaults = async () => {
+    setPopulating(true)
+    try {
+      const res = await fetch("/api/roadmap/populate", { method: "POST" })
+      if (res.ok) {
+        toast.success("Starter tasks added to your roadmap!")
+        fetchRoadmap()
+      } else {
+        const data = await res.json()
+        toast.error(data.error || "Failed to add starter tasks")
+      }
+    } catch {
+      toast.error("Failed to add starter tasks")
+    } finally {
+      setPopulating(false)
+    }
+  }
+
   // Calculate totals
   const allItems = Object.values(phases).flat()
   const totalCompleted = allItems.filter((i) => i.isCompleted).length
   const totalItems = allItems.length
   const calculatedProgress = totalItems > 0 ? Math.round((totalCompleted / totalItems) * 100) : 0
+  const isEmpty = totalItems === 0
 
   // Milestone tracker
   const milestones = [
@@ -191,16 +209,17 @@ export default function RoadmapPage() {
   // Default phases if none exist
   const displayPhases = Object.keys(phases).length > 0
     ? Object.entries(phases).map(([key, items]) => {
-        const config = phaseConfig[key] || { name: key.charAt(0).toUpperCase() + key.slice(1), icon: Rocket, color: "from-[#2D4A2D] to-[#8FBC8F]" }
+        const config = phaseConfig[key] || { name: key.charAt(0).toUpperCase() + key.slice(1), icon: Rocket, color: "from-[#2D4A2D] to-[#8FBC8F]", description: "" }
         const completed = items.filter((i) => i.isCompleted).length
         const progress = items.length > 0 ? Math.round((completed / items.length) * 100) : 0
-        return { id: key, name: config.name, icon: config.icon, color: config.color, progress, items }
+        return { id: key, name: config.name, icon: config.icon, color: config.color, description: config.description, progress, items }
       })
     : Object.entries(phaseConfig).map(([key, config]) => ({
         id: key,
         name: config.name,
         icon: config.icon,
         color: config.color,
+        description: config.description,
         progress: 0,
         items: [] as RoadmapItem[],
       }))
@@ -212,142 +231,181 @@ export default function RoadmapPage() {
           <h1 className="text-2xl font-heading font-bold">Roadmap</h1>
           <p className="text-muted-foreground mt-1">Track your startup milestones from idea to scale</p>
         </div>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]">
+        <div className="flex gap-2">
+          {isEmpty && (
+            <Button
+              variant="outline"
+              className="border-[#7CFC00]/50 text-[#7CFC00] hover:bg-[#7CFC00]/10"
+              onClick={handlePopulateDefaults}
+              disabled={populating}
+            >
+              {populating ? <Loader2 className="size-4 mr-2 animate-spin" /> : <Sparkles className="size-4 mr-2" />}
+              Load Starter Tasks
+            </Button>
+          )}
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <Button className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]" onClick={() => setDialogOpen(true)}>
               <Plus className="size-4 mr-2" /> Add Task
             </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle className="font-heading">Add New Task</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 mt-2">
-              <div>
-                <label className="text-sm font-medium mb-1.5 block">Phase</label>
-                <select
-                  className="w-full border rounded-md px-3 py-2 text-sm bg-background"
-                  value={selectedPhase}
-                  onChange={(e) => setSelectedPhase(e.target.value)}
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="font-heading">Add New Task</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 mt-2">
+                <div>
+                  <label className="text-sm font-medium mb-1.5 block">Phase</label>
+                  <select
+                    className="w-full border rounded-md px-3 py-2 text-sm bg-background"
+                    value={selectedPhase}
+                    onChange={(e) => setSelectedPhase(e.target.value)}
+                  >
+                    {Object.entries(phaseConfig).map(([key, config]) => (
+                      <option key={key} value={key}>{config.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-1.5 block">Task</label>
+                  <Input
+                    placeholder="Enter task description"
+                    value={newTask}
+                    onChange={(e) => setNewTask(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && addTask()}
+                  />
+                </div>
+                <Button
+                  className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+                  onClick={addTask}
                 >
-                  {Object.entries(phaseConfig).map(([key, config]) => (
-                    <option key={key} value={key}>{config.name}</option>
-                  ))}
-                </select>
+                  Add Task
+                </Button>
               </div>
-              <div>
-                <label className="text-sm font-medium mb-1.5 block">Task</label>
-                <Input
-                  placeholder="Enter task description"
-                  value={newTask}
-                  onChange={(e) => setNewTask(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && addTask()}
-                />
-              </div>
-              <Button
-                className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
-                onClick={addTask}
-              >
-                Add Task
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
+      {/* Empty State - Show prominent starter tasks prompt */}
+      {isEmpty && (
+        <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+          <CardContent className="p-8 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00]/20 to-[#2D4A2D]/20 flex items-center justify-center mx-auto mb-4">
+              <Sparkles className="size-7 text-[#7CFC00]" />
+            </div>
+            <h2 className="text-lg font-heading font-bold mb-2">Not sure where to start?</h2>
+            <p className="text-muted-foreground max-w-md mx-auto mb-4">
+              We&apos;ve prepared 28 essential tasks across Research, Build, Launch, and Grow phases to guide you from idea to scale. These are proven steps that successful startups follow.
+            </p>
+            <Button
+              className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+              onClick={handlePopulateDefaults}
+              disabled={populating}
+            >
+              {populating ? <Loader2 className="size-4 mr-2 animate-spin" /> : <Sparkles className="size-4 mr-2" />}
+              Load Starter Tasks
+            </Button>
+            <p className="text-xs text-muted-foreground mt-3">You can always add, edit, or remove tasks later</p>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Overall Progress */}
-      <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Overall Progress</span>
-            <span className="text-sm font-bold gradient-text">{calculatedProgress}% ({totalCompleted}/{totalItems} tasks)</span>
-          </div>
-          <Progress value={calculatedProgress} className="h-2.5" />
-        </CardContent>
-      </Card>
+      {!isEmpty && (
+        <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium">Overall Progress</span>
+              <span className="text-sm font-bold gradient-text">{calculatedProgress}% ({totalCompleted}/{totalItems} tasks)</span>
+            </div>
+            <Progress value={calculatedProgress} className="h-2.5" />
+          </CardContent>
+        </Card>
+      )}
 
       {/* Milestone Tracker */}
-      <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
-        <CardHeader className="pb-2">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-base font-heading flex items-center gap-2">
-              <Flag className="size-5 text-[#7CFC00]" /> Startup Milestones
-            </CardTitle>
-            <Badge variant="secondary" className="text-xs">
-              <PartyPopper className="size-3 mr-1" />
-              {currentMilestoneIndex + 1}/{milestones.length}
-            </Badge>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="relative overflow-x-auto pb-2">
-            <div className="flex items-center min-w-[600px] px-2">
-              {milestones.map((milestone, index) => {
-                const isReached = calculatedProgress >= milestone.threshold
-                const isCurrent = index === currentMilestoneIndex
-                const Icon = milestone.icon
+      {!isEmpty && (
+        <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base font-heading flex items-center gap-2">
+                <Flag className="size-5 text-[#7CFC00]" /> Startup Milestones
+              </CardTitle>
+              <Badge variant="secondary" className="text-xs">
+                <PartyPopper className="size-3 mr-1" />
+                {currentMilestoneIndex + 1}/{milestones.length}
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="relative overflow-x-auto pb-2">
+              <div className="flex items-center min-w-[600px] px-2">
+                {milestones.map((milestone, index) => {
+                  const isReached = calculatedProgress >= milestone.threshold
+                  const isCurrent = index === currentMilestoneIndex
+                  const Icon = milestone.icon
 
-                return (
-                  <div key={milestone.id} className="flex items-center flex-1">
-                    <div className="flex flex-col items-center relative">
-                      <div
-                        className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
-                          isReached
-                            ? isCurrent
-                              ? "bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] ring-4 ring-[#7CFC00]/20 shadow-lg shadow-[#7CFC00]/25"
-                              : "bg-gradient-to-br from-green-500 to-emerald-500 text-white"
-                            : "bg-muted/50 text-muted-foreground/40 border-2 border-dashed border-muted-foreground/20"
-                        }`}
-                      >
-                        <Icon className="size-4" />
+                  return (
+                    <div key={milestone.id} className="flex items-center flex-1">
+                      <div className="flex flex-col items-center relative">
+                        <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
+                            isReached
+                              ? isCurrent
+                                ? "bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] ring-4 ring-[#7CFC00]/20 shadow-lg shadow-[#7CFC00]/25"
+                                : "bg-gradient-to-br from-green-500 to-emerald-500 text-white"
+                              : "bg-muted/50 text-muted-foreground/40 border-2 border-dashed border-muted-foreground/20"
+                          }`}
+                        >
+                          <Icon className="size-4" />
+                        </div>
+                        <p
+                          className={`text-[10px] font-medium mt-1.5 text-center whitespace-nowrap ${
+                            isReached ? "text-foreground" : "text-muted-foreground/50"
+                          }`}
+                        >
+                          {milestone.label}
+                        </p>
+                        {isCurrent && (
+                          <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7CFC00] opacity-75" />
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-[#7CFC00]" />
+                          </span>
+                        )}
                       </div>
-                      <p
-                        className={`text-[10px] font-medium mt-1.5 text-center whitespace-nowrap ${
-                          isReached ? "text-foreground" : "text-muted-foreground/50"
-                        }`}
-                      >
-                        {milestone.label}
-                      </p>
-                      {isCurrent && (
-                        <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7CFC00] opacity-75" />
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-[#7CFC00]" />
-                        </span>
+                      {index < milestones.length - 1 && (
+                        <div className="flex-1 h-0.5 mx-1 mt-[-18px]">
+                          <div
+                            className={`h-full transition-all duration-500 ${
+                              isReached && index < currentMilestoneIndex
+                                ? "bg-gradient-to-r from-green-500 to-emerald-500"
+                                : isReached && index === currentMilestoneIndex
+                                ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D]"
+                                : "bg-muted-foreground/20"
+                            }`}
+                            style={{
+                              width:
+                                isReached && index === currentMilestoneIndex
+                                  ? `${((calculatedProgress - milestone.threshold) / (milestones[index + 1]?.threshold - milestone.threshold)) * 100}%`
+                                  : isReached
+                                  ? "100%"
+                                  : "0%",
+                            }}
+                          />
+                        </div>
                       )}
                     </div>
-                    {index < milestones.length - 1 && (
-                      <div className="flex-1 h-0.5 mx-1 mt-[-18px]">
-                        <div
-                          className={`h-full transition-all duration-500 ${
-                            isReached && index < currentMilestoneIndex
-                              ? "bg-gradient-to-r from-green-500 to-emerald-500"
-                              : isReached && index === currentMilestoneIndex
-                              ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D]"
-                              : "bg-muted-foreground/20"
-                          }`}
-                          style={{
-                            width:
-                              isReached && index === currentMilestoneIndex
-                                ? `${((calculatedProgress - milestone.threshold) / (milestones[index + 1]?.threshold - milestone.threshold)) * 100}%`
-                                : isReached
-                                ? "100%"
-                                : "0%",
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
-          </div>
-          <p className="text-xs text-muted-foreground text-center mt-2">
-            {currentMilestoneIndex < milestones.length - 1
-              ? `Next milestone: ${milestones[currentMilestoneIndex + 1]?.label} (${milestones[currentMilestoneIndex + 1]?.threshold}% progress needed)`
-              : "You've reached the final milestone!"}
-          </p>
-        </CardContent>
-      </Card>
+            <p className="text-xs text-muted-foreground text-center mt-2">
+              {currentMilestoneIndex < milestones.length - 1
+                ? `Next milestone: ${milestones[currentMilestoneIndex + 1]?.label} (${milestones[currentMilestoneIndex + 1]?.threshold}% progress needed)`
+                : "You've reached the final milestone!"}
+            </p>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Timeline */}
       <div className="space-y-6">
@@ -366,10 +424,13 @@ export default function RoadmapPage() {
                   </div>
                   <div>
                     <CardTitle className="text-base font-heading">{phase.name}</CardTitle>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Progress value={phase.progress} className="h-1.5 w-24" />
-                      <span className="text-xs text-muted-foreground">{phase.progress}%</span>
-                    </div>
+                    <p className="text-xs text-muted-foreground mt-0.5">{phase.description}</p>
+                    {phase.items.length > 0 && (
+                      <div className="flex items-center gap-2 mt-1">
+                        <Progress value={phase.progress} className="h-1.5 w-24" />
+                        <span className="text-xs text-muted-foreground">{phase.progress}%</span>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <Badge variant={phase.progress === 100 ? "default" : "secondary"} className="ml-auto text-xs">
@@ -385,25 +446,32 @@ export default function RoadmapPage() {
             </CardHeader>
             <CardContent>
               {phase.items.length > 0 ? (
-                <div className="space-y-2">
+                <div className="space-y-1">
                   {phase.items.map((item) => (
                     <div
                       key={item.id}
-                      className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/30 transition-all duration-200 group"
+                      className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-muted/30 transition-all duration-200 group"
                     >
                       <Checkbox
                         checked={item.isCompleted}
                         onCheckedChange={() => toggleItem(item.id, item.isCompleted)}
                         disabled={togglingId === item.id}
-                        className={item.isCompleted ? "data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500" : ""}
+                        className={`mt-0.5 ${item.isCompleted ? "data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500" : ""}`}
                       />
-                      <span className={`text-sm flex-1 ${item.isCompleted ? "line-through text-muted-foreground" : ""}`}>
-                        {item.title}
-                      </span>
+                      <div className="flex-1 min-w-0">
+                        <span className={`text-sm ${item.isCompleted ? "line-through text-muted-foreground" : ""}`}>
+                          {item.title}
+                        </span>
+                        {item.description && (
+                          <p className={`text-xs mt-0.5 ${item.isCompleted ? "text-muted-foreground/50 line-through" : "text-muted-foreground"}`}>
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="size-7 opacity-0 group-hover:opacity-100 text-destructive"
+                        className="size-7 opacity-0 group-hover:opacity-100 text-destructive shrink-0"
                         onClick={() => deleteItem(item.id)}
                         disabled={deletingId === item.id}
                       >
