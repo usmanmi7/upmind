@@ -92,7 +92,7 @@ export default function AnalyticsPage() {
   const overviewCards = [
     { icon: CheckCircle2, label: "Tasks Completed", value: String(overview?.tasksCompleted || 0), change: `${overview?.totalTasks || 0} total`, color: "text-green-600 dark:text-green-400", bg: "bg-green-100 dark:bg-green-900/30" },
     { icon: Calendar, label: "Appointments Attended", value: String(overview?.appointmentsAttended || 0), change: `${overview?.scheduledAppointments || 0} scheduled`, color: "text-[#1A2E1A] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
-    { icon: BookOpen, label: "Resources Used", value: String(overview?.resourcesUsed || 0), change: "saved resources", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
+    { icon: BookOpen, label: "Resources Viewed", value: String(overview?.resourcesUsed || 0), change: "unique resources opened", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
     { icon: TrendingUp, label: "Startup Score", value: `${startupScore}/100`, change: startupScore >= 70 ? "Strong" : startupScore >= 40 ? "Growing" : "Getting started", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
   ]
 
@@ -228,8 +228,8 @@ export default function AnalyticsPage() {
               ) : (
                 <div className="h-full flex flex-col items-center justify-center text-center">
                   <BookOpen className="size-10 text-muted-foreground/30 mb-3" />
-                  <p className="text-sm text-muted-foreground">No resources used yet</p>
-                  <p className="text-xs text-muted-foreground mt-1">Save resources to see usage analytics</p>
+                  <p className="text-sm text-muted-foreground">No resources viewed yet</p>
+                  <p className="text-xs text-muted-foreground mt-1">Open resources to see usage analytics</p>
                 </div>
               )}
             </div>

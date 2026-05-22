@@ -80,6 +80,16 @@ export async function GET(
       data: { downloadCount: { increment: 1 } },
     })
 
+    // Track resource view for logged-in users
+    if (session?.user?.id) {
+      db.resourceView.create({
+        data: {
+          userId: session.user.id,
+          resourceId: resource.id,
+        },
+      }).catch(() => {}) // Non-blocking
+    }
+
     return NextResponse.json({
       resource: responseData,
       user: session?.user

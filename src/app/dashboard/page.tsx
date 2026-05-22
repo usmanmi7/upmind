@@ -482,7 +482,7 @@ function UserDashboard() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Resources</p>
+                <p className="text-sm text-muted-foreground">Resources Viewed</p>
                 <p className="text-2xl font-bold mt-1">{overview?.resourcesUsed || 0}</p>
               </div>
               <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center">
@@ -490,7 +490,7 @@ function UserDashboard() {
               </div>
             </div>
             <p className="text-xs text-muted-foreground mt-3">
-              {overview?.resourcesUsed ? `${overview.resourcesUsed} saved` : "Start exploring resources"}
+              {overview?.resourcesUsed ? `${overview.resourcesUsed} explored` : "Start exploring resources"}
             </p>
           </CardContent>
         </Card>
@@ -613,7 +613,7 @@ function UserDashboard() {
                 {(data?.checklist || [
                   { title: "Complete your startup profile", completed: false, href: "/dashboard/startup", icon: "rocket" },
                   { title: "Define your vision & goals", completed: false, href: "/dashboard/startup", icon: "target" },
-                  { title: "Explore resources & save one", completed: false, href: "/dashboard/resources", icon: "book" },
+                  { title: "Explore resources", completed: false, href: "/dashboard/resources", icon: "book" },
                   { title: "Join the community discussion", completed: false, href: "/dashboard/community", icon: "users" },
                   { title: "Build your roadmap", completed: false, href: "/dashboard/roadmap", icon: "map" },
                   { title: "Book a consultation", completed: false, href: "/dashboard/appointments", icon: "calendar" },

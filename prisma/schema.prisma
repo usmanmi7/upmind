@@ -40,6 +40,7 @@ model User {
   posts           CommunityPost[]
   comments        Comment[]
   postLikes       PostLike[]
+  resourceViews   ResourceView[]
   sessions        Session[]
   accounts        Account[]
 }
@@ -189,6 +190,7 @@ model Resource {
 
   author        User?     @relation(fields: [authorId], references: [id])
   savedBy       SavedResource[]
+  views         ResourceView[]
 }
 
 enum ResourceType {
@@ -209,6 +211,19 @@ model SavedResource {
   resource    Resource  @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 
   @@unique([userId, resourceId])
+}
+
+model ResourceView {
+  id          String    @id @default(cuid())
+  userId      String
+  resourceId  String
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resource    Resource  @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([resourceId])
 }
 
 model Message {
