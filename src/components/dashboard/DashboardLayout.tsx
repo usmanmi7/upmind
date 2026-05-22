@@ -36,10 +36,18 @@ import {
   ChevronLeft,
   Sparkles,
   UsersRound,
-  Users,
+  Shield,
 } from "lucide-react"
 
-const sidebarItems = [
+interface SidebarItem {
+  title: string
+  href: string
+  icon: React.ComponentType<{ className?: string }>
+  adminOnly?: boolean
+  userOnly?: boolean
+}
+
+const sidebarItems: SidebarItem[] = [
   {
     title: "Dashboard",
     href: "/dashboard",
@@ -49,6 +57,7 @@ const sidebarItems = [
     title: "My Startup",
     href: "/dashboard/startup",
     icon: Rocket,
+    userOnly: true,
   },
   {
     title: "Resources",
@@ -59,6 +68,7 @@ const sidebarItems = [
     title: "Appointments",
     href: "/dashboard/appointments",
     icon: Calendar,
+    userOnly: true,
   },
   {
     title: "Messages",
@@ -74,6 +84,7 @@ const sidebarItems = [
     title: "Roadmap",
     href: "/dashboard/roadmap",
     icon: Map,
+    userOnly: true,
   },
   {
     title: "Documents",
@@ -89,6 +100,7 @@ const sidebarItems = [
     title: "Subscription",
     href: "/dashboard/subscription",
     icon: CreditCard,
+    userOnly: true,
   },
   {
     title: "Notifications",
@@ -100,10 +112,24 @@ const sidebarItems = [
     href: "/dashboard/settings",
     icon: Settings,
   },
+  {
+    title: "Admin Panel",
+    href: "/admin",
+    icon: Shield,
+    adminOnly: true,
+  },
 ]
 
 function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
   const pathname = usePathname()
+  const { data: session } = useSession()
+  const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "SUPER_ADMIN"
+
+  const filteredItems = sidebarItems.filter((item) => {
+    if (item.userOnly && isAdmin) return false
+    if (item.adminOnly && !isAdmin) return false
+    return true
+  })
 
   return (
     <div className="flex flex-col h-full">
@@ -117,15 +143,20 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
             Upmind
           </span>
         )}
+        {isAdmin && !collapsed && (
+          <span className="text-[10px] font-medium bg-[#7CFC00]/20 text-[#7CFC00] px-1.5 py-0.5 rounded ml-auto">
+            ADMIN
+          </span>
+        )}
       </div>
 
       {/* Navigation */}
       <ScrollArea className="flex-1 px-3 py-4 sidebar-scroll">
         <nav className="space-y-1">
-          {sidebarItems.map((item) => {
+          {filteredItems.map((item) => {
             const isActive =
               pathname === item.href ||
-              (item.href !== "/dashboard" && pathname.startsWith(item.href))
+              (item.href !== "/dashboard" && item.href !== "/admin" && pathname.startsWith(item.href))
 
             return (
               <Link
@@ -135,13 +166,15 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-smooth",
                   isActive
                     ? "bg-sidebar-accent text-sidebar-primary"
-                    : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                    : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground",
+                  item.adminOnly && "border border-[#7CFC00]/30 hover:bg-[#7CFC00]/10"
                 )}
               >
                 <item.icon
                   className={cn(
                     "size-5 shrink-0",
-                    isActive ? "text-sidebar-primary" : ""
+                    isActive ? "text-sidebar-primary" : "",
+                    item.adminOnly && "text-[#7CFC00]"
                   )}
                 />
                 {!collapsed && <span>{item.title}</span>}
@@ -154,8 +187,8 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
         </nav>
       </ScrollArea>
 
-      {/* Upgrade Card */}
-      {!collapsed && (
+      {/* Upgrade Card - Only for non-admin users */}
+      {!collapsed && !isAdmin && (
         <div className="px-3 pb-4">
           <div className="rounded-xl bg-gradient-to-br from-[#7CFC00]/20 to-[#2D4A2D]/20 border border-sidebar-border p-4">
             <div className="flex items-center gap-2 mb-2">
@@ -177,12 +210,37 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
           </div>
         </div>
       )}
+
+      {/* Admin Badge Card - Only for admins */}
+      {!collapsed && isAdmin && (
+        <div className="px-3 pb-4">
+          <div className="rounded-xl bg-gradient-to-br from-[#7CFC00]/10 to-[#2D4A2D]/10 border border-[#7CFC00]/20 p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Shield className="size-4 text-[#7CFC00]" />
+              <span className="text-sm font-medium text-sidebar-foreground">
+                Admin Access
+              </span>
+            </div>
+            <p className="text-xs text-sidebar-foreground/60 mb-3">
+              Full platform management & analytics
+            </p>
+            <Button
+              size="sm"
+              className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] text-xs"
+              asChild
+            >
+              <Link href="/admin">Open Admin Panel</Link>
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
 function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
   const { data: session } = useSession()
+  const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "SUPER_ADMIN"
   const [unreadCount, setUnreadCount] = React.useState(0)
 
   React.useEffect(() => {
@@ -238,6 +296,20 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
 
         {/* Right side */}
         <div className="flex items-center gap-2">
+          {/* Admin badge in topbar */}
+          {isAdmin && (
+            <Link href="/admin">
+              <Button
+                variant="outline"
+                size="sm"
+                className="hidden sm:flex items-center gap-1.5 text-[#7CFC00] border-[#7CFC00]/30 hover:bg-[#7CFC00]/10"
+              >
+                <Shield className="size-3.5" />
+                Admin
+              </Button>
+            </Link>
+          )}
+
           {/* Notifications */}
           <Button
             variant="ghost"
@@ -283,6 +355,11 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
                   <p className="text-xs text-muted-foreground">
                     {session?.user?.email || ""}
                   </p>
+                  {isAdmin && (
+                    <span className="text-[10px] font-medium bg-[#7CFC00]/20 text-[#7CFC00] px-1.5 py-0.5 rounded w-fit">
+                      ADMIN
+                    </span>
+                  )}
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -292,12 +369,21 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
                   Profile
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/subscription" className="cursor-pointer">
-                  <CreditCard className="size-4 mr-2" />
-                  Subscription
-                </Link>
-              </DropdownMenuItem>
+              {isAdmin ? (
+                <DropdownMenuItem asChild>
+                  <Link href="/admin" className="cursor-pointer">
+                    <Shield className="size-4 mr-2" />
+                    Admin Panel
+                  </Link>
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard/subscription" className="cursor-pointer">
+                    <CreditCard className="size-4 mr-2" />
+                    Subscription
+                  </Link>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => signOut({ callbackUrl: "/auth/login" })}

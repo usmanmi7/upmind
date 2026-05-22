@@ -28,6 +28,12 @@ import {
   Trophy,
   Zap,
   Loader2,
+  Shield,
+  Users,
+  BarChart3,
+  Settings,
+  FileText,
+  DollarSign,
 } from "lucide-react"
 
 const quickActions = [
@@ -46,10 +52,41 @@ const quickActions = [
     color: "from-green-500 to-emerald-500",
   },
   {
-    title: "Book Consultation",
-    description: "Schedule a session with an expert",
-    icon: Calendar,
-    href: "/dashboard/appointments",
+    title: "Browse Resources",
+    description: "Explore guides and templates",
+    icon: BookOpen,
+    href: "/dashboard/resources",
+    color: "from-blue-500 to-indigo-500",
+  },
+]
+
+const adminQuickActions = [
+  {
+    title: "Manage Users",
+    description: "View and manage all users",
+    icon: Users,
+    href: "/admin/users",
+    color: "from-[#7CFC00] to-[#2D4A2D]",
+  },
+  {
+    title: "View Analytics",
+    description: "Platform metrics and reports",
+    icon: BarChart3,
+    href: "/admin/analytics",
+    color: "from-green-500 to-emerald-500",
+  },
+  {
+    title: "Manage Resources",
+    description: "Add and edit platform resources",
+    icon: FileText,
+    href: "/admin/resources",
+    color: "from-[#8FBC8F] to-[#2D4A2D]",
+  },
+  {
+    title: "Platform Settings",
+    description: "Configure platform options",
+    icon: Settings,
+    href: "/admin/settings",
     color: "from-orange-500 to-red-500",
   },
 ]
@@ -89,7 +126,223 @@ interface AnalyticsData {
   } | null
 }
 
+interface AdminDashboardData {
+  users: { total: number; paid: number; free: number; consultants: number; recent: number }
+  subscriptions: { active: number; cancelled: number; expired: number }
+  revenue: { total: number }
+  appointments: { total: number; scheduled: number; completed: number; today: Array<{ id: string; date: string; type: string; status: string; user: { name: string }; consultant: { user: { name: string } } | null }> }
+  resources: { total: number; premium: number }
+  messages: { total: number; unread: number }
+}
+
 export default function DashboardPage() {
+  const { data: session } = useSession()
+  const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "SUPER_ADMIN"
+
+  if (isAdmin) {
+    return <AdminDashboardFallback />
+  }
+
+  return <UserDashboard />
+}
+
+function AdminDashboardFallback() {
+  const [data, setData] = React.useState<AdminDashboardData | null>(null)
+  const [loading, setLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/admin/analytics")
+        if (res.ok) {
+          const json = await res.json()
+          setData(json)
+        }
+      } catch (error) {
+        console.error("Failed to fetch admin data:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <p className="text-sm text-muted-foreground">Loading admin dashboard...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const statsCards = [
+    {
+      title: "Total Users",
+      value: data?.users.total || 0,
+      change: `+${data?.users.recent || 0} this month`,
+      icon: Users,
+      color: "from-[#2D4A2D] to-[#8FBC8F]",
+    },
+    {
+      title: "Paid Users",
+      value: data?.users.paid || 0,
+      change: `${data?.users.total ? Math.round(((data?.users.paid || 0) / data?.users.total) * 100) : 0}% conversion`,
+      icon: DollarSign,
+      color: "from-[#7CFC00] to-[#2D4A2D]",
+    },
+    {
+      title: "Revenue",
+      value: `$${(data?.revenue.total || 0).toLocaleString()}`,
+      change: "Monthly total",
+      icon: TrendingUp,
+      color: "from-green-500 to-emerald-500",
+    },
+    {
+      title: "Active Chats",
+      value: data?.messages.unread || 0,
+      change: `${data?.messages.total || 0} total`,
+      icon: MessageSquare,
+      color: "from-orange-500 to-red-500",
+    },
+  ]
+
+  return (
+    <div className="space-y-6">
+      {/* Admin Welcome */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-heading font-bold flex items-center gap-2">
+            <Shield className="size-7 text-[#7CFC00]" />
+            Admin Dashboard
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Manage your platform, users, and resources
+          </p>
+        </div>
+        <Button
+          asChild
+          className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shadow-lg shadow-[#7CFC00]/25"
+        >
+          <Link href="/admin">
+            <Shield className="size-4" />
+            Full Admin Panel
+            <ArrowRight className="size-4" />
+          </Link>
+        </Button>
+      </div>
+
+      {/* Admin Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {statsCards.map((stat) => (
+          <Card key={stat.title} className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">{stat.title}</p>
+                  <p className="text-2xl font-bold mt-1">{stat.value}</p>
+                </div>
+                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}>
+                  <stat.icon className="size-5 text-white" />
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground mt-3">{stat.change}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Admin Quick Actions */}
+      <div>
+        <h2 className="text-lg font-heading font-semibold mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {adminQuickActions.map((action) => (
+            <Link key={action.href} href={action.href}>
+              <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20 hover:shadow-lg transition-all duration-200 cursor-pointer group h-full">
+                <CardContent className="p-6">
+                  <div
+                    className={`w-10 h-10 rounded-xl bg-gradient-to-br ${action.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}
+                  >
+                    <action.icon className="size-5 text-white" />
+                  </div>
+                  <h3 className="font-semibold text-sm">{action.title}</h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {action.description}
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Today's Appointments + Platform Stats */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base font-heading">Today&apos;s Appointments</CardTitle>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/admin/appointments">View all</Link>
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {data?.appointments.today && data.appointments.today.length > 0 ? (
+              <div className="space-y-3">
+                {data.appointments.today.slice(0, 5).map((apt) => (
+                  <div key={apt.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                    <div className="w-2 h-2 rounded-full bg-[#7CFC00] shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">{apt.user.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        with {apt.consultant?.user.name || "Unassigned"} - {new Date(apt.date).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+                      </p>
+                    </div>
+                    <Badge variant="outline" className="text-xs shrink-0">{apt.type}</Badge>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <Calendar className="size-8 text-muted-foreground/40 mx-auto mb-2" />
+                <p className="text-sm text-muted-foreground">No appointments today</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-heading">Platform Overview</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { label: "Total Resources", value: data?.resources.total || 0, icon: FileText },
+                { label: "Premium Resources", value: data?.resources.premium || 0, icon: Sparkles },
+                { label: "Scheduled Appts", value: data?.appointments.scheduled || 0, icon: Calendar },
+                { label: "Consultants", value: data?.users.consultants || 0, icon: Shield },
+              ].map((metric) => (
+                <div key={metric.label} className="flex items-center gap-2 p-3 rounded-lg bg-muted/30">
+                  <metric.icon className="size-4 text-[#7CFC00] shrink-0" />
+                  <div>
+                    <p className="text-lg font-bold">{metric.value}</p>
+                    <p className="text-xs text-muted-foreground">{metric.label}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
+
+function UserDashboard() {
   const { data: session } = useSession()
   const [data, setData] = React.useState<AnalyticsData | null>(null)
   const [loading, setLoading] = React.useState(true)
@@ -239,7 +492,7 @@ export default function DashboardPage() {
       {/* Quick Actions */}
       <div>
         <h2 className="text-lg font-heading font-semibold mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {quickActions.map((action) => (
             <Link key={action.href} href={action.href}>
               <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20 hover:shadow-lg transition-all duration-200 cursor-pointer group h-full">

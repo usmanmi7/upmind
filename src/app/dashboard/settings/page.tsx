@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -8,7 +9,6 @@ import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Select,
   SelectContent,
@@ -28,14 +28,22 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Settings, Globe, Trash2, Users, Search, Loader2, Shield, Crown } from "lucide-react"
+  Settings,
+  Globe,
+  Trash2,
+  Search,
+  Loader2,
+  Shield,
+  Crown,
+  ChevronLeft,
+  ChevronRight,
+  ArrowRight,
+  Users,
+  ExternalLink,
+} from "lucide-react"
 import { toast } from "sonner"
+
+const USERS_PER_PAGE = 20
 
 interface ManageUser {
   id: string
@@ -185,6 +193,9 @@ function AdminUserManager() {
   const [loading, setLoading] = React.useState(true)
   const [search, setSearch] = React.useState("")
   const [changingPlan, setChangingPlan] = React.useState<string | null>(null)
+  const [currentPage, setCurrentPage] = React.useState(1)
+  const [totalUsers, setTotalUsers] = React.useState(0)
+  const [expanded, setExpanded] = React.useState(false)
 
   React.useEffect(() => {
     fetchUsers()
@@ -197,6 +208,7 @@ function AdminUserManager() {
       if (res.ok) {
         const data = await res.json()
         setUsers(data.users || [])
+        setTotalUsers((data.users || []).length)
       }
     } catch (err) {
       console.error("Failed to fetch users:", err)
@@ -248,23 +260,53 @@ function AdminUserManager() {
       u.email?.toLowerCase().includes(search.toLowerCase())
   )
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredUsers.length / USERS_PER_PAGE)
+  const startIndex = (currentPage - 1) * USERS_PER_PAGE
+  const endIndex = startIndex + USERS_PER_PAGE
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex)
+
+  // Reset to page 1 when search changes
+  React.useEffect(() => {
+    setCurrentPage(1)
+  }, [search])
+
   const planBadgeColors: Record<string, string> = {
     FREE: "bg-muted text-muted-foreground",
     GROWTH_PRO: "bg-[#C8E6C9] text-[#1A2E1A] dark:bg-[#2D4A2D]/30 dark:text-[#7CFC00]",
     ENTERPRISE: "bg-[#7CFC00]/20 text-[#2D4A2D] dark:bg-[#7CFC00]/10 dark:text-[#7CFC00]",
   }
 
+  const displayCount = expanded ? filteredUsers.length : Math.min(5, filteredUsers.length)
+  const displayUsers = expanded ? paginatedUsers : filteredUsers.slice(0, 5)
+
   return (
     <Card className="border-0 shadow-md shadow-black/5 border-l-4 border-l-[#7CFC00]">
       <CardHeader>
-        <CardTitle className="text-base font-heading flex items-center gap-2">
-          <Shield className="size-4 text-[#7CFC00]" /> Admin: Manage Users
-        </CardTitle>
-        <CardDescription>View users and manage their subscription plans</CardDescription>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <CardTitle className="text-base font-heading flex items-center gap-2">
+              <Shield className="size-4 text-[#7CFC00]" /> Admin: Manage Users
+            </CardTitle>
+            <CardDescription>
+              {totalUsers} total users - View and manage subscription plans
+            </CardDescription>
+          </div>
+          <Link href="/admin/users">
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-1.5 text-[#7CFC00] border-[#7CFC00]/30 hover:bg-[#7CFC00]/10"
+            >
+              <ExternalLink className="size-3.5" />
+              Full User Management
+            </Button>
+          </Link>
+        </div>
       </CardHeader>
       <CardContent>
-        <div className="mb-4">
-          <div className="relative">
+        <div className="mb-4 flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <Input
               placeholder="Search users by name or email..."
@@ -273,6 +315,17 @@ function AdminUserManager() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
+          {!expanded && filteredUsers.length > 5 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setExpanded(true)}
+              className="gap-1.5"
+            >
+              <Users className="size-3.5" />
+              Show All ({filteredUsers.length})
+            </Button>
+          )}
         </div>
 
         {loading ? (
@@ -285,15 +338,16 @@ function AdminUserManager() {
             <p className="text-sm text-muted-foreground">No users found</p>
           </div>
         ) : (
-          <ScrollArea className="max-h-[500px]">
-            <div className="space-y-3">
-              {filteredUsers.map((user) => (
+          <>
+            {/* User list */}
+            <div className="space-y-2">
+              {displayUsers.map((user) => (
                 <div
                   key={user.id}
-                  className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors"
+                  className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors"
                 >
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <Avatar className="size-9 shrink-0">
+                    <Avatar className="size-8 shrink-0">
                       <AvatarImage src={user.image || undefined} />
                       <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
                         {(user.name || user.email).split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
@@ -302,12 +356,14 @@ function AdminUserManager() {
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{user.name || "Unknown"}</p>
                       <p className="text-xs text-muted-foreground truncate">{user.email}</p>
-                      {user.startup && (
-                        <p className="text-xs text-muted-foreground/70 truncate">{user.startup.name}</p>
-                      )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 shrink-0">
+                  <div className="flex items-center gap-2 shrink-0 pl-11 sm:pl-0">
+                    {user.startup && (
+                      <span className="text-xs text-muted-foreground/70 truncate max-w-[120px] hidden md:inline">
+                        {user.startup.name}
+                      </span>
+                    )}
                     <Badge className={planBadgeColors[user.subscription?.plan || "FREE"] || planBadgeColors.FREE}>
                       <Crown className="size-3 mr-1" />
                       {user.subscription?.plan === "GROWTH_PRO" ? "Growth Pro" : user.subscription?.plan === "ENTERPRISE" ? "Enterprise" : "Free"}
@@ -317,7 +373,7 @@ function AdminUserManager() {
                       onValueChange={(value) => changePlan(user.id, value)}
                       disabled={changingPlan === user.id}
                     >
-                      <SelectTrigger className="w-[140px] h-8 text-xs">
+                      <SelectTrigger className="w-[130px] h-7 text-xs">
                         {changingPlan === user.id ? (
                           <span className="flex items-center gap-1"><Loader2 className="size-3 animate-spin" /> Updating...</span>
                         ) : (
@@ -334,7 +390,88 @@ function AdminUserManager() {
                 </div>
               ))}
             </div>
-          </ScrollArea>
+
+            {/* Pagination - only show when expanded */}
+            {expanded && totalPages > 1 && (
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 pt-4 border-t">
+                <p className="text-sm text-muted-foreground">
+                  Showing {startIndex + 1}-{Math.min(endIndex, filteredUsers.length)} of {filteredUsers.length} users
+                </p>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    className="gap-1"
+                  >
+                    <ChevronLeft className="size-4" />
+                    Previous
+                  </Button>
+
+                  {/* Page numbers */}
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      let pageNum: number
+                      if (totalPages <= 5) {
+                        pageNum = i + 1
+                      } else if (currentPage <= 3) {
+                        pageNum = i + 1
+                      } else if (currentPage >= totalPages - 2) {
+                        pageNum = totalPages - 4 + i
+                      } else {
+                        pageNum = currentPage - 2 + i
+                      }
+                      return (
+                        <Button
+                          key={pageNum}
+                          variant={currentPage === pageNum ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setCurrentPage(pageNum)}
+                          className={
+                            currentPage === pageNum
+                              ? "bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] w-8 h-8 p-0"
+                              : "w-8 h-8 p-0"
+                          }
+                        >
+                          {pageNum}
+                        </Button>
+                      )
+                    })}
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
+                    className="gap-1"
+                  >
+                    Next
+                    <ChevronRight className="size-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Collapsed view - show count summary */}
+            {!expanded && filteredUsers.length > 5 && (
+              <div className="mt-3 pt-3 border-t flex items-center justify-between">
+                <p className="text-xs text-muted-foreground">
+                  Showing 5 of {filteredUsers.length} users
+                </p>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setExpanded(true)}
+                  className="text-[#7CFC00] hover:text-[#6BE000] gap-1 text-xs"
+                >
+                  View all users
+                  <ArrowRight className="size-3" />
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </CardContent>
     </Card>

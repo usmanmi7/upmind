@@ -22,6 +22,19 @@ export default withAuth({
         return true
       }
 
+      // Redirect admins from /dashboard to /admin
+      const isAdmin = token?.role === "ADMIN" || token?.role === "SUPER_ADMIN"
+      if (pathname.startsWith("/dashboard") && isAdmin) {
+        // Allow admin to access /dashboard/settings (for account settings)
+        // but redirect everything else to /admin
+        const adminAllowedPaths = ["/dashboard/settings", "/dashboard/notifications"]
+        if (!adminAllowedPaths.some((p) => pathname === p)) {
+          const url = req.nextUrl.clone()
+          url.pathname = "/admin"
+          return NextResponse.redirect(url) as unknown as boolean
+        }
+      }
+
       // Protected routes require authentication
       if (pathname.startsWith("/dashboard") || pathname.startsWith("/auth/onboarding")) {
         return !!token
@@ -29,7 +42,7 @@ export default withAuth({
 
       // Admin routes require ADMIN or SUPER_ADMIN role
       if (pathname.startsWith("/admin")) {
-        return token?.role === "ADMIN" || token?.role === "SUPER_ADMIN"
+        return isAdmin
       }
 
       return true
