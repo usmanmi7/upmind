@@ -24,6 +24,11 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Invalid email or password")
         }
 
+        // Check if user is banned
+        if (user.banned) {
+          throw new Error("Your account has been suspended. Please contact support for assistance.")
+        }
+
         const isPasswordValid = await compare(credentials.password, user.password)
 
         if (!isPasswordValid) {

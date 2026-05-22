@@ -2,11 +2,13 @@
 
 import * as React from "react"
 import { motion } from "framer-motion"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
 import {
   Table,
   TableBody,
@@ -33,9 +35,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Search, MoreHorizontal, UserCog, Ban, CheckCircle, Eye, ChevronLeft, ChevronRight, Filter } from "lucide-react"
+import { Search, MoreHorizontal, UserCog, Ban, CheckCircle, Eye, ChevronLeft, ChevronRight, Filter, ShieldAlert, Loader2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
 interface User {
@@ -46,6 +49,8 @@ interface User {
   country: string | null
   image: string | null
   emailVerified: boolean
+  banned: boolean
+  bannedReason: string | null
   createdAt: string
   subscription: { plan: string; status: string } | null
   startup: { name: string } | null
@@ -77,6 +82,10 @@ export default function AdminUsersPage() {
   const [total, setTotal] = React.useState(0)
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null)
   const [detailOpen, setDetailOpen] = React.useState(false)
+  const [banDialogOpen, setBanDialogOpen] = React.useState(false)
+  const [banTarget, setBanTarget] = React.useState<User | null>(null)
+  const [banReason, setBanReason] = React.useState("")
+  const [banning, setBanning] = React.useState(false)
 
   const fetchUsers = React.useCallback(async () => {
     setLoading(true)
@@ -91,8 +100,8 @@ export default function AdminUsersPage() {
       if (res.ok) {
         const json = await res.json()
         setUsers(json.users)
-        setTotalPages(json.pagination.totalPages)
-        setTotal(json.pagination.total)
+        setTotalPages(json.totalPages || Math.ceil((json.total || 0) / 10))
+        setTotal(json.total || 0)
       }
     } catch (e) {
       console.error(e)
@@ -115,26 +124,54 @@ export default function AdminUsersPage() {
       if (res.ok) {
         toast({ title: "User role updated successfully" })
         fetchUsers()
+      } else {
+        const err = await res.json().catch(() => ({}))
+        toast({ title: err.error || "Failed to update role", variant: "destructive" })
       }
     } catch {
       toast({ title: "Failed to update user role", variant: "destructive" })
     }
   }
 
-  const handleToggleBan = async (userId: string, emailVerified: boolean) => {
+  const handleBan = async () => {
+    if (!banTarget) return
+    setBanning(true)
     try {
       const res = await fetch("/api/admin/users", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, emailVerified: !emailVerified }),
+        body: JSON.stringify({
+          userId: banTarget.id,
+          banned: !banTarget.banned,
+          bannedReason: !banTarget.banned ? banReason : undefined,
+        }),
       })
       if (res.ok) {
-        toast({ title: emailVerified ? "User banned" : "User unbanned" })
+        toast({
+          title: banTarget.banned ? "User unbanned" : "User banned & logged out",
+          description: banTarget.banned
+            ? "The user can now log in again"
+            : "The user has been immediately logged out and cannot log in",
+        })
+        setBanDialogOpen(false)
+        setBanTarget(null)
+        setBanReason("")
         fetchUsers()
+      } else {
+        const err = await res.json().catch(() => ({}))
+        toast({ title: err.error || "Failed to update user status", variant: "destructive" })
       }
     } catch {
       toast({ title: "Failed to update user status", variant: "destructive" })
+    } finally {
+      setBanning(false)
     }
+  }
+
+  const openBanDialog = (user: User) => {
+    setBanTarget(user)
+    setBanReason("")
+    setBanDialogOpen(true)
   }
 
   return (
@@ -210,17 +247,17 @@ export default function AdminUsersPage() {
                   </TableRow>
                 ) : (
                   users.map((user) => (
-                    <TableRow key={user.id} className="hover:bg-muted/50">
+                    <TableRow key={user.id} className={user.banned ? "bg-red-500/5" : "hover:bg-muted/50"}>
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <Avatar className="size-9">
                             <AvatarImage src={user.image || undefined} />
-                            <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white text-xs">
+                            <AvatarFallback className={`text-xs ${user.banned ? "bg-red-500/20 text-red-400" : "bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white"}`}>
                               {user.name.split(" ").map((n) => n[0]).join("")}
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <p className="text-sm font-medium">{user.name}</p>
+                            <p className={`text-sm font-medium ${user.banned ? "line-through text-muted-foreground" : ""}`}>{user.name}</p>
                             <p className="text-xs text-muted-foreground">{user.email}</p>
                           </div>
                         </div>
@@ -239,10 +276,13 @@ export default function AdminUsersPage() {
                         {new Date(user.createdAt).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
-                        {user.emailVerified ? (
-                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Active</Badge>
+                        {user.banned ? (
+                          <Badge className="bg-red-500/20 text-red-400 border-red-500/30">
+                            <ShieldAlert className="size-3 mr-1" />
+                            Banned
+                          </Badge>
                         ) : (
-                          <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Banned</Badge>
+                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Active</Badge>
                         )}
                       </TableCell>
                       <TableCell>
@@ -257,8 +297,9 @@ export default function AdminUsersPage() {
                               <Eye className="size-4 mr-2" />
                               View Details
                             </DropdownMenuItem>
-                            {user.role !== "ADMIN" && user.role !== "SUPER_ADMIN" && (
+                            {user.role !== "ADMIN" && user.role !== "SUPER_ADMIN" && !user.banned && (
                               <>
+                                <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={() => handleUpdateRole(user.id, "PAID_USER")}>
                                   <UserCog className="size-4 mr-2" />
                                   Make Paid User
@@ -267,15 +308,25 @@ export default function AdminUsersPage() {
                                   <UserCog className="size-4 mr-2" />
                                   Make Consultant
                                 </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleUpdateRole(user.id, "FREE_USER")}>
+                                  <UserCog className="size-4 mr-2" />
+                                  Make Free User
+                                </DropdownMenuItem>
                               </>
                             )}
-                            <DropdownMenuItem onClick={() => handleToggleBan(user.id, user.emailVerified)}>
-                              {user.emailVerified ? (
-                                <><Ban className="size-4 mr-2" />Ban User</>
-                              ) : (
-                                <><CheckCircle className="size-4 mr-2" />Unban User</>
-                              )}
-                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            {user.role !== "ADMIN" && user.role !== "SUPER_ADMIN" && (
+                              <DropdownMenuItem
+                                onClick={() => openBanDialog(user)}
+                                className={user.banned ? "text-green-500 focus:text-green-500" : "text-red-500 focus:text-red-500"}
+                              >
+                                {user.banned ? (
+                                  <><CheckCircle className="size-4 mr-2" />Unban User</>
+                                ) : (
+                                  <><Ban className="size-4 mr-2" />Ban User</>
+                                )}
+                              </DropdownMenuItem>
+                            )}
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>
@@ -325,7 +376,7 @@ export default function AdminUsersPage() {
               <div className="flex items-center gap-4">
                 <Avatar className="size-16">
                   <AvatarImage src={selectedUser.image || undefined} />
-                  <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white text-xl">
+                  <AvatarFallback className={`text-xl ${selectedUser.banned ? "bg-red-500/20 text-red-400" : "bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white"}`}>
                     {selectedUser.name.split(" ").map((n) => n[0]).join("")}
                   </AvatarFallback>
                 </Avatar>
@@ -339,6 +390,9 @@ export default function AdminUsersPage() {
                     <Badge variant="secondary" className={planColors[selectedUser.subscription?.plan || "FREE"] || ""}>
                       {selectedUser.subscription?.plan?.replace("_", " ") || "FREE"}
                     </Badge>
+                    {selectedUser.banned && (
+                      <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Banned</Badge>
+                    )}
                   </div>
                 </div>
               </div>
@@ -366,11 +420,79 @@ export default function AdminUsersPage() {
                 </div>
                 <div className="p-3 rounded-lg bg-muted/50">
                   <p className="text-xs text-muted-foreground">Status</p>
-                  <p className="text-sm font-medium">{selectedUser.emailVerified ? "Active" : "Banned"}</p>
+                  <p className="text-sm font-medium">{selectedUser.banned ? "Banned" : "Active"}</p>
                 </div>
+              </div>
+
+              {selectedUser.banned && selectedUser.bannedReason && (
+                <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                  <p className="text-xs text-red-400 font-medium">Ban Reason</p>
+                  <p className="text-sm text-red-300">{selectedUser.bannedReason}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Ban Confirmation Dialog */}
+      <Dialog open={banDialogOpen} onOpenChange={setBanDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              {banTarget?.banned ? (
+                <><CheckCircle className="size-5 text-green-500" />Unban User</>
+              ) : (
+                <><ShieldAlert className="size-5 text-red-500" />Ban User</>
+              )}
+            </DialogTitle>
+            <DialogDescription>
+              {banTarget?.banned
+                ? `Are you sure you want to unban ${banTarget?.name}? They will be able to log in again.`
+                : `Are you sure you want to ban ${banTarget?.name}? They will be immediately logged out and cannot log in again.`}
+            </DialogDescription>
+          </DialogHeader>
+
+          {!banTarget?.banned && (
+            <div className="space-y-3">
+              <div>
+                <Label htmlFor="ban-reason">Reason for ban (optional)</Label>
+                <Textarea
+                  id="ban-reason"
+                  placeholder="e.g., Violation of terms of service, spam activity..."
+                  value={banReason}
+                  onChange={(e) => setBanReason(e.target.value)}
+                  rows={3}
+                  className="mt-1.5"
+                />
+              </div>
+              <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                <p className="text-xs text-red-400">
+                  <strong>Warning:</strong> This user will be immediately logged out from all devices and will not be able to log in until unbanned.
+                </p>
               </div>
             </div>
           )}
+
+          <div className="flex gap-3 justify-end mt-4">
+            <Button variant="outline" onClick={() => setBanDialogOpen(false)} disabled={banning}>
+              Cancel
+            </Button>
+            <Button
+              variant={banTarget?.banned ? "default" : "destructive"}
+              onClick={handleBan}
+              disabled={banning}
+              className={banTarget?.banned ? "bg-green-500 hover:bg-green-600 text-white" : ""}
+            >
+              {banning ? (
+                <><Loader2 className="size-4 mr-2 animate-spin" />Processing...</>
+              ) : banTarget?.banned ? (
+                <><CheckCircle className="size-4 mr-2" />Unban User</>
+              ) : (
+                <><Ban className="size-4 mr-2" />Ban User</>
+              )}
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </motion.div>

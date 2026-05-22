@@ -45,12 +45,19 @@ export async function GET(req: NextRequest) {
           email: true,
           image: true,
           role: true,
+          emailVerified: true,
+          banned: true,
+          bannedReason: true,
+          country: true,
           createdAt: true,
           startup: {
             select: { name: true, industry: true, progress: true },
           },
           subscription: {
             select: { id: true, plan: true, status: true },
+          },
+          _count: {
+            select: { appointments: true, messagesSent: true },
           },
         },
         orderBy: { createdAt: "desc" },
@@ -85,15 +92,10 @@ export async function PUT(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { userId, plan } = body
+    const { userId, plan, banned, bannedReason, role } = body
 
-    if (!userId || !plan) {
-      return NextResponse.json({ error: "userId and plan are required" }, { status: 400 })
-    }
-
-    const validPlans = ["FREE", "GROWTH_PRO", "ENTERPRISE"]
-    if (!validPlans.includes(plan)) {
-      return NextResponse.json({ error: "Invalid plan. Must be FREE, GROWTH_PRO, or ENTERPRISE" }, { status: 400 })
+    if (!userId) {
+      return NextResponse.json({ error: "userId is required" }, { status: 400 })
     }
 
     // Check if user exists
@@ -106,47 +108,122 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
-    // Update or create subscription
-    if (targetUser.subscription) {
-      await db.subscription.update({
-        where: { userId },
+    // Prevent banning admins
+    if ((targetUser.role === "ADMIN" || targetUser.role === "SUPER_ADMIN") && banned) {
+      return NextResponse.json({ error: "Cannot ban admin users" }, { status: 400 })
+    }
+
+    // Handle ban/unban
+    if (banned !== undefined) {
+      await db.user.update({
+        where: { id: userId },
         data: {
-          plan,
-          status: "ACTIVE",
-          startDate: new Date(),
+          banned,
+          bannedReason: banned ? (bannedReason || "Account suspended by administrator") : null,
         },
       })
-    } else {
-      await db.subscription.create({
+
+      // If banning, delete all active sessions to force logout
+      if (banned) {
+        await db.session.deleteMany({
+          where: { userId },
+        })
+      }
+
+      // Notify the user about ban/unban
+      await db.notification.create({
         data: {
           userId,
-          plan,
-          status: "ACTIVE",
-          startDate: new Date(),
+          title: banned ? "Account Suspended" : "Account Reactivated",
+          message: banned
+            ? `Your account has been suspended. Reason: ${bannedReason || "Violation of terms of service"}. Please contact support for assistance.`
+            : "Your account has been reactivated. You can now log in again.",
+          type: "SYSTEM",
+          link: "/contact",
         },
+      })
+
+      return NextResponse.json({
+        success: true,
+        message: banned ? "User has been banned and logged out" : "User has been unbanned",
       })
     }
 
-    // Update user role based on plan
-    const userRole = plan === "FREE" ? "FREE_USER" : "PAID_USER"
-    await db.user.update({
-      where: { id: userId },
-      data: { role: userRole },
-    })
+    // Handle role change
+    if (role) {
+      const validRoles = ["FREE_USER", "PAID_USER", "CONSULTANT"]
+      if (!validRoles.includes(role)) {
+        return NextResponse.json({ error: "Invalid role. Must be FREE_USER, PAID_USER, or CONSULTANT" }, { status: 400 })
+      }
 
-    // Notify the user about plan change
-    const planName = plan === "GROWTH_PRO" ? "Growth Pro" : plan === "ENTERPRISE" ? "Enterprise" : "Free"
-    await db.notification.create({
-      data: {
-        userId,
-        title: "Subscription Updated",
-        message: `Your plan has been updated to ${planName}`,
-        type: "PAYMENT",
-        link: "/dashboard/subscription",
-      },
-    })
+      await db.user.update({
+        where: { id: userId },
+        data: { role },
+      })
 
-    return NextResponse.json({ success: true, message: `Plan updated to ${planName}` })
+      await db.notification.create({
+        data: {
+          userId,
+          title: "Role Updated",
+          message: `Your account role has been updated to ${role.replace("_", " ")}`,
+          type: "SYSTEM",
+        },
+      })
+
+      return NextResponse.json({ success: true, message: `Role updated to ${role.replace("_", " ")}` })
+    }
+
+    // Handle plan change
+    if (plan) {
+      const validPlans = ["FREE", "GROWTH_PRO", "ENTERPRISE"]
+      if (!validPlans.includes(plan)) {
+        return NextResponse.json({ error: "Invalid plan. Must be FREE, GROWTH_PRO, or ENTERPRISE" }, { status: 400 })
+      }
+
+      // Update or create subscription
+      if (targetUser.subscription) {
+        await db.subscription.update({
+          where: { userId },
+          data: {
+            plan,
+            status: "ACTIVE",
+            startDate: new Date(),
+          },
+        })
+      } else {
+        await db.subscription.create({
+          data: {
+            userId,
+            plan,
+            status: "ACTIVE",
+            startDate: new Date(),
+          },
+        })
+      }
+
+      // Update user role based on plan
+      const userRole = plan === "FREE" ? "FREE_USER" : "PAID_USER"
+      await db.user.update({
+        where: { id: userId },
+        data: { role: userRole },
+      })
+
+      // Notify the user about plan change
+      const planName = plan === "GROWTH_PRO" ? "Growth Pro" : plan === "ENTERPRISE" ? "Enterprise" : "Free"
+      await db.notification.create({
+        data: {
+          userId,
+          title: "Subscription Updated",
+          message: `Your plan has been updated to ${planName}`,
+          type: "PAYMENT",
+          link: "/dashboard/subscription",
+        },
+      })
+
+      return NextResponse.json({ success: true, message: `Plan updated to ${planName}` })
+    }
+
+    return NextResponse.json({ error: "No valid action specified. Provide plan, banned, or role." }, { status: 400 })
   } catch (error) {
     console.error("Admin Users PUT error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })

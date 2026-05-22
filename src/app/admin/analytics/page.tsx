@@ -72,7 +72,6 @@ interface AnalyticsData {
     topDownloads: Array<{ id: string; title: string; type: string; downloadCount: number; isPremium: boolean }>
   }
   messages: { total: number; unread: number }
-  blogs: { total: number; published: number }
 }
 
 const chartColors = ["#7CFC00", "#2D4A2D", "#10b981", "#f59e0b", "#ef4444", "#ec4899"]
@@ -399,7 +398,7 @@ export default function AdminAnalyticsPage() {
               { title: "Total Appointments", value: d.appointments.total },
               { title: "Completion Rate", value: `${d.appointments.total ? Math.round((d.appointments.completed / d.appointments.total) * 100) : 0}%` },
               { title: "Total Messages", value: d.messages.total },
-              { title: "Blog Posts", value: d.blogs.total },
+              { title: "Unread Messages", value: d.messages.unread },
             ].map((stat) => (
               <Card key={stat.title} className="border-0 bg-gradient-to-br from-background to-muted/30 shadow-sm">
                 <CardContent className="p-4">
@@ -463,22 +462,22 @@ export default function AdminAnalyticsPage() {
 
             <Card className="border-0 bg-gradient-to-br from-background to-muted/30 shadow-sm">
               <CardHeader>
-                <CardTitle className="text-base">Blog Content</CardTitle>
+                <CardTitle className="text-base">Message Read Rate</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="p-4 rounded-lg bg-muted/50 text-center">
-                    <p className="text-3xl font-bold">{d.blogs.total}</p>
-                    <p className="text-sm text-muted-foreground">Total Posts</p>
+                    <p className="text-3xl font-bold">{d.messages.total ? Math.round(((d.messages.total - d.messages.unread) / d.messages.total) * 100) : 0}%</p>
+                    <p className="text-sm text-muted-foreground">Messages Read</p>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="p-3 rounded-lg bg-green-500/10 text-center">
-                      <p className="text-xl font-bold text-green-500">{d.blogs.published}</p>
-                      <p className="text-xs text-muted-foreground">Published</p>
+                      <p className="text-xl font-bold text-green-500">{d.messages.total - d.messages.unread}</p>
+                      <p className="text-xs text-muted-foreground">Read</p>
                     </div>
-                    <div className="p-3 rounded-lg bg-yellow-500/10 text-center">
-                      <p className="text-xl font-bold text-yellow-500">{d.blogs.total - d.blogs.published}</p>
-                      <p className="text-xs text-muted-foreground">Drafts</p>
+                    <div className="p-3 rounded-lg bg-[#7CFC00]/10 text-center">
+                      <p className="text-xl font-bold text-[#7CFC00]">{d.messages.unread}</p>
+                      <p className="text-xs text-muted-foreground">Unread</p>
                     </div>
                   </div>
                 </div>

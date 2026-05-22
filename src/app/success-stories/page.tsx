@@ -6,16 +6,17 @@ import PublicNavbar from "@/components/PublicNavbar"
 import PublicFooter from "@/components/PublicFooter"
 import PageHero from "@/components/PageHero"
 import { motion } from "framer-motion"
-import { ArrowRight, Star, TrendingUp, DollarSign, Users, Quote } from "lucide-react"
+import { ArrowRight, Star, TrendingUp, DollarSign, Users, Quote, Loader2 } from "lucide-react"
+import * as React from "react"
 
-const testimonials = [
+// Fallback hardcoded testimonials when database is empty
+const fallbackTestimonials = [
   {
     name: "Sarah Chen",
     role: "CEO",
     company: "TechFlow",
     content: "Upmind helped us validate our idea in just 2 weeks. We saved months of wasted effort and $50K in potential missteps. Their strategic guidance was invaluable during our early stages.",
     rating: 5,
-    metrics: { raised: "$2.5M", growth: "300%", employees: "25" },
   },
   {
     name: "Marcus Johnson",
@@ -23,7 +24,6 @@ const testimonials = [
     company: "GreenScale",
     content: "The consulting sessions were game-changing. Our consultant helped us see blind spots we never would have caught on our own. We went from idea to revenue in 4 months.",
     rating: 5,
-    metrics: { raised: "$1.2M", growth: "450%", employees: "12" },
   },
   {
     name: "Priya Sharma",
@@ -31,7 +31,6 @@ const testimonials = [
     company: "DataBridge",
     content: "The resources and templates alone are worth the subscription. They saved us hundreds of hours of research. Upmind is like having a seasoned advisor on demand.",
     rating: 5,
-    metrics: { raised: "$5M", growth: "200%", employees: "40" },
   },
   {
     name: "David Kim",
@@ -39,7 +38,6 @@ const testimonials = [
     company: "NexGen AI",
     content: "From pitch deck to Series A in 6 months. Upmind's fundraising guidance was the difference between a failed round and a successful one.",
     rating: 5,
-    metrics: { raised: "$8M", growth: "500%", employees: "35" },
   },
   {
     name: "Lisa Martinez",
@@ -47,7 +45,6 @@ const testimonials = [
     company: "HealthPulse",
     content: "The AI insights feature identified market opportunities we completely overlooked. It felt like having a crystal ball for our product roadmap.",
     rating: 5,
-    metrics: { raised: "$3M", growth: "280%", employees: "18" },
   },
   {
     name: "James Wright",
@@ -55,7 +52,6 @@ const testimonials = [
     company: "FinEdge",
     content: "Upmind's roadmap tool kept us focused and accountable. We hit every milestone on time and under budget. I can't imagine building without it.",
     rating: 5,
-    metrics: { raised: "$4.5M", growth: "350%", employees: "22" },
   },
 ]
 
@@ -103,7 +99,47 @@ const item = {
   show: { opacity: 1, y: 0 },
 }
 
+interface DBTestimonial {
+  id: string
+  name: string
+  role: string | null
+  company: string | null
+  content: string
+  rating: number | null
+}
+
 export default function SuccessStoriesPage() {
+  const [dbTestimonials, setDbTestimonials] = React.useState<DBTestimonial[]>([])
+  const [loading, setLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const res = await fetch("/api/testimonials")
+        if (res.ok) {
+          const data = await res.json()
+          setDbTestimonials(data.testimonials || [])
+        }
+      } catch {
+        // Use fallback on error
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchTestimonials()
+  }, [])
+
+  // Use database testimonials if available, otherwise fallback
+  const testimonials = dbTestimonials.length > 0
+    ? dbTestimonials.map((t) => ({
+        name: t.name,
+        role: t.role || "Founder",
+        company: t.company || "Startup",
+        content: t.content,
+        rating: t.rating || 5,
+      }))
+    : fallbackTestimonials
+
   return (
     <div className="min-h-screen flex flex-col">
       <PublicNavbar />
@@ -141,42 +177,44 @@ export default function SuccessStoriesPage() {
                 What <span className="gradient-text">founders</span> say
               </h2>
             </div>
-            <motion.div
-              variants={container}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {testimonials.map((t) => (
-                <motion.div key={t.name} variants={item}>
-                  <div className="p-6 rounded-2xl bg-card border shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
-                    <div className="flex gap-1 mb-4">
-                      {Array.from({ length: t.rating }).map((_, i) => (
-                        <Star key={i} className="size-4 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-                    <Quote className="size-6 text-[#7CFC00]/30 mb-2" />
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">&ldquo;{t.content}&rdquo;</p>
-                    <div className="border-t pt-4">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
-                          <span className="text-white text-sm font-bold">{t.name[0]}</span>
-                        </div>
-                        <div>
-                          <p className="text-sm font-semibold">{t.name}</p>
-                          <p className="text-xs text-muted-foreground">{t.role}, {t.company}</p>
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+              </div>
+            ) : (
+              <motion.div
+                variants={container}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                {testimonials.map((t, i) => (
+                  <motion.div key={`${t.name}-${i}`} variants={item}>
+                    <div className="p-6 rounded-2xl bg-card border shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+                      <div className="flex gap-1 mb-4">
+                        {Array.from({ length: t.rating }).map((_, i) => (
+                          <Star key={i} className="size-4 fill-yellow-400 text-yellow-400" />
+                        ))}
+                      </div>
+                      <Quote className="size-6 text-[#7CFC00]/30 mb-2" />
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">&ldquo;{t.content}&rdquo;</p>
+                      <div className="border-t pt-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+                            <span className="text-white text-sm font-bold">{t.name[0]}</span>
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold">{t.name}</p>
+                            <p className="text-xs text-muted-foreground">{t.role}, {t.company}</p>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex gap-4 text-xs">
-                        <span className="text-green-600 dark:text-green-400 font-medium">↑ {t.metrics.growth} growth</span>
-                        <span className="text-[#2D4A2D] dark:text-[#7CFC00] font-medium">{t.metrics.raised} raised</span>
-                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
           </div>
         </section>
 
@@ -218,7 +256,7 @@ export default function SuccessStoriesPage() {
                     </div>
                     <div>
                       <h4 className="text-sm font-semibold text-green-600 dark:text-green-400 mb-2">Result</h4>
-                      <p className="text-sm font-muted-foreground">{cs.result}</p>
+                      <p className="text-sm text-muted-foreground">{cs.result}</p>
                     </div>
                   </div>
                 </motion.div>

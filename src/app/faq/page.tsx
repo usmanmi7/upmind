@@ -7,12 +7,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import PublicNavbar from "@/components/PublicNavbar"
 import PublicFooter from "@/components/PublicFooter"
 import PageHero from "@/components/PageHero"
-import { ArrowRight, Search, MessageCircle } from "lucide-react"
+import { ArrowRight, Search, MessageCircle, Loader2, HelpCircle } from "lucide-react"
 import * as React from "react"
 
-const categories = ["General", "Pricing", "Consulting", "Resources", "Technical"]
-
-const faqs: Record<string, { q: string; a: string }[]> = {
+// Fallback hardcoded FAQs used when database is empty
+const fallbackFaqs: Record<string, { q: string; a: string }[]> = {
   General: [
     { q: "What is Upmind?", a: "Upmind is a strategic consulting platform designed specifically for startups. We combine expert human consultants with AI-powered insights to help founders validate ideas, build products, raise funding, and scale their businesses." },
     { q: "Who is Upmind for?", a: "Upmind is for early-stage and growth-stage startup founders who want access to premium consulting, resources, and tools without the cost of a full-time advisory team. Whether you're pre-launch or scaling, we have something for you." },
@@ -23,33 +22,79 @@ const faqs: Record<string, { q: string; a: string }[]> = {
     { q: "Is there a free plan?", a: "Yes! Our Free plan includes 1 startup profile, basic resources, community access, and 1 consultation per month. It's a great way to experience Upmind before upgrading." },
     { q: "Can I switch plans at any time?", a: "Yes, you can upgrade or downgrade at any time. Upgrades take effect immediately with prorated billing, and downgrades take effect at the next billing cycle." },
     { q: "Do you offer refunds?", a: "We offer a 30-day money-back guarantee on all paid plans. If you're not satisfied, contact support for a full refund." },
-    { q: "Are there discounts for startups?", a: "Yes! We offer special pricing for early-stage startups and nonprofits. Contact our sales team for details." },
   ],
   Consulting: [
     { q: "How do consultations work?", a: "Book a session through your dashboard, choose your consultant, pick a time slot, and meet via video, phone, or in-person. Sessions typically last 60 minutes, and you'll receive a summary with action items afterward." },
     { q: "Who are the consultants?", a: "Our consultants are experienced founders, operators, and domain experts with proven track records. They've collectively helped hundreds of startups succeed across various industries." },
     { q: "How often can I book consultations?", a: "Free plan users get 1 consultation per month. Growth Pro users get 4 priority consultations. Enterprise users enjoy unlimited consultations." },
-    { q: "Can I choose my consultant?", a: "Yes! You can browse consultant profiles, see their specialties and ratings, and choose the one that best fits your needs." },
   ],
   Resources: [
     { q: "What types of resources are available?", a: "We offer blog posts, templates, video tutorials, PDF guides, and interactive tools — all curated by our expert consultants for startup relevance." },
     { q: "What's included in premium resources?", a: "Premium resources include advanced templates (pitch decks, financial models), in-depth guides, exclusive video content, and AI-powered analysis tools. They're available on Growth Pro and Enterprise plans." },
-    { q: "Can I download resources for offline use?", a: "Yes! Templates, PDFs, and guides can be downloaded. Video content is available for streaming through our platform." },
-    { q: "How often are new resources added?", a: "We add new resources weekly, covering the latest trends, strategies, and tools relevant to startup founders." },
   ],
   Technical: [
     { q: "What browsers are supported?", a: "Upmind works on all modern browsers including Chrome, Firefox, Safari, and Edge. We recommend keeping your browser updated for the best experience." },
     { q: "Is there a mobile app?", a: "Our platform is fully responsive and works great on mobile browsers. A dedicated mobile app is on our roadmap for 2025." },
-    { q: "Can I integrate Upmind with other tools?", a: "Enterprise plan users get API access and integrations with popular tools like Slack, Notion, and Google Workspace. More integrations are being added regularly." },
-    { q: "How do I report a bug?", a: "You can report bugs through our support chat, email, or the feedback widget in your dashboard. Our team typically responds within 24 hours." },
   ],
+}
+
+interface DBFAQ {
+  id: string
+  question: string
+  answer: string
+  category: string | null
+  order: number
 }
 
 export default function FAQPage() {
   const [search, setSearch] = React.useState("")
   const [activeCategory, setActiveCategory] = React.useState("General")
+  const [dbFaqs, setDbFaqs] = React.useState<DBFAQ[]>([])
+  const [loading, setLoading] = React.useState(true)
 
-  const filteredFaqs = faqs[activeCategory]?.filter(
+  React.useEffect(() => {
+    const fetchFAQs = async () => {
+      try {
+        const res = await fetch("/api/faqs")
+        if (res.ok) {
+          const data = await res.json()
+          setDbFaqs(data.faqs || [])
+        }
+      } catch {
+        // Use fallback on error
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchFAQs()
+  }, [])
+
+  // Use database FAQs if available, otherwise fallback
+  const useDBFaqs = dbFaqs.length > 0
+
+  // Build categories from data
+  const categories = useDBFaqs
+    ? [...new Set(dbFaqs.map((f) => f.category || "General"))]
+    : Object.keys(fallbackFaqs)
+
+  // Build FAQ map from database
+  const faqMap: Record<string, { q: string; a: string }[]> = useDBFaqs
+    ? categories.reduce((acc, cat) => {
+        acc[cat] = dbFaqs
+          .filter((f) => (f.category || "General") === cat)
+          .map((f) => ({ q: f.question, a: f.answer }))
+        return acc
+      }, {} as Record<string, { q: string; a: string }[]>)
+    : fallbackFaqs
+
+  // Ensure active category is valid
+  React.useEffect(() => {
+    if (categories.length > 0 && !categories.includes(activeCategory)) {
+      setActiveCategory(categories[0])
+    }
+  }, [categories, activeCategory])
+
+  const filteredFaqs = faqMap[activeCategory]?.filter(
     (faq) => faq.q.toLowerCase().includes(search.toLowerCase()) || faq.a.toLowerCase().includes(search.toLowerCase())
   ) || []
 
@@ -102,17 +147,24 @@ export default function FAQPage() {
         {/* FAQ Accordion */}
         <section className="pb-20">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Accordion type="single" collapsible className="w-full">
-              {filteredFaqs.map((faq, i) => (
-                <AccordionItem key={i} value={`faq-${activeCategory}-${i}`}>
-                  <AccordionTrigger className="text-left">{faq.q}</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">{faq.a}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="size-6 animate-spin text-[#7CFC00]" />
+              </div>
+            ) : (
+              <Accordion type="single" collapsible className="w-full">
+                {filteredFaqs.map((faq, i) => (
+                  <AccordionItem key={`faq-${activeCategory}-${i}`} value={`faq-${activeCategory}-${i}`}>
+                    <AccordionTrigger className="text-left">{faq.q}</AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground leading-relaxed">{faq.a}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            )}
 
-            {filteredFaqs.length === 0 && (
+            {filteredFaqs.length === 0 && !loading && (
               <div className="text-center py-12">
+                <HelpCircle className="size-12 text-muted-foreground/30 mx-auto mb-3" />
                 <p className="text-muted-foreground">No questions found matching &ldquo;{search}&rdquo;</p>
               </div>
             )}

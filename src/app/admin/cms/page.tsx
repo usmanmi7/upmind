@@ -36,24 +36,13 @@ import {
   MoreHorizontal,
   Edit,
   Trash2,
-  FileText,
   HelpCircle,
   MessageSquareQuote,
-  Globe,
   Eye,
   EyeOff,
+  GripVertical,
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-
-interface BlogPost {
-  id: string
-  title: string
-  slug: string
-  excerpt: string | null
-  category: string | null
-  isPublished: boolean
-  createdAt: string
-}
 
 interface FAQItem {
   id: string
@@ -77,15 +66,9 @@ interface TestimonialItem {
 
 export default function AdminCMSPage() {
   const { toast } = useToast()
-  const [blogs, setBlogs] = React.useState<BlogPost[]>([])
   const [faqs, setFaqs] = React.useState<FAQItem[]>([])
   const [testimonials, setTestimonials] = React.useState<TestimonialItem[]>([])
   const [loading, setLoading] = React.useState(true)
-
-  // Blog dialog
-  const [blogDialogOpen, setBlogDialogOpen] = React.useState(false)
-  const [blogForm, setBlogForm] = React.useState({ id: "", title: "", slug: "", excerpt: "", content: "", category: "", tags: "", isPublished: false })
-  const [isEditBlog, setIsEditBlog] = React.useState(false)
 
   // FAQ dialog
   const [faqDialogOpen, setFaqDialogOpen] = React.useState(false)
@@ -103,10 +86,9 @@ export default function AdminCMSPage() {
 
   const fetchContent = React.useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/cms")
+      const res = await fetch("/api/admin/cms?type=all")
       if (res.ok) {
         const json = await res.json()
-        setBlogs(json.blogs || [])
         setFaqs(json.faqs || [])
         setTestimonials(json.testimonials || [])
       }
@@ -118,23 +100,6 @@ export default function AdminCMSPage() {
   }, [])
 
   React.useEffect(() => { fetchContent() }, [fetchContent])
-
-  // Blog CRUD
-  const handleBlogSave = async () => {
-    try {
-      const url = "/api/admin/cms"
-      const method = isEditBlog ? "PUT" : "POST"
-      const body = { contentType: "blog", ...blogForm }
-      const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
-      if (res.ok) {
-        toast({ title: isEditBlog ? "Blog updated" : "Blog created" })
-        setBlogDialogOpen(false)
-        fetchContent()
-      }
-    } catch {
-      toast({ title: "Failed to save blog", variant: "destructive" })
-    }
-  }
 
   // FAQ CRUD
   const handleFaqSave = async () => {
@@ -184,96 +149,80 @@ export default function AdminCMSPage() {
     }
   }
 
+  const publishedFaqs = faqs.filter((f) => f.isPublished).length
+  const publishedTestimonials = testimonials.filter((t) => t.isPublished).length
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold">Content Management</h2>
-        <p className="text-sm text-muted-foreground">Manage blog posts, FAQs, and testimonials</p>
+        <p className="text-sm text-muted-foreground">Manage FAQs and testimonials shown on your website</p>
       </div>
 
-      <Tabs defaultValue="blogs">
+      {/* Stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <Card className="border-0 bg-gradient-to-br from-background to-muted/30 shadow-sm">
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0">
+              <HelpCircle className="size-5 text-white" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold">{faqs.length}</p>
+              <p className="text-xs text-muted-foreground">Total FAQs</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="border-0 bg-gradient-to-br from-background to-muted/30 shadow-sm">
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shrink-0">
+              <Eye className="size-5 text-white" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold">{publishedFaqs}</p>
+              <p className="text-xs text-muted-foreground">Published FAQs</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="border-0 bg-gradient-to-br from-background to-muted/30 shadow-sm">
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#2D4A2D] to-[#8FBC8F] flex items-center justify-center shrink-0">
+              <MessageSquareQuote className="size-5 text-white" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold">{testimonials.length}</p>
+              <p className="text-xs text-muted-foreground">Total Testimonials</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="border-0 bg-gradient-to-br from-background to-muted/30 shadow-sm">
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shrink-0">
+              <Eye className="size-5 text-white" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold">{publishedTestimonials}</p>
+              <p className="text-xs text-muted-foreground">Published Testimonials</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Tabs defaultValue="faqs">
         <TabsList>
-          <TabsTrigger value="blogs" className="gap-1.5"><FileText className="size-4" />Blog Posts</TabsTrigger>
           <TabsTrigger value="faqs" className="gap-1.5"><HelpCircle className="size-4" />FAQs</TabsTrigger>
           <TabsTrigger value="testimonials" className="gap-1.5"><MessageSquareQuote className="size-4" />Testimonials</TabsTrigger>
         </TabsList>
 
-        {/* BLOGS TAB */}
-        <TabsContent value="blogs" className="space-y-4 mt-4">
-          <div className="flex justify-end">
-            <Button
-              onClick={() => {
-                setIsEditBlog(false)
-                setBlogForm({ id: "", title: "", slug: "", excerpt: "", content: "", category: "", tags: "", isPublished: false })
-                setBlogDialogOpen(true)
-              }}
-              className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white"
-            >
-              <Plus className="size-4 mr-2" />New Post
-            </Button>
-          </div>
-          <Card className="border-0 bg-gradient-to-br from-background to-muted/30 shadow-sm">
-            <CardContent className="p-0">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="hidden md:table-cell">Date</TableHead>
-                    <TableHead className="w-12"></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {loading ? (
-                    Array.from({ length: 3 }).map((_, i) => (
-                      <TableRow key={i}><TableCell colSpan={5} className="h-16"><div className="animate-pulse bg-muted rounded h-8" /></TableCell></TableRow>
-                    ))
-                  ) : blogs.map((blog) => (
-                    <TableRow key={blog.id} className="hover:bg-muted/50">
-                      <TableCell>
-                        <div>
-                          <p className="text-sm font-medium">{blog.title}</p>
-                          <p className="text-xs text-muted-foreground">/{blog.slug}</p>
-                        </div>
-                      </TableCell>
-                      <TableCell><Badge variant="secondary" className="text-xs">{blog.category || "—"}</Badge></TableCell>
-                      <TableCell>
-                        {blog.isPublished ? (
-                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30"><Eye className="size-3 mr-1" />Published</Badge>
-                        ) : (
-                          <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30"><EyeOff className="size-3 mr-1" />Draft</Badge>
-                        )}
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell text-sm text-muted-foreground">{new Date(blog.createdAt).toLocaleDateString()}</TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="size-8"><MoreHorizontal className="size-4" /></Button></DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => { setIsEditBlog(true); setBlogForm({ id: blog.id, title: blog.title, slug: blog.slug, excerpt: blog.excerpt || "", content: "", category: blog.category || "", tags: "", isPublished: blog.isPublished }); setBlogDialogOpen(true) }}>
-                              <Edit className="size-4 mr-2" />Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive" onClick={() => { setDeleteTarget({ type: "blog", id: blog.id }); setDeleteOpen(true) }}>
-                              <Trash2 className="size-4 mr-2" />Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
         {/* FAQS TAB */}
         <TabsContent value="faqs" className="space-y-4 mt-4">
-          <div className="flex justify-end">
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">
+              These FAQs appear on the <a href="/faq" target="_blank" className="text-[#7CFC00] hover:underline">public FAQ page</a>
+            </p>
             <Button
               onClick={() => {
                 setIsEditFaq(false)
-                setFaqForm({ id: "", question: "", answer: "", category: "", order: 0, isPublished: true })
+                setFaqForm({ id: "", question: "", answer: "", category: "", order: faqs.length, isPublished: true })
                 setFaqDialogOpen(true)
               }}
               className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white"
@@ -286,6 +235,7 @@ export default function AdminCMSPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-10">#</TableHead>
                     <TableHead>Question</TableHead>
                     <TableHead className="hidden md:table-cell">Category</TableHead>
                     <TableHead>Status</TableHead>
@@ -295,17 +245,34 @@ export default function AdminCMSPage() {
                 <TableBody>
                   {loading ? (
                     Array.from({ length: 3 }).map((_, i) => (
-                      <TableRow key={i}><TableCell colSpan={4} className="h-16"><div className="animate-pulse bg-muted rounded h-8" /></TableCell></TableRow>
+                      <TableRow key={i}><TableCell colSpan={5} className="h-16"><div className="animate-pulse bg-muted rounded h-8" /></TableCell></TableRow>
                     ))
+                  ) : faqs.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                        No FAQs yet. Create your first FAQ to display on the website.
+                      </TableCell>
+                    </TableRow>
                   ) : faqs.map((faq) => (
                     <TableRow key={faq.id} className="hover:bg-muted/50">
-                      <TableCell className="max-w-[300px]"><p className="text-sm font-medium truncate">{faq.question}</p></TableCell>
-                      <TableCell className="hidden md:table-cell"><Badge variant="secondary" className="text-xs">{faq.category || "—"}</Badge></TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <GripVertical className="size-3 text-muted-foreground/40" />
+                          <span className="text-xs text-muted-foreground">{faq.order}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="max-w-[400px]">
+                        <p className="text-sm font-medium truncate">{faq.question}</p>
+                        <p className="text-xs text-muted-foreground truncate mt-0.5">{faq.answer}</p>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        <Badge variant="secondary" className="text-xs">{faq.category || "General"}</Badge>
+                      </TableCell>
                       <TableCell>
                         {faq.isPublished ? (
-                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Published</Badge>
+                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30"><Eye className="size-3 mr-1" />Live</Badge>
                         ) : (
-                          <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">Draft</Badge>
+                          <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30"><EyeOff className="size-3 mr-1" />Draft</Badge>
                         )}
                       </TableCell>
                       <TableCell>
@@ -331,11 +298,14 @@ export default function AdminCMSPage() {
 
         {/* TESTIMONIALS TAB */}
         <TabsContent value="testimonials" className="space-y-4 mt-4">
-          <div className="flex justify-end">
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">
+              These testimonials appear on the <a href="/success-stories" target="_blank" className="text-[#7CFC00] hover:underline">Success Stories page</a>
+            </p>
             <Button
               onClick={() => {
                 setIsEditTestimonial(false)
-                setTestimonialForm({ id: "", name: "", role: "", company: "", content: "", rating: 5, isPublished: true, order: 0 })
+                setTestimonialForm({ id: "", name: "", role: "", company: "", content: "", rating: 5, isPublished: true, order: testimonials.length })
                 setTestimonialDialogOpen(true)
               }}
               className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white"
@@ -360,6 +330,12 @@ export default function AdminCMSPage() {
                     Array.from({ length: 3 }).map((_, i) => (
                       <TableRow key={i}><TableCell colSpan={5} className="h-16"><div className="animate-pulse bg-muted rounded h-8" /></TableCell></TableRow>
                     ))
+                  ) : testimonials.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                        No testimonials yet. Add testimonials to showcase on the Success Stories page.
+                      </TableCell>
+                    </TableRow>
                   ) : testimonials.map((t) => (
                     <TableRow key={t.id} className="hover:bg-muted/50">
                       <TableCell>
@@ -376,9 +352,9 @@ export default function AdminCMSPage() {
                       </TableCell>
                       <TableCell>
                         {t.isPublished ? (
-                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Published</Badge>
+                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30"><Eye className="size-3 mr-1" />Live</Badge>
                         ) : (
-                          <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">Draft</Badge>
+                          <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30"><EyeOff className="size-3 mr-1" />Draft</Badge>
                         )}
                       </TableCell>
                       <TableCell>
@@ -403,42 +379,22 @@ export default function AdminCMSPage() {
         </TabsContent>
       </Tabs>
 
-      {/* Blog Dialog */}
-      <Dialog open={blogDialogOpen} onOpenChange={setBlogDialogOpen}>
-        <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{isEditBlog ? "Edit" : "New"} Blog Post</DialogTitle>
-            <DialogDescription>{isEditBlog ? "Update" : "Create"} a blog post</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div><Label>Title</Label><Input value={blogForm.title} onChange={(e) => setBlogForm((p) => ({ ...p, title: e.target.value }))} /></div>
-            <div><Label>Slug</Label><Input value={blogForm.slug} onChange={(e) => setBlogForm((p) => ({ ...p, slug: e.target.value }))} /></div>
-            <div><Label>Excerpt</Label><Textarea value={blogForm.excerpt} onChange={(e) => setBlogForm((p) => ({ ...p, excerpt: e.target.value }))} rows={2} /></div>
-            <div><Label>Content</Label><Textarea value={blogForm.content} onChange={(e) => setBlogForm((p) => ({ ...p, content: e.target.value }))} rows={6} placeholder="Write your content here..." /></div>
-            <div><Label>Category</Label><Input value={blogForm.category} onChange={(e) => setBlogForm((p) => ({ ...p, category: e.target.value }))} placeholder="e.g., Startup Tips" /></div>
-            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
-              <div><Label>Publish</Label><p className="text-xs text-muted-foreground">Make this post visible to users</p></div>
-              <Switch checked={blogForm.isPublished} onCheckedChange={(c) => setBlogForm((p) => ({ ...p, isPublished: c }))} />
-            </div>
-            <Button onClick={handleBlogSave} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
-              {isEditBlog ? "Update" : "Create"} Post
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
       {/* FAQ Dialog */}
       <Dialog open={faqDialogOpen} onOpenChange={setFaqDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>{isEditFaq ? "Edit" : "New"} FAQ</DialogTitle>
+            <DialogDescription>{isEditFaq ? "Update" : "Create"} a frequently asked question for the website</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <div><Label>Question</Label><Input value={faqForm.question} onChange={(e) => setFaqForm((p) => ({ ...p, question: e.target.value }))} /></div>
-            <div><Label>Answer</Label><Textarea value={faqForm.answer} onChange={(e) => setFaqForm((p) => ({ ...p, answer: e.target.value }))} rows={4} /></div>
-            <div><Label>Category</Label><Input value={faqForm.category} onChange={(e) => setFaqForm((p) => ({ ...p, category: e.target.value }))} placeholder="e.g., General" /></div>
+            <div><Label>Question</Label><Input value={faqForm.question} onChange={(e) => setFaqForm((p) => ({ ...p, question: e.target.value }))} placeholder="e.g., What is Upmind?" /></div>
+            <div><Label>Answer</Label><Textarea value={faqForm.answer} onChange={(e) => setFaqForm((p) => ({ ...p, answer: e.target.value }))} rows={4} placeholder="Provide a clear answer..." /></div>
+            <div><Label>Category</Label><Input value={faqForm.category} onChange={(e) => setFaqForm((p) => ({ ...p, category: e.target.value }))} placeholder="e.g., General, Pricing, Consulting" /></div>
             <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
-              <Label>Published</Label>
+              <div>
+                <Label>Published</Label>
+                <p className="text-xs text-muted-foreground">Make this FAQ visible on the website</p>
+              </div>
               <Switch checked={faqForm.isPublished} onCheckedChange={(c) => setFaqForm((p) => ({ ...p, isPublished: c }))} />
             </div>
             <Button onClick={handleFaqSave} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
@@ -453,17 +409,21 @@ export default function AdminCMSPage() {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>{isEditTestimonial ? "Edit" : "New"} Testimonial</DialogTitle>
+            <DialogDescription>{isEditTestimonial ? "Update" : "Create"} a testimonial for the Success Stories page</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <div><Label>Name</Label><Input value={testimonialForm.name} onChange={(e) => setTestimonialForm((p) => ({ ...p, name: e.target.value }))} /></div>
+            <div><Label>Name</Label><Input value={testimonialForm.name} onChange={(e) => setTestimonialForm((p) => ({ ...p, name: e.target.value }))} placeholder="e.g., Sarah Chen" /></div>
             <div className="grid grid-cols-2 gap-3">
-              <div><Label>Role</Label><Input value={testimonialForm.role} onChange={(e) => setTestimonialForm((p) => ({ ...p, role: e.target.value }))} /></div>
-              <div><Label>Company</Label><Input value={testimonialForm.company} onChange={(e) => setTestimonialForm((p) => ({ ...p, company: e.target.value }))} /></div>
+              <div><Label>Role</Label><Input value={testimonialForm.role} onChange={(e) => setTestimonialForm((p) => ({ ...p, role: e.target.value }))} placeholder="e.g., CEO" /></div>
+              <div><Label>Company</Label><Input value={testimonialForm.company} onChange={(e) => setTestimonialForm((p) => ({ ...p, company: e.target.value }))} placeholder="e.g., TechFlow" /></div>
             </div>
-            <div><Label>Content</Label><Textarea value={testimonialForm.content} onChange={(e) => setTestimonialForm((p) => ({ ...p, content: e.target.value }))} rows={3} /></div>
+            <div><Label>Content</Label><Textarea value={testimonialForm.content} onChange={(e) => setTestimonialForm((p) => ({ ...p, content: e.target.value }))} rows={3} placeholder="The testimonial quote..." /></div>
             <div><Label>Rating (1-5)</Label><Input type="number" min={1} max={5} value={testimonialForm.rating} onChange={(e) => setTestimonialForm((p) => ({ ...p, rating: parseInt(e.target.value) || 5 }))} /></div>
             <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
-              <Label>Published</Label>
+              <div>
+                <Label>Published</Label>
+                <p className="text-xs text-muted-foreground">Show on the Success Stories page</p>
+              </div>
               <Switch checked={testimonialForm.isPublished} onCheckedChange={(c) => setTestimonialForm((p) => ({ ...p, isPublished: c }))} />
             </div>
             <Button onClick={handleTestimonialSave} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
