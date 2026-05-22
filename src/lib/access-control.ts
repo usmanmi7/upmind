@@ -8,10 +8,11 @@ export const FREE_USER_LIMITS = {
   advancedAnalytics: false,
   customRoadmap: false,
   aiAssistant: true,      // Limited access
-  communityAccess: true,  // Read only
+  communityAccess: true,  // Can read and post
   businessPlanGenerator: false,
   pitchFeedback: false,
   startupScore: true,     // 1 per month
+  communityPosting: true, // Free users can create posts
 }
 
 export const PAID_USER_LIMITS = {
@@ -26,6 +27,7 @@ export const PAID_USER_LIMITS = {
   businessPlanGenerator: true,
   pitchFeedback: true,
   startupScore: true,
+  communityPosting: true,
 }
 
 export type Feature =
@@ -40,6 +42,7 @@ export type Feature =
   | "businessPlanGenerator"
   | "pitchFeedback"
   | "startupScore"
+  | "communityPosting"
 
 export function canAccess(
   userRole: string,

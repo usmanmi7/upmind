@@ -2,11 +2,19 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Textarea } from "@/components/ui/textarea"
 import {
   Search,
   BookOpen,
@@ -22,6 +30,7 @@ import {
   Clock,
   Loader2,
   ArrowRight,
+  Plus,
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -51,12 +60,29 @@ interface Resource {
 }
 
 export default function ResourcesPage() {
+  const { data: session } = useSession()
+  const isConsultant = session?.user?.role === "CONSULTANT"
+  const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "SUPER_ADMIN"
+
   const [search, setSearch] = React.useState("")
   const [activeType, setActiveType] = React.useState("All")
   const [viewMode, setViewMode] = React.useState<"grid" | "list">("grid")
   const [resources, setResources] = React.useState<Resource[]>([])
   const [loading, setLoading] = React.useState(true)
   const [savingId, setSavingId] = React.useState<string | null>(null)
+
+  // Consultant resource creation state
+  const [addDialogOpen, setAddDialogOpen] = React.useState(false)
+  const [creating, setCreating] = React.useState(false)
+  const [newResource, setNewResource] = React.useState({
+    title: "",
+    description: "",
+    type: "GUIDE",
+    category: "",
+    tags: "",
+    content: "",
+    isPremium: false,
+  })
 
   React.useEffect(() => {
     fetchResources()
@@ -106,6 +132,32 @@ export default function ResourcesPage() {
     }
   }
 
+  const handleCreateResource = async () => {
+    if (!newResource.title.trim()) return
+    try {
+      setCreating(true)
+      const endpoint = isConsultant ? "/api/consultant/resources" : "/api/admin/resources"
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newResource),
+      })
+      if (res.ok) {
+        toast.success("Resource created successfully!")
+        setNewResource({ title: "", description: "", type: "GUIDE", category: "", tags: "", content: "", isPremium: false })
+        setAddDialogOpen(false)
+        fetchResources()
+      } else {
+        const data = await res.json()
+        toast.error(data.error || "Failed to create resource")
+      }
+    } catch {
+      toast.error("Failed to create resource")
+    } finally {
+      setCreating(false)
+    }
+  }
+
   const filtered = resources.filter((r) => {
     const matchSearch = !search || r.title.toLowerCase().includes(search.toLowerCase()) || (r.description || "").toLowerCase().includes(search.toLowerCase())
     return matchSearch
@@ -113,9 +165,19 @@ export default function ResourcesPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-heading font-bold">Resources Library</h1>
-        <p className="text-muted-foreground mt-1">Templates, guides, and tools for your startup journey</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-heading font-bold">Resources Library</h1>
+          <p className="text-muted-foreground mt-1">Templates, guides, and tools for your startup journey</p>
+        </div>
+        {(isConsultant || isAdmin) && (
+          <Button
+            className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+            onClick={() => setAddDialogOpen(true)}
+          >
+            <Plus className="size-4 mr-2" /> Add Resource
+          </Button>
+        )}
       </div>
 
       {/* Search & View Toggle */}
@@ -263,6 +325,91 @@ export default function ResourcesPage() {
           )}
         </>
       )}
+
+      {/* Add Resource Dialog (Consultant & Admin) */}
+      <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
+        <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-heading">Add New Resource</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 mt-2">
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Title *</label>
+              <Input
+                placeholder="Resource title"
+                value={newResource.title}
+                onChange={(e) => setNewResource({ ...newResource, title: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Type *</label>
+              <select
+                className="w-full border rounded-md px-3 py-2 text-sm bg-background"
+                value={newResource.type}
+                onChange={(e) => setNewResource({ ...newResource, type: e.target.value })}
+              >
+                <option value="BLOG">Blog</option>
+                <option value="TEMPLATE">Template</option>
+                <option value="VIDEO">Video</option>
+                <option value="PDF">PDF</option>
+                <option value="GUIDE">Guide</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Category</label>
+              <Input
+                placeholder="e.g. Marketing, Finance, Growth"
+                value={newResource.category}
+                onChange={(e) => setNewResource({ ...newResource, category: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Description</label>
+              <Textarea
+                placeholder="Brief description of this resource..."
+                className="min-h-[80px]"
+                value={newResource.description}
+                onChange={(e) => setNewResource({ ...newResource, description: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Content</label>
+              <Textarea
+                placeholder="Full resource content (supports text)..."
+                className="min-h-[150px]"
+                value={newResource.content}
+                onChange={(e) => setNewResource({ ...newResource, content: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Tags (comma separated)</label>
+              <Input
+                placeholder="e.g. startup, growth, mvp"
+                value={newResource.tags}
+                onChange={(e) => setNewResource({ ...newResource, tags: e.target.value })}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="isPremium"
+                checked={newResource.isPremium}
+                onChange={(e) => setNewResource({ ...newResource, isPremium: e.target.checked })}
+                className="rounded border-gray-300"
+              />
+              <label htmlFor="isPremium" className="text-sm">Premium resource (paid users only)</label>
+            </div>
+            <Button
+              className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+              onClick={handleCreateResource}
+              disabled={!newResource.title.trim() || creating}
+            >
+              {creating ? <Loader2 className="size-4 mr-2 animate-spin" /> : null}
+              Add Resource
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
