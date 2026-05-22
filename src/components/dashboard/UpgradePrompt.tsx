@@ -92,7 +92,7 @@ export function UpgradePrompt({
               <Badge className="text-xs mb-1 bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] border-0 text-[#1A2E1A]">
                 <Sparkles className="size-3 mr-1" /> Pro
               </Badge>
-              <p className="text-lg font-bold">$29</p>
+              <p className="text-lg font-bold">$49</p>
               <p className="text-[10px] text-muted-foreground">Full access</p>
             </div>
           </div>

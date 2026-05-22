@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { PLANS, type PlanKey } from "@/lib/plans"
 
 export async function GET() {
   try {
@@ -15,7 +16,7 @@ export async function GET() {
       where: { userId: session.user.id },
     })
 
-    const plan = subscription?.plan || "FREE"
+    const plan: PlanKey = (subscription?.plan as PlanKey) || "FREE"
 
     // Get real usage metrics
     const now = new Date()
@@ -54,14 +55,8 @@ export async function GET() {
       take: 10,
     })
 
-    // Plan limits
-    const planLimits: Record<string, { consultations: number; resources: number; documents: number; teamMembers: number }> = {
-      FREE: { consultations: 1, resources: 5, documents: 5, teamMembers: 1 },
-      GROWTH_PRO: { consultations: 4, resources: Infinity, documents: 50, teamMembers: 5 },
-      ENTERPRISE: { consultations: Infinity, resources: Infinity, documents: Infinity, teamMembers: Infinity },
-    }
-
-    const limits = planLimits[plan] || planLimits.FREE
+    // Plan limits from centralized config
+    const limits = PLANS[plan]?.limits || PLANS.FREE.limits
 
     return NextResponse.json({
       subscription: subscription ? {
