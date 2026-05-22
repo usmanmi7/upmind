@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { checkResourceAchievements } from "@/lib/achievements"
 
 export async function POST(req: NextRequest) {
   try {
@@ -41,6 +42,10 @@ export async function POST(req: NextRequest) {
           resourceId,
         },
       })
+
+      // Check and award resource achievements
+      checkResourceAchievements(session.user.id).catch(() => {})
+
       return NextResponse.json({ saved: true })
     }
   } catch (error) {

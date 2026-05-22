@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { checkCommunityAchievements } from "@/lib/achievements"
 
 // GET /api/community/posts - List posts with pagination, filtering
 export async function GET(request: NextRequest) {
@@ -116,6 +117,9 @@ export async function POST(request: NextRequest) {
         },
       },
     })
+
+    // Check and award community achievements (non-blocking)
+    checkCommunityAchievements(session.user.id).catch(() => {})
 
     return NextResponse.json({
       ...post,

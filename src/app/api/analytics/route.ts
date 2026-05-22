@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { ACHIEVEMENT_DEFS, checkLoginAchievements, checkProfileAchievements } from "@/lib/achievements"
 
 export async function GET() {
   try {
@@ -10,7 +11,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const [startup, tasks, appointments, savedResources, notifications] = await Promise.all([
+    const [startup, tasks, appointments, savedResources, notifications, achievements] = await Promise.all([
       db.startup.findUnique({ where: { userId: session.user.id } }),
       db.task.findMany({
         where: { startup: { userId: session.user.id } },
@@ -25,7 +26,19 @@ export async function GET() {
       db.notification.findMany({
         where: { userId: session.user.id },
       }),
+      db.achievement.findMany({
+        where: { userId: session.user.id },
+      }),
     ])
+
+    // Auto-award first login achievement on dashboard visit
+    if (achievements.length === 0) {
+      const user = await db.user.findUnique({ where: { id: session.user.id }, select: { createdAt: true } })
+      if (user) {
+        checkLoginAchievements(session.user.id, user.createdAt).catch(() => {})
+        checkProfileAchievements(session.user.id).catch(() => {})
+      }
+    }
 
     const completedTasks = tasks.filter((t) => t.status === "COMPLETED").length
     const inProgressTasks = tasks.filter((t) => t.status === "IN_PROGRESS").length
@@ -65,21 +78,32 @@ export async function GET() {
     const recentTasks = tasks.slice(0, 5)
 
     // Getting started checklist - based on actual user activity
-    const hasStartupProfile = !!startup && startup.name !== "My Startup"
-    const hasVision = !!startup?.vision
-    const hasUsedAI = false // We'll track this separately
-    const hasRoadmapItems = false // We'll check from roadmap
+    const hasStartupProfile = !!startup && startup.name !== "My Startup" && !!startup.industry
+    const hasVisionAndGoals = !!startup?.vision && !!startup?.goals
+    const roadmapItems = startup ? await db.roadmapItem.count({ where: { startupId: startup.id } }) : 0
+    const hasRoadmapItems = roadmapItems > 0
     const hasBookedAppointment = appointments.length > 0
+    const hasSavedResources = savedResources.length > 0
+    const communityPosts = await db.communityPost.count({ where: { authorId: session.user.id } })
+    const hasCommunityPost = communityPosts > 0
 
     const checklist = [
-      { title: "Create your startup profile", completed: hasStartupProfile, href: "/dashboard/startup" },
-      { title: "Define your vision & goals", completed: hasVision, href: "/dashboard/startup" },
-      { title: "Try the Community", completed: hasUsedAI, href: "/dashboard/community" },
-      { title: "Build your first roadmap", completed: hasRoadmapItems, href: "/dashboard/roadmap" },
-      { title: "Book a consultation", completed: hasBookedAppointment, href: "/dashboard/appointments" },
+      { title: "Complete your startup profile", completed: hasStartupProfile, href: "/dashboard/startup", icon: "rocket" },
+      { title: "Define your vision & goals", completed: hasVisionAndGoals, href: "/dashboard/startup", icon: "target" },
+      { title: "Explore resources & save one", completed: hasSavedResources, href: "/dashboard/resources", icon: "book" },
+      { title: "Join the community discussion", completed: hasCommunityPost, href: "/dashboard/community", icon: "users" },
+      { title: "Build your roadmap", completed: hasRoadmapItems, href: "/dashboard/roadmap", icon: "map" },
+      { title: "Book a consultation", completed: hasBookedAppointment, href: "/dashboard/appointments", icon: "calendar" },
     ]
 
     const checklistCompleted = checklist.filter((c) => c.completed).length
+
+    // Calculate XP from earned achievements
+    const earnedTypes = achievements.map((a) => a.type)
+    const totalXP = earnedTypes.reduce((sum, type) => {
+      const def = ACHIEVEMENT_DEFS[type]
+      return sum + (def?.xp || 0)
+    }, 0)
 
     return NextResponse.json({
       overview: {
@@ -105,6 +129,15 @@ export async function GET() {
       upcomingAppointments: upcomingAppointments.slice(0, 3),
       checklist,
       checklistCompleted,
+      achievements: {
+        earned: earnedTypes.length,
+        total: Object.keys(ACHIEVEMENT_DEFS).length,
+        xp: totalXP,
+        recent: achievements.slice(0, 3).map((a) => ({
+          type: a.type,
+          title: a.title,
+        })),
+      },
     })
   } catch (error) {
     console.error("Analytics GET error:", error)

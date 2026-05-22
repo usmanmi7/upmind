@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { checkRoadmapAchievements, awardAchievement } from "@/lib/achievements"
 
 export async function GET() {
   try {
@@ -85,6 +86,9 @@ export async function POST(req: NextRequest) {
       },
     })
 
+    // Award roadmap starter achievement
+    awardAchievement(session.user.id, "ROADMAP_STARTER").catch(() => {})
+
     return NextResponse.json(roadmapItem, { status: 201 })
   } catch (error) {
     console.error("Roadmap POST error:", error)
@@ -144,6 +148,11 @@ export async function PUT(req: NextRequest) {
       where: { id: startup.id },
       data: { progress },
     })
+
+    // Check and award roadmap achievements if item was completed
+    if (isCompleted === true) {
+      checkRoadmapAchievements(session.user.id).catch(() => {})
+    }
 
     return NextResponse.json({ ...updated, progress })
   } catch (error) {

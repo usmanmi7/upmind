@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
+import { Progress } from "@/components/ui/progress"
 import {
   User,
   Building2,
@@ -31,18 +32,27 @@ import {
   Clock,
   Zap,
   Lock,
+  Lightbulb,
+  Target,
+  Calendar,
 } from "lucide-react"
 import { toast } from "sonner"
 
 const allAchievements = [
   { type: "FIRST_LOGIN", title: "Welcome Aboard", description: "Logged in for the first time", icon: Rocket, color: "from-[#2D4A2D] to-[#8FBC8F]", xp: 10 },
+  { type: "STARTUP_PROFILE", title: "Identity Set", description: "Completed your startup profile", icon: Star, color: "from-[#7CFC00] to-[#2D4A2D]", xp: 20 },
+  { type: "VISIONARY", title: "Visionary", description: "Defined your startup vision and goals", icon: Lightbulb, color: "from-blue-500 to-indigo-500", xp: 20 },
   { type: "PROFILE_COMPLETE", title: "Profile Perfectionist", description: "Completed your full profile", icon: Star, color: "from-[#7CFC00] to-[#2D4A2D]", xp: 25 },
+  { type: "ROADMAP_STARTER", title: "Roadmap Starter", description: "Added your first roadmap task", icon: Target, color: "from-green-500 to-emerald-500", xp: 15 },
   { type: "FIRST_APPOINTMENT", title: "First Step", description: "Booked your first consultation", icon: CheckCircle2, color: "from-green-500 to-emerald-500", xp: 30 },
-  { type: "RESOURCE_DOWNLOAD", title: "Knowledge Seeker", description: "Downloaded your first resource", icon: Download, color: "from-orange-500 to-red-500", xp: 15 },
+  { type: "RESOURCE_DOWNLOAD", title: "Knowledge Seeker", description: "Saved your first resource", icon: Download, color: "from-orange-500 to-red-500", xp: 15 },
+  { type: "COMMUNITY_MEMBER", title: "Community Builder", description: "Created your first community post", icon: UsersRound, color: "from-emerald-500 to-green-500", xp: 20 },
+  { type: "MILESTONE_5", title: "5 Milestones Strong", description: "Completed 5 roadmap tasks", icon: Trophy, color: "from-[#8FBC8F] to-[#2D4A2D]", xp: 40 },
+  { type: "RESOURCE_EXPLORER", title: "Resource Explorer", description: "Saved 5 resources to your library", icon: Download, color: "from-cyan-500 to-blue-500", xp: 30 },
+  { type: "CONSULTATION_PRO", title: "Consultation Pro", description: "Booked 3 consultations", icon: Calendar, color: "from-purple-500 to-pink-500", xp: 40 },
   { type: "TASK_MASTER", title: "Task Master", description: "Completed 10 tasks on your roadmap", icon: Zap, color: "from-yellow-500 to-orange-500", xp: 50 },
-  { type: "MILESTONE_5", title: "5 Milestones Strong", description: "Reached 5 startup milestones", icon: Trophy, color: "from-[#8FBC8F] to-[#2D4A2D]", xp: 40 },
-  { type: "MILESTONE_10", title: "Double Digits", description: "Reached 10 startup milestones", icon: Trophy, color: "from-[#8FBC8F] to-[#2D4A2D]", xp: 75 },
-  { type: "COMMUNITY_MEMBER", title: "Community Builder", description: "Joined the community forum", icon: UsersRound, color: "from-emerald-500 to-green-500", xp: 20 },
+  { type: "SOCIAL_BUTTERFLY", title: "Social Butterfly", description: "Created 5 community posts", icon: UsersRound, color: "from-pink-500 to-rose-500", xp: 45 },
+  { type: "MILESTONE_10", title: "Double Digits", description: "Completed 10 roadmap tasks", icon: Trophy, color: "from-[#8FBC8F] to-[#2D4A2D]", xp: 75 },
   { type: "EARLY_ADOPTER", title: "Early Adopter", description: "Joined Upmind during early access", icon: Clock, color: "from-[#2D4A2D] to-[#1A2E1A]", xp: 35 },
 ]
 
@@ -74,7 +84,7 @@ function AchievementGrid() {
   if (loading) {
     return (
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        {Array.from({ length: 9 }).map((_, i) => (
+        {Array.from({ length: 15 }).map((_, i) => (
           <div key={i} className="rounded-xl bg-muted/30 p-4 animate-pulse">
             <div className="w-12 h-12 rounded-full bg-muted mx-auto mb-2" />
             <div className="h-3 w-20 bg-muted rounded mx-auto mb-1" />
@@ -85,14 +95,23 @@ function AchievementGrid() {
     )
   }
 
+  const earnedCount = earnedAchievements.length
+  const totalCount = allAchievements.length
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-[#2D4A2D]/10 to-[#1A2E1A]/10 border border-[#7CFC00]/30 dark:border-[#2D4A2D]/50">
-        <div className="flex items-center gap-2">
-          <Trophy className="size-5 text-yellow-500" />
-          <span className="text-sm font-medium">Total XP</span>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Trophy className="size-5 text-yellow-500" />
+            <span className="text-sm font-medium">Total XP</span>
+          </div>
+          <span className="text-lg font-bold">{totalXP} XP</span>
         </div>
-        <span className="text-lg font-bold">{totalXP} XP</span>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">{earnedCount}/{totalCount}</span>
+          <Progress value={(earnedCount / totalCount) * 100} className="h-2 w-16" />
+        </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -105,7 +124,7 @@ function AchievementGrid() {
               className={`relative rounded-xl p-4 text-center transition-all duration-200 ${
                 isEarned
                   ? "bg-gradient-to-br from-[#E8F5E9] to-[#C8E6C9] dark:from-[#2D4A2D]/20 dark:to-[#1A2E1A]/20 border border-[#7CFC00]/30 dark:border-[#2D4A2D]/50"
-                  : "bg-muted/20 opacity-60"
+                  : "bg-muted/20 opacity-60 hover:opacity-80"
               }`}
             >
               {!isEarned && (
@@ -126,9 +145,13 @@ function AchievementGrid() {
               <p className="text-[10px] text-muted-foreground mt-0.5">
                 {achievement.description}
               </p>
-              {isEarned && (
+              {isEarned ? (
                 <Badge className="mt-1.5 text-[10px] bg-green-500/10 text-green-600 dark:text-green-400 border-0">
                   +{achievement.xp} XP
+                </Badge>
+              ) : (
+                <Badge className="mt-1.5 text-[10px] bg-muted/30 text-muted-foreground/50 border-0">
+                  {achievement.xp} XP
                 </Badge>
               )}
             </div>

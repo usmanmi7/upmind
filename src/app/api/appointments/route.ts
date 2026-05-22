@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { checkAppointmentAchievements } from "@/lib/achievements"
 
 export async function GET() {
   try {
@@ -138,6 +139,9 @@ export async function POST(req: NextRequest) {
       // Don't fail the appointment if notification fails
       console.error("Failed to send admin notification:", notifError)
     }
+
+    // Check and award appointment achievements
+    checkAppointmentAchievements(session.user.id).catch(() => {})
 
     return NextResponse.json(appointment, { status: 201 })
   } catch (error) {

@@ -117,6 +117,7 @@ interface AnalyticsData {
     title: string
     completed: boolean
     href: string
+    icon?: string
   }>
   checklistCompleted: number
   progress: number
@@ -124,6 +125,12 @@ interface AnalyticsData {
     name: string
     progress: number
   } | null
+  achievements: {
+    earned: number
+    total: number
+    xp: number
+    recent: Array<{ type: string; title: string }>
+  }
 }
 
 interface AdminDashboardData {
@@ -583,78 +590,131 @@ function UserDashboard() {
           </CardContent>
         </Card>
 
-        {/* Getting Started */}
-        <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-base font-heading">Getting Started</CardTitle>
-                <CardDescription>
-                  Complete these steps to set up your startup
-                </CardDescription>
+        {/* Quick Wins + Achievements */}
+        <div className="space-y-6">
+          <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-base font-heading flex items-center gap-2">
+                    <Zap className="size-4 text-[#7CFC00]" /> Quick Wins
+                  </CardTitle>
+                  <CardDescription>
+                    Complete these actions to earn XP and unlock badges
+                  </CardDescription>
+                </div>
+                <Badge variant="secondary" className="text-xs">
+                  <Trophy className="size-3 mr-1" /> {data?.checklistCompleted || 0}/6
+                </Badge>
               </div>
-              <Badge variant="secondary" className="text-xs">
-                <Trophy className="size-3 mr-1" /> {data?.checklistCompleted || 0}/5
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {(data?.checklist || [
-                { title: "Create your startup profile", completed: false, href: "/dashboard/startup" },
-                { title: "Define your vision & goals", completed: false, href: "/dashboard/startup" },
-                { title: "Try the Community", completed: false, href: "/dashboard/community" },
-                { title: "Build your first roadmap", completed: false, href: "/dashboard/roadmap" },
-                { title: "Book a consultation", completed: false, href: "/dashboard/appointments" },
-              ]).map((item, i) => (
-                <Link
-                  key={i}
-                  href={item.href}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-all duration-200 group"
-                >
-                  <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
-                      item.completed
-                        ? "bg-green-500"
-                        : "border-2 border-muted-foreground/30 group-hover:border-[#7CFC00]/50"
-                    }`}
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {(data?.checklist || [
+                  { title: "Complete your startup profile", completed: false, href: "/dashboard/startup", icon: "rocket" },
+                  { title: "Define your vision & goals", completed: false, href: "/dashboard/startup", icon: "target" },
+                  { title: "Explore resources & save one", completed: false, href: "/dashboard/resources", icon: "book" },
+                  { title: "Join the community discussion", completed: false, href: "/dashboard/community", icon: "users" },
+                  { title: "Build your roadmap", completed: false, href: "/dashboard/roadmap", icon: "map" },
+                  { title: "Book a consultation", completed: false, href: "/dashboard/appointments", icon: "calendar" },
+                ]).map((item, i) => (
+                  <Link
+                    key={i}
+                    href={item.href}
+                    className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/30 hover:bg-muted/50 transition-all duration-200 group"
                   >
-                    {item.completed ? (
-                      <CheckCircle2 className="size-4 text-white" />
-                    ) : (
-                      <span className="text-[10px] text-muted-foreground/50 font-medium">{i + 1}</span>
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
+                        item.completed
+                          ? "bg-green-500"
+                          : "border-2 border-muted-foreground/30 group-hover:border-[#7CFC00]/50"
+                      }`}
+                    >
+                      {item.completed ? (
+                        <CheckCircle2 className="size-3.5 text-white" />
+                      ) : (
+                        <span className="text-[10px] text-muted-foreground/50 font-medium">{i + 1}</span>
+                      )}
+                    </div>
+                    <span
+                      className={`text-sm flex-1 ${
+                        item.completed
+                          ? "line-through text-muted-foreground"
+                          : "font-medium group-hover:text-[#7CFC00]"
+                      }`}
+                    >
+                      {item.title}
+                    </span>
+                    {!item.completed && (
+                      <ArrowRight className="size-3 text-muted-foreground/30 group-hover:text-[#7CFC00] transition-colors" />
                     )}
-                  </div>
-                  <span
-                    className={`text-sm flex-1 ${
-                      item.completed
-                        ? "line-through text-muted-foreground"
-                        : "font-medium group-hover:text-[#7CFC00]"
-                    }`}
-                  >
-                    {item.title}
-                  </span>
-                  {!item.completed && (
-                    <ArrowRight className="size-3 text-muted-foreground/30 group-hover:text-[#7CFC00] transition-colors" />
-                  )}
-                </Link>
-              ))}
-            </div>
-            <div className="mt-4 p-4 rounded-xl bg-gradient-to-br from-[#2D4A2D]/10 to-[#1A2E1A]/10 border border-[#7CFC00]/30 dark:border-[#2D4A2D]/50">
-              <div className="flex items-center gap-2 mb-2">
-                <Zap className="size-4 text-[#7CFC00]" />
-                <span className="text-sm font-medium">Earn Badges</span>
+                    {item.completed && (
+                      <Badge className="text-[10px] bg-green-500/10 text-green-600 dark:text-green-400 border-0 px-1.5 py-0">
+                        +XP
+                      </Badge>
+                    )}
+                  </Link>
+                ))}
               </div>
-              <p className="text-xs text-muted-foreground">
-                Complete tasks to unlock achievements and earn XP. Visit your{" "}
-                <Link href="/dashboard/profile" className="text-[#7CFC00] hover:underline">
-                  profile
-                </Link>{" "}
-                to see all badges.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+
+          {/* Achievements Summary */}
+          <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base font-heading flex items-center gap-2">
+                  <Trophy className="size-4 text-yellow-500" /> Achievements
+                </CardTitle>
+                <Button variant="ghost" size="sm" asChild className="text-xs h-7">
+                  <Link href="/dashboard/profile">
+                    View all <ArrowRight className="size-3 ml-1" />
+                  </Link>
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center gap-4 p-3 rounded-xl bg-gradient-to-br from-[#2D4A2D]/10 to-[#1A2E1A]/10 border border-[#7CFC00]/30 dark:border-[#2D4A2D]/50 mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+                    <Sparkles className="size-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold">{data?.achievements?.xp || 0} XP</p>
+                    <p className="text-[10px] text-muted-foreground">Total earned</p>
+                  </div>
+                </div>
+                <div className="h-8 w-px bg-border" />
+                <div>
+                  <p className="text-sm font-bold">{data?.achievements?.earned || 0}/{data?.achievements?.total || 15}</p>
+                  <p className="text-[10px] text-muted-foreground">Badges unlocked</p>
+                </div>
+                <div className="flex-1" />
+                <Progress
+                  value={((data?.achievements?.earned || 0) / (data?.achievements?.total || 15)) * 100}
+                  className="h-2 w-20"
+                />
+              </div>
+              {data?.achievements?.recent && data.achievements.recent.length > 0 ? (
+                <div className="space-y-2">
+                  {data.achievements.recent.map((ach) => (
+                    <div key={ach.type} className="flex items-center gap-2 p-2 rounded-lg bg-green-500/5 border border-green-500/10">
+                      <CheckCircle2 className="size-3.5 text-green-500 shrink-0" />
+                      <span className="text-xs font-medium">{ach.title}</span>
+                      <Badge className="text-[9px] bg-green-500/10 text-green-600 dark:text-green-400 border-0 ml-auto px-1.5 py-0">
+                        EARNED
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground text-center py-2">
+                  Complete Quick Wins above to start earning badges!
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   )
