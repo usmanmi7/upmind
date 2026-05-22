@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { initZAI } from "@/lib/ai"
+import { getAIResponse } from "@/lib/ai"
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,15 +20,8 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const zai = await initZAI()
-
-    const completion = await zai.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are a business plan generator for startups. Generate a structured, professional business plan in JSON format with the following sections: executiveSummary, marketAnalysis, strategy, financialProjections, timeline. Each section should be a detailed string. Be specific and actionable.",
-        },
+    const result = await getAIResponse(
+      [
         {
           role: "user",
           content: `Generate a business plan for:
@@ -48,10 +41,13 @@ Provide a comprehensive business plan with these sections:
 Format the response as JSON with keys: executiveSummary, marketAnalysis, strategy, financialProjections, timeline`,
         },
       ],
-    })
+      {
+        systemPrompt:
+          "You are a business plan generator for startups. Generate a structured, professional business plan in JSON format with the following sections: executiveSummary, marketAnalysis, strategy, financialProjections, timeline. Each section should be a detailed string. Be specific and actionable.",
+      }
+    )
 
-    const responseText =
-      completion.choices?.[0]?.message?.content || ""
+    const responseText = result.response
 
     // Try to parse JSON, fallback to structured response
     let businessPlan

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { initZAI } from "@/lib/ai"
+import { getAIResponse } from "@/lib/ai"
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,24 +20,20 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const zai = await initZAI()
-
-    const completion = await zai.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are a pitch deck analyzer. Analyze the given pitch and provide feedback. Return a JSON object with: score (0-100), clarity (0-100), impact (0-100), structure (0-100), strengths (array of strings), improvements (array of strings), summary (string). Be constructive and specific.",
-        },
+    const result = await getAIResponse(
+      [
         {
           role: "user",
           content: `Analyze this pitch and provide detailed feedback:\n\n${pitchText}`,
         },
       ],
-    })
+      {
+        systemPrompt:
+          "You are a pitch deck analyzer. Analyze the given pitch and provide feedback. Return a JSON object with: score (0-100), clarity (0-100), impact (0-100), structure (0-100), strengths (array of strings), improvements (array of strings), summary (string). Be constructive and specific.",
+      }
+    )
 
-    const responseText =
-      completion.choices?.[0]?.message?.content || ""
+    const responseText = result.response
 
     let feedback
     try {

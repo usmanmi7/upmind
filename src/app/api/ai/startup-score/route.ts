@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { initZAI } from "@/lib/ai"
+import { getAIResponse } from "@/lib/ai"
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,15 +13,8 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { startupName, industry, stage, teamSize, revenue, users, funding } = body
 
-    const zai = await initZAI()
-
-    const completion = await zai.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are a startup evaluation AI. Evaluate the startup across 5 dimensions and return a JSON object with: overallScore (0-100), dimensions (object with: market {score, recommendation}, team {score, recommendation}, product {score, recommendation}, traction {score, recommendation}, financials {score, recommendation}), summary (string). Be realistic and constructive.",
-        },
+    const result = await getAIResponse(
+      [
         {
           role: "user",
           content: `Evaluate this startup:
@@ -36,10 +29,13 @@ Funding: ${funding || "Bootstrapped"}
 Provide scores and recommendations for each dimension.`,
         },
       ],
-    })
+      {
+        systemPrompt:
+          "You are a startup evaluation AI. Evaluate the startup across 5 dimensions and return a JSON object with: overallScore (0-100), dimensions (object with: market {score, recommendation}, team {score, recommendation}, product {score, recommendation}, traction {score, recommendation}, financials {score, recommendation}), summary (string). Be realistic and constructive.",
+      }
+    )
 
-    const responseText =
-      completion.choices?.[0]?.message?.content || ""
+    const responseText = result.response
 
     let evaluation
     try {
