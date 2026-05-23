@@ -107,9 +107,8 @@ export default function Navbar() {
             {/* Contact Link */}
             <Link
               href="/contact"
-              className="text-white/80 hover:text-white text-base font-medium capitalize transition-colors relative group flex items-center gap-1.5"
+              className="text-white/80 hover:text-white text-base font-medium capitalize transition-colors relative group"
             >
-              <Phone className="w-4 h-4" />
               Contact
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
             </Link>
