@@ -254,7 +254,7 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
             <Button
               size="sm"
               variant="outline"
-              className="w-full border-[#7CFC00]/30 text-[#7CFC00] hover:bg-[#7CFC00]/10 text-xs"
+              className="w-full border-[#7CFC00]/30 text-[#1A2E1A] hover:bg-[#7CFC00]/10 text-xs"
               asChild
             >
               <Link href="/dashboard/subscription">Manage Plan</Link>
