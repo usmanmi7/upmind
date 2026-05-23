@@ -38,6 +38,8 @@ import {
   UsersRound,
   Shield,
   Crown,
+  ArrowLeft,
+  Home,
 } from "lucide-react"
 
 interface SidebarItem {
@@ -135,7 +137,7 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
   return (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className="flex items-center gap-2 px-4 h-16 border-b border-sidebar-border">
+      <Link href="/" className="flex items-center gap-2 px-4 h-16 border-b border-sidebar-border hover:bg-sidebar-accent/30 transition-colors">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0">
           <span className="text-[#1A2E1A] font-bold text-base">U</span>
         </div>
@@ -149,7 +151,7 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
             ADMIN
           </span>
         )}
-      </div>
+      </Link>
 
       {/* Navigation */}
       <ScrollArea className="flex-1 px-3 py-4 sidebar-scroll">
@@ -187,6 +189,30 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
           })}
         </nav>
       </ScrollArea>
+
+      {/* Back to Home Link */}
+      {!collapsed && (
+        <div className="px-3 pb-3">
+          <Link
+            href="/"
+            className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
+          >
+            <ArrowLeft className="size-4" />
+            <span>Back to Home</span>
+          </Link>
+        </div>
+      )}
+      {collapsed && (
+        <div className="px-3 pb-3">
+          <Link
+            href="/"
+            className="flex items-center justify-center px-3 py-2.5 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
+            title="Back to Home"
+          >
+            <Home className="size-4" />
+          </Link>
+        </div>
+      )}
 
       {/* Upgrade Card - Only for FREE_USER (non-admin, non-paid) */}
       {!collapsed && !isAdmin && session?.user?.role === "FREE_USER" && (
@@ -309,6 +335,18 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
             <Menu className="size-5" />
           </Button>
 
+          {/* Home Button */}
+          <Link href="/">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="hidden sm:flex items-center gap-1.5 text-muted-foreground hover:text-foreground"
+            >
+              <Home className="size-4" />
+              <span className="text-xs">Home</span>
+            </Button>
+          </Link>
+
           {/* Search */}
           <div className="hidden md:flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2 w-64">
             <Search className="size-4 text-muted-foreground" />
@@ -389,6 +427,12 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link href="/" className="cursor-pointer">
+                  <Home className="size-4 mr-2" />
+                  Back to Home
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/settings" className="cursor-pointer">
                   <User className="size-4 mr-2" />
