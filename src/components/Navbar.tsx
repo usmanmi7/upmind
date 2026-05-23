@@ -104,15 +104,6 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
-            {/* Contact Link */}
-            <Link
-              href="/contact"
-              className="text-white/80 hover:text-white text-base font-medium capitalize transition-colors relative group"
-            >
-              Contact
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
-            </Link>
-
             {/* Divider */}
             <div className="w-px h-6 bg-white/15" />
 
