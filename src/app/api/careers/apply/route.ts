@@ -10,6 +10,12 @@ const ALLOWED_TYPES = [
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ]
+const ALLOWED_EXTENSIONS = [".pdf", ".doc", ".docx"]
+
+function getFileExtension(filename: string): string {
+  const lastDot = filename.lastIndexOf(".")
+  return lastDot >= 0 ? filename.substring(lastDot).toLowerCase() : ""
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -57,7 +63,10 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    if (!ALLOWED_TYPES.includes(cvFile.type)) {
+    // Check both MIME type and file extension for broader browser compatibility
+    const ext = getFileExtension(cvFile.name)
+    const isAllowedType = ALLOWED_TYPES.includes(cvFile.type) || ALLOWED_EXTENSIONS.includes(ext)
+    if (!isAllowedType) {
       return NextResponse.json(
         { error: "CV must be a PDF, DOC, or DOCX file" },
         { status: 400 }
@@ -80,10 +89,18 @@ export async function POST(req: NextRequest) {
     }
 
     // Upload CV to Vercel Blob
-    const blob = await put(`cvs/${session.user.id}/${Date.now()}-${cvFile.name}`, cvFile, {
-      access: "public",
-      contentType: cvFile.type,
-    })
+    let resumeUrl: string | null = null
+    try {
+      const blob = await put(`cvs/${session.user.id}/${Date.now()}-${cvFile.name}`, cvFile, {
+        access: "public",
+        contentType: cvFile.type || "application/octet-stream",
+      })
+      resumeUrl = blob.url
+    } catch (blobError) {
+      console.error("Blob upload failed, saving application without file:", blobError)
+      // If blob fails, still save the application but without the CV URL
+      // The admin can request the CV via email instead
+    }
 
     const application = await db.jobApplication.create({
       data: {
@@ -93,12 +110,19 @@ export async function POST(req: NextRequest) {
         fullName,
         email,
         phone,
-        resumeUrl: blob.url,
+        resumeUrl,
         coverLetter,
         linkedIn,
         portfolio,
       },
     })
+
+    if (!resumeUrl) {
+      return NextResponse.json(
+        { message: "Application submitted, but CV upload failed. Please contact support.", application, cvWarning: true },
+        { status: 201 }
+      )
+    }
 
     return NextResponse.json(
       { message: "Application submitted successfully", application },
@@ -107,7 +131,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Job application POST error:", error)
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error. Please try again later." },
       { status: 500 }
     )
   }
