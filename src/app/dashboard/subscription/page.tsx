@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -83,6 +84,7 @@ interface SubscriptionData {
 type ChangePlanAction = "upgrade" | "downgrade"
 
 export default function SubscriptionPage() {
+  const { update: updateSession } = useSession()
   const [data, setData] = React.useState<SubscriptionData | null>(null)
   const [loading, setLoading] = React.useState(true)
   const [togglingAutoRenew, setTogglingAutoRenew] = React.useState(false)
@@ -192,6 +194,9 @@ export default function SubscriptionPage() {
         prorationAmount: result.prorationAmount,
       })
       setSuccessDialogOpen(true)
+
+      // Refresh session to update role in JWT (for sidebar upgrade card)
+      await updateSession()
 
       // Refresh data
       await fetchSubscription()

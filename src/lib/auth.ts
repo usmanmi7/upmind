@@ -47,11 +47,22 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.role = (user as { role: string }).role
         token.id = user.id
         token.banned = (user as { banned: boolean }).banned
+      }
+      // When session is updated (e.g., after plan change), refresh role from DB
+      if (trigger === "update") {
+        const dbUser = await db.user.findUnique({
+          where: { id: token.id as string },
+          select: { role: true, banned: true },
+        })
+        if (dbUser) {
+          token.role = dbUser.role
+          token.banned = dbUser.banned
+        }
       }
       return token
     },

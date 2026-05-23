@@ -37,6 +37,7 @@ import {
   Sparkles,
   UsersRound,
   Shield,
+  Crown,
 } from "lucide-react"
 
 interface SidebarItem {
@@ -187,8 +188,8 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
         </nav>
       </ScrollArea>
 
-      {/* Upgrade Card - Only for non-admin users */}
-      {!collapsed && !isAdmin && (
+      {/* Upgrade Card - Only for FREE_USER (non-admin, non-paid) */}
+      {!collapsed && !isAdmin && session?.user?.role === "FREE_USER" && (
         <div className="px-3 pb-4">
           <div className="rounded-xl bg-gradient-to-br from-[#7CFC00]/20 to-[#2D4A2D]/20 border border-sidebar-border p-4">
             <div className="flex items-center gap-2 mb-2">
@@ -206,6 +207,31 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
               asChild
             >
               <Link href="/dashboard/subscription">Upgrade Now</Link>
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Pro Member Card - For paid users */}
+      {!collapsed && !isAdmin && session?.user?.role === "PAID_USER" && (
+        <div className="px-3 pb-4">
+          <div className="rounded-xl bg-gradient-to-br from-[#7CFC00]/10 to-[#2D4A2D]/10 border border-[#7CFC00]/20 p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Crown className="size-4 text-[#7CFC00]" />
+              <span className="text-sm font-medium text-sidebar-foreground">
+                Pro Member
+              </span>
+            </div>
+            <p className="text-xs text-sidebar-foreground/60 mb-3">
+              You have access to all premium features
+            </p>
+            <Button
+              size="sm"
+              variant="outline"
+              className="w-full border-[#7CFC00]/30 text-[#7CFC00] hover:bg-[#7CFC00]/10 text-xs"
+              asChild
+            >
+              <Link href="/dashboard/subscription">Manage Plan</Link>
             </Button>
           </div>
         </div>
