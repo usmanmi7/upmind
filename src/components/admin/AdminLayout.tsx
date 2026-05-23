@@ -35,6 +35,7 @@ import {
   ArrowLeft,
   Shield,
   Sparkles,
+  Briefcase,
 } from "lucide-react"
 
 const adminSidebarItems = [
@@ -43,7 +44,7 @@ const adminSidebarItems = [
   { title: "Consultants", href: "/admin/consultants", icon: UserCog },
   { title: "Resources", href: "/admin/resources", icon: BookOpen },
   { title: "Appointments", href: "/admin/appointments", icon: Calendar },
-
+  { title: "Applications", href: "/admin/applications", icon: Briefcase },
   { title: "Payments", href: "/admin/payments", icon: CreditCard },
   { title: "Analytics", href: "/admin/analytics", icon: BarChart3 },
   { title: "CMS", href: "/admin/cms", icon: FileText },

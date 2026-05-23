@@ -41,6 +41,7 @@ model User {
   comments        Comment[]
   postLikes       PostLike[]
   resourceViews   ResourceView[]
+  jobApplications JobApplication[]
   sessions        Session[]
   accounts        Account[]
 }
@@ -412,6 +413,40 @@ enum AchievementType {
   CONSULTATION_PRO
   VISIONARY
   STARTUP_PROFILE
+}
+
+model JobApplication {
+  id          String            @id @default(cuid())
+  userId      String
+  jobTitle    String
+  department  String
+  fullName    String
+  email       String
+  phone       String?
+  resumeUrl   String?
+  coverLetter String?           @db.Text
+  linkedIn    String?
+  portfolio   String?
+  status      ApplicationStatus @default(PENDING)
+  notes       String?           @db.Text
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWING
+  SHORTLISTED
+  INTERVIEWED
+  OFFERED
+  REJECTED
+  WITHDRAWN
 }
 
 // NextAuth models
