@@ -96,7 +96,7 @@ export default function CareersPage() {
   const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
   const ALLOWED_TYPES = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"]
 
-  // Pre-fill form from session
+  // Pre-fill form from session & fetch existing applications
   React.useEffect(() => {
     if (session?.user) {
       setForm(prev => ({
@@ -104,6 +104,16 @@ export default function CareersPage() {
         fullName: session.user.name || prev.fullName,
         email: session.user.email || prev.email,
       }))
+
+      // Fetch user's existing applications to show "Applied" badges
+      fetch("/api/careers/my-applications")
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (data?.applications) {
+            setAlreadyApplied(data.applications.map((a: { jobTitle: string }) => a.jobTitle))
+          }
+        })
+        .catch(() => {})
     }
   }, [session])
 
@@ -417,7 +427,7 @@ export default function CareersPage() {
               <p className="text-gray-600 mb-6">
                 Your application for <span className="font-semibold">{selectedJob?.title}</span> has been received. We&apos;ll review it and get back to you soon.
               </p>
-              <Button onClick={closeApplyDialog} className="bg-[#1A2E1A] hover:bg-[#243824]">
+              <Button onClick={closeApplyDialog} className="bg-[#1A2E1A] hover:bg-[#243824] text-white">
                 Done
               </Button>
             </div>
