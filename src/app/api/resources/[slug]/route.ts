@@ -65,8 +65,9 @@ export async function GET(
     }
 
     if (accessLevel !== "full" && resource.content) {
-      // Show only first ~200 chars as preview
-      const previewContent = resource.content.substring(0, 200) + "..."
+      // Show a generous preview so visitors can read before the auth overlay
+      const previewLength = accessLevel === "none" ? 800 : 200
+      const previewContent = resource.content.substring(0, previewLength) + "..."
       responseData = {
         ...resource,
         content: previewContent,

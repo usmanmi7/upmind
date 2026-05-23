@@ -21,8 +21,6 @@ import {
   Calendar,
   Crown,
   Lock,
-  Share2,
-  Bookmark,
   ArrowRight,
   Check,
   Sparkles,
@@ -48,7 +46,7 @@ const typeColors: Record<string, string> = {
 export default function ResourceDetailPage() {
   const params = useParams()
   const router = useRouter()
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const slug = params.slug as string
 
   const [resource, setResource] = React.useState<any>(null)
@@ -64,13 +62,14 @@ export default function ResourceDetailPage() {
 
   React.useEffect(() => {
     // Show auth overlay after 5 seconds for non-logged-in users
-    if (!session?.user) {
+    // Only start timer once we know user is unauthenticated (not just loading)
+    if (status === "unauthenticated") {
       const timer = setTimeout(() => {
         setShowAuthOverlay(true)
       }, 5000)
       return () => clearTimeout(timer)
     }
-  }, [session])
+  }, [status])
 
   React.useEffect(() => {
     const fetchResource = async () => {
@@ -104,16 +103,11 @@ export default function ResourceDetailPage() {
     if (slug) fetchResource()
   }, [slug])
 
-  // Auto-show modal for restricted access
+  // Auto-show upgrade modal for logged-in free users on premium resources
   React.useEffect(() => {
-    if (!loading && resource) {
-      if (accessLevel === "none") {
-        // Not logged in - show the unskippable overlay immediately
-        setShowAuthOverlay(true)
-      } else if (accessLevel === "preview") {
-        setModalType("upgrade")
-        setModalOpen(true)
-      }
+    if (!loading && resource && accessLevel === "preview") {
+      setModalType("upgrade")
+      setModalOpen(true)
     }
   }, [loading, resource, accessLevel])
 
@@ -441,8 +435,8 @@ export default function ResourceDetailPage() {
         type={modalType}
       />
 
-      {/* Unskippable Auth Overlay - for non-logged-in users */}
-      {showAuthOverlay && !session?.user && (
+      {/* Unskippable Auth Overlay - for non-logged-in users (appears after 5s) */}
+      {showAuthOverlay && status === "unauthenticated" && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
           {/* Backdrop - no click handler, unskippable */}
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
