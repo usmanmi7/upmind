@@ -40,6 +40,7 @@ import {
   Loader2,
   ArrowRight,
   User,
+  Download,
 } from "lucide-react"
 
 const statusColors: Record<string, string> = {
@@ -333,6 +334,11 @@ export default function AdminApplicationsPage() {
 
                   {/* Status & Date */}
                   <div className="flex items-center gap-3 shrink-0">
+                    {app.resumeUrl && (
+                      <div className="w-7 h-7 rounded-lg bg-[#7CFC00]/10 flex items-center justify-center" title="CV attached">
+                        <FileText className="w-3.5 h-3.5 text-[#2D4A2D]" />
+                      </div>
+                    )}
                     <Badge variant="outline" className={`text-xs ${statusColor}`}>
                       <StatusIcon className="w-3 h-3 mr-1" />
                       {app.status}
@@ -441,11 +447,13 @@ export default function AdminApplicationsPage() {
                   </div>
                 )}
                 {selectedApp.resumeUrl && (
-                  <div className="flex items-center gap-2 text-sm sm:col-span-2">
-                    <ExternalLink className="w-4 h-4 text-gray-400 shrink-0" />
-                    <a href={selectedApp.resumeUrl.startsWith("http") ? selectedApp.resumeUrl : `https://${selectedApp.resumeUrl}`} target="_blank" rel="noopener noreferrer" className="text-[#2D4A2D] hover:underline truncate">
-                      View Resume / CV
-                    </a>
+                  <div className="sm:col-span-2">
+                    <Button asChild variant="outline" size="sm" className="gap-2 border-[#7CFC00]/30 hover:bg-[#7CFC00]/10 text-[#2D4A2D]">
+                      <a href={selectedApp.resumeUrl} target="_blank" rel="noopener noreferrer">
+                        <Download className="w-4 h-4" />
+                        Download CV / Resume
+                      </a>
+                    </Button>
                   </div>
                 )}
               </div>

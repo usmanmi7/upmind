@@ -38,6 +38,8 @@ import {
   Phone,
   Linkedin,
   ExternalLink,
+  Upload,
+  FileText,
 } from "lucide-react"
 import * as React from "react"
 
@@ -83,11 +85,16 @@ export default function CareersPage() {
     fullName: "",
     email: "",
     phone: "",
-    resumeUrl: "",
     coverLetter: "",
     linkedIn: "",
     portfolio: "",
   })
+  const [cvFile, setCvFile] = React.useState<File | null>(null)
+  const [cvFileName, setCvFileName] = React.useState("")
+  const [cvError, setCvError] = React.useState("")
+
+  const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+  const ALLOWED_TYPES = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"]
 
   // Pre-fill form from session
   React.useEffect(() => {
@@ -108,8 +115,33 @@ export default function CareersPage() {
     }
     setSelectedJob(job)
     setSubmitError("")
+    setCvError("")
     setSubmitted(false)
     setApplyDialogOpen(true)
+  }
+
+  const handleCvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCvError("")
+    const file = e.target.files?.[0]
+    if (!file) {
+      setCvFile(null)
+      setCvFileName("")
+      return
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      setCvError("File size must be less than 5MB")
+      setCvFile(null)
+      setCvFileName("")
+      return
+    }
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setCvError("Only PDF, DOC, or DOCX files are accepted")
+      setCvFile(null)
+      setCvFileName("")
+      return
+    }
+    setCvFile(file)
+    setCvFileName(file.name)
   }
 
   const handleSubmit = async () => {
@@ -120,18 +152,29 @@ export default function CareersPage() {
       return
     }
 
+    if (!cvFile) {
+      setSubmitError("Please upload your CV / Resume")
+      return
+    }
+
     setSubmitting(true)
     setSubmitError("")
 
     try {
+      const formData = new FormData()
+      formData.append("jobTitle", selectedJob.title)
+      formData.append("department", selectedJob.department)
+      formData.append("fullName", form.fullName)
+      formData.append("email", form.email)
+      formData.append("phone", form.phone)
+      formData.append("coverLetter", form.coverLetter)
+      formData.append("linkedIn", form.linkedIn)
+      formData.append("portfolio", form.portfolio)
+      formData.append("cv", cvFile)
+
       const res = await fetch("/api/careers/apply", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jobTitle: selectedJob.title,
-          department: selectedJob.department,
-          ...form,
-        }),
+        body: formData,
       })
 
       const data = await res.json()
@@ -160,6 +203,9 @@ export default function CareersPage() {
     setSelectedJob(null)
     setSubmitted(false)
     setSubmitError("")
+    setCvFile(null)
+    setCvFileName("")
+    setCvError("")
   }
 
   const isJobApplied = (jobTitle: string) => alreadyApplied.includes(jobTitle)
@@ -448,16 +494,58 @@ export default function CareersPage() {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-gray-700 mb-1.5 block">Resume / CV Link</label>
-                  <div className="relative">
-                    <ExternalLink className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
-                    <Input
-                      className="pl-9"
-                      placeholder="Link to your resume (Google Drive, Dropbox, etc.)"
-                      value={form.resumeUrl}
-                      onChange={(e) => setForm(prev => ({ ...prev, resumeUrl: e.target.value }))}
+                  <label className="text-sm font-medium text-gray-700 mb-1.5 block">
+                    CV / Resume <span className="text-red-500">*</span>
+                  </label>
+                  <div
+                    className={`relative border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all duration-200 ${
+                      cvFile
+                        ? "border-[#7CFC00] bg-[#7CFC00]/5"
+                        : cvError
+                          ? "border-red-300 bg-red-50"
+                          : "border-gray-300 hover:border-[#7CFC00]/50 hover:bg-[#7CFC00]/5"
+                    }`}
+                    onClick={() => document.getElementById("cv-upload")?.click()}
+                  >
+                    <input
+                      id="cv-upload"
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      className="hidden"
+                      onChange={handleCvChange}
                     />
+                    {cvFile ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="w-8 h-8 rounded-lg bg-[#7CFC00]/20 flex items-center justify-center">
+                          <FileText className="w-4 h-4 text-[#2D4A2D]" />
+                        </div>
+                        <div className="text-left">
+                          <p className="text-sm font-medium text-[#1A2E1A] truncate max-w-[200px]">{cvFileName}</p>
+                          <p className="text-xs text-gray-500">{(cvFile.size / 1024 / 1024).toFixed(2)} MB · Click to change</p>
+                        </div>
+                        <button
+                          type="button"
+                          className="ml-auto p-1 rounded-full hover:bg-red-100 transition-colors"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setCvFile(null)
+                            setCvFileName("")
+                          }}
+                        >
+                          <X className="w-4 h-4 text-red-500" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        <Upload className="w-6 h-6 mx-auto text-gray-400 mb-2" />
+                        <p className="text-sm font-medium text-gray-700">Click to upload your CV</p>
+                        <p className="text-xs text-gray-500 mt-1">PDF, DOC, or DOCX · Max 5MB</p>
+                      </div>
+                    )}
                   </div>
+                  {cvError && (
+                    <p className="text-xs text-red-500 mt-1.5">{cvError}</p>
+                  )}
                 </div>
 
                 <div>
