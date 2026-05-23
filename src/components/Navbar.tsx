@@ -19,7 +19,6 @@ const navLinks = [
 const moreLinks = [
   { label: 'Careers', href: '/careers' },
   { label: 'FAQ', href: '/faq' },
-  { label: 'Contact', href: '/contact' },
 ];
 
 export default function Navbar() {
@@ -105,18 +104,22 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
+            {/* Dashboard Link */}
+            <Link
+              href="/dashboard"
+              className="text-white/80 hover:text-white text-base font-medium capitalize transition-colors relative group flex items-center gap-1.5"
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              Dashboard
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
+            </Link>
+
             {/* Divider */}
             <div className="w-px h-6 bg-white/15" />
 
             {/* CTA Buttons */}
             {session ? (
               <div className="flex items-center gap-3">
-                <Link
-                  href="/dashboard"
-                  className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20"
-                >
-                  Dashboard
-                </Link>
                 {/* User Icon with Dropdown */}
                 <div className="relative">
                   <button
