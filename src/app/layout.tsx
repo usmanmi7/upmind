@@ -25,6 +25,15 @@ export const metadata: Metadata = {
     "We help startups and growing teams validate ideas, scale products, and make data-driven decisions. Clear insights. Real strategy. Sustainable growth.",
   keywords: ["Upmind", "startup consulting", "strategy", "growth", "digital transformation"],
   authors: [{ name: "Upmind" }],
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "16x16 32x32 48x48" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180" },
+    ],
+  },
 }
 
 export default function RootLayout({
