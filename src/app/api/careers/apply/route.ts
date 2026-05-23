@@ -17,10 +17,16 @@ function getFileExtension(filename: string): string {
   return lastDot >= 0 ? filename.substring(lastDot).toLowerCase() : ""
 }
 
+// Convert empty strings to null for optional fields
+function cleanOptional(value: string | null | undefined): string | null {
+  if (!value || value.trim() === "") return null
+  return value.trim()
+}
+
 export async function POST(req: NextRequest) {
   try {
+    // Step 1: Auth check
     const session = await getServerSession(authOptions)
-
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: "You must be signed in to apply for a job" },
@@ -28,19 +34,29 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Parse multipart form data
-    const formData = await req.formData()
-    const jobTitle = formData.get("jobTitle") as string
-    const department = formData.get("department") as string
-    const fullName = formData.get("fullName") as string
-    const email = formData.get("email") as string
-    const phone = (formData.get("phone") as string) || null
-    const coverLetter = (formData.get("coverLetter") as string) || null
-    const linkedIn = (formData.get("linkedIn") as string) || null
-    const portfolio = (formData.get("portfolio") as string) || null
+    // Step 2: Parse form data
+    let formData: FormData
+    try {
+      formData = await req.formData()
+    } catch (formError) {
+      console.error("FormData parse error:", formError)
+      return NextResponse.json(
+        { error: "Failed to parse form data. Please try again." },
+        { status: 400 }
+      )
+    }
+
+    // Step 3: Extract and validate fields
+    const jobTitle = (formData.get("jobTitle") as string)?.trim() || ""
+    const department = (formData.get("department") as string)?.trim() || ""
+    const fullName = (formData.get("fullName") as string)?.trim() || ""
+    const email = (formData.get("email") as string)?.trim() || ""
+    const phone = cleanOptional(formData.get("phone") as string)
+    const coverLetter = cleanOptional(formData.get("coverLetter") as string)
+    const linkedIn = cleanOptional(formData.get("linkedIn") as string)
+    const portfolio = cleanOptional(formData.get("portfolio") as string)
     const cvFile = formData.get("cv") as File | null
 
-    // Validate required fields
     if (!jobTitle || !department || !fullName || !email) {
       return NextResponse.json(
         { error: "Missing required fields: jobTitle, department, fullName, email" },
@@ -48,7 +64,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Validate CV file
+    // Step 4: Validate CV file
     if (!cvFile || cvFile.size === 0) {
       return NextResponse.json(
         { error: "Please upload your CV / Resume" },
@@ -63,7 +79,6 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Check both MIME type and file extension for broader browser compatibility
     const ext = getFileExtension(cvFile.name)
     const isAllowedType = ALLOWED_TYPES.includes(cvFile.type) || ALLOWED_EXTENSIONS.includes(ext)
     if (!isAllowedType) {
@@ -73,22 +88,27 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Check if user already applied for this job
-    const existingApplication = await db.jobApplication.findFirst({
-      where: {
-        userId: session.user.id,
-        jobTitle,
-      },
-    })
+    // Step 5: Check for duplicate application
+    try {
+      const existingApplication = await db.jobApplication.findFirst({
+        where: {
+          userId: session.user.id,
+          jobTitle,
+        },
+      })
 
-    if (existingApplication) {
-      return NextResponse.json(
-        { error: "You have already applied for this position" },
-        { status: 409 }
-      )
+      if (existingApplication) {
+        return NextResponse.json(
+          { error: "You have already applied for this position" },
+          { status: 409 }
+        )
+      }
+    } catch (dbCheckError) {
+      console.error("Duplicate check error:", dbCheckError)
+      // Continue anyway - better to allow duplicate than block all applications
     }
 
-    // Upload CV to Vercel Blob
+    // Step 6: Upload CV to Vercel Blob
     let resumeUrl: string | null = null
     try {
       const blob = await put(`cvs/${session.user.id}/${Date.now()}-${cvFile.name}`, cvFile, {
@@ -98,24 +118,33 @@ export async function POST(req: NextRequest) {
       resumeUrl = blob.url
     } catch (blobError) {
       console.error("Blob upload failed, saving application without file:", blobError)
-      // If blob fails, still save the application but without the CV URL
-      // The admin can request the CV via email instead
     }
 
-    const application = await db.jobApplication.create({
-      data: {
-        userId: session.user.id,
-        jobTitle,
-        department,
-        fullName,
-        email,
-        phone,
-        resumeUrl,
-        coverLetter,
-        linkedIn,
-        portfolio,
-      },
-    })
+    // Step 7: Create application in database
+    let application
+    try {
+      application = await db.jobApplication.create({
+        data: {
+          userId: session.user.id,
+          jobTitle,
+          department,
+          fullName,
+          email,
+          phone,
+          resumeUrl,
+          coverLetter,
+          linkedIn,
+          portfolio,
+        },
+      })
+    } catch (dbCreateError: unknown) {
+      console.error("Database create error:", dbCreateError)
+      const errorMessage = dbCreateError instanceof Error ? dbCreateError.message : "Unknown database error"
+      return NextResponse.json(
+        { error: `Failed to save application: ${errorMessage}` },
+        { status: 500 }
+      )
+    }
 
     if (!resumeUrl) {
       return NextResponse.json(
@@ -128,10 +157,11 @@ export async function POST(req: NextRequest) {
       { message: "Application submitted successfully", application },
       { status: 201 }
     )
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Job application POST error:", error)
+    const errorMessage = error instanceof Error ? error.message : "Unknown error"
     return NextResponse.json(
-      { error: "Internal server error. Please try again later." },
+      { error: `Internal server error: ${errorMessage}` },
       { status: 500 }
     )
   }
