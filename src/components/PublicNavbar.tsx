@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useSession } from "next-auth/react"
-import { ChevronDown, Menu, X, HelpCircle, Phone, Briefcase, User, LogOut, LayoutDashboard, Settings } from "lucide-react"
+import { ChevronDown, Menu, X, HelpCircle, Phone, Briefcase, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { signOut } from "next-auth/react"
 import * as React from "react"
@@ -105,14 +105,17 @@ export default function PublicNavbar() {
                   <button
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
                     onBlur={() => setTimeout(() => setUserMenuOpen(false), 200)}
-                    className="w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-200"
+                    className="flex items-center gap-2"
                     aria-label="User menu"
                   >
-                    {session.user?.image ? (
-                      <img src={session.user.image} alt={session.user.name || 'User'} className="w-full h-full rounded-full object-cover" />
-                    ) : (
-                      <User className="w-4 h-4 text-white" />
-                    )}
+                    <div className="w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-200">
+                      {session.user?.image ? (
+                        <img src={session.user.image} alt={session.user.name || 'User'} className="w-full h-full rounded-full object-cover" />
+                      ) : (
+                        <User className="w-4 h-4 text-white" />
+                      )}
+                    </div>
+                    <ChevronDown className={`w-3.5 h-3.5 text-white/60 transition-transform duration-200 ${userMenuOpen ? "rotate-180" : ""}`} />
                   </button>
                   <AnimatePresence>
                     {userMenuOpen && (
@@ -125,10 +128,23 @@ export default function PublicNavbar() {
                       >
                         {/* User Info */}
                         <div className="px-4 py-3 border-b border-white/10">
-                          <p className="text-white text-sm font-medium truncate">{session.user?.name || 'User'}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="text-white text-sm font-medium truncate">{session.user?.name || 'User'}</p>
+                            {(session.user?.role === "ADMIN" || session.user?.role === "SUPER_ADMIN") && (
+                              <span className="text-[9px] font-semibold bg-[#7CFC00]/20 text-[#7CFC00] px-1.5 py-0.5 rounded">ADMIN</span>
+                            )}
+                          </div>
                           <p className="text-white/50 text-xs truncate">{session.user?.email}</p>
                         </div>
                         {/* Menu Items */}
+                        <Link
+                          href="/"
+                          className="flex items-center gap-2.5 px-4 py-2.5 text-white/70 hover:text-white hover:bg-white/5 text-sm transition-colors"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          <Home className="w-4 h-4" />
+                          Home
+                        </Link>
                         <Link
                           href="/dashboard"
                           className="flex items-center gap-2.5 px-4 py-2.5 text-white/70 hover:text-white hover:bg-white/5 text-sm transition-colors"
@@ -145,13 +161,35 @@ export default function PublicNavbar() {
                           <Settings className="w-4 h-4" />
                           Settings
                         </Link>
-                        <button
-                          onClick={() => { setUserMenuOpen(false); signOut({ callbackUrl: '/' }); }}
-                          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-red-400 hover:text-red-300 hover:bg-white/5 text-sm transition-colors"
-                        >
-                          <LogOut className="w-4 h-4" />
-                          Log Out
-                        </button>
+                        {(session.user?.role === "FREE_USER" || session.user?.role === "PAID_USER") && (
+                          <Link
+                            href="/dashboard/subscription"
+                            className="flex items-center gap-2.5 px-4 py-2.5 text-white/70 hover:text-white hover:bg-white/5 text-sm transition-colors"
+                            onClick={() => setUserMenuOpen(false)}
+                          >
+                            <CreditCard className="w-4 h-4" />
+                            Subscription
+                          </Link>
+                        )}
+                        {(session.user?.role === "ADMIN" || session.user?.role === "SUPER_ADMIN") && (
+                          <Link
+                            href="/admin"
+                            className="flex items-center gap-2.5 px-4 py-2.5 text-[#7CFC00] hover:text-[#7CFC00] hover:bg-[#7CFC00]/5 text-sm transition-colors"
+                            onClick={() => setUserMenuOpen(false)}
+                          >
+                            <Shield className="w-4 h-4" />
+                            Admin Panel
+                          </Link>
+                        )}
+                        <div className="border-t border-white/10">
+                          <button
+                            onClick={() => { setUserMenuOpen(false); signOut({ callbackUrl: '/' }); }}
+                            className="w-full flex items-center gap-2.5 px-4 py-2.5 text-red-400 hover:text-red-300 hover:bg-white/5 text-sm transition-colors"
+                          >
+                            <LogOut className="w-4 h-4" />
+                            Log Out
+                          </button>
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -215,7 +253,7 @@ export default function PublicNavbar() {
                       >
                         Dashboard
                       </Link>
-                      <div className="flex items-center gap-3 pt-2">
+                      <div className="flex items-center gap-3 pt-2 pb-1">
                         <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center flex-shrink-0">
                           {session.user?.image ? (
                             <img src={session.user.image} alt={session.user.name || 'User'} className="w-full h-full rounded-full object-cover" />
@@ -228,13 +266,51 @@ export default function PublicNavbar() {
                           <p className="text-white/40 text-xs truncate">{session.user?.email}</p>
                         </div>
                       </div>
-                      <button
-                        onClick={() => { setMobileMenuOpen(false); signOut({ callbackUrl: '/' }); }}
-                        className="flex items-center gap-2 text-red-400 hover:text-red-300 text-sm py-2 px-3 rounded-lg hover:bg-white/5 transition-colors w-full"
-                      >
-                        <LogOut className="w-4 h-4" />
-                        Log Out
-                      </button>
+                      <div className="space-y-0.5">
+                        <Link
+                          href="/"
+                          className="flex items-center gap-2.5 text-white/70 hover:text-white text-sm py-2 px-3 rounded-lg hover:bg-white/5 transition-colors"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          <Home className="w-4 h-4" />
+                          Home
+                        </Link>
+                        <Link
+                          href="/dashboard/settings"
+                          className="flex items-center gap-2.5 text-white/70 hover:text-white text-sm py-2 px-3 rounded-lg hover:bg-white/5 transition-colors"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          <Settings className="w-4 h-4" />
+                          Settings
+                        </Link>
+                        {(session.user?.role === "FREE_USER" || session.user?.role === "PAID_USER") && (
+                          <Link
+                            href="/dashboard/subscription"
+                            className="flex items-center gap-2.5 text-white/70 hover:text-white text-sm py-2 px-3 rounded-lg hover:bg-white/5 transition-colors"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            <CreditCard className="w-4 h-4" />
+                            Subscription
+                          </Link>
+                        )}
+                        {(session.user?.role === "ADMIN" || session.user?.role === "SUPER_ADMIN") && (
+                          <Link
+                            href="/admin"
+                            className="flex items-center gap-2.5 text-[#7CFC00] text-sm py-2 px-3 rounded-lg hover:bg-[#7CFC00]/5 transition-colors"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            <Shield className="w-4 h-4" />
+                            Admin Panel
+                          </Link>
+                        )}
+                        <button
+                          onClick={() => { setMobileMenuOpen(false); signOut({ callbackUrl: '/' }); }}
+                          className="flex items-center gap-2.5 text-red-400 hover:text-red-300 text-sm py-2 px-3 rounded-lg hover:bg-white/5 transition-colors w-full"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          Log Out
+                        </button>
+                      </div>
                     </>
                   ) : (
                     <>
