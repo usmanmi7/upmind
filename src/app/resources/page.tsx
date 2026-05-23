@@ -25,6 +25,8 @@ import {
   SlidersHorizontal,
   X,
   Crown,
+  Sparkles,
+  Check,
 } from "lucide-react"
 import * as React from "react"
 
@@ -83,6 +85,19 @@ export default function ResourcesPage() {
   const [modalOpen, setModalOpen] = React.useState(false)
   const [modalType, setModalType] = React.useState<"signin" | "upgrade">("signin")
 
+  // Timed overlay for non-logged-in users
+  const [showAuthOverlay, setShowAuthOverlay] = React.useState(false)
+
+  React.useEffect(() => {
+    // Show auth overlay after 5 seconds for non-logged-in users
+    if (!session?.user) {
+      const timer = setTimeout(() => {
+        setShowAuthOverlay(true)
+      }, 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [session])
+
   // Fetch resources from API
   React.useEffect(() => {
     const fetchResources = async () => {
@@ -110,11 +125,10 @@ export default function ResourcesPage() {
 
   // Handle resource click - check auth and subscription
   const handleResourceClick = (resource: Resource, e: React.MouseEvent) => {
-    // Not logged in - show sign in modal
+    // Not logged in - show the auth overlay immediately
     if (!session?.user) {
       e.preventDefault()
-      setModalType("signin")
-      setModalOpen(true)
+      setShowAuthOverlay(true)
       return
     }
 
@@ -479,12 +493,64 @@ export default function ResourcesPage() {
 
       <PublicFooter />
 
-      {/* Subscription Modal */}
+      {/* Upgrade Modal - for logged-in free users clicking premium */}
       <SubscriptionModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         type={modalType}
       />
+
+      {/* Unskippable Auth Overlay - for non-logged-in users (timed 5s + on click) */}
+      {showAuthOverlay && !session?.user && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          {/* Backdrop - no click handler, unskippable */}
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+
+          {/* Modal */}
+          <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+            <div className="p-8 sm:p-10">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center mb-6">
+                <Sparkles className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#1A2E1A] mb-3">
+                Unlock exclusive resources
+              </h2>
+              <p className="text-gray-600 text-base leading-relaxed mb-8">
+                Sign in to access our full library of startup guides, templates, and tools curated by industry experts. Join thousands of founders accelerating their growth.
+              </p>
+
+              <div className="space-y-3 mb-8">
+                {[
+                  "Access free guides and templates instantly",
+                  "Save resources to read later",
+                  "Track your learning progress",
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-3">
+                    <div className="w-5 h-5 rounded-full bg-[#7CFC00]/20 flex items-center justify-center flex-shrink-0">
+                      <Check className="w-3 h-3 text-[#2D4A2D]" />
+                    </div>
+                    <span className="text-sm text-gray-700">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <Link
+                href="/auth/login"
+                className="w-full flex items-center justify-center gap-2 bg-[#1A2E1A] text-white rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#243824] transition-colors"
+              >
+                Sign In to Continue
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <p className="text-center text-sm text-gray-500 mt-4">
+                Don&apos;t have an account?{" "}
+                <Link href="/auth/signup" className="text-[#2D4A2D] font-semibold hover:underline">
+                  Sign up free
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
