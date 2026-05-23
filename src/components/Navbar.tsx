@@ -120,10 +120,10 @@ export default function Navbar() {
             {session ? (
               <div className="flex items-center gap-3">
                 <Link
-                  href="/dashboard"
+                  href="/contact"
                   className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20"
                 >
-                  Dashboard
+                  Contact
                 </Link>
                 {/* User Icon with Dropdown */}
                 <div className="relative">
