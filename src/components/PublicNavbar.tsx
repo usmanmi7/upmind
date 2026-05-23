@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useSession } from "next-auth/react"
-import { ChevronDown, Menu, X, HelpCircle, Briefcase, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield } from "lucide-react"
+import { ChevronDown, Menu, X, HelpCircle, Briefcase, Phone, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { signOut } from "next-auth/react"
 import * as React from "react"
@@ -87,13 +87,13 @@ export default function PublicNavbar() {
               </AnimatePresence>
             </div>
 
-            {/* Dashboard Link */}
+            {/* Contact Link */}
             <Link
-              href="/dashboard"
+              href="/contact"
               className="text-white/80 hover:text-white text-base font-medium capitalize transition-colors relative group flex items-center gap-1.5"
             >
-              <LayoutDashboard className="w-4 h-4" />
-              Dashboard
+              <Phone className="w-4 h-4" />
+              Contact
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
             </Link>
 
@@ -103,6 +103,12 @@ export default function PublicNavbar() {
             {/* CTA Buttons */}
             {session ? (
               <div className="flex items-center gap-3">
+                <Link
+                  href="/dashboard"
+                  className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20 flex items-center gap-2"
+                >
+                  Dashboard
+                </Link>
                 {/* User Icon with Dropdown */}
                 <div className="relative">
                   <button
