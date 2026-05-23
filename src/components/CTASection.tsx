@@ -17,7 +17,7 @@ export default function CTASection() {
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/forest-cta.jpg')" }}
+        style={{ backgroundImage: "url('/images/cta-pic.jpg')" }}
       />
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#1A2E1A]/90 to-[#1A2E1A]/75" />
