@@ -233,7 +233,7 @@ export default function AdminConsultantsPage() {
                   {/* Specialties */}
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {(consultant.specialties || "").split(",").map((s) => (
-                      <Badge key={s} variant="secondary" className="text-xs bg-[#2D4A2D]/10 text-[#7CFC00]">
+                      <Badge key={s} variant="secondary" className="text-xs bg-[#2D4A2D]/10 text-[#2D4A2D]">
                         {s.trim()}
                       </Badge>
                     ))}
