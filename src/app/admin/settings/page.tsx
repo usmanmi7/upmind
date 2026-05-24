@@ -116,21 +116,21 @@ export default function AdminSettingsPage() {
               <CardTitle className="text-base flex items-center gap-2"><Globe className="size-5" />Platform Settings</CardTitle>
               <CardDescription>General platform configuration</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div><Label>Site Name</Label><Input value={settings.siteName} onChange={(e) => updateSettings("siteName", e.target.value)} /></div>
-                <div><Label>Contact Email</Label><Input value={settings.contactEmail} onChange={(e) => updateSettings("contactEmail", e.target.value)} /></div>
+                <div className="space-y-2"><Label>Site Name</Label><Input value={settings.siteName} onChange={(e) => updateSettings("siteName", e.target.value)} /></div>
+                <div className="space-y-2"><Label>Contact Email</Label><Input value={settings.contactEmail} onChange={(e) => updateSettings("contactEmail", e.target.value)} /></div>
               </div>
-              <div><Label>Site Description</Label><Textarea value={settings.siteDescription} onChange={(e) => updateSettings("siteDescription", e.target.value)} rows={2} /></div>
+              <div className="space-y-2"><Label>Site Description</Label><Textarea value={settings.siteDescription} onChange={(e) => updateSettings("siteDescription", e.target.value)} rows={2} /></div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div><Label>Contact Phone</Label><Input value={settings.contactPhone} onChange={(e) => updateSettings("contactPhone", e.target.value)} /></div>
+                <div className="space-y-2"><Label>Contact Phone</Label><Input value={settings.contactPhone} onChange={(e) => updateSettings("contactPhone", e.target.value)} /></div>
               </div>
               <Separator />
               <h4 className="font-medium">Social Media Links</h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div><Label>Twitter</Label><Input value={settings.socialLinks.twitter} onChange={(e) => updateSettings("socialLinks.twitter", e.target.value)} /></div>
-                <div><Label>LinkedIn</Label><Input value={settings.socialLinks.linkedin} onChange={(e) => updateSettings("socialLinks.linkedin", e.target.value)} /></div>
-                <div><Label>GitHub</Label><Input value={settings.socialLinks.github} onChange={(e) => updateSettings("socialLinks.github", e.target.value)} /></div>
+                <div className="space-y-2"><Label>Twitter</Label><Input value={settings.socialLinks.twitter} onChange={(e) => updateSettings("socialLinks.twitter", e.target.value)} /></div>
+                <div className="space-y-2"><Label>LinkedIn</Label><Input value={settings.socialLinks.linkedin} onChange={(e) => updateSettings("socialLinks.linkedin", e.target.value)} /></div>
+                <div className="space-y-2"><Label>GitHub</Label><Input value={settings.socialLinks.github} onChange={(e) => updateSettings("socialLinks.github", e.target.value)} /></div>
               </div>
               <Button onClick={() => handleSave("Platform")} className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
                 <Save className="size-4 mr-2" />Save Changes
@@ -146,22 +146,22 @@ export default function AdminSettingsPage() {
               <CardTitle className="text-base flex items-center gap-2"><Mail className="size-5" />Email Templates</CardTitle>
               <CardDescription>Customize automated email content</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
+            <CardContent className="space-y-5">
+              <div className="space-y-2">
                 <Label>Welcome Email</Label>
                 <Textarea value={settings.emailTemplates.welcome} onChange={(e) => updateSettings("emailTemplates.welcome", e.target.value)} rows={3} />
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label>Appointment Reminder</Label>
                 <Textarea value={settings.emailTemplates.appointmentReminder} onChange={(e) => updateSettings("emailTemplates.appointmentReminder", e.target.value)} rows={3} />
                 <p className="text-xs text-muted-foreground mt-1">Variables: {`{name}, {consultant}, {time}`}</p>
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label>Payment Confirmation</Label>
                 <Textarea value={settings.emailTemplates.paymentConfirmation} onChange={(e) => updateSettings("emailTemplates.paymentConfirmation", e.target.value)} rows={3} />
                 <p className="text-xs text-muted-foreground mt-1">Variables: {`{name}, {amount}`}</p>
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label>Plan Expiry Notice</Label>
                 <Textarea value={settings.emailTemplates.planExpiryNotice} onChange={(e) => updateSettings("emailTemplates.planExpiryNotice", e.target.value)} rows={3} />
                 <p className="text-xs text-muted-foreground mt-1">Variables: {`{name}, {plan}, {date}`}</p>
@@ -192,10 +192,10 @@ export default function AdminSettingsPage() {
                     <h4 className="font-medium">{plan.label}</h4>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div><Label>Plan Name</Label><Input value={settings.pricing[plan.key].name} onChange={(e) => updateSettings(`pricing.${plan.key}.name`, e.target.value)} /></div>
-                    <div><Label>Price (monthly)</Label><Input type="number" value={settings.pricing[plan.key].price} onChange={(e) => updateSettings(`pricing.${plan.key}.price`, parseFloat(e.target.value) || 0)} /></div>
+                    <div className="space-y-2"><Label>Plan Name</Label><Input value={settings.pricing[plan.key].name} onChange={(e) => updateSettings(`pricing.${plan.key}.name`, e.target.value)} /></div>
+                    <div className="space-y-2"><Label>Price (monthly)</Label><Input type="number" value={settings.pricing[plan.key].price} onChange={(e) => updateSettings(`pricing.${plan.key}.price`, parseFloat(e.target.value) || 0)} /></div>
                   </div>
-                  <div>
+                  <div className="space-y-2">
                     <Label>Features (one per line)</Label>
                     <Textarea
                       value={settings.pricing[plan.key].features.join("\n")}

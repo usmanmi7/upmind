@@ -284,8 +284,8 @@ export default function AdminConsultantsPage() {
             <DialogTitle>Add Consultant</DialogTitle>
             <DialogDescription>Promote an existing user to consultant</DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
-            <div>
+          <div className="space-y-5">
+            <div className="space-y-2">
               <Label>Select User</Label>
               <Select value={addForm.userId} onValueChange={(v) => setAddForm((prev) => ({ ...prev, userId: v }))}>
                 <SelectTrigger><SelectValue placeholder="Choose a user" /></SelectTrigger>
@@ -296,7 +296,7 @@ export default function AdminConsultantsPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div>
+            <div className="space-y-2">
               <Label>Specialties (comma-separated)</Label>
               <Input
                 value={addForm.specialties}
@@ -304,7 +304,7 @@ export default function AdminConsultantsPage() {
                 placeholder="e.g., Marketing, Fundraising, Product"
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label>Bio</Label>
               <Textarea
                 value={addForm.bio}
@@ -313,7 +313,7 @@ export default function AdminConsultantsPage() {
                 rows={3}
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label>Availability</Label>
               <Input
                 value={addForm.availability}
@@ -335,15 +335,15 @@ export default function AdminConsultantsPage() {
             <DialogTitle>Edit Consultant</DialogTitle>
             <DialogDescription>Update consultant details</DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
-            <div>
+          <div className="space-y-5">
+            <div className="space-y-2">
               <Label>Specialties (comma-separated)</Label>
               <Input
                 value={editForm.specialties}
                 onChange={(e) => setEditForm((prev) => ({ ...prev, specialties: e.target.value }))}
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label>Bio</Label>
               <Textarea
                 value={editForm.bio}
@@ -351,7 +351,7 @@ export default function AdminConsultantsPage() {
                 rows={3}
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label>Availability</Label>
               <Input
                 value={editForm.availability}
