@@ -1,13 +1,7 @@
-import Stripe from "stripe"
-
-// Initialize Stripe server-side
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2024-12-18.acacia",
-  typescript: true,
-})
+// Stripe is not configured - placeholder module
+// When Stripe is needed, install the package: npm install stripe
 
 // Maps our internal plan keys to Stripe Price IDs
-// You'll create these prices in the Stripe Dashboard and paste the IDs here
 export const STRIPE_PLANS: Record<
   string,
   {
@@ -39,3 +33,10 @@ export function getPlanByPriceId(priceId: string): string | null {
 export function isStripeConfigured(): boolean {
   return !!process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY.startsWith("sk_")
 }
+
+// Stub stripe object - will throw if called without Stripe being installed
+export const stripe = new Proxy({} as never, {
+  get() {
+    throw new Error("Stripe package is not installed. Run: npm install stripe")
+  }
+})
