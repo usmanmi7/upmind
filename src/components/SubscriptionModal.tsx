@@ -137,7 +137,7 @@ export default function SubscriptionModal({ isOpen, onClose, type }: Subscriptio
                       className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-full px-8 py-3.5 text-base font-bold hover:shadow-lg hover:shadow-[#7CFC00]/20 transition-all"
                     >
                       <Crown className="w-4 h-4" />
-                      Upgrade to Growth Pro — $49/mo
+                      Upgrade to Growth Pro, $49/mo
                       <ArrowRight className="w-4 h-4" />
                     </Link>
                     <p className="text-center text-xs text-gray-400 mt-3">

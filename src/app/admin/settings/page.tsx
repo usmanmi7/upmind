@@ -249,7 +249,7 @@ export default function AdminSettingsPage() {
           <Card className="border border-red-500/30 bg-red-500/5">
             <CardHeader>
               <CardTitle className="text-base text-red-500 flex items-center gap-2"><AlertTriangle className="size-5" />Danger Zone</CardTitle>
-              <CardDescription>Irreversible actions — proceed with caution</CardDescription>
+              <CardDescription>Irreversible actions, proceed with caution</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between p-4 rounded-lg border border-red-500/20 bg-red-500/5">

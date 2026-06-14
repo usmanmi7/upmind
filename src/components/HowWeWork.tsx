@@ -35,7 +35,7 @@ const steps = [
     number: '5/5',
     title: 'Scale & Grow',
     description:
-      'With proven processes in place, we help you scale sustainably—expanding reach, deepening impact, and building long-term competitive advantage.',
+      'With proven processes in place, we help you scale sustainably, expanding reach, deepening impact, and building long-term competitive advantage.',
   },
 ];
 

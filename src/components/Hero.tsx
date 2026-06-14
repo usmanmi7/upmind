@@ -56,7 +56,7 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-white/60 text-lg sm:text-xl max-w-lg mb-8 leading-relaxed"
             >
-              From validation to growth — get the tools, insights, and expert guidance your startup needs, all in one platform.
+              From validation to growth, get the tools, insights, and expert guidance your startup needs, all in one platform.
             </motion.p>
 
             {/* CTA Buttons */}

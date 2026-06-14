@@ -100,7 +100,7 @@ function getGemini(): GoogleGenerativeAI | null {
   return geminiInstance
 }
 
-// Models to try in order — each has separate quota limits
+// Models to try in order, each has separate quota limits
 const GEMINI_MODELS = [
   "gemini-2.0-flash",
   "gemini-2.0-flash-lite",
@@ -147,13 +147,13 @@ async function geminiChatWithModel(
     }
   }
 
-  // Single message — use simple generateContent
+  // Single message, use simple generateContent
   if (history.length <= 1) {
     const result = await model.generateContent(lastUserMessage)
     return result.response.text()
   }
 
-  // Multi-turn conversation — use chat
+  // Multi-turn conversation, use chat
   const chat = model.startChat({
     history: history.slice(0, -1),
   })
@@ -171,7 +171,7 @@ async function geminiChat(
     throw new Error("Google AI API key not configured. Set GOOGLE_AI_API_KEY environment variable.")
   }
 
-  // Try each model in order — fall back if quota is exceeded
+  // Try each model in order, fall back if quota is exceeded
   let lastError: unknown = null
 
   for (const modelName of GEMINI_MODELS) {
@@ -185,7 +185,7 @@ async function geminiChat(
         console.warn(`Gemini model ${modelName} hit rate limit, trying next model...`)
         continue // Try the next model
       }
-      // Non-rate-limit error — throw immediately
+      // Non-rate-limit error, throw immediately
       throw error
     }
   }
@@ -333,7 +333,7 @@ export async function directAIChat(
   const result = await getAIResponse(messages, {
     searchWeb: options?.searchWeb,
     searchQuery: options?.searchQuery,
-    systemPrompt: `You are a helpful AI assistant on the Upmind platform. You can help users with ANY topic — not just startups. Feel free to answer questions about technology, science, health, education, business, creative writing, programming, current events, and anything else. Be helpful, accurate, and conversational.
+    systemPrompt: `You are a helpful AI assistant on the Upmind platform. You can help users with ANY topic, not just startups. Feel free to answer questions about technology, science, health, education, business, creative writing, programming, current events, and anything else. Be helpful, accurate, and conversational.
 
 Format your responses clearly. Use markdown formatting when helpful (headers, bullet points, bold, code blocks). Be concise but thorough.`,
   })

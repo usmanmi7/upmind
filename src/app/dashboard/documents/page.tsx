@@ -27,9 +27,9 @@ export default function DocumentsPage() {
 
         {/* Text */}
         <div className="space-y-2">
-          <h1 className="text-2xl font-heading font-bold">Documents — Coming Soon</h1>
+          <h1 className="text-2xl font-heading font-bold">Documents, Coming Soon</h1>
           <p className="text-muted-foreground text-sm leading-relaxed max-w-md mx-auto">
-            We&apos;re building a powerful document vault for your startup. Upload, organize, and share pitch decks, financials, legal docs, and more — all in one secure place.
+            We&apos;re building a powerful document vault for your startup. Upload, organize, and share pitch decks, financials, legal docs, and more, all in one secure place.
           </p>
         </div>
 

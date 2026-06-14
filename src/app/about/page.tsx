@@ -11,7 +11,7 @@ const values = [
   {
     icon: Target,
     title: "Strategy First",
-    description: "Every decision starts with data and strategy. We don't guess — we analyze, plan, and execute with precision.",
+    description: "Every decision starts with data and strategy. We don't guess, we analyze, plan, and execute with precision.",
   },
   {
     icon: Users,
@@ -26,7 +26,7 @@ const values = [
   {
     icon: Heart,
     title: "People Centered",
-    description: "We believe the best strategies are built on understanding people — their needs, behaviors, and aspirations.",
+    description: "We believe the best strategies are built on understanding people, their needs, behaviors, and aspirations.",
   },
   {
     icon: Globe,
@@ -100,7 +100,7 @@ export default function AboutPage() {
                   Born from the trenches of startup life
                 </h2>
                 <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">
-                  Upmind was founded by a team of entrepreneurs, consultants, and technologists who experienced firsthand the challenges of building and scaling startups. We saw too many promising ideas fail — not because of bad products, but because of bad strategy.
+                  Upmind was founded by a team of entrepreneurs, consultants, and technologists who experienced firsthand the challenges of building and scaling startups. We saw too many promising ideas fail, not because of bad products, but because of bad strategy.
                 </p>
                 <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">
                   That's why we built Upmind: a platform that bridges the gap between raw ambition and structured execution. We combine the human expertise of seasoned consultants with AI-powered tools that give founders the insights they need, when they need them.

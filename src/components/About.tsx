@@ -31,7 +31,7 @@ export default function About() {
             <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">
               Upmind was founded by a team of entrepreneurs, consultants, and technologists
               who experienced firsthand the challenges of building and scaling startups.
-              We saw too many promising ideas fail — not because of bad products, but
+              We saw too many promising ideas fail, not because of bad products, but
               because of bad strategy.
             </p>
             <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">

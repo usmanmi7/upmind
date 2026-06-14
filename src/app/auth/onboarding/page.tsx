@@ -237,7 +237,7 @@ export default function OnboardingPage() {
           </div>
           <Progress value={progress} className="h-2" />
           <p className="text-xs text-muted-foreground mt-2 text-center">
-            Step {currentStep} of {steps.length} — {steps[currentStep - 1].description}
+            Step {currentStep} of {steps.length}, {steps[currentStep - 1].description}
           </p>
         </div>
 

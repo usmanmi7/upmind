@@ -1,4 +1,4 @@
-// Centralized plan configuration — single source of truth
+// Centralized plan configuration, single source of truth
 // All plan-related data (prices, features, limits, display info) lives here.
 
 import { Zap, Crown, Building2 } from "lucide-react"

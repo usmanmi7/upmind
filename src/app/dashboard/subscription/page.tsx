@@ -442,7 +442,7 @@ export default function SubscriptionPage() {
                     <Calendar className="size-4 text-muted-foreground" />
                     <div>
                       <p className="text-sm font-medium">
-                        {planName} — {item.method || "Payment"}
+                        {planName}, {item.method || "Payment"}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {new Date(item.date).toLocaleDateString([], { month: "short", day: "numeric", year: "numeric" })}
@@ -703,7 +703,7 @@ export default function SubscriptionPage() {
               {successData?.action === "upgraded" && (successData.prorationAmount === 0 || !successData.prorationAmount) && successData.toPlan !== "FREE" && (
                 <div className="p-3 rounded-lg bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 w-full">
                   <p className="text-xs font-medium text-green-700 dark:text-green-400">
-                    ${getPlan(successData.toPlan).price}.00 charged today — full access activated
+                    ${getPlan(successData.toPlan).price}.00 charged today, full access activated
                   </p>
                 </div>
               )}

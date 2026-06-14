@@ -15,7 +15,7 @@ const fallbackFaqs: Record<string, { q: string; a: string }[]> = {
   General: [
     { q: "What is Upmind?", a: "Upmind is a strategic consulting platform designed specifically for startups. We combine expert human consultants with AI-powered insights to help founders validate ideas, build products, raise funding, and scale their businesses." },
     { q: "Who is Upmind for?", a: "Upmind is for early-stage and growth-stage startup founders who want access to premium consulting, resources, and tools without the cost of a full-time advisory team. Whether you're pre-launch or scaling, we have something for you." },
-    { q: "How does Upmind differ from traditional consulting?", a: "Traditional consulting is expensive and slow. Upmind provides on-demand access to expert consultants, AI-powered insights, and a library of proven resources — all at a fraction of the cost, available 24/7." },
+    { q: "How does Upmind differ from traditional consulting?", a: "Traditional consulting is expensive and slow. Upmind provides on-demand access to expert consultants, AI-powered insights, and a library of proven resources, all at a fraction of the cost, available 24/7." },
     { q: "Is my data secure?", a: "Absolutely. We use enterprise-grade encryption, follow SOC 2 best practices, and never share your data with third parties. Your startup information is protected with the highest security standards." },
   ],
   Pricing: [
@@ -29,7 +29,7 @@ const fallbackFaqs: Record<string, { q: string; a: string }[]> = {
     { q: "How often can I book consultations?", a: "Free plan users get 1 consultation per month. Growth Pro users get 4 priority consultations. Enterprise users enjoy unlimited consultations." },
   ],
   Resources: [
-    { q: "What types of resources are available?", a: "We offer blog posts, templates, video tutorials, PDF guides, and interactive tools — all curated by our expert consultants for startup relevance." },
+    { q: "What types of resources are available?", a: "We offer blog posts, templates, video tutorials, PDF guides, and interactive tools, all curated by our expert consultants for startup relevance." },
     { q: "What's included in premium resources?", a: "Premium resources include advanced templates (pitch decks, financial models), in-depth guides, exclusive video content, and AI-powered analysis tools. They're available on Growth Pro and Enterprise plans." },
   ],
   Technical: [
