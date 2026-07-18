@@ -249,30 +249,6 @@ export default function PublicAIAssistantPage() {
             </div>
           )}
 
-          {/* AI Insights */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            {insightCards.map((card) => (
-              <Card
-                key={card.title}
-                className="border-0 shadow-md shadow-black/5 dark:shadow-black/20 hover:shadow-lg transition-all duration-200"
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
-                    <div className={`w-9 h-9 rounded-lg ${card.bg} flex items-center justify-center shrink-0`}>
-                      <card.icon className={`size-4 ${card.color}`} />
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-semibold">{card.title}</h3>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {card.description}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
           {/* Chat */}
           <Card className="border-0 shadow-lg shadow-black/5 dark:shadow-black/20">
             <CardContent className="p-0">
@@ -417,6 +393,33 @@ export default function PublicAIAssistantPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* AI Insights */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+            {insightCards.map((card) => {
+              const Icon = card.icon
+              return (
+                <Card
+                  key={card.title}
+                  className="border-0 shadow-md shadow-black/5 dark:shadow-black/20 hover:shadow-lg transition-all duration-200"
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className={`w-9 h-9 rounded-lg ${card.bg} flex items-center justify-center shrink-0`}>
+                        <Icon className={`size-4 ${card.color}`} />
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-semibold">{card.title}</h3>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {card.description}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
         </div>
       </main>
       <Footer />
