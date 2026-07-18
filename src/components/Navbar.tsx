@@ -3,20 +3,28 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { ChevronDown, Menu, X, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield, Phone } from 'lucide-react';
+import { ChevronDown, Menu, X, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield, Phone, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { signOut } from 'next-auth/react';
 
-const navLinks = [
+interface NavLink {
+  label: string;
+  href: string;
+  icon?: typeof Sparkles;
+  highlight?: boolean;
+}
+
+const navLinks: NavLink[] = [
   { label: 'Home', href: '/' },
   { label: 'Services', href: '/services' },
   { label: 'About', href: '/about' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Resources', href: '/resources' },
   { label: 'Success Stories', href: '/success-stories' },
+  { label: 'AI Assistant', href: '/ai-assistant', icon: Sparkles, highlight: true },
 ];
 
-const moreLinks = [
+const moreLinks: NavLink[] = [
   { label: 'Careers', href: '/careers' },
   { label: 'FAQ', href: '/faq' },
 ];
@@ -63,10 +71,17 @@ export default function Navbar() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-white/80 hover:text-white text-base font-medium capitalize transition-colors relative group"
+                className={`text-base font-medium capitalize transition-colors relative group flex items-center gap-1.5 ${
+                  link.highlight
+                    ? 'text-[#7CFC00] hover:text-[#6BE000]'
+                    : 'text-white/80 hover:text-white'
+                }`}
               >
+                {link.highlight && <Sparkles className="w-4 h-4" />}
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
+                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all group-hover:w-full ${
+                  link.highlight ? 'bg-[#7CFC00]' : 'bg-[#7CFC00]'
+                }`} />
               </Link>
             ))}
 
@@ -257,9 +272,14 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="block text-white/80 hover:text-white text-base font-medium capitalize py-2.5 px-3 rounded-lg hover:bg-white/5 transition-colors"
+                  className={`flex items-center gap-2 text-base font-medium capitalize py-2.5 px-3 rounded-lg transition-colors ${
+                    link.highlight
+                      ? 'text-[#7CFC00] hover:bg-[#7CFC00]/10'
+                      : 'text-white/80 hover:text-white hover:bg-white/5'
+                  }`}
                   onClick={() => setMobileOpen(false)}
                 >
+                  {link.highlight && <Sparkles className="w-4 h-4" />}
                   {link.label}
                 </Link>
               ))}

@@ -14,6 +14,7 @@ import Pricing from "@/components/Pricing"
 import Resources from "@/components/Resources"
 import CTASection from "@/components/CTASection"
 import Footer from "@/components/Footer"
+import AIAssistantCTA from "@/components/AIAssistantCTA"
 
 export default function Home() {
   const { data: session } = useSession()
@@ -28,6 +29,7 @@ export default function Home() {
         <Services />
         <About />
         <HowWeWork />
+        <AIAssistantCTA />
         <Testimonials />
         <Pricing />
         <Resources />
