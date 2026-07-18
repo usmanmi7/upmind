@@ -4,8 +4,8 @@ import OpenAI from "openai"
  * NVIDIA Build API Client
  *
  * Connects to NVIDIA Build (build.nvidia.com) which hosts open models like
- * GLM-4-9B-Chat, Gemma 3 12B, Llama 3, Mistral, etc. behind an OpenAI-compatible
- * /v1/chat/completions endpoint.
+ * GLM-5.2, GLM-4, Gemma 3 12B, Llama 3, Mistral, etc. behind an
+ * OpenAI-compatible /v1/chat/completions endpoint.
  *
  * Why this exists:
  *   - Production-grade inference on NVIDIA GPUs, free developer credits
@@ -14,18 +14,18 @@ import OpenAI from "openai"
  *
  * Setup (one-time):
  *   1. Sign in at https://build.nvidia.com
- *   2. Click any model (e.g. THUDM/glm-4-9b-chat) -> "Get API Key"
+ *   2. Click any model (e.g. z-ai/glm-5.2) -> "Get API Key"
  *   3. Generate a key (starts with "nvapi-...")
  *   4. In Vercel project settings -> Environment Variables, add:
  *        NVIDIA_API_KEY   = nvapi-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
- *        NVIDIA_MODEL     = thudm/glm-4-9b-chat      (optional, has sensible default)
+ *        NVIDIA_MODEL     = z-ai/glm-5.2               (optional, has sensible default)
  *        NVIDIA_BASE_URL  = https://integrate.api.nvidia.com/v1  (optional)
  *
  * Free tier: 1,000 credits per month (resets monthly). Each chat call costs ~1 credit.
  */
 
 const DEFAULT_BASE_URL = "https://integrate.api.nvidia.com/v1"
-const DEFAULT_MODEL = "thudm/glm-4-9b-chat"
+const DEFAULT_MODEL = "z-ai/glm-5.2"
 
 let cachedClient: OpenAI | null = null
 
@@ -101,15 +101,22 @@ export function getNVIDIAModel(): string {
 }
 
 /**
- * Pretty label for the badge in the UI, e.g. "GLM-4" or "Gemma 12B".
- * Strips the org prefix (e.g. "thudm/") and the "-chat" suffix.
+ * Pretty label for the badge in the UI, e.g. "GLM-5.2", "GLM-4 9B", "Gemma 3 12B".
+ * Strips the org prefix (e.g. "z-ai/", "thudm/") and common suffixes.
  */
 export function getNVIDIAModelLabel(): string {
   const raw = getNVIDIAModel()
   const withoutOrg = raw.split("/").pop() || raw
+
+  // Special case: preserve dotted version numbers like "glm-5.2" -> "GLM-5.2"
+  // We do this BEFORE replacing dashes with spaces, so "glm-5.2" stays together.
+  // Strategy: temporarily replace ".<digit>" with a placeholder, then restore.
+  const protectedVersion = withoutOrg.replace(/\.(\d)/g, "\u0001$1")
+
   // glm-4-9b-chat -> GLM-4 9B
   // gemma-3-12b-it -> Gemma 3 12B
-  const cleaned = withoutOrg
+  // glm-5.2 -> GLM-5.2
+  let cleaned = protectedVersion
     .replace(/-chat$/i, "")
     .replace(/-it$/i, "")
     .replace(/-/g, " ")
@@ -118,6 +125,11 @@ export function getNVIDIAModelLabel(): string {
     .replace(/\bgemma\b/i, "Gemma")
     .replace(/\bllama\b/i, "Llama")
     .replace(/\bmistral\b/i, "Mistral")
+
+  // Restore dotted versions: "GLM 5\u00012" -> "GLM-5.2"
+  // Note: the dash-before-version is now a space; collapse "GLM 5.2" to "GLM-5.2"
+  cleaned = cleaned.replace(/\u0001/g, ".").replace(/(GLM|Gemma|Llama|Mistral)\s+(\d+\.\d+)/i, "$1-$2")
+
   return cleaned
 }
 
