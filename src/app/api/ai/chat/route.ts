@@ -1,109 +1,23 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { buildPlatformContext } from "@/lib/platform-knowledge"
+import {
+  AI_SYSTEM_PROMPT,
+  cleanText,
+  parseStructuredResponse,
+  derivePlainResponse,
+  type StructuredAIResponse,
+} from "@/lib/ai-prompt"
 
 export const runtime = "nodejs"
 export const maxDuration = 60 // NVIDIA inference can take 10-30s on cold start
 
-// ─── Response cleanup ────────────────────────────────────────────────────────
-// Strips markdown artifacts so the AI's text fields read like plain text.
-function cleanText(text: string): string {
-  return text
-    .replace(/\*\*/g, "")
-    .replace(/\*/g, "")
-    .replace(/—/g, ",")
-    .replace(/–/g, ",")
-    .replace(/#{1,6}\s?/g, "")
-    .replace(/^\s*[-•]\s+/gm, "")
-    .trim()
-}
-
-// ─── AI personality + behavior ───────────────────────────────────────────────
-// The platform knowledge (extracted from the real website content) is injected
-// here at runtime so the AI always answers based on actual Upmind facts.
-const systemPrompt = `You are the AI assistant for Upmind, a business consulting SaaS platform for founders and startups.
-
-PERSONALITY
-Talk like a sharp, cool friend who knows business inside and out. Confident, straight to the point, casual, no corporate stiffness. Give real advice, not fluff.
-
-WRITING STYLE RULES, FOLLOW STRICTLY
-Do not use the asterisk symbol at all, ever, for any reason.
-Do not use bold text formatting.
-Do not use the long dash or em dash symbol, ever.
-Do not use bullet points with dashes.
-Do not use hashtags or markdown headers.
-Write only in plain sentences like normal human texting or talking.
-If you want to emphasize a word, just write it normally in the sentence, no symbols around it.
-
-HOW YOU RESPOND
-Give practical, specific advice, not generic textbook answers.
-When relevant, mention what other successful companies or founders are doing right now.
-Ask a follow up question if you need more context to give a sharp answer.
-If someone asks something totally unrelated to business or the platform, gently steer them back.
-Never say things like "as an AI" or "I don't have access to real time data."
-Always reference Upmind by name when relevant, not "the platform" or "this website".
-
-COMPLETE PLATFORM KNOWLEDGE (use this to answer questions about Upmind)
-${buildPlatformContext()}
-
-RESPONSE FORMAT, FOLLOW STRICTLY
-Always answer using this exact JSON structure, nothing outside of it.
-
-{
-  "heading": "a short punchy title for the answer, 5 to 8 words",
-  "description": "a 1 to 2 sentence plain explanation of the answer, no symbols, natural sentences only",
-  "subheading": "a short title introducing the steps or breakdown, 3 to 6 words",
-  "steps": [
-    "first point written as a full natural sentence, no symbols",
-    "second point written as a full natural sentence, no symbols",
-    "third point written as a full natural sentence, no symbols"
-  ]
-}
-
-Do not include markdown, asterisks, dashes, or any symbols anywhere in the text values.
-Use as many steps as make sense for the answer, usually 3 to 6.
-Only return valid JSON, nothing before or after it. No code fences, no explanations outside the JSON.`
+const systemPrompt = AI_SYSTEM_PROMPT
 
 // Default model is GLM-5.2 (https://build.nvidia.com/z-ai/glm-5.2).
 // Override with NVIDIA_MODEL env var if you want to switch to e.g.
 // "meta/llama-3.1-70b-instruct" or "google/gemma-3-12b-it".
 const DEFAULT_MODEL = "z-ai/glm-5.2"
-
-interface StructuredResponse {
-  heading?: string
-  description?: string
-  subheading?: string
-  steps?: string[]
-}
-
-function parseStructuredResponse(raw: string): StructuredResponse {
-  // Strip stray code fences if the model adds them
-  let cleaned = raw.replace(/```json|```/g, "").trim()
-
-  // Find the first { and last } to extract the JSON object
-  const firstBrace = cleaned.indexOf("{")
-  const lastBrace = cleaned.lastIndexOf("}")
-  if (firstBrace === -1 || lastBrace === -1 || lastBrace <= firstBrace) {
-    throw new Error("No JSON object found in response")
-  }
-  const jsonStr = cleaned.slice(firstBrace, lastBrace + 1)
-
-  const parsed = JSON.parse(jsonStr)
-
-  return {
-    heading: parsed.heading ? cleanText(String(parsed.heading)) : undefined,
-    description: parsed.description
-      ? cleanText(String(parsed.description))
-      : undefined,
-    subheading: parsed.subheading
-      ? cleanText(String(parsed.subheading))
-      : undefined,
-    steps: Array.isArray(parsed.steps)
-      ? parsed.steps.map((s: unknown) => cleanText(String(s)))
-      : undefined,
-  }
-}
 
 export async function POST(req: NextRequest) {
   try {
@@ -151,7 +65,7 @@ export async function POST(req: NextRequest) {
           model: process.env.NVIDIA_MODEL || DEFAULT_MODEL,
           messages,
           max_tokens: 700,
-          temperature: 0.6,
+          temperature: 0.85,
           stream: false,
         }),
       }
@@ -181,15 +95,13 @@ export async function POST(req: NextRequest) {
 
     // Try to parse the structured JSON response.
     // If it fails, fall back to plain text so the UI still shows something.
-    let structured: StructuredResponse = {}
+    let structured: StructuredAIResponse = {}
     let plainResponse = raw
 
     try {
       structured = parseStructuredResponse(raw)
-      // Use description as the plain-text version (for history & fallback)
       plainResponse =
-        structured.description ||
-        structured.heading ||
+        derivePlainResponse(structured) ||
         "I'm sorry, I couldn't generate a response. Please try again."
     } catch {
       // JSON parse failed, use raw cleaned text as plain response
@@ -201,10 +113,16 @@ export async function POST(req: NextRequest) {
       // Always present: plain text version (for history, errors, fallback UI)
       response: plainResponse,
       // Structured fields: only present when JSON parse succeeded
+      responseType: structured.responseType,
       heading: structured.heading,
       description: structured.description,
       subheading: structured.subheading,
       steps: structured.steps,
+      paragraphs: structured.paragraphs,
+      answer: structured.answer,
+      optionA: structured.optionA,
+      optionB: structured.optionB,
+      question: structured.question,
       model: process.env.NVIDIA_MODEL || DEFAULT_MODEL,
       provider: "nvidia",
     })

@@ -363,35 +363,29 @@ export default function PublicAIAssistantPage() {
         "I'm sorry, I couldn't generate a response. Please try again."
 
       const hasStructured =
-        data.style ||
+        data.responseType ||
         data.heading ||
         data.description ||
         data.subheading ||
         data.steps?.length ||
-        data.left?.items?.length ||
-        data.right?.items?.length ||
-        data.pros?.length ||
-        data.cons?.length ||
-        data.examples?.length ||
-        data.qa?.length ||
-        data.pitfalls?.length ||
-        data.phases?.length
+        data.paragraphs?.length ||
+        data.answer ||
+        data.optionA ||
+        data.optionB ||
+        data.question
 
       const structured: StructuredAIResponse | undefined = hasStructured
         ? {
-            style: data.style as StructuredAIResponse["style"],
+            responseType: data.responseType as StructuredAIResponse["responseType"],
             heading: data.heading,
             description: data.description,
             subheading: data.subheading,
             steps: data.steps,
-            left: data.left,
-            right: data.right,
-            pros: data.pros,
-            cons: data.cons,
-            examples: data.examples,
-            qa: data.qa,
-            pitfalls: data.pitfalls,
-            phases: data.phases,
+            paragraphs: data.paragraphs,
+            answer: data.answer,
+            optionA: data.optionA,
+            optionB: data.optionB,
+            question: data.question,
           }
         : undefined
 
