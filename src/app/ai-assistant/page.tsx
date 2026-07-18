@@ -347,8 +347,8 @@ export default function PublicAIAssistantPage() {
         </div>
       </main>
 
-      {/* Sticky Input Bar */}
-      <div className="sticky bottom-0 bg-background/80 backdrop-blur-md border-t border-black/5 dark:border-white/10 px-4 sm:px-6 py-4">
+      {/* Input Bar */}
+      <div className="px-4 sm:px-6 pt-4 pb-10">
         <div className="max-w-3xl mx-auto">
           {messages.length > 0 && (
             <div className="flex gap-2 mb-3 overflow-x-auto pb-1">
