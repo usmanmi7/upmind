@@ -169,7 +169,7 @@ export default function PublicAIAssistantPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <PublicNavbar />
-      <main className="flex-1 pt-16 sm:pt-20 pb-32">
+      <main className="flex-1 pt-16 sm:pt-20 pb-5">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-0">
           {/* Status warning if offline */}
           {!isOnline && status?.hint && (
@@ -348,7 +348,7 @@ export default function PublicAIAssistantPage() {
       </main>
 
       {/* Input Bar */}
-      <div className="px-4 sm:px-6 pt-4 pb-10">
+      <div className="px-4 sm:px-6 pt-4 pb-20">
         <div className="max-w-3xl mx-auto">
           {messages.length > 0 && (
             <div className="flex gap-2 mb-3 overflow-x-auto pb-1">
