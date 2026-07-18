@@ -10,9 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Sparkles,
   Send,
-  Lightbulb,
   Target,
-  BarChart3,
   FileText,
   MessageSquare,
   TrendingUp,
@@ -68,30 +66,6 @@ const quickPrompts = [
     icon: MessageSquare,
     prompt: "What makes a great startup pitch? Give me tips for a 5-minute pitch.",
     color: "from-amber-500 to-orange-600",
-  },
-]
-
-const insightCards = [
-  {
-    title: "Market Opportunity",
-    description: "Ask me about market analysis and competitive positioning.",
-    icon: Target,
-    color: "text-[#7CFC00]",
-    bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/40",
-  },
-  {
-    title: "Strategy Planning",
-    description: "Get help with business plans, roadmaps, and growth strategies.",
-    icon: Sparkles,
-    color: "text-[#2D4A2D] dark:text-[#7CFC00]",
-    bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/40",
-  },
-  {
-    title: "Revenue Model",
-    description: "Discuss pricing, monetization, and financial projections.",
-    icon: Lightbulb,
-    color: "text-green-600 dark:text-green-400",
-    bg: "bg-green-100 dark:bg-green-900/30",
   },
 ]
 
@@ -194,7 +168,7 @@ export default function PublicAIAssistantPage() {
   const isOnline = status?.online ?? false
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#F5F5F5] to-[#ECECEC] dark:from-[#1A2E1A] dark:to-[#0F1F0F]">
+    <div className="min-h-screen flex flex-col bg-background">
       <PublicNavbar />
       <main className="flex-1 pt-16 sm:pt-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-20">
@@ -207,31 +181,31 @@ export default function PublicAIAssistantPage() {
             </div>
           )}
 
-          {/* Chat Surface */}
-          <div className="rounded-3xl overflow-hidden border border-black/5 dark:border-white/10 bg-white dark:bg-[#1A2E1A]/60 backdrop-blur-sm shadow-xl shadow-black/5 dark:shadow-black/40 flex flex-col">
+          {/* Chat Surface (flat, no card) */}
+          <div className="flex flex-col">
             {/* Chat Header Bar */}
-            <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-black/5 dark:border-white/10 bg-gradient-to-r from-[#1A2E1A] to-[#2D4A2D] shrink-0">
+            <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-black/5 dark:border-white/10 shrink-0">
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shadow-md shadow-[#7CFC00]/20">
                     <Sparkles className="size-5 text-white" />
                   </div>
                   <span
-                    className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#1A2E1A] ${
+                    className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-background ${
                       isOnline ? "bg-[#7CFC00]" : "bg-amber-400"
                     }`}
                   />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="text-sm font-semibold text-white">
+                    <h2 className="text-sm font-semibold text-foreground">
                       Upmind AI
                     </h2>
                     <span className="text-[10px] font-medium uppercase tracking-wider text-[#7CFC00] bg-[#7CFC00]/10 px-1.5 py-0.5 rounded">
                       {modelLabel}
                     </span>
                   </div>
-                  <p className="text-[11px] text-white/60">
+                  <p className="text-[11px] text-muted-foreground">
                     {isOnline ? "Online • typically replies instantly" : "Offline"}
                   </p>
                 </div>
@@ -242,7 +216,7 @@ export default function PublicAIAssistantPage() {
                   variant="ghost"
                   size="sm"
                   onClick={resetChat}
-                  className="text-white/70 hover:text-white hover:bg-white/10 h-8 gap-1.5 text-xs"
+                  className="h-8 gap-1.5 text-xs"
                 >
                   <RotateCcw className="size-3.5" />
                   New chat
@@ -251,7 +225,7 @@ export default function PublicAIAssistantPage() {
             </div>
 
             {/* Messages */}
-            <div className="h-[600px] min-h-0 flex flex-col bg-[#FAFAFA] dark:bg-[#0F1F0F]/40 overflow-hidden">
+            <div className="h-[600px] min-h-0 flex flex-col overflow-hidden">
               <ScrollArea className="flex-1 min-h-0">
                 <div className="p-5 sm:p-6">
                   {messages.length === 0 ? (
@@ -290,7 +264,7 @@ export default function PublicAIAssistantPage() {
                             <button
                               key={qp.label}
                               onClick={() => sendMessage(qp.prompt)}
-                              className="group flex items-center gap-3 p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-[#1A2E1A]/60 hover:border-[#7CFC00]/40 hover:shadow-md hover:shadow-[#7CFC00]/5 transition-all text-left"
+                              className="group flex items-center gap-3 p-4 rounded-2xl border border-black/5 dark:border-white/10 hover:border-[#7CFC00]/40 hover:bg-[#7CFC00]/5 transition-all text-left"
                             >
                               <div
                                 className={`w-10 h-10 rounded-xl bg-gradient-to-br ${qp.color} flex items-center justify-center shrink-0 shadow-sm`}
@@ -378,7 +352,7 @@ export default function PublicAIAssistantPage() {
               </ScrollArea>
 
               {/* Input */}
-              <div className="border-t border-black/5 dark:border-white/10 bg-white dark:bg-[#1A2E1A]/60 px-4 sm:px-6 py-4 shrink-0">
+              <div className="border-t border-black/5 dark:border-white/10 px-4 sm:px-6 py-4 shrink-0">
                 {messages.length > 0 && (
                   <div className="flex gap-2 mb-3 overflow-x-auto pb-1 max-w-3xl mx-auto">
                     {quickPrompts.map((qp) => {
@@ -404,7 +378,7 @@ export default function PublicAIAssistantPage() {
                     placeholder={`Ask ${modelLabel} anything about your startup...`}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    className="flex-1 h-11 rounded-full border-black/10 dark:border-white/15 bg-[#FAFAFA] dark:bg-[#0F1F0F]/60 px-5 text-sm focus-visible:border-[#7CFC00] focus-visible:ring-[#7CFC00]/20"
+                    className="flex-1 h-11 rounded-full border-black/10 dark:border-white/15 bg-transparent px-5 text-sm focus-visible:border-[#7CFC00] focus-visible:ring-[#7CFC00]/20"
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && input.trim()) {
                         sendMessage(input)
@@ -429,41 +403,6 @@ export default function PublicAIAssistantPage() {
                   AI can make mistakes. Verify important information.
                 </p>
               </div>
-            </div>
-          </div>
-
-          {/* AI Insights */}
-          <div className="mt-10">
-            <div className="flex items-center gap-2 mb-4 px-1">
-              <BarChart3 className="size-4 text-[#7CFC00]" />
-              <h3 className="text-sm font-semibold text-foreground">
-                What you can ask
-              </h3>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {insightCards.map((card) => {
-                const Icon = card.icon
-                return (
-                  <div
-                    key={card.title}
-                    className="group p-5 rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-[#1A2E1A]/60 hover:border-[#7CFC00]/40 hover:shadow-lg hover:shadow-[#7CFC00]/5 hover:-translate-y-0.5 transition-all"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className={`w-10 h-10 rounded-xl ${card.bg} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
-                        <Icon className={`size-5 ${card.color}`} />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-semibold text-foreground">
-                          {card.title}
-                        </h4>
-                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                          {card.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
             </div>
           </div>
         </div>
