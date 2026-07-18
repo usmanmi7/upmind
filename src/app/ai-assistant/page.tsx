@@ -208,9 +208,9 @@ export default function PublicAIAssistantPage() {
           )}
 
           {/* Chat Surface */}
-          <div className="rounded-3xl overflow-hidden border border-black/5 dark:border-white/10 bg-white dark:bg-[#1A2E1A]/60 backdrop-blur-sm shadow-xl shadow-black/5 dark:shadow-black/40">
+          <div className="rounded-3xl overflow-hidden border border-black/5 dark:border-white/10 bg-white dark:bg-[#1A2E1A]/60 backdrop-blur-sm shadow-xl shadow-black/5 dark:shadow-black/40 flex flex-col">
             {/* Chat Header Bar */}
-            <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-black/5 dark:border-white/10 bg-gradient-to-r from-[#1A2E1A] to-[#2D4A2D]">
+            <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-black/5 dark:border-white/10 bg-gradient-to-r from-[#1A2E1A] to-[#2D4A2D] shrink-0">
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shadow-md shadow-[#7CFC00]/20">
@@ -251,8 +251,8 @@ export default function PublicAIAssistantPage() {
             </div>
 
             {/* Messages */}
-            <div className="h-[600px] flex flex-col bg-[#FAFAFA] dark:bg-[#0F1F0F]/40">
-              <ScrollArea className="flex-1">
+            <div className="h-[600px] min-h-0 flex flex-col bg-[#FAFAFA] dark:bg-[#0F1F0F]/40 overflow-hidden">
+              <ScrollArea className="flex-1 min-h-0">
                 <div className="p-5 sm:p-6">
                   {messages.length === 0 ? (
                     <div className="h-full min-h-[560px] flex flex-col items-center justify-center text-center">
@@ -378,7 +378,7 @@ export default function PublicAIAssistantPage() {
               </ScrollArea>
 
               {/* Input */}
-              <div className="border-t border-black/5 dark:border-white/10 bg-white dark:bg-[#1A2E1A]/60 px-4 sm:px-6 py-4">
+              <div className="border-t border-black/5 dark:border-white/10 bg-white dark:bg-[#1A2E1A]/60 px-4 sm:px-6 py-4 shrink-0">
                 {messages.length > 0 && (
                   <div className="flex gap-2 mb-3 overflow-x-auto pb-1 max-w-3xl mx-auto">
                     {quickPrompts.map((qp) => {
