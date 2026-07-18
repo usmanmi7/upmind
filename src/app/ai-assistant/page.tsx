@@ -266,7 +266,7 @@ export default function PublicAIAssistantPage() {
           )}
 
           {/* Chat */}
-          <Card className="border-0 shadow-lg shadow-black/5 dark:shadow-black/20">
+          <Card className="border-0 shadow-none bg-transparent">
             <CardContent className="p-0">
               <div className="h-[600px] flex flex-col">
                 {/* Messages */}
