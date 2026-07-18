@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react"
 import PublicNavbar from "@/components/PublicNavbar"
 import Footer from "@/components/Footer"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {
@@ -18,8 +17,10 @@ import {
   MessageSquare,
   TrendingUp,
   Loader2,
-  Brain,
+  RotateCcw,
+  ArrowRight,
 } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
 import {
   AIResponse,
   type StructuredAIResponse,
@@ -60,13 +61,13 @@ const quickPrompts = [
     label: "Growth strategy",
     icon: TrendingUp,
     prompt: "What growth strategies should I consider for early-stage user acquisition?",
-    color: "from-green-500 to-emerald-500",
+    color: "from-emerald-500 to-green-600",
   },
   {
     label: "Pitch feedback",
     icon: MessageSquare,
     prompt: "What makes a great startup pitch? Give me tips for a 5-minute pitch.",
-    color: "from-orange-500 to-red-500",
+    color: "from-amber-500 to-orange-600",
   },
 ]
 
@@ -76,20 +77,20 @@ const insightCards = [
     description: "Ask me about market analysis and competitive positioning.",
     icon: Target,
     color: "text-[#7CFC00]",
-    bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30",
+    bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/40",
   },
   {
     title: "Strategy Planning",
     description: "Get help with business plans, roadmaps, and growth strategies.",
     icon: Sparkles,
-    color: "text-[#2D4A2D]",
-    bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30",
+    color: "text-[#2D4A2D] dark:text-[#7CFC00]",
+    bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/40",
   },
   {
     title: "Revenue Model",
     description: "Discuss pricing, monetization, and financial projections.",
     icon: Lightbulb,
-    color: "text-green-500",
+    color: "text-green-600 dark:text-green-400",
     bg: "bg-green-100 dark:bg-green-900/30",
   },
 ]
@@ -184,11 +185,16 @@ export default function PublicAIAssistantPage() {
     }
   }
 
+  const resetChat = () => {
+    setMessages([])
+    inputRef.current?.focus()
+  }
+
   const modelLabel = status?.label || "GLM-5.2"
   const isOnline = status?.online ?? false
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F5F5F5] dark:bg-[#1A2E1A]">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#F5F5F5] to-[#ECECEC] dark:from-[#1A2E1A] dark:to-[#0F1F0F]">
       <PublicNavbar />
       <main className="flex-1 pt-16 sm:pt-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-20">
@@ -201,92 +207,166 @@ export default function PublicAIAssistantPage() {
             </div>
           )}
 
-          {/* Chat */}
-          <Card className="border-0 shadow-none bg-transparent">
-            <CardContent className="p-0">
-              <div className="h-[600px] flex flex-col">
-                {/* Messages */}
-                <ScrollArea className="flex-1 p-4">
+          {/* Chat Surface */}
+          <div className="rounded-3xl overflow-hidden border border-black/5 dark:border-white/10 bg-white dark:bg-[#1A2E1A]/60 backdrop-blur-sm shadow-xl shadow-black/5 dark:shadow-black/40">
+            {/* Chat Header Bar */}
+            <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-black/5 dark:border-white/10 bg-gradient-to-r from-[#1A2E1A] to-[#2D4A2D]">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shadow-md shadow-[#7CFC00]/20">
+                    <Sparkles className="size-5 text-white" />
+                  </div>
+                  <span
+                    className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#1A2E1A] ${
+                      isOnline ? "bg-[#7CFC00]" : "bg-amber-400"
+                    }`}
+                  />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-sm font-semibold text-white">
+                      Upmind AI
+                    </h2>
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-[#7CFC00] bg-[#7CFC00]/10 px-1.5 py-0.5 rounded">
+                      {modelLabel}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-white/60">
+                    {isOnline ? "Online • typically replies instantly" : "Offline"}
+                  </p>
+                </div>
+              </div>
+
+              {messages.length > 0 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={resetChat}
+                  className="text-white/70 hover:text-white hover:bg-white/10 h-8 gap-1.5 text-xs"
+                >
+                  <RotateCcw className="size-3.5" />
+                  New chat
+                </Button>
+              )}
+            </div>
+
+            {/* Messages */}
+            <div className="h-[600px] flex flex-col bg-[#FAFAFA] dark:bg-[#0F1F0F]/40">
+              <ScrollArea className="flex-1">
+                <div className="p-5 sm:p-6">
                   {messages.length === 0 ? (
-                    <div className="h-full flex flex-col items-center justify-center text-center space-y-6 py-8">
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
-                        <Sparkles className="size-8 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold">
-                          Hi{session?.user?.name ? `, ${session.user.name.split(" ")[0]}` : ", there"}!
+                    <div className="h-full min-h-[560px] flex flex-col items-center justify-center text-center">
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4 }}
+                        className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center mb-6 shadow-xl shadow-[#7CFC00]/20"
+                      >
+                        <Sparkles className="size-10 text-white" />
+                      </motion.div>
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.1 }}
+                      >
+                        <h3 className="text-2xl font-heading font-bold text-foreground">
+                          Hi{session?.user?.name ? `, ${session.user.name.split(" ")[0]}` : " there"}!
                         </h3>
-                        <p className="text-sm text-muted-foreground mt-1 max-w-md">
+                        <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto leading-relaxed">
                           I&apos;m Upmind&apos;s AI consultant. Ask me anything about
                           strategy, planning, growth, or get feedback on your ideas.
                         </p>
-                      </div>
-                      <div className="grid grid-cols-2 gap-3 w-full max-w-md">
-                        {quickPrompts.map((qp) => (
-                          <Button
-                            key={qp.label}
-                            variant="outline"
-                            className="h-auto py-3 px-3 text-left justify-start"
-                            onClick={() => sendMessage(qp.prompt)}
-                          >
-                            <div
-                              className={`w-8 h-8 rounded-lg bg-gradient-to-br ${qp.color} flex items-center justify-center shrink-0 mr-2`}
+                      </motion.div>
+
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.2 }}
+                        className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-2xl mt-8"
+                      >
+                        {quickPrompts.map((qp) => {
+                          const Icon = qp.icon
+                          return (
+                            <button
+                              key={qp.label}
+                              onClick={() => sendMessage(qp.prompt)}
+                              className="group flex items-center gap-3 p-4 rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-[#1A2E1A]/60 hover:border-[#7CFC00]/40 hover:shadow-md hover:shadow-[#7CFC00]/5 transition-all text-left"
                             >
-                              <qp.icon className="size-4 text-white" />
-                            </div>
-                            <span className="text-xs font-medium">
-                              {qp.label}
-                            </span>
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {messages.map((msg) => (
-                        <div
-                          key={msg.id}
-                          className={`flex ${
-                            msg.role === "user" ? "justify-end" : "justify-start"
-                          }`}
-                        >
-                          <div className="max-w-[85%] sm:max-w-[75%]">
-                            {msg.role === "assistant" && (
-                              <div className="flex items-center gap-2 mb-1">
-                                <div className="w-5 h-5 rounded-md bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
-                                  <Sparkles className="size-3 text-white" />
-                                </div>
-                                <span className="text-xs font-medium text-muted-foreground">
-                                  {modelLabel}
+                              <div
+                                className={`w-10 h-10 rounded-xl bg-gradient-to-br ${qp.color} flex items-center justify-center shrink-0 shadow-sm`}
+                              >
+                                <Icon className="size-5 text-white" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <span className="text-sm font-medium text-foreground block">
+                                  {qp.label}
+                                </span>
+                                <span className="text-xs text-muted-foreground line-clamp-1">
+                                  Tap to ask
                                 </span>
                               </div>
+                              <ArrowRight className="size-4 text-muted-foreground group-hover:text-[#7CFC00] group-hover:translate-x-0.5 transition-all shrink-0" />
+                            </button>
+                          )
+                        })}
+                      </motion.div>
+                    </div>
+                  ) : (
+                    <div className="space-y-5 max-w-3xl mx-auto">
+                      <AnimatePresence initial={false}>
+                        {messages.map((msg) => (
+                          <motion.div
+                            key={msg.id}
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.25 }}
+                            className={`flex gap-3 ${
+                              msg.role === "user" ? "justify-end" : "justify-start"
+                            }`}
+                          >
+                            {msg.role === "assistant" && (
+                              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0 shadow-sm">
+                                <Sparkles className="size-4 text-white" />
+                              </div>
                             )}
-                            <div
-                              className={`px-4 py-3 rounded-2xl ${
-                                msg.role === "user"
-                                  ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-br-md text-sm leading-relaxed whitespace-pre-wrap"
-                                  : "bg-muted/50 rounded-bl-md"
-                              }`}
-                            >
-                              {msg.role === "assistant" && msg.structured ? (
-                                <AIResponse
-                                  data={msg.structured}
-                                  fallback={msg.content}
-                                />
-                              ) : (
-                                msg.content
+                            <div className={`max-w-[85%] sm:max-w-[75%] ${msg.role === "user" ? "order-first" : ""}`}>
+                              {msg.role === "assistant" && (
+                                <div className="flex items-center gap-1.5 mb-1.5 px-1">
+                                  <span className="text-[11px] font-medium text-muted-foreground">
+                                    Upmind AI · {modelLabel}
+                                  </span>
+                                </div>
                               )}
+                              <div
+                                className={`px-4 py-3 rounded-2xl ${
+                                  msg.role === "user"
+                                    ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-br-md text-sm leading-relaxed whitespace-pre-wrap shadow-sm shadow-[#7CFC00]/20"
+                                    : "bg-white dark:bg-[#1A2E1A] border border-black/5 dark:border-white/10 rounded-bl-md shadow-sm"
+                                }`}
+                              >
+                                {msg.role === "assistant" && msg.structured ? (
+                                  <AIResponse
+                                    data={msg.structured}
+                                    fallback={msg.content}
+                                  />
+                                ) : (
+                                  msg.content
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      ))}
+                          </motion.div>
+                        ))}
+                      </AnimatePresence>
                       {loading && (
-                        <div className="flex justify-start">
-                          <div className="bg-muted/50 rounded-2xl rounded-bl-md px-4 py-3">
+                        <div className="flex gap-3 justify-start">
+                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0 shadow-sm">
+                            <Sparkles className="size-4 text-white" />
+                          </div>
+                          <div className="bg-white dark:bg-[#1A2E1A] border border-black/5 dark:border-white/10 rounded-2xl rounded-bl-md px-4 py-3.5 shadow-sm">
                             <div className="flex gap-1">
-                              <div className="w-2 h-2 rounded-full bg-muted-foreground/40 animate-bounce [animation-delay:0ms]" />
-                              <div className="w-2 h-2 rounded-full bg-muted-foreground/40 animate-bounce [animation-delay:150ms]" />
-                              <div className="w-2 h-2 rounded-full bg-muted-foreground/40 animate-bounce [animation-delay:300ms]" />
+                              <div className="w-2 h-2 rounded-full bg-[#7CFC00]/60 animate-bounce [animation-delay:0ms]" />
+                              <div className="w-2 h-2 rounded-full bg-[#7CFC00]/60 animate-bounce [animation-delay:150ms]" />
+                              <div className="w-2 h-2 rounded-full bg-[#7CFC00]/60 animate-bounce [animation-delay:300ms]" />
                             </div>
                           </div>
                         </div>
@@ -294,83 +374,97 @@ export default function PublicAIAssistantPage() {
                       <div ref={messagesEndRef} />
                     </div>
                   )}
-                </ScrollArea>
+                </div>
+              </ScrollArea>
 
-                {/* Input */}
-                <div className="p-4 border-t">
-                  {messages.length > 0 && (
-                    <div className="flex gap-2 mb-3 overflow-x-auto pb-1">
-                      {quickPrompts.map((qp) => (
+              {/* Input */}
+              <div className="border-t border-black/5 dark:border-white/10 bg-white dark:bg-[#1A2E1A]/60 px-4 sm:px-6 py-4">
+                {messages.length > 0 && (
+                  <div className="flex gap-2 mb-3 overflow-x-auto pb-1 max-w-3xl mx-auto">
+                    {quickPrompts.map((qp) => {
+                      const Icon = qp.icon
+                      return (
                         <Button
                           key={qp.label}
                           variant="outline"
                           size="sm"
-                          className="shrink-0 text-xs"
+                          className="shrink-0 text-xs h-8 gap-1.5 rounded-full border-black/10 dark:border-white/15 hover:border-[#7CFC00]/50 hover:text-[#7CFC00]"
                           onClick={() => sendMessage(qp.prompt)}
                         >
-                          <qp.icon className="size-3 mr-1" />
+                          <Icon className="size-3" />
                           {qp.label}
                         </Button>
-                      ))}
-                    </div>
-                  )}
-                  <div className="flex items-center gap-2">
-                    <Input
-                      ref={inputRef}
-                      placeholder={`Ask ${modelLabel} anything about your startup...`}
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      className="flex-1"
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" && input.trim()) {
-                          sendMessage(input)
-                        }
-                      }}
-                      disabled={loading}
-                    />
-                    <Button
-                      size="icon"
-                      className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shrink-0"
-                      disabled={!input.trim() || loading}
-                      onClick={() => sendMessage(input)}
-                    >
-                      {loading ? (
-                        <Loader2 className="size-4 animate-spin" />
-                      ) : (
-                        <Send className="size-4" />
-                      )}
-                    </Button>
+                      )
+                    })}
                   </div>
+                )}
+                <div className="flex items-center gap-2 max-w-3xl mx-auto">
+                  <Input
+                    ref={inputRef}
+                    placeholder={`Ask ${modelLabel} anything about your startup...`}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    className="flex-1 h-11 rounded-full border-black/10 dark:border-white/15 bg-[#FAFAFA] dark:bg-[#0F1F0F]/60 px-5 text-sm focus-visible:border-[#7CFC00] focus-visible:ring-[#7CFC00]/20"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && input.trim()) {
+                        sendMessage(input)
+                      }
+                    }}
+                    disabled={loading}
+                  />
+                  <Button
+                    size="icon"
+                    className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shrink-0 h-11 w-11 rounded-full shadow-md shadow-[#7CFC00]/25 disabled:opacity-40"
+                    disabled={!input.trim() || loading}
+                    onClick={() => sendMessage(input)}
+                  >
+                    {loading ? (
+                      <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                      <Send className="size-4" />
+                    )}
+                  </Button>
                 </div>
+                <p className="text-[10px] text-muted-foreground text-center mt-2 max-w-3xl mx-auto">
+                  AI can make mistakes. Verify important information.
+                </p>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* AI Insights */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-            {insightCards.map((card) => {
-              const Icon = card.icon
-              return (
-                <Card
-                  key={card.title}
-                  className="border-0 shadow-md shadow-black/5 dark:shadow-black/20 hover:shadow-lg transition-all duration-200"
-                >
-                  <CardContent className="p-4">
+          <div className="mt-10">
+            <div className="flex items-center gap-2 mb-4 px-1">
+              <BarChart3 className="size-4 text-[#7CFC00]" />
+              <h3 className="text-sm font-semibold text-foreground">
+                What you can ask
+              </h3>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {insightCards.map((card) => {
+                const Icon = card.icon
+                return (
+                  <div
+                    key={card.title}
+                    className="group p-5 rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-[#1A2E1A]/60 hover:border-[#7CFC00]/40 hover:shadow-lg hover:shadow-[#7CFC00]/5 hover:-translate-y-0.5 transition-all"
+                  >
                     <div className="flex items-start gap-3">
-                      <div className={`w-9 h-9 rounded-lg ${card.bg} flex items-center justify-center shrink-0`}>
-                        <Icon className={`size-4 ${card.color}`} />
+                      <div className={`w-10 h-10 rounded-xl ${card.bg} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
+                        <Icon className={`size-5 ${card.color}`} />
                       </div>
                       <div>
-                        <h3 className="text-sm font-semibold">{card.title}</h3>
-                        <p className="text-xs text-muted-foreground mt-1">
+                        <h4 className="text-sm font-semibold text-foreground">
+                          {card.title}
+                        </h4>
+                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                           {card.description}
                         </p>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              )
-            })}
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
       </main>
