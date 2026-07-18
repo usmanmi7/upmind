@@ -44,6 +44,7 @@ model User {
   jobApplications JobApplication[]
   sessions        Session[]
   accounts        Account[]
+  chats           Chat[]
 }
 
 enum Role {
@@ -484,4 +485,32 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+/// AI chat conversations (persisted for logged-in users only)
+model Chat {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String   @default("New chat")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages ChatMessage[]
+
+  @@index([userId, updatedAt])
+}
+
+/// Individual messages inside an AI chat conversation
+model ChatMessage {
+  id        String   @id @default(cuid())
+  chatId    String
+  role      String   // "user" | "assistant"
+  content   String
+  structuredJson String? // JSON-stringified StructuredAIResponse, if any
+  createdAt DateTime @default(now())
+
+  chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  @@index([chatId, createdAt])
 }
