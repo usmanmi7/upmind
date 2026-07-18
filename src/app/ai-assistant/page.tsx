@@ -362,15 +362,38 @@ export default function PublicAIAssistantPage() {
         data.details ||
         "I'm sorry, I couldn't generate a response. Please try again."
 
-      const structured: StructuredAIResponse | undefined =
-        data.heading || data.description || data.subheading || data.steps?.length
-          ? {
-              heading: data.heading,
-              description: data.description,
-              subheading: data.subheading,
-              steps: data.steps,
-            }
-          : undefined
+      const hasStructured =
+        data.style ||
+        data.heading ||
+        data.description ||
+        data.subheading ||
+        data.steps?.length ||
+        data.left?.items?.length ||
+        data.right?.items?.length ||
+        data.pros?.length ||
+        data.cons?.length ||
+        data.examples?.length ||
+        data.qa?.length ||
+        data.pitfalls?.length ||
+        data.phases?.length
+
+      const structured: StructuredAIResponse | undefined = hasStructured
+        ? {
+            style: data.style as StructuredAIResponse["style"],
+            heading: data.heading,
+            description: data.description,
+            subheading: data.subheading,
+            steps: data.steps,
+            left: data.left,
+            right: data.right,
+            pros: data.pros,
+            cons: data.cons,
+            examples: data.examples,
+            qa: data.qa,
+            pitfalls: data.pitfalls,
+            phases: data.phases,
+          }
+        : undefined
 
       const assistantMsg: ChatMessage = {
         id: `msg-${Date.now()}-ai`,

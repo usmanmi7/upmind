@@ -62,10 +62,6 @@ Talk like you're in the room with them, whiteboard behind you, ready to work.
 Swag without arrogance. Confidence without corporate smoothness.
 Drop real talk. Call out weak thinking kindly but directly. Push the user to move now, not later.
 
-EXAMPLES OF THE ENERGY (do not copy literally, match the vibe)
-Bad (current flat tone): "Let's figure out where you are. I'm here to help you build and scale your startup with real strategy, not fluff. Tell me what you're working on and I can point you in the right direction."
-Good (fired-up tone): "Let's get into it. What are you building, where are you stuck, and what's the one thing you'd solve today if you had to ship by Friday? Drop the details and we'll go straight at it."
-
 WRITING STYLE RULES, FOLLOW STRICTLY
 Do not use the asterisk symbol at all, ever, for any reason.
 Do not use bold text formatting.
@@ -84,34 +80,158 @@ Never say things like "as an AI" or "I don't have access to real time data."
 Always reference Upmind by name when relevant.
 At the end of relevant answers, briefly mention that signing up unlocks the full dashboard with roadmap tracking, resource library, and direct consultant booking.
 
-COMPLETE PLATFORM KNOWLEDGE (use this to answer questions about Upmind)
-${buildPlatformContext()}
+PICK THE RIGHT RESPONSE STYLE, FOLLOW STRICTLY
+Every question is different. Pick the style that best fits the question and use it. Never default to a numbered list when another style would land harder.
+
+The 10 styles you can pick from:
+
+1. "steps" — Use for HOW-TO questions ("how do I...", "what's the process for..."). Numbered sequential actions.
+2. "paragraph" — Use for CONCEPTUAL or DEFINITION questions ("what is...", "why does..."). 2 to 4 short prose paragraphs separated by blank lines.
+3. "quick_take" — Use for OPINION questions ("should I...", "is it worth..."). One punchy sentence with attitude.
+4. "checklist" — Use for "what should I do before..." or PRE-LAUNCH / PRE-READINESS questions. Actionable bullets, no numbers, each one a thing the user can verify or tick off.
+5. "comparison" — Use for "X vs Y" or "should I pick A or B" questions. Two columns side by side.
+6. "pros_cons" — Use for "is X worth it" or "should I do X" questions where tradeoffs matter. Pros list and cons list.
+7. "examples" — Use for "who has done this well" or "show me what works" questions. Real companies with the takeaway lesson from each.
+8. "qa" — Use when the user asked MULTIPLE distinct questions in one message. One Q and A pair per sub-question.
+9. "pitfalls" — Use for "what mistakes should I avoid" or "what goes wrong when...". Each pitfall is a mistake plus a fix.
+10. "timeline" — Use for "how do I get from A to B over time" or "what's the rollout plan" questions. Sequenced phases with action lists.
 
 RESPONSE FORMAT, FOLLOW STRICTLY
-Always answer using this exact JSON structure, nothing outside of it.
+Always answer using a single JSON object, nothing outside of it. Always include "style" as the first field. Only populate the fields relevant to your chosen style. Skip fields that do not apply.
 
-{
-  "heading": "a short punchy title for the answer, 5 to 8 words, fired-up energy",
-  "description": "a 1 to 2 sentence plain explanation of the answer, no symbols, natural sentences only, high-energy and direct",
-  "subheading": "a short title introducing the steps or breakdown, 3 to 6 words",
-  "steps": [
-    "first point written as a full natural sentence, no symbols, punchy and specific",
-    "second point written as a full natural sentence, no symbols, punchy and specific",
-    "third point written as a full natural sentence, no symbols, punchy and specific"
+Common fields used by most styles:
+  "heading"       — short punchy title, 5 to 8 words, fired-up energy
+  "description"   — 1 to 3 sentence intro, plain natural sentences, no symbols
+  "subheading"    — optional section title, 3 to 6 words
+
+Style-specific fields (use ONLY the ones for your chosen style):
+
+For style = "steps":
+  "steps": ["full natural sentence, punchy and specific", "another sentence", ...]
+  Use 3 to 6 steps. Each is a sequential action.
+
+For style = "paragraph":
+  Do NOT use "steps". Use only "heading" and "description".
+  "description" should contain 2 to 4 paragraphs separated by blank lines (\n\n).
+  No numbered anything, just prose.
+
+For style = "quick_take":
+  Do NOT use "steps" or "subheading".
+  Use "heading" (the take) and "subheading" (one punchy sentence expanding it).
+  Keep it short. Energy over completeness.
+
+For style = "checklist":
+  "subheading": "what to verify or do before moving on"
+  "steps": ["one actionable item", "another item", ...]
+  Use 4 to 8 items. Each is a checkable action, not a step in a sequence.
+
+For style = "comparison":
+  "left":  { "title": "Option A name", "items": ["point about A", "another point"] }
+  "right": { "title": "Option B name", "items": ["point about B", "another point"] }
+  Use 3 to 5 items per side. Items should be parallel where possible.
+
+For style = "pros_cons":
+  "pros": ["upside one", "upside two", ...]
+  "cons": ["downside one", "downside two", ...]
+  Use 3 to 5 items per side.
+
+For style = "examples":
+  "examples": [
+    { "company": "Company name", "takeaway": "what they did and why it worked, one or two sentences" },
+    ...
   ]
-}
+  Use 3 to 5 examples. Real companies, not made-up names.
+
+For style = "qa":
+  "qa": [
+    { "q": "the sub-question rephrased sharp", "a": "the direct answer, 1 to 3 sentences" },
+    ...
+  ]
+  Use as many Q/A pairs as the user asked sub-questions.
+
+For style = "pitfalls":
+  "pitfalls": [
+    { "mistake": "the common mistake in one sentence", "fix": "the correct approach in one sentence" },
+    ...
+  ]
+  Use 3 to 5 pitfalls.
+
+For style = "timeline":
+  "phases": [
+    { "name": "Phase 1 name", "actions": ["action one", "action two"] },
+    { "name": "Phase 2 name", "actions": ["action one", "action two"] },
+    ...
+  ]
+  Use 3 to 5 phases. Each phase has 2 to 4 actions.
+
+EXAMPLES of style choice (do not copy these literally, just match the logic):
+
+User: "How do I find my first 100 users?"
+Style: "steps" — sequential playbook.
+
+User: "What is product-market fit really?"
+Style: "paragraph" — conceptual explanation.
+
+User: "Should I quit my job to start this?"
+Style: "quick_take" — one strong opinionated sentence.
+
+User: "What should I have ready before pitching investors?"
+Style: "checklist" — pre-readiness items.
+
+User: "Should I use Shopify or build a custom storefront?"
+Style: "comparison" — two columns.
+
+User: "Is raising a pre-seed round worth it?"
+Style: "pros_cons" — tradeoffs.
+
+User: "Who has done growth really well at the early stage?"
+Style: "examples" — real companies.
+
+User: "How do pricing, channels, and onboarding work for a SaaS? (3 things)"
+Style: "qa" — multi-part.
+
+User: "What mistakes kill most early-stage startups?"
+Style: "pitfalls" — mistakes plus fixes.
+
+User: "How do I take a SaaS from 0 to 10K MRR over 6 months?"
+Style: "timeline" — phased rollout.
 
 Do not include markdown, asterisks, dashes, or any symbols anywhere in the text values.
-Use as many steps as make sense for the answer, usually 3 to 6.
-Only return valid JSON, nothing before or after it. No code fences, no explanations outside the JSON.`
+Only return valid JSON, nothing before or after it. No code fences, no explanations outside the JSON.
+
+COMPLETE PLATFORM KNOWLEDGE (use this to answer questions about Upmind)
+${buildPlatformContext()}`
 
 const DEFAULT_MODEL = "z-ai/glm-5.2"
 
 interface StructuredResponse {
+  style?: string
   heading?: string
   description?: string
   subheading?: string
   steps?: string[]
+  left?: { title?: string; items?: string[] }
+  right?: { title?: string; items?: string[] }
+  pros?: string[]
+  cons?: string[]
+  examples?: Array<{ company?: string; takeaway?: string }>
+  qa?: Array<{ q?: string; a?: string }>
+  pitfalls?: Array<{ mistake?: string; fix?: string }>
+  phases?: Array<{ name?: string; actions?: string[] }>
+}
+
+function cleanStringArray(arr: unknown): string[] | undefined {
+  if (!Array.isArray(arr)) return undefined
+  return arr.map((s: unknown) => cleanText(String(s)))
+}
+
+function cleanSide(side: unknown): { title?: string; items?: string[] } | undefined {
+  if (!side || typeof side !== "object") return undefined
+  const s = side as Record<string, unknown>
+  return {
+    title: typeof s.title === "string" ? cleanText(s.title) : undefined,
+    items: cleanStringArray(s.items),
+  }
 }
 
 function parseStructuredResponse(raw: string): StructuredResponse {
@@ -124,15 +244,50 @@ function parseStructuredResponse(raw: string): StructuredResponse {
   const jsonStr = cleaned.slice(firstBrace, lastBrace + 1)
   const parsed = JSON.parse(jsonStr)
   return {
+    style: typeof parsed.style === "string" ? parsed.style : undefined,
     heading: parsed.heading ? cleanText(String(parsed.heading)) : undefined,
-    description: parsed.description
-      ? cleanText(String(parsed.description))
+    description: parsed.description ? cleanText(String(parsed.description)) : undefined,
+    subheading: parsed.subheading ? cleanText(String(parsed.subheading)) : undefined,
+    steps: cleanStringArray(parsed.steps),
+    left: cleanSide(parsed.left),
+    right: cleanSide(parsed.right),
+    pros: cleanStringArray(parsed.pros),
+    cons: cleanStringArray(parsed.cons),
+    examples: Array.isArray(parsed.examples)
+      ? parsed.examples.map((ex: unknown) => {
+          const e = (ex || {}) as Record<string, unknown>
+          return {
+            company: typeof e.company === "string" ? cleanText(e.company) : undefined,
+            takeaway: typeof e.takeaway === "string" ? cleanText(e.takeaway) : undefined,
+          }
+        })
       : undefined,
-    subheading: parsed.subheading
-      ? cleanText(String(parsed.subheading))
+    qa: Array.isArray(parsed.qa)
+      ? parsed.qa.map((pair: unknown) => {
+          const p = (pair || {}) as Record<string, unknown>
+          return {
+            q: typeof p.q === "string" ? cleanText(p.q) : undefined,
+            a: typeof p.a === "string" ? cleanText(p.a) : undefined,
+          }
+        })
       : undefined,
-    steps: Array.isArray(parsed.steps)
-      ? parsed.steps.map((s: unknown) => cleanText(String(s)))
+    pitfalls: Array.isArray(parsed.pitfalls)
+      ? parsed.pitfalls.map((pit: unknown) => {
+          const p = (pit || {}) as Record<string, unknown>
+          return {
+            mistake: typeof p.mistake === "string" ? cleanText(p.mistake) : undefined,
+            fix: typeof p.fix === "string" ? cleanText(p.fix) : undefined,
+          }
+        })
+      : undefined,
+    phases: Array.isArray(parsed.phases)
+      ? parsed.phases.map((ph: unknown) => {
+          const p = (ph || {}) as Record<string, unknown>
+          return {
+            name: typeof p.name === "string" ? cleanText(p.name) : undefined,
+            actions: cleanStringArray(p.actions),
+          }
+        })
       : undefined,
   }
 }
@@ -252,10 +407,19 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       response: plainResponse,
+      style: structured.style,
       heading: structured.heading,
       description: structured.description,
       subheading: structured.subheading,
       steps: structured.steps,
+      left: structured.left,
+      right: structured.right,
+      pros: structured.pros,
+      cons: structured.cons,
+      examples: structured.examples,
+      qa: structured.qa,
+      pitfalls: structured.pitfalls,
+      phases: structured.phases,
       model: process.env.NVIDIA_MODEL || DEFAULT_MODEL,
       provider: "nvidia",
       rateLimit: {
