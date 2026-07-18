@@ -2,18 +2,19 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import {
-  AI_SYSTEM_PROMPT,
   cleanText,
   parseStructuredResponseSafe,
   derivePlainResponse,
   looksLikeJson,
   type StructuredAIResponse,
 } from "@/lib/ai-prompt"
+import {
+  buildAuthedSystemPrompt,
+  trimHistoryWithSummary,
+} from "@/lib/ai-context"
 
 export const runtime = "nodejs"
 export const maxDuration = 60 // NVIDIA inference can take 10-30s on cold start
-
-const systemPrompt = AI_SYSTEM_PROMPT
 
 // Default model is GLM-5.2 (https://build.nvidia.com/z-ai/glm-5.2).
 // Override with NVIDIA_MODEL env var if you want to switch to e.g.
@@ -38,19 +39,29 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Build conversation: system prompt + last 10 history turns + new message
+    // Build a personalized system prompt for the logged-in user.
+    // Pulls in their name, startup, industry, stage, plan, recent roadmap
+    // items, and last conversation topic. Falls back to the generic
+    // prompt if the lookup fails for any reason.
+    const systemPrompt = await buildAuthedSystemPrompt(session.user.id)
+
+    // Build conversation: system prompt + trimmed/summarized history + new message.
+    // When the chat grows past ~12 messages, older ones get squashed into
+    // a single summary system message so we keep context without burning
+    // the token budget on full old messages.
+    const trimmedHistory = Array.isArray(history)
+      ? trimHistoryWithSummary(
+          history.map((m: { role: string; content: string }) => ({
+            role: m.role,
+            content: m.content,
+          }))
+        )
+      : []
+
     const messages: Array<{ role: string; content: string }> = [
       { role: "system", content: systemPrompt },
+      ...trimmedHistory,
     ]
-
-    if (history && Array.isArray(history)) {
-      for (const msg of history.slice(-10)) {
-        messages.push({
-          role: msg.role,
-          content: msg.content,
-        })
-      }
-    }
 
     messages.push({ role: "user", content: message })
 

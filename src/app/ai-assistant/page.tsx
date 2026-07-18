@@ -103,6 +103,9 @@ export default function PublicAIAssistantPage() {
 
   // --- Current chat state ---
   const [messages, setMessages] = React.useState<ChatMessage[]>([])
+  // Short "Picking up where we left off…" string shown above messages when
+  // reopening an existing chat. Cleared when a new chat is started.
+  const [reopenSummary, setReopenSummary] = React.useState<string | null>(null)
   const [input, setInput] = React.useState("")
   const [loading, setLoading] = React.useState(false)
   const [status, setStatus] = React.useState<AIStatus | null>(null)
@@ -176,6 +179,7 @@ export default function PublicAIAssistantPage() {
   const startNewChat = React.useCallback(() => {
     setActiveChatId(null)
     setMessages([])
+    setReopenSummary(null)
     setMobileOpen(false)
     inputRef.current?.focus()
   }, [])
@@ -194,6 +198,9 @@ export default function PublicAIAssistantPage() {
         if (cached) {
           setActiveChatId(id)
           setMessages(cached.messages)
+          // Guests don't get a server-generated reopen summary, but we can
+          // clear any stale one from a previous authed chat.
+          setReopenSummary(null)
         }
         return
       }
@@ -222,6 +229,9 @@ export default function PublicAIAssistantPage() {
         }))
         setActiveChatId(id)
         setMessages(mapped)
+        setReopenSummary(
+          typeof data.reopenSummary === "string" ? data.reopenSummary : null
+        )
       } catch {
         // ignore
       }
@@ -286,6 +296,9 @@ export default function PublicAIAssistantPage() {
     setMessages((prev) => [...prev, userMsg])
     setInput("")
     setLoading(true)
+    // The "picking up where we left off" banner has served its purpose once
+    // the user sends a new message — clear it so it doesn't linger.
+    setReopenSummary(null)
 
     // If this is the first message of a new chat, derive a title and persist the chat
     let chatId = activeChatId
@@ -591,6 +604,18 @@ export default function PublicAIAssistantPage() {
                   </div>
                 ) : (
                   <div className="space-y-5">
+                    {reopenSummary && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-start gap-2.5 rounded-lg border border-[#7CFC00]/20 dark:border-[#7CFC00]/15 bg-[#7CFC00]/5 dark:bg-[#7CFC00]/10 px-3.5 py-2.5"
+                      >
+                        <RotateCcw className="size-4 mt-0.5 text-[#7CFC00] shrink-0" />
+                        <p className="text-xs leading-relaxed text-foreground/80">
+                          {reopenSummary}
+                        </p>
+                      </motion.div>
+                    )}
                     <AnimatePresence initial={false}>
                       {messages.map((msg) => (
                         <motion.div

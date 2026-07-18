@@ -2,12 +2,18 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { buildReopenSummary } from "@/lib/ai-context"
 
 type Ctx = { params: Promise<{ id: string }> }
 
 /**
  * GET /api/ai/chats/[id]
  * Fetch a single chat with all its messages, ordered by createdAt asc.
+ *
+ * Also returns a `reopenSummary` field — a short "Picking up where we left
+ * off…" string the frontend can show above the messages so the user gets
+ * instant context about what they were last discussing. Generated
+ * heuristically (no LLM call) from the last user question + last AI heading.
  */
 export async function GET(_req: NextRequest, { params }: Ctx) {
   const session = await getServerSession(authOptions)
@@ -36,7 +42,19 @@ export async function GET(_req: NextRequest, { params }: Ctx) {
     return NextResponse.json({ error: "Not found" }, { status: 404 })
   }
 
-  return NextResponse.json({ chat })
+  // Generate a "where we left off" summary if this is a returning chat
+  // (more than 1 message — i.e., not a freshly-created empty chat).
+  const reopenSummary =
+    chat.messages.length > 1
+      ? buildReopenSummary(
+          chat.messages.map((m) => ({
+            role: m.role,
+            content: m.structuredJson || m.content,
+          }))
+        )
+      : null
+
+  return NextResponse.json({ chat, reopenSummary })
 }
 
 /**
