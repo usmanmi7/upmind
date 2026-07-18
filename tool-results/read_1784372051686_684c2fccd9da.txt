@@ -1,0 +1,722 @@
+     1→"use client"
+     2→
+     3→import * as React from "react"
+     4→import { useSession } from "next-auth/react"
+     5→import Link from "next/link"
+     6→import {
+     7→  Card,
+     8→  CardContent,
+     9→  CardDescription,
+    10→  CardHeader,
+    11→  CardTitle,
+    12→} from "@/components/ui/card"
+    13→import { Button } from "@/components/ui/button"
+    14→import { Progress } from "@/components/ui/progress"
+    15→import { Badge } from "@/components/ui/badge"
+    16→import {
+    17→  Rocket,
+    18→  Calendar,
+    19→  BookOpen,
+    20→  MessageSquare,
+    21→  TrendingUp,
+    22→  ArrowRight,
+    23→  CheckCircle2,
+    24→  Clock,
+    25→  Target,
+    26→  Sparkles,
+    27→  UsersRound,
+    28→  Trophy,
+    29→  Zap,
+    30→  Loader2,
+    31→  Shield,
+    32→  Users,
+    33→  BarChart3,
+    34→  Settings,
+    35→  FileText,
+    36→  DollarSign,
+    37→} from "lucide-react"
+    38→
+    39→const quickActions = [
+    40→  {
+    41→    title: "Community",
+    42→    description: "Connect with fellow founders",
+    43→    icon: UsersRound,
+    44→    href: "/dashboard/community",
+    45→    color: "from-[#8FBC8F] to-[#2D4A2D]",
+    46→  },
+    47→  {
+    48→    title: "View Roadmap",
+    49→    description: "Track your startup milestones",
+    50→    icon: Target,
+    51→    href: "/dashboard/roadmap",
+    52→    color: "from-green-500 to-emerald-500",
+    53→  },
+    54→  {
+    55→    title: "Browse Resources",
+    56→    description: "Explore guides and templates",
+    57→    icon: BookOpen,
+    58→    href: "/dashboard/resources",
+    59→    color: "from-blue-500 to-indigo-500",
+    60→  },
+    61→]
+    62→
+    63→const adminQuickActions = [
+    64→  {
+    65→    title: "Manage Users",
+    66→    description: "View and manage all users",
+    67→    icon: Users,
+    68→    href: "/admin/users",
+    69→    color: "from-[#7CFC00] to-[#2D4A2D]",
+    70→  },
+    71→  {
+    72→    title: "View Analytics",
+    73→    description: "Platform metrics and reports",
+    74→    icon: BarChart3,
+    75→    href: "/admin/analytics",
+    76→    color: "from-green-500 to-emerald-500",
+    77→  },
+    78→  {
+    79→    title: "Manage Resources",
+    80→    description: "Add and edit platform resources",
+    81→    icon: FileText,
+    82→    href: "/admin/resources",
+    83→    color: "from-[#8FBC8F] to-[#2D4A2D]",
+    84→  },
+    85→  {
+    86→    title: "Platform Settings",
+    87→    description: "Configure platform options",
+    88→    icon: Settings,
+    89→    href: "/admin/settings",
+    90→    color: "from-orange-500 to-red-500",
+    91→  },
+    92→]
+    93→
+    94→interface AnalyticsData {
+    95→  overview: {
+    96→    tasksCompleted: number
+    97→    totalTasks: number
+    98→    appointmentsAttended: number
+    99→    totalAppointments: number
+   100→    scheduledAppointments: number
+   101→    resourcesUsed: number
+   102→    startupScore: number
+   103→    unreadNotifications: number
+   104→  }
+   105→  recentTasks: Array<{
+   106→    id: string
+   107→    title: string
+   108→    status: string
+   109→    dueDate: string | null
+   110→  }>
+   111→  upcomingAppointments: Array<{
+   112→    id: string
+   113→    date: string
+   114→    consultant?: { user?: { name?: string } }
+   115→  }>
+   116→  checklist: Array<{
+   117→    title: string
+   118→    completed: boolean
+   119→    href: string
+   120→    icon?: string
+   121→  }>
+   122→  checklistCompleted: number
+   123→  progress: number
+   124→  startup: {
+   125→    name: string
+   126→    progress: number
+   127→  } | null
+   128→  achievements: {
+   129→    earned: number
+   130→    total: number
+   131→    xp: number
+   132→    recent: Array<{ type: string; title: string }>
+   133→  }
+   134→}
+   135→
+   136→interface AdminDashboardData {
+   137→  users: { total: number; paid: number; free: number; consultants: number; recent: number }
+   138→  subscriptions: { active: number; cancelled: number; expired: number }
+   139→  revenue: { total: number }
+   140→  appointments: { total: number; scheduled: number; completed: number; today: Array<{ id: string; date: string; type: string; status: string; user: { name: string }; consultant: { user: { name: string } } | null }> }
+   141→  resources: { total: number; premium: number }
+   142→  messages: { total: number; unread: number }
+   143→}
+   144→
+   145→export default function DashboardPage() {
+   146→  const { data: session } = useSession()
+   147→  const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "SUPER_ADMIN"
+   148→
+   149→  if (isAdmin) {
+   150→    return <AdminDashboardFallback />
+   151→  }
+   152→
+   153→  return <UserDashboard />
+   154→}
+   155→
+   156→function AdminDashboardFallback() {
+   157→  const [data, setData] = React.useState<AdminDashboardData | null>(null)
+   158→  const [loading, setLoading] = React.useState(true)
+   159→
+   160→  React.useEffect(() => {
+   161→    const fetchData = async () => {
+   162→      try {
+   163→        const res = await fetch("/api/admin/analytics")
+   164→        if (res.ok) {
+   165→          const json = await res.json()
+   166→          setData(json)
+   167→        }
+   168→      } catch (error) {
+   169→        console.error("Failed to fetch admin data:", error)
+   170→      } finally {
+   171→        setLoading(false)
+   172→      }
+   173→    }
+   174→    fetchData()
+   175→  }, [])
+   176→
+   177→  if (loading) {
+   178→    return (
+   179→      <div className="flex items-center justify-center min-h-[400px]">
+   180→        <div className="flex flex-col items-center gap-3">
+   181→          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+   182→          <p className="text-sm text-muted-foreground">Loading admin dashboard...</p>
+   183→        </div>
+   184→      </div>
+   185→    )
+   186→  }
+   187→
+   188→  const statsCards = [
+   189→    {
+   190→      title: "Total Users",
+   191→      value: data?.users.total || 0,
+   192→      change: `+${data?.users.recent || 0} this month`,
+   193→      icon: Users,
+   194→      color: "from-[#2D4A2D] to-[#8FBC8F]",
+   195→    },
+   196→    {
+   197→      title: "Paid Users",
+   198→      value: data?.users.paid || 0,
+   199→      change: `${data?.users.total ? Math.round(((data?.users.paid || 0) / data?.users.total) * 100) : 0}% conversion`,
+   200→      icon: DollarSign,
+   201→      color: "from-[#7CFC00] to-[#2D4A2D]",
+   202→    },
+   203→    {
+   204→      title: "Revenue",
+   205→      value: `$${(data?.revenue.total || 0).toLocaleString()}`,
+   206→      change: "Monthly total",
+   207→      icon: TrendingUp,
+   208→      color: "from-green-500 to-emerald-500",
+   209→    },
+   210→    {
+   211→      title: "Active Chats",
+   212→      value: data?.messages.unread || 0,
+   213→      change: `${data?.messages.total || 0} total`,
+   214→      icon: MessageSquare,
+   215→      color: "from-orange-500 to-red-500",
+   216→    },
+   217→  ]
+   218→
+   219→  return (
+   220→    <div className="space-y-6">
+   221→      {/* Admin Welcome */}
+   222→      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+   223→        <div>
+   224→          <h1 className="text-2xl sm:text-3xl font-heading font-bold flex items-center gap-2">
+   225→            <Shield className="size-7 text-[#7CFC00]" />
+   226→            Admin Dashboard
+   227→          </h1>
+   228→          <p className="text-muted-foreground mt-1">
+   229→            Manage your platform, users, and resources
+   230→          </p>
+   231→        </div>
+   232→        <Button
+   233→          asChild
+   234→          className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shadow-lg shadow-[#7CFC00]/25"
+   235→        >
+   236→          <Link href="/admin">
+   237→            <Shield className="size-4" />
+   238→            Full Admin Panel
+   239→            <ArrowRight className="size-4" />
+   240→          </Link>
+   241→        </Button>
+   242→      </div>
+   243→
+   244→      {/* Admin Stats */}
+   245→      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+   246→        {statsCards.map((stat) => (
+   247→          <Card key={stat.title} className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+   248→            <CardContent className="p-6">
+   249→              <div className="flex items-center justify-between">
+   250→                <div>
+   251→                  <p className="text-sm text-muted-foreground">{stat.title}</p>
+   252→                  <p className="text-2xl font-bold mt-1">{stat.value}</p>
+   253→                </div>
+   254→                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}>
+   255→                  <stat.icon className="size-5 text-white" />
+   256→                </div>
+   257→              </div>
+   258→              <p className="text-xs text-muted-foreground mt-3">{stat.change}</p>
+   259→            </CardContent>
+   260→          </Card>
+   261→        ))}
+   262→      </div>
+   263→
+   264→      {/* Admin Quick Actions */}
+   265→      <div>
+   266→        <h2 className="text-lg font-heading font-semibold mb-4">Quick Actions</h2>
+   267→        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+   268→          {adminQuickActions.map((action) => (
+   269→            <Link key={action.href} href={action.href}>
+   270→              <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20 hover:shadow-lg transition-all duration-200 cursor-pointer group h-full">
+   271→                <CardContent className="p-6">
+   272→                  <div
+   273→                    className={`w-10 h-10 rounded-xl bg-gradient-to-br ${action.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}
+   274→                  >
+   275→                    <action.icon className="size-5 text-white" />
+   276→                  </div>
+   277→                  <h3 className="font-semibold text-sm">{action.title}</h3>
+   278→                  <p className="text-xs text-muted-foreground mt-1">
+   279→                    {action.description}
+   280→                  </p>
+   281→                </CardContent>
+   282→              </Card>
+   283→            </Link>
+   284→          ))}
+   285→        </div>
+   286→      </div>
+   287→
+   288→      {/* Today's Appointments + Platform Stats */}
+   289→      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+   290→        <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+   291→          <CardHeader className="pb-3">
+   292→            <div className="flex items-center justify-between">
+   293→              <CardTitle className="text-base font-heading">Today&apos;s Appointments</CardTitle>
+   294→              <Button variant="ghost" size="sm" asChild>
+   295→                <Link href="/admin/appointments">View all</Link>
+   296→              </Button>
+   297→            </div>
+   298→          </CardHeader>
+   299→          <CardContent>
+   300→            {data?.appointments.today && data.appointments.today.length > 0 ? (
+   301→              <div className="space-y-3">
+   302→                {data.appointments.today.slice(0, 5).map((apt) => (
+   303→                  <div key={apt.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+   304→                    <div className="w-2 h-2 rounded-full bg-[#7CFC00] shrink-0" />
+   305→                    <div className="flex-1 min-w-0">
+   306→                      <p className="text-sm font-medium truncate">{apt.user.name}</p>
+   307→                      <p className="text-xs text-muted-foreground">
+   308→                        with {apt.consultant?.user.name || "Unassigned"} - {new Date(apt.date).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+   309→                      </p>
+   310→                    </div>
+   311→                    <Badge variant="outline" className="text-xs shrink-0">{apt.type}</Badge>
+   312→                  </div>
+   313→                ))}
+   314→              </div>
+   315→            ) : (
+   316→              <div className="text-center py-8">
+   317→                <Calendar className="size-8 text-muted-foreground/40 mx-auto mb-2" />
+   318→                <p className="text-sm text-muted-foreground">No appointments today</p>
+   319→              </div>
+   320→            )}
+   321→          </CardContent>
+   322→        </Card>
+   323→
+   324→        <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+   325→          <CardHeader className="pb-3">
+   326→            <CardTitle className="text-base font-heading">Platform Overview</CardTitle>
+   327→          </CardHeader>
+   328→          <CardContent>
+   329→            <div className="grid grid-cols-2 gap-3">
+   330→              {[
+   331→                { label: "Total Resources", value: data?.resources.total || 0, icon: FileText },
+   332→                { label: "Premium Resources", value: data?.resources.premium || 0, icon: Sparkles },
+   333→                { label: "Scheduled Appts", value: data?.appointments.scheduled || 0, icon: Calendar },
+   334→                { label: "Consultants", value: data?.users.consultants || 0, icon: Shield },
+   335→              ].map((metric) => (
+   336→                <div key={metric.label} className="flex items-center gap-2 p-3 rounded-lg bg-muted/30">
+   337→                  <metric.icon className="size-4 text-[#7CFC00] shrink-0" />
+   338→                  <div>
+   339→                    <p className="text-lg font-bold">{metric.value}</p>
+   340→                    <p className="text-xs text-muted-foreground">{metric.label}</p>
+   341→                  </div>
+   342→                </div>
+   343→              ))}
+   344→            </div>
+   345→          </CardContent>
+   346→        </Card>
+   347→      </div>
+   348→    </div>
+   349→  )
+   350→}
+   351→
+   352→function UserDashboard() {
+   353→  const { data: session } = useSession()
+   354→  const [data, setData] = React.useState<AnalyticsData | null>(null)
+   355→  const [loading, setLoading] = React.useState(true)
+   356→
+   357→  React.useEffect(() => {
+   358→    const fetchData = async () => {
+   359→      try {
+   360→        const res = await fetch("/api/analytics")
+   361→        if (res.ok) {
+   362→          const json = await res.json()
+   363→          setData(json)
+   364→        }
+   365→      } catch (error) {
+   366→        console.error("Failed to fetch dashboard data:", error)
+   367→      } finally {
+   368→        setLoading(false)
+   369→      }
+   370→    }
+   371→    fetchData()
+   372→  }, [])
+   373→
+   374→  const firstName = session?.user?.name?.split(" ")[0] || "Founder"
+   375→  const overview = data?.overview
+   376→  const progress = data?.progress || 0
+   377→  const totalTasks = overview?.totalTasks || 0
+   378→  const completedTasks = overview?.tasksCompleted || 0
+   379→  const taskPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
+   380→
+   381→  const formatNextAppointment = () => {
+   382→    if (!data?.upcomingAppointments || data.upcomingAppointments.length === 0) return null
+   383→    const apt = data.upcomingAppointments[0]
+   384→    const date = new Date(apt.date)
+   385→    const now = new Date()
+   386→    const tomorrow = new Date(now)
+   387→    tomorrow.setDate(tomorrow.getDate() + 1)
+   388→
+   389→    if (date.toDateString() === now.toDateString()) {
+   390→      return `Today at ${date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`
+   391→    } else if (date.toDateString() === tomorrow.toDateString()) {
+   392→      return `Tomorrow at ${date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`
+   393→    }
+   394→    return date.toLocaleDateString([], { month: "short", day: "numeric" }) + ` at ${date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`
+   395→  }
+   396→
+   397→  if (loading) {
+   398→    return (
+   399→      <div className="flex items-center justify-center min-h-[400px]">
+   400→        <div className="flex flex-col items-center gap-3">
+   401→          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+   402→          <p className="text-sm text-muted-foreground">Loading your dashboard...</p>
+   403→        </div>
+   404→      </div>
+   405→    )
+   406→  }
+   407→
+   408→  return (
+   409→    <div className="space-y-6">
+   410→      {/* Welcome Section */}
+   411→      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+   412→        <div>
+   413→          <h1 className="text-2xl sm:text-3xl font-heading font-bold">
+   414→            Welcome back, {firstName} 👋
+   415→          </h1>
+   416→          <p className="text-muted-foreground mt-1">
+   417→            Here&apos;s what&apos;s happening with your startup journey
+   418→          </p>
+   419→        </div>
+   420→        <Button
+   421→          asChild
+   422→          className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shadow-lg shadow-[#7CFC00]/25"
+   423→        >
+   424→          <Link href="/dashboard/startup">
+   425→            <Rocket className="size-4" />
+   426→            My Startup
+   427→            <ArrowRight className="size-4" />
+   428→          </Link>
+   429→        </Button>
+   430→      </div>
+   431→
+   432→      {/* Stats Cards */}
+   433→      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+   434→        <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+   435→          <CardContent className="p-6">
+   436→            <div className="flex items-center justify-between">
+   437→              <div>
+   438→                <p className="text-sm text-muted-foreground">Startup Progress</p>
+   439→                <p className="text-2xl font-bold mt-1">{progress}%</p>
+   440→              </div>
+   441→              <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center">
+   442→                <TrendingUp className="size-5 text-[#2D4A2D] dark:text-[#7CFC00]" />
+   443→              </div>
+   444→            </div>
+   445→            <Progress value={progress} className="mt-3 h-1.5" />
+   446→          </CardContent>
+   447→        </Card>
+   448→
+   449→        <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+   450→          <CardContent className="p-6">
+   451→            <div className="flex items-center justify-between">
+   452→              <div>
+   453→                <p className="text-sm text-muted-foreground">Tasks Completed</p>
+   454→                <p className="text-2xl font-bold mt-1">{completedTasks}/{totalTasks}</p>
+   455→              </div>
+   456→              <div className="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+   457→                <CheckCircle2 className="size-5 text-green-600 dark:text-green-400" />
+   458→              </div>
+   459→            </div>
+   460→            <Progress value={taskPercent} className="mt-3 h-1.5" />
+   461→          </CardContent>
+   462→        </Card>
+   463→
+   464→        <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+   465→          <CardContent className="p-6">
+   466→            <div className="flex items-center justify-between">
+   467→              <div>
+   468→                <p className="text-sm text-muted-foreground">Appointments</p>
+   469→                <p className="text-2xl font-bold mt-1">{overview?.scheduledAppointments || 0}</p>
+   470→              </div>
+   471→              <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center">
+   472→                <Calendar className="size-5 text-[#1A2E1A] dark:text-[#7CFC00]" />
+   473→              </div>
+   474→            </div>
+   475→            <p className="text-xs text-muted-foreground mt-3">
+   476→              {formatNextAppointment() || "No upcoming appointments"}
+   477→            </p>
+   478→          </CardContent>
+   479→        </Card>
+   480→
+   481→        <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+   482→          <CardContent className="p-6">
+   483→            <div className="flex items-center justify-between">
+   484→              <div>
+   485→                <p className="text-sm text-muted-foreground">Resources Viewed</p>
+   486→                <p className="text-2xl font-bold mt-1">{overview?.resourcesUsed || 0}</p>
+   487→              </div>
+   488→              <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center">
+   489→                <BookOpen className="size-5 text-[#2D4A2D] dark:text-[#7CFC00]" />
+   490→              </div>
+   491→            </div>
+   492→            <p className="text-xs text-muted-foreground mt-3">
+   493→              {overview?.resourcesUsed ? `${overview.resourcesUsed} explored` : "Start exploring resources"}
+   494→            </p>
+   495→          </CardContent>
+   496→        </Card>
+   497→      </div>
+   498→
+   499→      {/* Quick Actions */}
+   500→      <div>
+   501→        <h2 className="text-lg font-heading font-semibold mb-4">Quick Actions</h2>
+   502→        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+   503→          {quickActions.map((action) => (
+   504→            <Link key={action.href} href={action.href}>
+   505→              <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20 hover:shadow-lg transition-all duration-200 cursor-pointer group h-full">
+   506→                <CardContent className="p-6">
+   507→                  <div
+   508→                    className={`w-10 h-10 rounded-xl bg-gradient-to-br ${action.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}
+   509→                  >
+   510→                    <action.icon className="size-5 text-white" />
+   511→                  </div>
+   512→                  <h3 className="font-semibold text-sm">{action.title}</h3>
+   513→                  <p className="text-xs text-muted-foreground mt-1">
+   514→                    {action.description}
+   515→                  </p>
+   516→                </CardContent>
+   517→              </Card>
+   518→            </Link>
+   519→          ))}
+   520→        </div>
+   521→      </div>
+   522→
+   523→      {/* Tasks & Activity */}
+   524→      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+   525→        {/* Recent Tasks */}
+   526→        <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+   527→          <CardHeader className="pb-3">
+   528→            <div className="flex items-center justify-between">
+   529→              <CardTitle className="text-base font-heading">Recent Tasks</CardTitle>
+   530→              <Button variant="ghost" size="sm" asChild>
+   531→                <Link href="/dashboard/roadmap">View all</Link>
+   532→              </Button>
+   533→            </div>
+   534→          </CardHeader>
+   535→          <CardContent>
+   536→            {data?.recentTasks && data.recentTasks.length > 0 ? (
+   537→              <div className="space-y-3">
+   538→                {data.recentTasks.map((task) => (
+   539→                  <div
+   540→                    key={task.id}
+   541→                    className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-all duration-200"
+   542→                  >
+   543→                    <div
+   544→                      className={`w-2 h-2 rounded-full shrink-0 ${
+   545→                        task.status === "COMPLETED"
+   546→                          ? "bg-green-500"
+   547→                          : task.status === "IN_PROGRESS"
+   548→                          ? "bg-[#7CFC00]"
+   549→                          : "bg-muted-foreground/40"
+   550→                      }`}
+   551→                    />
+   552→                    <div className="flex-1 min-w-0">
+   553→                      <p className={`text-sm font-medium truncate ${task.status === "COMPLETED" ? "line-through text-muted-foreground" : ""}`}>
+   554→                        {task.title}
+   555→                      </p>
+   556→                    </div>
+   557→                    <Badge
+   558→                      variant={
+   559→                        task.status === "COMPLETED"
+   560→                          ? "default"
+   561→                          : task.status === "IN_PROGRESS"
+   562→                          ? "secondary"
+   563→                          : "outline"
+   564→                      }
+   565→                      className="text-xs shrink-0"
+   566→                    >
+   567→                      {task.status === "COMPLETED" ? (
+   568→                        <CheckCircle2 className="size-3 mr-1" />
+   569→                      ) : task.status === "IN_PROGRESS" ? (
+   570→                        <Clock className="size-3 mr-1" />
+   571→                      ) : null}
+   572→                      {task.status === "COMPLETED" ? "Done" : task.status === "IN_PROGRESS" ? "In Progress" : "To Do"}
+   573→                    </Badge>
+   574→                  </div>
+   575→                ))}
+   576→              </div>
+   577→            ) : (
+   578→              <div className="text-center py-8">
+   579→                <Target className="size-8 text-muted-foreground/40 mx-auto mb-2" />
+   580→                <p className="text-sm text-muted-foreground">No tasks yet</p>
+   581→                <p className="text-xs text-muted-foreground mt-1">
+   582→                  Create tasks in your{" "}
+   583→                  <Link href="/dashboard/roadmap" className="text-[#7CFC00] hover:underline">
+   584→                    roadmap
+   585→                  </Link>{" "}
+   586→                  to track progress
+   587→                </p>
+   588→              </div>
+   589→            )}
+   590→          </CardContent>
+   591→        </Card>
+   592→
+   593→        {/* Quick Wins + Achievements */}
+   594→        <div className="space-y-6">
+   595→          <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+   596→            <CardHeader className="pb-3">
+   597→              <div className="flex items-center justify-between">
+   598→                <div>
+   599→                  <CardTitle className="text-base font-heading flex items-center gap-2">
+   600→                    <Zap className="size-4 text-[#7CFC00]" /> Quick Wins
+   601→                  </CardTitle>
+   602→                  <CardDescription>
+   603→                    Complete these actions to earn XP and unlock badges
+   604→                  </CardDescription>
+   605→                </div>
+   606→                <Badge variant="secondary" className="text-xs">
+   607→                  <Trophy className="size-3 mr-1" /> {data?.checklistCompleted || 0}/6
+   608→                </Badge>
+   609→              </div>
+   610→            </CardHeader>
+   611→            <CardContent>
+   612→              <div className="space-y-2">
+   613→                {(data?.checklist || [
+   614→                  { title: "Complete your startup profile", completed: false, href: "/dashboard/startup", icon: "rocket" },
+   615→                  { title: "Define your vision & goals", completed: false, href: "/dashboard/startup", icon: "target" },
+   616→                  { title: "Explore resources", completed: false, href: "/dashboard/resources", icon: "book" },
+   617→                  { title: "Join the community discussion", completed: false, href: "/dashboard/community", icon: "users" },
+   618→                  { title: "Build your roadmap", completed: false, href: "/dashboard/roadmap", icon: "map" },
+   619→                  { title: "Book a consultation", completed: false, href: "/dashboard/appointments", icon: "calendar" },
+   620→                ]).map((item, i) => (
+   621→                  <Link
+   622→                    key={i}
+   623→                    href={item.href}
+   624→                    className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/30 hover:bg-muted/50 transition-all duration-200 group"
+   625→                  >
+   626→                    <div
+   627→                      className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
+   628→                        item.completed
+   629→                          ? "bg-green-500"
+   630→                          : "border-2 border-muted-foreground/30 group-hover:border-[#7CFC00]/50"
+   631→                      }`}
+   632→                    >
+   633→                      {item.completed ? (
+   634→                        <CheckCircle2 className="size-3.5 text-white" />
+   635→                      ) : (
+   636→                        <span className="text-[10px] text-muted-foreground/50 font-medium">{i + 1}</span>
+   637→                      )}
+   638→                    </div>
+   639→                    <span
+   640→                      className={`text-sm flex-1 ${
+   641→                        item.completed
+   642→                          ? "line-through text-muted-foreground"
+   643→                          : "font-medium group-hover:text-[#7CFC00]"
+   644→                      }`}
+   645→                    >
+   646→                      {item.title}
+   647→                    </span>
+   648→                    {!item.completed && (
+   649→                      <ArrowRight className="size-3 text-muted-foreground/30 group-hover:text-[#7CFC00] transition-colors" />
+   650→                    )}
+   651→                    {item.completed && (
+   652→                      <Badge className="text-[10px] bg-green-500/10 text-green-600 dark:text-green-400 border-0 px-1.5 py-0">
+   653→                        +XP
+   654→                      </Badge>
+   655→                    )}
+   656→                  </Link>
+   657→                ))}
+   658→              </div>
+   659→            </CardContent>
+   660→          </Card>
+   661→
+   662→          {/* Achievements Summary */}
+   663→          <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
+   664→            <CardHeader className="pb-3">
+   665→              <div className="flex items-center justify-between">
+   666→                <CardTitle className="text-base font-heading flex items-center gap-2">
+   667→                  <Trophy className="size-4 text-yellow-500" /> Achievements
+   668→                </CardTitle>
+   669→                <Button variant="ghost" size="sm" asChild className="text-xs h-7">
+   670→                  <Link href="/dashboard/profile">
+   671→                    View all <ArrowRight className="size-3 ml-1" />
+   672→                  </Link>
+   673→                </Button>
+   674→              </div>
+   675→            </CardHeader>
+   676→            <CardContent>
+   677→              <div className="flex items-center gap-4 p-3 rounded-xl bg-gradient-to-br from-[#2D4A2D]/10 to-[#1A2E1A]/10 border border-[#7CFC00]/30 dark:border-[#2D4A2D]/50 mb-3">
+   678→                <div className="flex items-center gap-2">
+   679→                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+   680→                    <Sparkles className="size-5 text-white" />
+   681→                  </div>
+   682→                  <div>
+   683→                    <p className="text-sm font-bold">{data?.achievements?.xp || 0} XP</p>
+   684→                    <p className="text-[10px] text-muted-foreground">Total earned</p>
+   685→                  </div>
+   686→                </div>
+   687→                <div className="h-8 w-px bg-border" />
+   688→                <div>
+   689→                  <p className="text-sm font-bold">{data?.achievements?.earned || 0}/{data?.achievements?.total || 15}</p>
+   690→                  <p className="text-[10px] text-muted-foreground">Badges unlocked</p>
+   691→                </div>
+   692→                <div className="flex-1" />
+   693→                <Progress
+   694→                  value={((data?.achievements?.earned || 0) / (data?.achievements?.total || 15)) * 100}
+   695→                  className="h-2 w-20"
+   696→                />
+   697→              </div>
+   698→              {data?.achievements?.recent && data.achievements.recent.length > 0 ? (
+   699→                <div className="space-y-2">
+   700→                  {data.achievements.recent.map((ach) => (
+   701→                    <div key={ach.type} className="flex items-center gap-2 p-2 rounded-lg bg-green-500/5 border border-green-500/10">
+   702→                      <CheckCircle2 className="size-3.5 text-green-500 shrink-0" />
+   703→                      <span className="text-xs font-medium">{ach.title}</span>
+   704→                      <Badge className="text-[9px] bg-green-500/10 text-green-600 dark:text-green-400 border-0 ml-auto px-1.5 py-0">
+   705→                        EARNED
+   706→                      </Badge>
+   707→                    </div>
+   708→                  ))}
+   709→                </div>
+   710→              ) : (
+   711→                <p className="text-xs text-muted-foreground text-center py-2">
+   712→                  Complete Quick Wins above to start earning badges!
+   713→                </p>
+   714→              )}
+   715→            </CardContent>
+   716→          </Card>
+   717→        </div>
+   718→      </div>
+   719→    </div>
+   720→  )
+   721→}
+   722→
