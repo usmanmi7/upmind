@@ -35,6 +35,7 @@ import {
   FileText,
   DollarSign,
 } from "lucide-react"
+import { GlmSearchBar } from "@/components/dashboard/GlmSearchBar"
 
 const quickActions = [
   {
@@ -345,6 +346,8 @@ function AdminDashboardFallback() {
           </CardContent>
         </Card>
       </div>
+      {/* AI Assistant Search Bar (GLM via NVIDIA Build) */}
+      <GlmSearchBar />
     </div>
   )
 }
@@ -716,6 +719,8 @@ function UserDashboard() {
           </Card>
         </div>
       </div>
+      {/* AI Assistant Search Bar (GLM via NVIDIA Build) */}
+      <GlmSearchBar />
     </div>
   )
 }

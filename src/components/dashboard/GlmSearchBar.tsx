@@ -3,21 +3,27 @@
 import * as React from "react"
 import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import {
   Sparkles,
   Send,
-  Lightbulb,
-  Target,
-  BarChart3,
-  FileText,
-  MessageSquare,
-  TrendingUp,
+  X,
   Loader2,
   Brain,
+  ChevronUp,
+  Lightbulb,
+  Target,
+  TrendingUp,
+  FileText,
 } from "lucide-react"
 
 interface ChatMessage {
@@ -27,78 +33,96 @@ interface ChatMessage {
   timestamp: Date
 }
 
+interface AIStatus {
+  online: boolean
+  provider: string
+  model: string
+  label: string
+  hint?: string
+}
+
 const quickPrompts = [
   {
     label: "Analyze my startup",
-    icon: BarChart3,
-    prompt: "Can you analyze my startup and give me an overall assessment?",
-    color: "from-[#2D4A2D] to-[#8FBC8F]",
+    icon: Target,
+    prompt: "Can you analyze my startup idea and give me an overall assessment?",
   },
   {
-    label: "Business plan help",
+    label: "Business plan",
     icon: FileText,
     prompt: "Help me create a business plan for my startup. What sections should I include?",
-    color: "from-[#7CFC00] to-[#2D4A2D]",
-  },
-  {
-    label: "Pitch feedback",
-    icon: MessageSquare,
-    prompt: "I'd like feedback on my pitch. What makes a great startup pitch?",
-    color: "from-green-500 to-emerald-500",
   },
   {
     label: "Growth strategy",
     icon: TrendingUp,
     prompt: "What growth strategies should I consider for early-stage user acquisition?",
-    color: "from-orange-500 to-red-500",
-  },
-]
-
-const insightCards = [
-  {
-    title: "Market Opportunity",
-    description: "Ask me about market analysis and competitive positioning.",
-    icon: Target,
-    color: "text-[#7CFC00]",
-    bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30",
   },
   {
-    title: "Strategy Planning",
-    description: "Get help with business plans, roadmaps, and growth strategies.",
-    icon: Sparkles,
-    color: "text-[#2D4A2D]",
-    bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30",
-  },
-  {
-    title: "Revenue Model",
-    description: "Discuss pricing, monetization, and financial projections.",
+    label: "Pitch feedback",
     icon: Lightbulb,
-    color: "text-green-500",
-    bg: "bg-green-100 dark:bg-green-900/30",
+    prompt: "What makes a great startup pitch? Give me feedback tips.",
   },
 ]
 
-export default function AIAssistantPage() {
+/**
+ * Bottom Search Bar for the AI Assistant.
+ *
+ * - Renders as a fixed pill at the bottom of the dashboard.
+ * - Clicking it (or pressing /) opens a sliding chat sheet.
+ * - Talks to /api/ai/chat which routes to NVIDIA Build -> LM Studio -> Z AI.
+ * - Shows the active model badge pulled from /api/ai/chat GET endpoint.
+ */
+export function GlmSearchBar() {
   const { data: session } = useSession()
-  const [messages, setMessages] = React.useState<ChatMessage[]>([])
+  const [open, setOpen] = React.useState(false)
   const [input, setInput] = React.useState("")
   const [loading, setLoading] = React.useState(false)
-  const [modelLabel, setModelLabel] = React.useState("GLM-4")
+  const [messages, setMessages] = React.useState<ChatMessage[]>([])
+  const [status, setStatus] = React.useState<AIStatus | null>(null)
   const messagesEndRef = React.useRef<HTMLDivElement>(null)
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
-  React.useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages])
-
-  // Fetch the active model label from the AI status endpoint
+  // Fetch AI status on mount (which model is active)
   React.useEffect(() => {
     fetch("/api/ai/chat")
       .then((r) => r.json())
-      .then((data) => {
-        if (data?.label) setModelLabel(data.label)
-      })
-      .catch(() => {})
+      .then((data: AIStatus) => setStatus(data))
+      .catch(() => setStatus(null))
   }, [])
+
+  // Auto-scroll to latest message
+  React.useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages, loading])
+
+  // Keyboard shortcut: "/" to focus, Esc handled by Sheet
+  React.useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      // Ignore when typing in another input/textarea
+      const target = e.target as HTMLElement
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.isContentEditable
+      ) {
+        return
+      }
+      if (e.key === "/" && !open) {
+        e.preventDefault()
+        setOpen(true)
+        setTimeout(() => inputRef.current?.focus(), 100)
+      }
+    }
+    window.addEventListener("keydown", handler)
+    return () => window.removeEventListener("keydown", handler)
+  }, [open])
+
+  // Auto-focus input when sheet opens
+  React.useEffect(() => {
+    if (open) {
+      setTimeout(() => inputRef.current?.focus(), 150)
+    }
+  }, [open])
 
   const sendMessage = async (content: string) => {
     if (!content.trim() || loading) return
@@ -127,9 +151,10 @@ export default function AIAssistantPage() {
       })
 
       const data = await res.json()
-
-      // Even on error, use the fallback response if provided
-      const responseText = data.response || data.details || "I'm sorry, I couldn't generate a response. Please try again."
+      const responseText =
+        data.response ||
+        data.details ||
+        "I'm sorry, I couldn't generate a response. Please try again."
 
       const assistantMsg: ChatMessage = {
         id: `msg-${Date.now()}-ai`,
@@ -152,66 +177,86 @@ export default function AIAssistantPage() {
     }
   }
 
+  const modelLabel = status?.label || "AI Assistant"
+  const isOnline = status?.online ?? false
+  const firstName = session?.user?.name?.split(" ")[0] || "there"
+
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-heading font-bold flex items-center gap-2">
-            <Sparkles className="size-6 text-[#7CFC00]" />
-            AI Assistant
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Get personalized startup advice powered by AI
-          </p>
-        </div>
-        <Badge variant="secondary" className="w-fit">
-          <Brain className="size-3 mr-1" /> Powered by {modelLabel}
-        </Badge>
-      </div>
-
-      {/* AI Insights */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {insightCards.map((card) => (
-          <Card
-            key={card.title}
-            className="border-0 shadow-md shadow-black/5 dark:shadow-black/20 hover:shadow-lg transition-all duration-200"
-          >
-            <CardContent className="p-4">
-              <div className="flex items-start gap-3">
-                <div className={`w-9 h-9 rounded-lg ${card.bg} flex items-center justify-center shrink-0`}>
-                  <card.icon className={`size-4 ${card.color}`} />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold">{card.title}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {card.description}
-                  </p>
-                </div>
+    <>
+      {/* Fixed bottom search bar - always visible on dashboard */}
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[calc(100%-2rem)] max-w-2xl px-2">
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger asChild>
+            <button
+              type="button"
+              className="group w-full flex items-center gap-3 px-4 py-3 rounded-full bg-background/95 backdrop-blur border border-border shadow-lg shadow-black/10 hover:shadow-xl hover:border-[#7CFC00]/50 transition-all duration-200"
+              aria-label="Open AI Assistant"
+            >
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                <Sparkles className="size-4 text-white" />
               </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              <span className="flex-1 text-left text-sm text-muted-foreground">
+                Ask {modelLabel} anything about your startup...
+              </span>
+              <Badge
+                variant="outline"
+                className="hidden sm:flex items-center gap-1 text-xs shrink-0"
+              >
+                <Brain className="size-3 text-[#7CFC00]" />
+                {modelLabel}
+              </Badge>
+              <kbd className="hidden md:inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-mono bg-muted border border-border rounded shrink-0">
+                /
+              </kbd>
+              <ChevronUp className="size-4 text-muted-foreground shrink-0 group-hover:text-[#7CFC00] transition-colors" />
+            </button>
+          </SheetTrigger>
 
-      {/* Chat */}
-      <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
-        <CardContent className="p-0">
-          <div className="h-[600px] flex flex-col">
-            {/* Messages */}
-            <ScrollArea className="flex-1 p-4">
+          <SheetContent
+            side="bottom"
+            className="h-[85vh] sm:h-[80vh] max-w-3xl mx-auto rounded-t-2xl p-0 flex flex-col"
+          >
+            <SheetHeader className="px-4 py-3 border-b shrink-0">
+              <div className="flex items-center justify-between">
+                <SheetTitle className="flex items-center gap-2 text-base">
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+                    <Sparkles className="size-4 text-white" />
+                  </div>
+                  <span>AI Assistant</span>
+                  <Badge variant="secondary" className="text-xs ml-1">
+                    <Brain className="size-3 mr-1 text-[#7CFC00]" />
+                    {modelLabel}
+                  </Badge>
+                </SheetTitle>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-8"
+                  onClick={() => setOpen(false)}
+                >
+                  <X className="size-4" />
+                </Button>
+              </div>
+              {!isOnline && status?.hint && (
+                <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                  {status.hint}
+                </p>
+              )}
+            </SheetHeader>
+
+            {/* Messages area */}
+            <ScrollArea className="flex-1 px-4 py-4">
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-6 py-8">
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
                     <Sparkles className="size-8 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold">
-                      Hi, {session?.user?.name?.split(" ")[0] || "Founder"}!
-                    </h3>
+                    <h3 className="text-lg font-semibold">Hi, {firstName}!</h3>
                     <p className="text-sm text-muted-foreground mt-1 max-w-md">
-                      I&apos;m your AI startup consultant. Ask me anything about strategy,
-                      planning, growth, or get feedback on your ideas.
+                      I&apos;m your AI consultant powered by {modelLabel}. Ask me
+                      anything about strategy, planning, growth, or get feedback
+                      on your ideas.
                     </p>
                   </div>
                   <div className="grid grid-cols-2 gap-3 w-full max-w-md">
@@ -222,14 +267,8 @@ export default function AIAssistantPage() {
                         className="h-auto py-3 px-3 text-left justify-start"
                         onClick={() => sendMessage(qp.prompt)}
                       >
-                        <div
-                          className={`w-8 h-8 rounded-lg bg-gradient-to-br ${qp.color} flex items-center justify-center shrink-0 mr-2`}
-                        >
-                          <qp.icon className="size-4 text-white" />
-                        </div>
-                        <span className="text-xs font-medium">
-                          {qp.label}
-                        </span>
+                        <qp.icon className="size-4 mr-2 text-[#7CFC00] shrink-0" />
+                        <span className="text-xs font-medium">{qp.label}</span>
                       </Button>
                     ))}
                   </div>
@@ -243,14 +282,14 @@ export default function AIAssistantPage() {
                         msg.role === "user" ? "justify-end" : "justify-start"
                       }`}
                     >
-                      <div className={`max-w-[85%] sm:max-w-[75%]`}>
+                      <div className="max-w-[85%] sm:max-w-[75%]">
                         {msg.role === "assistant" && (
                           <div className="flex items-center gap-2 mb-1">
                             <div className="w-5 h-5 rounded-md bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
                               <Sparkles className="size-3 text-white" />
                             </div>
                             <span className="text-xs font-medium text-muted-foreground">
-                              AI Assistant
+                              {modelLabel}
                             </span>
                           </div>
                         )}
@@ -283,8 +322,7 @@ export default function AIAssistantPage() {
             </ScrollArea>
 
             {/* Input */}
-            <div className="p-4 border-t">
-              {/* Quick prompts row */}
+            <div className="border-t p-4 shrink-0">
               {messages.length > 0 && (
                 <div className="flex gap-2 mb-3 overflow-x-auto pb-1">
                   {quickPrompts.map((qp) => (
@@ -303,7 +341,8 @@ export default function AIAssistantPage() {
               )}
               <div className="flex items-center gap-2">
                 <Input
-                  placeholder={`Ask ${modelLabel} anything about your startup...`}
+                  ref={inputRef}
+                  placeholder={`Ask ${modelLabel} anything...`}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   className="flex-1"
@@ -328,9 +367,12 @@ export default function AIAssistantPage() {
                 </Button>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      {/* Spacer to prevent content from being hidden behind the fixed bar */}
+      <div className="h-20 sm:h-16" aria-hidden="true" />
+    </>
   )
 }
