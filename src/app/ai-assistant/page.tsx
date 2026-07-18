@@ -208,7 +208,7 @@ export default function PublicAIAssistantPage() {
     <div className="min-h-screen flex flex-col bg-[#F5F5F5] dark:bg-[#1A2E1A]">
       <PublicNavbar />
       <main className="flex-1 pt-16 sm:pt-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-20">
           {/* Header */}
           <div className="flex items-center justify-end gap-3 mb-8">
             <Popover>
