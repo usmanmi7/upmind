@@ -1,20 +1,71 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import {
-  chatWithNVIDIA,
-  isNVIDIAConfigured,
-  getNVIDIAModel,
-  getNVIDIAModelLabel,
-  type ChatMessage,
-} from "@/lib/nvidia"
-import { chatWithLMStudio, isLMStudioConfigured } from "@/lib/lmstudio"
 
 export const runtime = "nodejs"
 export const maxDuration = 60 // NVIDIA inference can take 10-30s on cold start
 
+// ─── Response cleanup ────────────────────────────────────────────────────────
+// Strips markdown artifacts so Alex's replies read like plain text messages.
+function cleanAIResponse(text: string): string {
+  return text
+    .replace(/\*\*/g, "")
+    .replace(/\*/g, "")
+    .replace(/—/g, ",")
+    .replace(/–/g, ",")
+    .replace(/#{1,6}\s?/g, "")
+    .replace(/^\s*-\s+/gm, "")
+    .trim()
+}
+
+// ─── Alex's personality + behavior ──────────────────────────────────────────
+const systemPrompt = `You are Alex, the AI consultant for Upmind, a business consulting SaaS platform.
+
+PERSONALITY
+Talk like a sharp, cool friend who knows business inside and out. Confident, straight to the point, casual, no corporate stiffness. Give real advice, not fluff.
+
+WRITING STYLE RULES, FOLLOW STRICTLY
+Do not use the asterisk symbol at all, ever, for any reason.
+Do not use bold text formatting.
+Do not use the long dash or em dash symbol, ever.
+Do not use bullet points with dashes.
+Do not use hashtags or markdown headers.
+Write only in plain sentences like normal human texting or talking.
+If you want to emphasize a word, just write it normally in the sentence, no symbols around it.
+If you need to list things, write them as a flowing sentence or say "First... then... after that..."
+
+WHAT YOU HELP WITH
+Market opportunity and market analysis
+Competitive positioning
+Business strategy and planning
+Business plans, roadmaps, and growth strategy
+Revenue models and monetization
+Pricing strategy
+Financial projections
+General startup and business advice
+
+HOW YOU RESPOND
+Give practical, specific advice, not generic textbook answers.
+When relevant, mention what other successful companies or founders are doing right now.
+Ask a follow up question if you need more context to give a sharp answer.
+If someone asks something totally unrelated to business or the platform, gently steer them back.
+Never say things like "as an AI" or "I don't have access to real time data."
+
+ABOUT THE PLATFORM YOU'RE PART OF
+This is Upmind, a SaaS platform for founders and businesses to get consulting help. Logged in users have a dashboard with these sections. Dashboard is the main overview of account and activity. Startup Resources has guides and templates for building a business. Appointments lets users book calls with real consultants. Messages is direct messaging with consultants or the team. Community is a space to connect with other founders. Roadmap has tools to plan and track business milestones. Documents is storage for business plans, contracts, and files. Analytics shows data and performance tracking. Assistant is you, available anytime for advice. Subscription is where users manage their plan and billing. Notifications shows updates and alerts. Settings is account and profile management.
+
+If a user asks how to do something on the platform, point them to the right section by name. If they ask something you genuinely cannot help with, tell them to check Messages to reach a real consultant.
+
+You're not just answering questions, you're helping people build real businesses. Be someone they'd actually want advice from.`
+
+// Default model is GLM-5.2 (https://build.nvidia.com/z-ai/glm-5.2).
+// Override with NVIDIA_MODEL env var if you want to switch to e.g.
+// "meta/llama-3.1-70b-instruct" or "google/gemma-3-12b-it".
+const DEFAULT_MODEL = "z-ai/glm-5.2"
+
 export async function POST(req: NextRequest) {
   try {
+    // Auth: protect your NVIDIA credits from anonymous abuse
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -30,20 +81,15 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Build conversation messages
-    const messages: ChatMessage[] = [
-      {
-        role: "system",
-        content:
-          "You are a helpful AI assistant on the Upmind platform. You help users with startup strategy, business planning, marketing, growth advice, product development, fundraising, and team building. You can also answer general questions on technology, science, education, health, and creative work. Be concise, actionable, and encouraging. Provide specific recommendations when possible. Format your responses with markdown for readability (headers, bullet points, bold, code blocks when helpful).",
-      },
+    // Build conversation: system prompt + last 10 history turns + new message
+    const messages: Array<{ role: string; content: string }> = [
+      { role: "system", content: systemPrompt },
     ]
 
-    // Add history if provided (last 10 messages for context)
     if (history && Array.isArray(history)) {
       for (const msg of history.slice(-10)) {
         messages.push({
-          role: msg.role as "user" | "assistant",
+          role: msg.role,
           content: msg.content,
         })
       }
@@ -51,75 +97,56 @@ export async function POST(req: NextRequest) {
 
     messages.push({ role: "user", content: message })
 
-    // ── Strategy 1: NVIDIA Build (production-grade, works on Vercel) ──
-    if (isNVIDIAConfigured()) {
-      try {
-        const response = await chatWithNVIDIA({ messages })
-        return NextResponse.json({
-          response,
-          model: getNVIDIAModel(),
-          modelLabel: getNVIDIAModelLabel(),
-          provider: "nvidia",
-        })
-      } catch (nvError) {
-        console.error(
-          "NVIDIA Build error, trying fallback:",
-          nvError instanceof Error ? nvError.message : "Unknown error"
-        )
-        // Fall through to next strategy
+    const response = await fetch(
+      "https://integrate.api.nvidia.com/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.NVIDIA_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: process.env.NVIDIA_MODEL || DEFAULT_MODEL,
+          messages,
+          max_tokens: 600,
+          temperature: 0.6,
+          stream: false,
+        }),
       }
-    }
+    )
 
-    // ── Strategy 2: LM Studio (local dev / tunneled) ──
-    if (isLMStudioConfigured()) {
-      try {
-        const response = await chatWithLMStudio({ messages })
-        return NextResponse.json({
-          response,
-          model: "gemma-12b-lmstudio",
-          provider: "lmstudio",
-        })
-      } catch (lmError) {
-        console.error(
-          "LM Studio error, trying Z AI fallback:",
-          lmError instanceof Error ? lmError.message : "Unknown error"
-        )
-      }
-    }
-
-    // ── Strategy 3: Z AI SDK (last-resort fallback) ──
-    try {
-      const ZAIModule = await import("z-ai-web-dev-sdk")
-      const ZAI = ZAIModule.default
-      const zai = await ZAI.create()
-
-      const completion = await zai.chat.completions.create({
-        messages: messages.map((m) => ({
-          role: m.role as "system" | "user" | "assistant",
-          content: m.content,
-        })),
-      })
-
-      const response =
-        completion.choices?.[0]?.message?.content ||
-        "I'm sorry, I couldn't generate a response. Please try again."
-
-      return NextResponse.json({
-        response,
-        model: "z-ai-fallback",
-        provider: "z-ai",
-      })
-    } catch (zaiError) {
+    if (!response.ok) {
+      const errText = await response.text()
       console.error(
-        "Z AI SDK also failed:",
-        zaiError instanceof Error ? zaiError.message : "Unknown error"
+        `NVIDIA API error ${response.status}:`,
+        errText.slice(0, 500)
       )
-      throw zaiError
+      return NextResponse.json(
+        {
+          error: "AI service error",
+          details: `NVIDIA returned ${response.status}`,
+          response:
+            "I'm having trouble connecting right now. Please try again in a moment.",
+        },
+        { status: 500 }
+      )
     }
+
+    const data = await response.json()
+    let reply =
+      data.choices?.[0]?.message?.content ||
+      "I'm sorry, I couldn't generate a response. Please try again."
+    reply = cleanAIResponse(reply)
+
+    return NextResponse.json({
+      response: reply,
+      model: process.env.NVIDIA_MODEL || DEFAULT_MODEL,
+      provider: "nvidia",
+    })
   } catch (error: unknown) {
     console.error("AI Chat error:", error)
-    const errorMessage = error instanceof Error ? error.message : "Unknown error"
-
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error"
     return NextResponse.json(
       {
         error: "Failed to generate response",
@@ -133,38 +160,29 @@ export async function POST(req: NextRequest) {
 }
 
 /**
- * GET endpoint to check AI service status
- * Used by the dashboard search bar to show which model is active.
+ * GET endpoint: AI service status.
+ * Used by the dashboard search bar to display the active model badge.
  */
 export async function GET() {
-  const nvidiaConfigured = isNVIDIAConfigured()
-  const lmStudioConfigured = isLMStudioConfigured()
-
-  let activeModel = "none"
-  let activeProvider = "none"
-  let activeLabel = "AI Offline"
-
-  if (nvidiaConfigured) {
-    activeModel = getNVIDIAModel()
-    activeProvider = "nvidia"
-    activeLabel = getNVIDIAModelLabel()
-  } else if (lmStudioConfigured) {
-    activeModel = process.env.LMSTUDIO_MODEL || "gemma-3-12b-it"
-    activeProvider = "lmstudio"
-    activeLabel = "Gemma 12B (Local)"
-  }
+  const configured = !!process.env.NVIDIA_API_KEY
+  const model = process.env.NVIDIA_MODEL || DEFAULT_MODEL
+  const withoutOrg = model.split("/").pop() || model
+  // Pretty label: z-ai/glm-5.2 -> GLM-5.2, meta/llama-3.1-70b-instruct -> Llama 3.1 70B instruct
+  const label = withoutOrg
+    .replace(/^glm/i, "GLM")
+    .replace(/^llama/i, "Llama")
+    .replace(/^gemma/i, "Gemma")
+    .replace(/-/g, " ")
+    .replace(/\b(\d+b)\b/gi, (m) => m.toUpperCase())
 
   return NextResponse.json({
-    online: nvidiaConfigured || lmStudioConfigured,
-    provider: activeProvider,
-    model: activeModel,
-    label: activeLabel,
-    nvidiaConfigured,
-    lmStudioConfigured,
-    lmStudioBaseUrl: process.env.LMSTUDIO_BASE_URL || "not set",
-    hint:
-      !nvidiaConfigured && !lmStudioConfigured
-        ? "Set NVIDIA_API_KEY in Vercel env vars to enable the AI. Get a free key at https://build.nvidia.com"
-        : undefined,
+    online: configured,
+    provider: configured ? "nvidia" : "none",
+    model,
+    label,
+    nvidiaConfigured: configured,
+    hint: configured
+      ? undefined
+      : "Set NVIDIA_API_KEY in Vercel env vars to enable the AI. Get a free key at https://build.nvidia.com/z-ai/glm-5.2",
   })
 }
