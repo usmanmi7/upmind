@@ -21,9 +21,7 @@ import {
   TrendingUp,
   Loader2,
   Brain,
-  ArrowRight,
   Lock,
-  Zap,
 } from "lucide-react"
 import {
   AIResponse,
@@ -419,47 +417,6 @@ export default function PublicAIAssistantPage() {
               </div>
             </CardContent>
           </Card>
-
-          {/* Sign up CTA (only for non-logged-in users) */}
-          {!isLoggedIn && (
-            <Card className="mt-8 border-0 shadow-md shadow-black/5 dark:shadow-black/20 bg-gradient-to-br from-[#1A2E1A] to-[#2D4A2D]">
-              <CardContent className="p-6 sm:p-8 text-center">
-                <div className="w-12 h-12 rounded-xl bg-[#7CFC00] flex items-center justify-center mx-auto mb-4">
-                  <Zap className="size-6 text-[#1A2E1A]" />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
-                  Unlock the full Upmind experience
-                </h3>
-                <p className="text-white/70 text-sm sm:text-base max-w-xl mx-auto mb-6">
-                  Sign up free to get unlimited AI chats, roadmap tracking,
-                  resource library, consultant booking, and achievement badges.
-                  No credit card required.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shadow-lg shadow-[#7CFC00]/25"
-                  >
-                    <Link href="/auth/signup">
-                      Get Started Free
-                      <ArrowRight className="size-4 ml-1" />
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    size="lg"
-                    variant="outline"
-                    className="border-white/30 text-white hover:bg-white/10"
-                  >
-                    <Link href="/pricing">
-                      View Pricing
-                    </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
         </div>
       </main>
       <Footer />
