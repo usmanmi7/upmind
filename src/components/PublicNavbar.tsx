@@ -2,20 +2,28 @@
 
 import Link from "next/link"
 import { useSession } from "next-auth/react"
-import { ChevronDown, Menu, X, HelpCircle, Briefcase, Phone, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield, Trophy } from "lucide-react"
+import { ChevronDown, Menu, X, HelpCircle, Briefcase, Phone, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield, Trophy, Sparkles, type LucideIcon } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { signOut } from "next-auth/react"
 import * as React from "react"
 
-const navLinks = [
+interface NavLink {
+  label: string;
+  href: string;
+  icon?: LucideIcon;
+  highlight?: boolean;
+}
+
+const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
   { label: "About", href: "/about" },
   { label: "Pricing", href: "/pricing" },
   { label: "Resources", href: "/resources" },
+  { label: "AI Assistant", href: "/ai-assistant", icon: Sparkles, highlight: true },
 ]
 
-const moreLinks = [
+const moreLinks: NavLink[] = [
   { label: "Success Stories", href: "/success-stories", icon: Trophy },
   { label: "Careers", href: "/careers", icon: Briefcase },
   { label: "FAQ", href: "/faq", icon: HelpCircle },
@@ -41,16 +49,24 @@ export default function PublicNavbar() {
 
           {/* Desktop Nav + CTA - Right Aligned */}
           <div className="hidden lg:flex items-center gap-7">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="text-white/80 hover:text-white text-base font-medium capitalize transition-colors relative group"
-              >
-                {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const Icon = link.icon
+              return (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className={`text-base font-medium capitalize transition-colors relative group flex items-center gap-1.5 ${
+                    link.highlight
+                      ? "text-[#7CFC00] hover:text-[#6BE000]"
+                      : "text-white/80 hover:text-white"
+                  }`}
+                >
+                  {link.highlight && Icon && <Icon className="w-4 h-4" />}
+                  {link.label}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
+                </Link>
+              )
+            })}
 
             {/* More Dropdown */}
             <div className="relative">
@@ -71,17 +87,20 @@ export default function PublicNavbar() {
                     transition={{ duration: 0.15 }}
                     className="absolute top-full right-0 mt-2 w-48 bg-[#1A2E1A] border border-white/10 rounded-xl shadow-xl overflow-hidden"
                   >
-                    {moreLinks.map((link) => (
-                      <Link
-                        key={link.label}
-                        href={link.href}
-                        className="flex items-center gap-2 px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 text-sm capitalize transition-colors"
-                        onClick={() => setMoreOpen(false)}
-                      >
-                        <link.icon className="w-4 h-4" />
-                        {link.label}
-                      </Link>
-                    ))}
+                    {moreLinks.map((link) => {
+                      const Icon = link.icon
+                      return (
+                        <Link
+                          key={link.label}
+                          href={link.href}
+                          className="flex items-center gap-2 px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 text-sm capitalize transition-colors"
+                          onClick={() => setMoreOpen(false)}
+                        >
+                          {Icon && <Icon className="w-4 h-4" />}
+                          {link.label}
+                        </Link>
+                      )
+                    })}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -232,16 +251,24 @@ export default function PublicNavbar() {
               className="lg:hidden border-t border-white/10"
             >
               <div className="py-4 space-y-1">
-                {[...navLinks, ...moreLinks].map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    className="block text-white/80 hover:text-white text-base font-medium capitalize py-2.5 px-3 rounded-lg hover:bg-white/5 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                {[...navLinks, ...moreLinks].map((link) => {
+                  const Icon = link.icon
+                  return (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      className={`flex items-center gap-2 text-base font-medium capitalize py-2.5 px-3 rounded-lg transition-colors ${
+                        link.highlight
+                          ? "text-[#7CFC00] hover:bg-[#7CFC00]/10"
+                          : "text-white/80 hover:text-white hover:bg-white/5"
+                      }`}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {link.highlight && Icon && <Icon className="w-4 h-4" />}
+                      {link.label}
+                    </Link>
+                  )
+                })}
                 <div className="pt-4 space-y-3 border-t border-white/10 mt-2">
                   {session ? (
                     <>

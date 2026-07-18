@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { useSession } from "next-auth/react"
-import Navbar from "@/components/Navbar"
+import PublicNavbar from "@/components/PublicNavbar"
 import Footer from "@/components/Footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -202,7 +202,7 @@ export default function PublicAIAssistantPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F5F5F5] dark:bg-[#1A2E1A]">
-      <Navbar />
+      <PublicNavbar />
       <main className="flex-1 pt-16 sm:pt-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           {/* Header */}

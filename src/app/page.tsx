@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useSession } from "next-auth/react"
-import Navbar from "@/components/Navbar"
+import PublicNavbar from "@/components/PublicNavbar"
 import Hero from "@/components/Hero"
 import Stats from "@/components/Stats"
 import Partners from "@/components/Partners"
@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <PublicNavbar />
       <main className="flex-1">
         <Hero />
         <Stats />
