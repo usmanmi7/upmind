@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useSession } from "next-auth/react"
-import { ChevronDown, Menu, X, HelpCircle, Briefcase, Phone, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield } from "lucide-react"
+import { ChevronDown, Menu, X, HelpCircle, Briefcase, Phone, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield, Trophy } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { signOut } from "next-auth/react"
 import * as React from "react"
@@ -13,10 +13,10 @@ const navLinks = [
   { label: "About", href: "/about" },
   { label: "Pricing", href: "/pricing" },
   { label: "Resources", href: "/resources" },
-  { label: "Success Stories", href: "/success-stories" },
 ]
 
 const moreLinks = [
+  { label: "Success Stories", href: "/success-stories", icon: Trophy },
   { label: "Careers", href: "/careers", icon: Briefcase },
   { label: "FAQ", href: "/faq", icon: HelpCircle },
 ]
