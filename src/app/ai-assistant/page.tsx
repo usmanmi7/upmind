@@ -462,7 +462,7 @@ export default function PublicAIAssistantPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <PublicNavbar />
-      <div className="flex flex-1 pt-16 sm:pt-20">
+      <div className="flex flex-1">
         {/* Desktop sidebar (sticky) */}
         <aside className="hidden lg:flex w-72 shrink-0 border-r border-black/5 dark:border-white/10 sticky top-16 sm:top-20 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)]">
           <ChatSidebarContent {...sidebarProps} />
