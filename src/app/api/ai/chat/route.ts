@@ -6,15 +6,15 @@ export const runtime = "nodejs"
 export const maxDuration = 60 // NVIDIA inference can take 10-30s on cold start
 
 // ─── Response cleanup ────────────────────────────────────────────────────────
-// Strips markdown artifacts so Alex's replies read like plain text messages.
-function cleanAIResponse(text: string): string {
+// Strips markdown artifacts so Alex's text fields read like plain text.
+function cleanText(text: string): string {
   return text
     .replace(/\*\*/g, "")
     .replace(/\*/g, "")
     .replace(/—/g, ",")
     .replace(/–/g, ",")
     .replace(/#{1,6}\s?/g, "")
-    .replace(/^\s*-\s+/gm, "")
+    .replace(/^\s*[-•]\s+/gm, "")
     .trim()
 }
 
@@ -32,7 +32,6 @@ Do not use bullet points with dashes.
 Do not use hashtags or markdown headers.
 Write only in plain sentences like normal human texting or talking.
 If you want to emphasize a word, just write it normally in the sentence, no symbols around it.
-If you need to list things, write them as a flowing sentence or say "First... then... after that..."
 
 WHAT YOU HELP WITH
 Market opportunity and market analysis
@@ -56,12 +55,65 @@ This is Upmind, a SaaS platform for founders and businesses to get consulting he
 
 If a user asks how to do something on the platform, point them to the right section by name. If they ask something you genuinely cannot help with, tell them to check Messages to reach a real consultant.
 
-You're not just answering questions, you're helping people build real businesses. Be someone they'd actually want advice from.`
+You're not just answering questions, you're helping people build real businesses. Be someone they'd actually want advice from.
+
+RESPONSE FORMAT, FOLLOW STRICTLY
+Always answer using this exact JSON structure, nothing outside of it.
+
+{
+  "heading": "a short punchy title for the answer, 5 to 8 words",
+  "description": "a 1 to 2 sentence plain explanation of the answer, no symbols, natural sentences only",
+  "subheading": "a short title introducing the steps or breakdown, 3 to 6 words",
+  "steps": [
+    "first point written as a full natural sentence, no symbols",
+    "second point written as a full natural sentence, no symbols",
+    "third point written as a full natural sentence, no symbols"
+  ]
+}
+
+Do not include markdown, asterisks, dashes, or any symbols anywhere in the text values.
+Use as many steps as make sense for the answer, usually 3 to 6.
+Only return valid JSON, nothing before or after it. No code fences, no explanations outside the JSON.`
 
 // Default model is GLM-5.2 (https://build.nvidia.com/z-ai/glm-5.2).
 // Override with NVIDIA_MODEL env var if you want to switch to e.g.
 // "meta/llama-3.1-70b-instruct" or "google/gemma-3-12b-it".
 const DEFAULT_MODEL = "z-ai/glm-5.2"
+
+interface StructuredResponse {
+  heading?: string
+  description?: string
+  subheading?: string
+  steps?: string[]
+}
+
+function parseStructuredResponse(raw: string): StructuredResponse {
+  // Strip stray code fences if the model adds them
+  let cleaned = raw.replace(/```json|```/g, "").trim()
+
+  // Find the first { and last } to extract the JSON object
+  const firstBrace = cleaned.indexOf("{")
+  const lastBrace = cleaned.lastIndexOf("}")
+  if (firstBrace === -1 || lastBrace === -1 || lastBrace <= firstBrace) {
+    throw new Error("No JSON object found in response")
+  }
+  const jsonStr = cleaned.slice(firstBrace, lastBrace + 1)
+
+  const parsed = JSON.parse(jsonStr)
+
+  return {
+    heading: parsed.heading ? cleanText(String(parsed.heading)) : undefined,
+    description: parsed.description
+      ? cleanText(String(parsed.description))
+      : undefined,
+    subheading: parsed.subheading
+      ? cleanText(String(parsed.subheading))
+      : undefined,
+    steps: Array.isArray(parsed.steps)
+      ? parsed.steps.map((s: unknown) => cleanText(String(s)))
+      : undefined,
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -108,7 +160,7 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({
           model: process.env.NVIDIA_MODEL || DEFAULT_MODEL,
           messages,
-          max_tokens: 600,
+          max_tokens: 700,
           temperature: 0.6,
           stream: false,
         }),
@@ -133,13 +185,36 @@ export async function POST(req: NextRequest) {
     }
 
     const data = await response.json()
-    let reply =
+    const raw =
       data.choices?.[0]?.message?.content ||
       "I'm sorry, I couldn't generate a response. Please try again."
-    reply = cleanAIResponse(reply)
+
+    // Try to parse the structured JSON response.
+    // If it fails, fall back to plain text so the UI still shows something.
+    let structured: StructuredResponse = {}
+    let plainResponse = raw
+
+    try {
+      structured = parseStructuredResponse(raw)
+      // Use description as the plain-text version (for history & fallback)
+      plainResponse =
+        structured.description ||
+        structured.heading ||
+        "I'm sorry, I couldn't generate a response. Please try again."
+    } catch {
+      // JSON parse failed, use raw cleaned text as plain response
+      plainResponse = cleanText(raw)
+      structured = {}
+    }
 
     return NextResponse.json({
-      response: reply,
+      // Always present: plain text version (for history, errors, fallback UI)
+      response: plainResponse,
+      // Structured fields: only present when JSON parse succeeded
+      heading: structured.heading,
+      description: structured.description,
+      subheading: structured.subheading,
+      steps: structured.steps,
       model: process.env.NVIDIA_MODEL || DEFAULT_MODEL,
       provider: "nvidia",
     })

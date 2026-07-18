@@ -19,12 +19,19 @@ import {
   Loader2,
   Brain,
 } from "lucide-react"
+import {
+  AIResponse,
+  type StructuredAIResponse,
+} from "@/components/dashboard/AIResponse"
 
 interface ChatMessage {
   id: string
   role: "user" | "assistant"
   content: string
   timestamp: Date
+  /** Structured fields (heading/description/subheading/steps). Only present
+   * for assistant messages where the API returned valid JSON. */
+  structured?: StructuredAIResponse
 }
 
 const quickPrompts = [
@@ -131,11 +138,23 @@ export default function AIAssistantPage() {
       // Even on error, use the fallback response if provided
       const responseText = data.response || data.details || "I'm sorry, I couldn't generate a response. Please try again."
 
+      // Capture structured fields if the API returned valid JSON
+      const structured: StructuredAIResponse | undefined =
+        data.heading || data.description || data.subheading || data.steps?.length
+          ? {
+              heading: data.heading,
+              description: data.description,
+              subheading: data.subheading,
+              steps: data.steps,
+            }
+          : undefined
+
       const assistantMsg: ChatMessage = {
         id: `msg-${Date.now()}-ai`,
         role: "assistant",
         content: responseText,
         timestamp: new Date(),
+        structured,
       }
 
       setMessages((prev) => [...prev, assistantMsg])
@@ -255,13 +274,20 @@ export default function AIAssistantPage() {
                           </div>
                         )}
                         <div
-                          className={`px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${
+                          className={`px-4 py-3 rounded-2xl ${
                             msg.role === "user"
-                              ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-br-md"
+                              ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-br-md text-sm leading-relaxed whitespace-pre-wrap"
                               : "bg-muted/50 rounded-bl-md"
                           }`}
                         >
-                          {msg.content}
+                          {msg.role === "assistant" && msg.structured ? (
+                            <AIResponse
+                              data={msg.structured}
+                              fallback={msg.content}
+                            />
+                          ) : (
+                            msg.content
+                          )}
                         </div>
                       </div>
                     </div>
