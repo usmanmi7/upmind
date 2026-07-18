@@ -62,14 +62,14 @@ export function ChatSidebarContent({
   onDelete,
 }: ChatSidebarProps) {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-w-0 overflow-hidden">
       {/* Header: brand + New chat */}
-      <div className="px-4 pt-4 pb-3 space-y-3">
-        <Link href="/ai-assistant" className="flex items-center gap-2 text-sm font-semibold">
-          <span className="size-7 rounded-lg bg-[#7CFC00]/15 text-[#7CFC00] grid place-items-center">
+      <div className="px-4 pt-4 pb-3 space-y-3 shrink-0">
+        <Link href="/ai-assistant" className="flex items-center gap-2 text-sm font-semibold min-w-0">
+          <span className="size-7 rounded-lg bg-[#7CFC00]/15 text-[#7CFC00] grid place-items-center shrink-0">
             <Sparkles className="size-4" />
           </span>
-          <span className="text-foreground">Upmind AI</span>
+          <span className="text-foreground truncate">Upmind AI</span>
         </Link>
 
         <Button
@@ -77,18 +77,18 @@ export function ChatSidebarContent({
           variant="outline"
           className="w-full justify-start gap-2 rounded-lg border-black/10 dark:border-white/15 hover:border-[#7CFC00]/50 hover:text-[#7CFC00] hover:bg-[#7CFC00]/5"
         >
-          <Plus className="size-4" />
-          New chat
+          <Plus className="size-4 shrink-0" />
+          <span className="truncate">New chat</span>
         </Button>
       </div>
 
       {/* Auth banner */}
       {!isAuthenticated && (
-        <div className="mx-4 mb-2 px-3 py-2 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 text-xs text-amber-800 dark:text-amber-200 flex items-start gap-2">
+        <div className="mx-4 mb-2 px-3 py-2 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 text-xs text-amber-800 dark:text-amber-200 flex items-start gap-2 shrink-0">
           <LogIn className="size-3.5 mt-0.5 shrink-0" />
-          <span>
+          <span className="min-w-0 break-words">
             Chats are kept only for this session.{" "}
-            <Link href="/auth/login" className="underline font-medium">
+            <Link href="/auth/login" className="underline font-medium whitespace-nowrap">
               Sign in
             </Link>{" "}
             to save them.
@@ -97,13 +97,13 @@ export function ChatSidebarContent({
       )}
 
       {/* Chat list header */}
-      <div className="px-2 pb-2">
+      <div className="px-2 pb-2 shrink-0">
         <div className="px-2 py-1.5 text-[11px] uppercase tracking-wider text-muted-foreground font-medium">
           {isAuthenticated ? "Your chats" : "Session chats"}
         </div>
       </div>
 
-      <ScrollArea className="flex-1 px-2">
+      <ScrollArea className="flex-1 px-2 min-w-0">
         {loading ? (
           <div className="px-2 py-4 space-y-2">
             {[1, 2, 3, 4].map((i) => (
@@ -169,7 +169,7 @@ function ChatRow({ chat, active, onSelect, onRename, onDelete }: ChatRowProps) {
             if (e.key === "Enter") commit()
             if (e.key === "Escape") setEditing(false)
           }}
-          className="h-8 text-sm rounded-md"
+          className="h-8 text-sm rounded-md min-w-0 flex-1"
         />
         <Button size="icon" variant="ghost" className="size-8 shrink-0" onClick={commit}>
           <Check className="size-4" />
@@ -199,7 +199,7 @@ function ChatRow({ chat, active, onSelect, onRename, onDelete }: ChatRowProps) {
           }
         }}
         className={cn(
-          "group flex items-center gap-2 px-2.5 py-2 rounded-lg cursor-pointer text-sm transition-colors",
+          "group flex items-center gap-2 px-2.5 py-2 rounded-lg cursor-pointer text-sm transition-colors overflow-hidden",
           active
             ? "bg-[#7CFC00]/10 text-foreground"
             : "hover:bg-muted/60 text-muted-foreground hover:text-foreground"
@@ -211,9 +211,11 @@ function ChatRow({ chat, active, onSelect, onRename, onDelete }: ChatRowProps) {
             active ? "text-[#7CFC00]" : "text-muted-foreground/70"
           )}
         />
-        <div className="flex-1 min-w-0">
-          <div className="truncate font-medium leading-tight">{chat.title}</div>
-          <div className="text-[10.5px] text-muted-foreground/80 leading-tight mt-0.5">
+        <div className="flex-1 min-w-0 overflow-hidden">
+          <div className="truncate font-medium leading-tight" title={chat.title}>
+            {chat.title}
+          </div>
+          <div className="text-[10.5px] text-muted-foreground/80 leading-tight mt-0.5 truncate">
             {relativeTime(chat.updatedAt)}
             {typeof chat.messageCount === "number" && chat.messageCount > 0
               ? ` · ${chat.messageCount} msg`
@@ -222,7 +224,7 @@ function ChatRow({ chat, active, onSelect, onRename, onDelete }: ChatRowProps) {
         </div>
 
         {/* Hover actions */}
-        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button

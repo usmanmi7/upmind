@@ -481,7 +481,7 @@ export default function PublicAIAssistantPage() {
       <PublicNavbar />
       <div className="flex flex-1">
         {/* Desktop sidebar (sticky) */}
-        <aside className="hidden lg:flex w-72 shrink-0 border-r border-black/5 dark:border-white/10 sticky top-16 sm:top-20 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)]">
+        <aside className="hidden lg:flex w-72 shrink-0 border-r border-black/5 dark:border-white/10 sticky top-16 sm:top-20 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] overflow-hidden">
           <ChatSidebarContent {...sidebarProps} />
         </aside>
 
@@ -508,7 +508,7 @@ export default function PublicAIAssistantPage() {
                     <PanelLeft className="size-5" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="w-80 p-0 pt-10 flex flex-col">
+                <SheetContent side="left" className="w-80 max-w-[85vw] p-0 pt-10 flex flex-col overflow-hidden">
                   <SheetHeader className="sr-only">
                     <SheetTitle>Chat history</SheetTitle>
                   </SheetHeader>
