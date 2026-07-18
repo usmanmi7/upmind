@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Badge } from "@/components/ui/badge"
 import {
   Sparkles,
   Send,
@@ -251,9 +250,6 @@ export default function PublicAIAssistantPage() {
                 </div>
               </PopoverContent>
             </Popover>
-            <Badge variant="secondary" className="shrink-0">
-              <Brain className="size-3 mr-1 text-[#7CFC00]" /> Powered by {modelLabel}
-            </Badge>
           </div>
 
           {/* Status warning if offline */}
