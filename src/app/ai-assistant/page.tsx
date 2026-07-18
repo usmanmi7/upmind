@@ -479,55 +479,28 @@ export default function PublicAIAssistantPage() {
                 </div>
               )}
 
-              {/* Header */}
-              <div className="flex items-center justify-between gap-3 py-4">
-                <div className="flex items-center gap-3 min-w-0">
-                  {/* Mobile sidebar toggle */}
-                  <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-                    <SheetTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="lg:hidden h-9 w-9 shrink-0"
-                        aria-label="Open chat history"
-                      >
-                        <PanelLeft className="size-5" />
-                      </Button>
-                    </SheetTrigger>
-                    <SheetContent side="left" className="w-80 p-0 pt-10 flex flex-col">
-                      <SheetHeader className="sr-only">
-                        <SheetTitle>Chat history</SheetTitle>
-                      </SheetHeader>
-                      <ChatSidebarContent {...sidebarProps} />
-                    </SheetContent>
-                  </Sheet>
+              {/* Mobile sidebar toggle (top-left) */}
+              <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="lg:hidden h-9 w-9 shrink-0 mb-2"
+                    aria-label="Open chat history"
+                  >
+                    <PanelLeft className="size-5" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-80 p-0 pt-10 flex flex-col">
+                  <SheetHeader className="sr-only">
+                    <SheetTitle>Chat history</SheetTitle>
+                  </SheetHeader>
+                  <ChatSidebarContent {...sidebarProps} />
+                </SheetContent>
+              </Sheet>
 
-                  <div className="relative shrink-0">
-                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shadow-md shadow-[#7CFC00]/20">
-                      <Sparkles className="size-5 text-white" />
-                    </div>
-                    <span
-                      className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-background ${
-                        isOnline ? "bg-[#7CFC00]" : "bg-amber-400"
-                      }`}
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <h2 className="text-sm font-semibold text-foreground truncate">
-                        Upmind AI
-                      </h2>
-                      <span className="text-[10px] font-medium uppercase tracking-wider text-[#7CFC00] bg-[#7CFC00]/10 px-1.5 py-0.5 rounded shrink-0">
-                        {modelLabel}
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-muted-foreground truncate">
-                      {isOnline ? "Online • typically replies instantly" : "Offline"}
-                    </p>
-                  </div>
-                </div>
-
-                {messages.length > 0 && (
+              {messages.length > 0 && (
+                <div className="flex justify-end py-2">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -537,8 +510,8 @@ export default function PublicAIAssistantPage() {
                     <RotateCcw className="size-3.5" />
                     <span className="hidden sm:inline">New chat</span>
                   </Button>
-                )}
-              </div>
+                </div>
+              )}
 
               {/* Messages (flow with page) */}
               <div className="py-4">
