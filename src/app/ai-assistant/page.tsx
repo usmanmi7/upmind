@@ -338,10 +338,10 @@ export default function PublicAIAssistantPage() {
                                 </div>
                               )}
                               <div
-                                className={`px-4 py-3 rounded-2xl ${
+                                className={`${
                                   msg.role === "user"
-                                    ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-br-md text-sm leading-relaxed whitespace-pre-wrap shadow-sm shadow-[#7CFC00]/20"
-                                    : "bg-white dark:bg-[#1A2E1A] border border-black/5 dark:border-white/10 rounded-bl-md shadow-sm"
+                                    ? "px-4 py-3 rounded-2xl bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-br-md text-sm leading-relaxed whitespace-pre-wrap shadow-sm shadow-[#7CFC00]/20"
+                                    : "px-1 py-1 text-sm leading-relaxed"
                                 }`}
                               >
                                 {msg.role === "assistant" && msg.structured ? (
@@ -362,7 +362,7 @@ export default function PublicAIAssistantPage() {
                           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0 shadow-sm">
                             <Sparkles className="size-4 text-white" />
                           </div>
-                          <div className="bg-white dark:bg-[#1A2E1A] border border-black/5 dark:border-white/10 rounded-2xl rounded-bl-md px-4 py-3.5 shadow-sm">
+                          <div className="px-1 py-2">
                             <div className="flex gap-1">
                               <div className="w-2 h-2 rounded-full bg-[#7CFC00]/60 animate-bounce [animation-delay:0ms]" />
                               <div className="w-2 h-2 rounded-full bg-[#7CFC00]/60 animate-bounce [animation-delay:150ms]" />
