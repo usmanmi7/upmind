@@ -3,7 +3,6 @@
 import * as React from "react"
 import { useSession } from "next-auth/react"
 import PublicNavbar from "@/components/PublicNavbar"
-import Footer from "@/components/Footer"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -723,7 +722,6 @@ export default function PublicAIAssistantPage() {
             </div>
           </div>
 
-          <Footer />
         </div>
       </div>
     </div>
