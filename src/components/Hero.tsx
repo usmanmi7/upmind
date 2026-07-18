@@ -19,7 +19,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-[#1A2E1A]/85" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16 w-full">
+      <div className="relative z-10 max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-16 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
           {/* Left Side - Text & CTAs */}
