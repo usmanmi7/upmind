@@ -155,7 +155,7 @@ export default function AIAssistantPage() {
           </p>
         </div>
         <Badge variant="secondary" className="w-fit">
-          <Brain className="size-3 mr-1" /> Powered by AI
+          <Brain className="size-3 mr-1" /> Powered by Gemma 12B
         </Badge>
       </div>
 
@@ -292,7 +292,7 @@ export default function AIAssistantPage() {
               )}
               <div className="flex items-center gap-2">
                 <Input
-                  placeholder="Ask me anything about your startup..."
+                  placeholder="Ask Gemma 12B anything about your startup..."
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   className="flex-1"

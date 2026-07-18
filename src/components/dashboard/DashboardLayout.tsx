@@ -100,6 +100,11 @@ const sidebarItems: SidebarItem[] = [
     icon: BarChart3,
   },
   {
+    title: "AI Assistant",
+    href: "/dashboard/ai-assistant",
+    icon: Sparkles,
+  },
+  {
     title: "Subscription",
     href: "/dashboard/subscription",
     icon: CreditCard,
