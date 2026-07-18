@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
 import { useSession } from "next-auth/react"
 import PublicNavbar from "@/components/PublicNavbar"
 import Footer from "@/components/Footer"
@@ -20,14 +19,7 @@ import {
   TrendingUp,
   Loader2,
   Brain,
-  Lock,
-  Info,
 } from "lucide-react"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
 import {
   AIResponse,
   type StructuredAIResponse,
@@ -108,7 +100,6 @@ export default function PublicAIAssistantPage() {
   const [input, setInput] = React.useState("")
   const [loading, setLoading] = React.useState(false)
   const [status, setStatus] = React.useState<AIStatus | null>(null)
-  const [rateLimitRemaining, setRateLimitRemaining] = React.useState<number | null>(null)
   const messagesEndRef = React.useRef<HTMLDivElement>(null)
   const inputRef = React.useRef<HTMLInputElement>(null)
 
@@ -156,11 +147,6 @@ export default function PublicAIAssistantPage() {
 
       const data = await res.json()
 
-      // Track rate limit if returned
-      if (data.rateLimit) {
-        setRateLimitRemaining(data.rateLimit.remaining)
-      }
-
       const responseText =
         data.response ||
         data.details ||
@@ -200,58 +186,12 @@ export default function PublicAIAssistantPage() {
 
   const modelLabel = status?.label || "GLM-5.2"
   const isOnline = status?.online ?? false
-  const isLoggedIn = !!session?.user
-  const rateLimitMax = status?.rateLimit?.max || 10
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F5F5F5] dark:bg-[#1A2E1A]">
       <PublicNavbar />
       <main className="flex-1 pt-16 sm:pt-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-20">
-          {/* Header */}
-          <div className="flex items-center justify-end gap-3 mb-8">
-            <Popover>
-              <PopoverTrigger asChild>
-                <button
-                  aria-label="About this assistant"
-                  className="w-7 h-7 rounded-full bg-muted/60 hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors"
-                >
-                  <Info className="size-4" />
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className="w-80 sm:w-96 p-4" align="end">
-                <div className="space-y-3">
-                  <div>
-                    <h3 className="text-sm font-semibold flex items-center gap-2">
-                      <Sparkles className="size-4 text-[#7CFC00]" />
-                      About this assistant
-                    </h3>
-                    <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                      Get instant startup advice from Upmind&apos;s AI consultant. Ask about
-                      strategy, planning, growth, fundraising, or anything business-related.
-                    </p>
-                  </div>
-                  {!isLoggedIn && isOnline && (
-                    <div className="pt-3 border-t flex items-start gap-2">
-                      <Lock className="size-3.5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
-                      <div className="text-xs text-muted-foreground leading-relaxed">
-                        <strong className="text-foreground">Free demo:</strong> You can ask up
-                        to {rateLimitMax} questions per minute.
-                        {rateLimitRemaining !== null && (
-                          <> You have {rateLimitRemaining} remaining.</>
-                        )}{" "}
-                        <Link href="/auth/signup" className="underline font-medium text-foreground">
-                          Sign up free
-                        </Link>{" "}
-                        for unlimited access, dashboard tracking, and direct consultant booking.
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </PopoverContent>
-            </Popover>
-          </div>
-
           {/* Status warning if offline */}
           {!isOnline && status?.hint && (
             <div className="mb-6 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900">
