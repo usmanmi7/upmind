@@ -210,53 +210,47 @@ export default function PublicAIAssistantPage() {
       <main className="flex-1 pt-16 sm:pt-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           {/* Header */}
-          <div className="flex items-center justify-between gap-4 mb-8">
-            <h1 className="text-2xl sm:text-3xl font-heading font-bold flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
-                <Sparkles className="size-5 text-white" />
-              </div>
-              AI Assistant
-              <Popover>
-                <PopoverTrigger asChild>
-                  <button
-                    aria-label="About this assistant"
-                    className="w-7 h-7 rounded-full bg-muted/60 hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors"
-                  >
-                    <Info className="size-4" />
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent className="w-80 sm:w-96 p-4" align="start">
-                  <div className="space-y-3">
-                    <div>
-                      <h3 className="text-sm font-semibold flex items-center gap-2">
-                        <Sparkles className="size-4 text-[#7CFC00]" />
-                        About this assistant
-                      </h3>
-                      <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                        Get instant startup advice from Upmind&apos;s AI consultant. Ask about
-                        strategy, planning, growth, fundraising, or anything business-related.
-                      </p>
-                    </div>
-                    {!isLoggedIn && isOnline && (
-                      <div className="pt-3 border-t flex items-start gap-2">
-                        <Lock className="size-3.5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
-                        <div className="text-xs text-muted-foreground leading-relaxed">
-                          <strong className="text-foreground">Free demo:</strong> You can ask up
-                          to {rateLimitMax} questions per minute.
-                          {rateLimitRemaining !== null && (
-                            <> You have {rateLimitRemaining} remaining.</>
-                          )}{" "}
-                          <Link href="/auth/signup" className="underline font-medium text-foreground">
-                            Sign up free
-                          </Link>{" "}
-                          for unlimited access, dashboard tracking, and direct consultant booking.
-                        </div>
-                      </div>
-                    )}
+          <div className="flex items-center justify-end gap-3 mb-8">
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  aria-label="About this assistant"
+                  className="w-7 h-7 rounded-full bg-muted/60 hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors"
+                >
+                  <Info className="size-4" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 sm:w-96 p-4" align="end">
+                <div className="space-y-3">
+                  <div>
+                    <h3 className="text-sm font-semibold flex items-center gap-2">
+                      <Sparkles className="size-4 text-[#7CFC00]" />
+                      About this assistant
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
+                      Get instant startup advice from Upmind&apos;s AI consultant. Ask about
+                      strategy, planning, growth, fundraising, or anything business-related.
+                    </p>
                   </div>
-                </PopoverContent>
-              </Popover>
-            </h1>
+                  {!isLoggedIn && isOnline && (
+                    <div className="pt-3 border-t flex items-start gap-2">
+                      <Lock className="size-3.5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                      <div className="text-xs text-muted-foreground leading-relaxed">
+                        <strong className="text-foreground">Free demo:</strong> You can ask up
+                        to {rateLimitMax} questions per minute.
+                        {rateLimitRemaining !== null && (
+                          <> You have {rateLimitRemaining} remaining.</>
+                        )}{" "}
+                        <Link href="/auth/signup" className="underline font-medium text-foreground">
+                          Sign up free
+                        </Link>{" "}
+                        for unlimited access, dashboard tracking, and direct consultant booking.
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </PopoverContent>
+            </Popover>
             <Badge variant="secondary" className="shrink-0">
               <Brain className="size-3 mr-1 text-[#7CFC00]" /> Powered by {modelLabel}
             </Badge>
