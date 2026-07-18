@@ -4,8 +4,9 @@ import { authOptions } from "@/lib/auth"
 import {
   AI_SYSTEM_PROMPT,
   cleanText,
-  parseStructuredResponse,
+  parseStructuredResponseSafe,
   derivePlainResponse,
+  looksLikeJson,
   type StructuredAIResponse,
 } from "@/lib/ai-prompt"
 
@@ -93,18 +94,23 @@ export async function POST(req: NextRequest) {
       data.choices?.[0]?.message?.content ||
       "I'm sorry, I couldn't generate a response. Please try again."
 
-    // Try to parse the structured JSON response.
-    // If it fails, fall back to plain text so the UI still shows something.
+    // Parse the structured JSON response with a regex-based fallback so we
+    // never dump raw JSON at the user when the model emits slightly
+    // malformed JSON (extra quotes, trailing commas, unescaped newlines).
     let structured: StructuredAIResponse = {}
     let plainResponse = raw
 
-    try {
-      structured = parseStructuredResponse(raw)
+    const { structured: parsed } = parseStructuredResponseSafe(raw)
+    structured = parsed
+    const derived = derivePlainResponse(structured)
+
+    if (derived) {
+      plainResponse = derived
+    } else if (looksLikeJson(raw)) {
       plainResponse =
-        derivePlainResponse(structured) ||
-        "I'm sorry, I couldn't generate a response. Please try again."
-    } catch {
-      // JSON parse failed, use raw cleaned text as plain response
+        "I had trouble formatting that response. Could you try asking again?"
+      structured = {}
+    } else {
       plainResponse = cleanText(raw)
       structured = {}
     }

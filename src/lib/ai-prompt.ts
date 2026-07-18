@@ -204,7 +204,9 @@ function cleanOption(opt: unknown): ComparisonOption | undefined {
  * Strips code fences, extracts the outermost JSON object, and cleans each
  * text field of markdown artifacts.
  *
- * Throws if no valid JSON object can be extracted.
+ * Throws if no valid JSON object can be extracted. Use
+ * `parseStructuredResponseSafe` for a never-throws wrapper that falls back
+ * to regex-based field extraction.
  */
 export function parseStructuredResponse(raw: string): StructuredAIResponse {
   const cleaned = raw.replace(/```json|```/g, "").trim()
@@ -244,6 +246,136 @@ export function parseStructuredResponse(raw: string): StructuredAIResponse {
       typeof parsed.question === "string"
         ? cleanText(parsed.question)
         : undefined,
+  }
+}
+
+/**
+ * Regex-based fallback field extractor. Used when JSON.parse fails but the
+ * raw text clearly contains JSON-like fields.
+ *
+ * Handles common LLM JSON mistakes:
+ *  - Extra quotes around values: "responseType":" "clarify"
+ *  - Single quotes instead of double quotes
+ *  - Trailing commas
+ *  - Unescaped newlines inside string values
+ *
+ * Returns whatever fields it could extract. Empty object if nothing matched.
+ */
+function tryRegexExtraction(raw: string): StructuredAIResponse {
+  const result: StructuredAIResponse = {}
+
+  // Match "key": "value" — value can contain escaped quotes (\") and any
+  // non-quote/non-backslash char. Stops at the first unescaped quote.
+  const extractString = (key: string): string | undefined => {
+    const re = new RegExp(
+      `"${key}"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"`,
+      "i"
+    )
+    const m = raw.match(re)
+    if (!m) return undefined
+    return cleanText(
+      m[1]
+        .replace(/\\"/g, '"')
+        .replace(/\\n/g, " ")
+        .replace(/\\\\/g, "\\")
+    )
+  }
+
+  // Match "key": ["v1", "v2", ...]
+  const extractStringArray = (key: string): string[] | undefined => {
+    const re = new RegExp(`"${key}"\\s*:\\s*\\[([\\s\\S]*?)\\]`, "i")
+    const m = raw.match(re)
+    if (!m) return undefined
+    const items = m[1].match(/"((?:[^"\\\\]|\\\\.)*)"/g)
+    if (!items || items.length === 0) return undefined
+    return items.map((s) =>
+      cleanText(
+        s
+          .replace(/^"|"$/g, "")
+          .replace(/\\"/g, '"')
+          .replace(/\\n/g, " ")
+          .replace(/\\\\/g, "\\")
+      )
+    )
+  }
+
+  // Match "key": { "label": "...", "text": "..." }
+  const extractOption = (key: string): ComparisonOption | undefined => {
+    const re = new RegExp(`"${key}"\\s*:\\s*\\{([\\s\\S]*?)\\}`, "i")
+    const m = raw.match(re)
+    if (!m) return undefined
+    const inner = m[1]
+    const labelMatch = inner.match(
+      /"label"\s*:\s*"((?:[^"\\]|\\.)*)"/i
+    )
+    const textMatch = inner.match(
+      /"text"\s*:\s*"((?:[^"\\]|\\.)*)"/i
+    )
+    if (!labelMatch && !textMatch) return undefined
+    return {
+      label: labelMatch ? cleanText(labelMatch[1]) : undefined,
+      text: textMatch
+        ? cleanText(textMatch[1].replace(/\\"/g, '"').replace(/\\n/g, " "))
+        : undefined,
+    }
+  }
+
+  const rt = extractString("responseType")
+  if (rt) result.responseType = rt as AIResponseType
+  result.heading = extractString("heading")
+  result.description = extractString("description")
+  result.subheading = extractString("subheading")
+  result.answer = extractString("answer")
+  result.question = extractString("question")
+  result.steps = extractStringArray("steps")
+  result.paragraphs = extractStringArray("paragraphs")
+  result.optionA = extractOption("optionA")
+  result.optionB = extractOption("optionB")
+
+  // If responseType didn't parse cleanly (common with malformed JSON like
+  // "responseType":" "clarify"), infer it from whichever fields we did
+  // extract. This lets the frontend pick the right view component.
+  if (!result.responseType) {
+    if (result.question) result.responseType = "clarify"
+    else if (result.optionA || result.optionB) result.responseType = "comparison"
+    else if (result.answer) result.responseType = "quick"
+    else if (result.paragraphs?.length) result.responseType = "paragraph"
+    else if (result.steps?.length) result.responseType = "steps"
+  }
+
+  return result
+}
+
+/**
+ * Returns true if the raw text looks like a JSON object (starts with `{`
+ * after stripping code fences and whitespace). Used to decide whether to
+ * show a friendly fallback message vs. the raw text.
+ */
+export function looksLikeJson(raw: string): boolean {
+  const trimmed = raw.replace(/```json|```/g, "").trim()
+  return trimmed.startsWith("{") && trimmed.lastIndexOf("}") > 0
+}
+
+/**
+ * Never-throws wrapper around parseStructuredResponse.
+ *
+ * Strategy:
+ *  1. Try strict JSON.parse via parseStructuredResponse.
+ *  2. If that throws, try regex-based field extraction.
+ *  3. Return whatever we got (possibly an empty object).
+ *
+ * The caller can check `looksLikeJson(raw)` to decide whether to show a
+ * friendly fallback message when extraction also failed.
+ */
+export function parseStructuredResponseSafe(raw: string): {
+  structured: StructuredAIResponse
+  usedFallback: boolean
+} {
+  try {
+    return { structured: parseStructuredResponse(raw), usedFallback: false }
+  } catch {
+    const extracted = tryRegexExtraction(raw)
+    return { structured: extracted, usedFallback: true }
   }
 }
 

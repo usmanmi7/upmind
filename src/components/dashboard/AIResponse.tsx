@@ -80,8 +80,9 @@ export function AIResponse({ data, fallback }: AIResponseProps) {
 /**
  * Resolve the effective responseType.
  * Prefers the new `responseType` field; falls back to mapping the legacy
- * `style` field; finally defaults to "paragraph" so we never silently
- * default to numbered steps for non-how-to questions.
+ * `style` field; then infers from whichever payload fields are present;
+ * finally defaults to "paragraph" so we never silently default to numbered
+ * steps for non-how-to questions.
  */
 function resolveResponseType(data: StructuredAIResponse): AIResponseType {
   if (data.responseType) return data.responseType
@@ -99,8 +100,18 @@ function resolveResponseType(data: StructuredAIResponse): AIResponseType {
     case "clarify":
       return "clarify"
     default:
-      return "paragraph"
+      break
   }
+
+  // Infer from payload — handles old saved messages and any case where the
+  // model's responseType field didn't parse but the body fields did.
+  if (data.question) return "clarify"
+  if (data.optionA || data.optionB) return "comparison"
+  if (data.answer) return "quick"
+  if (data.paragraphs?.length) return "paragraph"
+  if (data.steps?.length) return "steps"
+
+  return "paragraph"
 }
 
 // ─── StepsView ─────────────────────────────────────────────────────────────────

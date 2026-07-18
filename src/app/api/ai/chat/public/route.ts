@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server"
 import {
   AI_SYSTEM_PROMPT,
   cleanText,
-  parseStructuredResponse,
+  parseStructuredResponseSafe,
   derivePlainResponse,
+  looksLikeJson,
   type StructuredAIResponse,
 } from "@/lib/ai-prompt"
 
@@ -150,12 +151,21 @@ export async function POST(req: NextRequest) {
     let structured: StructuredAIResponse = {}
     let plainResponse = raw
 
-    try {
-      structured = parseStructuredResponse(raw)
+    const { structured: parsed } = parseStructuredResponseSafe(raw)
+    structured = parsed
+    const derived = derivePlainResponse(structured)
+
+    if (derived) {
+      plainResponse = derived
+    } else if (looksLikeJson(raw)) {
+      // The model returned something JSON-shaped but we couldn't extract
+      // any usable fields. Don't dump raw JSON at the user — show a
+      // friendly retry message instead.
       plainResponse =
-        derivePlainResponse(structured) ||
-        "I'm sorry, I couldn't generate a response. Please try again."
-    } catch {
+        "I had trouble formatting that response. Could you try asking again?"
+      structured = {}
+    } else {
+      // Plain text response (no JSON at all) — show as-is.
       plainResponse = cleanText(raw)
       structured = {}
     }

@@ -5,7 +5,9 @@
 
 import {
   parseStructuredResponse,
+  parseStructuredResponseSafe,
   derivePlainResponse,
+  looksLikeJson,
   type StructuredAIResponse,
 } from "../src/lib/ai-prompt"
 
@@ -101,6 +103,22 @@ const cases: Array<{
     expectResponseType: "paragraph",
     expectHasField: (s) => !!s.paragraphs?.length,
   },
+  // Real-world case from the live site: the model emitted slightly
+  // malformed JSON with an extra quote+space after the colon. Strict
+  // JSON.parse throws, so the regex fallback must salvage the fields.
+  {
+    name: "malformed clarify (regex fallback)",
+    raw: `{"responseType":" "clarify","heading": "Hold Up, What Are We Working With?","question": "What exactly is the business idea you are building and how much runway do you have saved up right now?"}`,
+    expectResponseType: "clarify",
+    expectHasField: (s) => !!s.question && !!s.heading,
+  },
+  // Another real-world case: trailing comma after the last field.
+  {
+    name: "trailing comma (regex fallback)",
+    raw: `{"responseType":"quick","heading":"Two to five percent","answer":"Two to five percent is solid.",}`,
+    expectResponseType: "quick",
+    expectHasField: (s) => !!s.answer,
+  },
 ]
 
 let pass = 0
@@ -108,19 +126,28 @@ let fail = 0
 
 for (const c of cases) {
   try {
-    const parsed = parseStructuredResponse(c.raw)
+    // Use the safe wrapper so regex-fallback cases don't throw.
+    const { structured: parsed, usedFallback } =
+      parseStructuredResponseSafe(c.raw)
     const okType = parsed.responseType === c.expectResponseType
     const okField = c.expectHasField(parsed)
     const plain = derivePlainResponse(parsed)
+    const looksJson = looksLikeJson(c.raw)
 
     if (okType && okField && plain) {
-      console.log(`  PASS  ${c.name}  (plain: "${plain.slice(0, 60)}...")`)
+      const fb = usedFallback ? " [regex fallback]" : ""
+      console.log(
+        `  PASS  ${c.name}${fb}  (plain: "${plain.slice(0, 60)}...")`
+      )
       pass++
     } else {
       console.error(`  FAIL  ${c.name}`)
-      console.error(`        responseType: got ${parsed.responseType}, want ${c.expectResponseType}`)
+      console.error(
+        `        responseType: got ${parsed.responseType}, want ${c.expectResponseType}`
+      )
       console.error(`        hasField:     ${okField}`)
       console.error(`        plain:        ${plain ?? "(empty)"}`)
+      console.error(`        looksLikeJson: ${looksJson}`)
       fail++
     }
   } catch (e) {
