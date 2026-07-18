@@ -38,7 +38,7 @@ export default function PublicNavbar() {
   return (
     <header className="sticky top-0 z-50 bg-[#1A2E1A]/95 backdrop-blur-lg border-b border-white/5">
       <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <span className="w-3 h-3 rounded-full bg-[#7CFC00] group-hover:scale-110 transition-transform" />
