@@ -21,7 +21,7 @@ interface RateBucket {
 }
 
 const RATE_LIMIT_WINDOW_MS = 60_000 // 1 minute
-const RATE_LIMIT_MAX = 10 // 10 requests per minute per IP
+const RATE_LIMIT_MAX = 60 // 60 requests per minute per IP (effectively unlimited for normal use)
 
 const rateBuckets = new Map<string, RateBucket>()
 
