@@ -24,6 +24,7 @@ import {
   ArrowRight,
   Check,
   Sparkles,
+  X,
 } from "lucide-react"
 import * as React from "react"
 
@@ -438,11 +439,24 @@ export default function ResourceDetailPage() {
       {/* Unskippable Auth Overlay - for non-logged-in users (appears after 5s) */}
       {showAuthOverlay && status === "unauthenticated" && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-          {/* Backdrop - no click handler, unskippable */}
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+          {/* Backdrop - click to dismiss */}
+          <div
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={() => setShowAuthOverlay(false)}
+            aria-hidden="true"
+          />
 
           {/* Modal */}
           <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+            {/* Close button */}
+            <button
+              onClick={() => setShowAuthOverlay(false)}
+              aria-label="Close"
+              className="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 active:bg-black/15 transition-colors"
+            >
+              <X className="w-4 h-4 text-gray-600" />
+            </button>
+
             <div className="p-8 sm:p-10">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center mb-6">
                 <Sparkles className="w-8 h-8 text-white" />
