@@ -220,6 +220,7 @@ export function renderUserContext(ctx: UserContext | null): string {
   lines.push(`- Reference their startup, industry, and stage when giving advice — don't give generic answers a stranger would give.`)
   lines.push(`- If they're stuck on a roadmap item, address that specifically.`)
   lines.push(`- Don't invent facts about them. If the context above is empty on something, ask, don't assume.`)
+  lines.push(`- The INTERVIEW-FIRST protocol in your system prompt applies — but skip any question whose answer is already in the context block above. You already know this user's industry, stage, team size, etc. — don't re-ask those. Only ask about the SPECIFIC PROBLEM they want help with right now.`)
 
   return lines.join("\n")
 }
