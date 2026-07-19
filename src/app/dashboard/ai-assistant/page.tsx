@@ -138,16 +138,36 @@ export default function AIAssistantPage() {
       // Even on error, use the fallback response if provided
       const responseText = data.response || data.details || "I'm sorry, I couldn't generate a response. Please try again."
 
-      // Capture structured fields if the API returned valid JSON
-      const structured: StructuredAIResponse | undefined =
-        data.heading || data.description || data.subheading || data.steps?.length
-          ? {
-              heading: data.heading,
-              description: data.description,
-              subheading: data.subheading,
-              steps: data.steps,
-            }
-          : undefined
+      // Capture structured fields if the API returned valid JSON.
+      // Must pass ALL fields through (paragraphs, answer, optionA/B, question,
+      // responseType) — otherwise the AIResponse component can't render the
+      // body and falls back to "I'm sorry, I couldn't generate a response."
+      const hasStructured =
+        data.responseType ||
+        data.heading ||
+        data.description ||
+        data.subheading ||
+        data.steps?.length ||
+        data.paragraphs?.length ||
+        data.answer ||
+        data.optionA ||
+        data.optionB ||
+        data.question
+
+      const structured: StructuredAIResponse | undefined = hasStructured
+        ? {
+            responseType: data.responseType as StructuredAIResponse["responseType"],
+            heading: data.heading,
+            description: data.description,
+            subheading: data.subheading,
+            steps: data.steps,
+            paragraphs: data.paragraphs,
+            answer: data.answer,
+            optionA: data.optionA,
+            optionB: data.optionB,
+            question: data.question,
+          }
+        : undefined
 
       const assistantMsg: ChatMessage = {
         id: `msg-${Date.now()}-ai`,
