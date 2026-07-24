@@ -1,0 +1,745 @@
+     1→"use client"
+     2→
+     3→import * as React from "react"
+     4→import { useSession } from "next-auth/react"
+     5→import PublicNavbar from "@/components/PublicNavbar"
+     6→import { Button } from "@/components/ui/button"
+     7→import { Input } from "@/components/ui/input"
+     8→import {
+     9→  Sheet,
+    10→  SheetContent,
+    11→  SheetHeader,
+    12→  SheetTitle,
+    13→  SheetTrigger,
+    14→} from "@/components/ui/sheet"
+    15→import {
+    16→  Sparkles,
+    17→  Send,
+    18→  Target,
+    19→  FileText,
+    20→  MessageSquare,
+    21→  TrendingUp,
+    22→  Loader2,
+    23→  RotateCcw,
+    24→  ArrowRight,
+    25→  PanelLeft,
+    26→} from "lucide-react"
+    27→import { motion, AnimatePresence } from "framer-motion"
+    28→import {
+    29→  AIResponse,
+    30→  type StructuredAIResponse,
+    31→} from "@/components/dashboard/AIResponse"
+    32→import {
+    33→  ChatSidebarContent,
+    34→  type ChatSummary,
+    35→} from "@/components/ai-assistant/ChatSidebar"
+    36→
+    37→interface ChatMessage {
+    38→  id: string
+    39→  role: "user" | "assistant"
+    40→  content: string
+    41→  timestamp: Date
+    42→  structured?: StructuredAIResponse
+    43→}
+    44→
+    45→interface AIStatus {
+    46→  online: boolean
+    47→  provider: string
+    48→  model: string
+    49→  label: string
+    50→  public?: boolean
+    51→  rateLimit?: { max: number; windowMs: number }
+    52→  hint?: string
+    53→}
+    54→
+    55→const quickPrompts = [
+    56→  {
+    57→    label: "Analyze my startup idea",
+    58→    icon: Target,
+    59→    prompt: "I have an idea for a SaaS tool for solo founders. What should I think about first?",
+    60→    color: "from-[#2D4A2D] to-[#8FBC8F]",
+    61→  },
+    62→  {
+    63→    label: "Business plan help",
+    64→    icon: FileText,
+    65→    prompt: "Help me create a business plan for my startup. What sections should I include?",
+    66→    color: "from-[#7CFC00] to-[#2D4A2D]",
+    67→  },
+    68→  {
+    69→    label: "Growth strategy",
+    70→    icon: TrendingUp,
+    71→    prompt: "What growth strategies should I consider for early-stage user acquisition?",
+    72→    color: "from-emerald-500 to-green-600",
+    73→  },
+    74→  {
+    75→    label: "Pitch feedback",
+    76→    icon: MessageSquare,
+    77→    prompt: "What makes a great startup pitch? Give me tips for a 5-minute pitch.",
+    78→    color: "from-amber-500 to-orange-600",
+    79→  },
+    80→]
+    81→
+    82→/** Generate a short title from the first user message. */
+    83→function deriveTitle(text: string): string {
+    84→  const clean = text.trim().replace(/\s+/g, " ")
+    85→  if (clean.length <= 50) return clean
+    86→  const words = clean.split(" ")
+    87→  let out = ""
+    88→  for (const w of words) {
+    89→    if ((out + " " + w).trim().length > 50) break
+    90→    out = (out + " " + w).trim()
+    91→  }
+    92→  return out + "…"
+    93→}
+    94→
+    95→export default function PublicAIAssistantPage() {
+    96→  const { data: session, status: sessionStatus } = useSession()
+    97→  const isAuthenticated = sessionStatus === "authenticated" && !!session?.user?.id
+    98→
+    99→  // --- Chat list state ---
+   100→  const [chats, setChats] = React.useState<ChatSummary[]>([])
+   101→  const [chatsLoading, setChatsLoading] = React.useState(true)
+   102→  const [activeChatId, setActiveChatId] = React.useState<string | null>(null)
+   103→
+   104→  // --- Current chat state ---
+   105→  const [messages, setMessages] = React.useState<ChatMessage[]>([])
+   106→  // Short "Picking up where we left off…" string shown above messages when
+   107→  // reopening an existing chat. Cleared when a new chat is started.
+   108→  const [reopenSummary, setReopenSummary] = React.useState<string | null>(null)
+   109→  const [input, setInput] = React.useState("")
+   110→  const [loading, setLoading] = React.useState(false)
+   111→  const [status, setStatus] = React.useState<AIStatus | null>(null)
+   112→  const [mobileOpen, setMobileOpen] = React.useState(false)
+   113→  const messagesEndRef = React.useRef<HTMLDivElement>(null)
+   114→  const inputRef = React.useRef<HTMLInputElement>(null)
+   115→
+   116→  // --- In-memory cache for unauthenticated chats ---
+   117→  // Map<chatId, { title, messages, updatedAt }>
+   118→  const guestChatsRef = React.useRef<
+   119→    Map<string, { title: string; messages: ChatMessage[]; updatedAt: string }>
+   120→  >(new Map())
+   121→
+   122→  // Fetch AI status on mount
+   123→  React.useEffect(() => {
+   124→    fetch("/api/ai/chat/public")
+   125→      .then((r) => r.json())
+   126→      .then((data: AIStatus) => setStatus(data))
+   127→      .catch(() => setStatus(null))
+   128→  }, [])
+   129→
+   130→  // Fetch chats list on mount when authenticated
+   131→  const refreshChats = React.useCallback(async () => {
+   132→    if (!isAuthenticated) {
+   133→      setChatsLoading(false)
+   134→      // populate from guest cache
+   135→      const guestList: ChatSummary[] = Array.from(guestChatsRef.current.entries())
+   136→        .map(([id, v]) => ({
+   137→          id,
+   138→          title: v.title,
+   139→          updatedAt: v.updatedAt,
+   140→          messageCount: v.messages.length,
+   141→        }))
+   142→        .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+   143→      setChats(guestList)
+   144→      return
+   145→    }
+   146→    try {
+   147→      setChatsLoading(true)
+   148→      const res = await fetch("/api/ai/chats", { cache: "no-store" })
+   149→      if (!res.ok) throw new Error()
+   150→      const data = await res.json()
+   151→      const list: ChatSummary[] = (data.chats || []).map((c: any) => ({
+   152→        id: c.id,
+   153→        title: c.title,
+   154→        updatedAt: c.updatedAt,
+   155→        messageCount: c._count?.messages ?? 0,
+   156→      }))
+   157→      setChats(list)
+   158→    } catch {
+   159→      // ignore — sidebar just shows empty state
+   160→    } finally {
+   161→      setChatsLoading(false)
+   162→    }
+   163→  }, [isAuthenticated])
+   164→
+   165→  React.useEffect(() => {
+   166→    refreshChats()
+   167→  }, [refreshChats])
+   168→
+   169→  React.useEffect(() => {
+   170→    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+   171→  }, [messages, loading])
+   172→
+   173→  React.useEffect(() => {
+   174→    inputRef.current?.focus()
+   175→  }, [])
+   176→
+   177→  // --- Chat actions ---
+   178→
+   179→  const startNewChat = React.useCallback(() => {
+   180→    setActiveChatId(null)
+   181→    setMessages([])
+   182→    setReopenSummary(null)
+   183→    setMobileOpen(false)
+   184→    inputRef.current?.focus()
+   185→  }, [])
+   186→
+   187→  const selectChat = React.useCallback(
+   188→    async (id: string) => {
+   189→      if (id === activeChatId) {
+   190→        setMobileOpen(false)
+   191→        return
+   192→      }
+   193→      setMobileOpen(false)
+   194→
+   195→      // Guest path
+   196→      if (!isAuthenticated) {
+   197→        const cached = guestChatsRef.current.get(id)
+   198→        if (cached) {
+   199→          setActiveChatId(id)
+   200→          setMessages(cached.messages)
+   201→          // Guests don't get a server-generated reopen summary, but we can
+   202→          // clear any stale one from a previous authed chat.
+   203→          setReopenSummary(null)
+   204→        }
+   205→        return
+   206→      }
+   207→
+   208→      // Authed path — fetch from server
+   209→      try {
+   210→        const res = await fetch(`/api/ai/chats/${id}`, { cache: "no-store" })
+   211→        if (!res.ok) return
+   212→        const data = await res.json()
+   213→        const chat = data.chat
+   214→        if (!chat) return
+   215→        const mapped: ChatMessage[] = (chat.messages || []).map((m: any) => ({
+   216→          id: m.id,
+   217→          role: m.role as "user" | "assistant",
+   218→          content: m.content,
+   219→          timestamp: new Date(m.createdAt),
+   220→          structured: m.structuredJson
+   221→            ? (() => {
+   222→                try {
+   223→                  return JSON.parse(m.structuredJson) as StructuredAIResponse
+   224→                } catch {
+   225→                  return undefined
+   226→                }
+   227→              })()
+   228→            : undefined,
+   229→        }))
+   230→        setActiveChatId(id)
+   231→        setMessages(mapped)
+   232→        setReopenSummary(
+   233→          typeof data.reopenSummary === "string" ? data.reopenSummary : null
+   234→        )
+   235→      } catch {
+   236→        // ignore
+   237→      }
+   238→    },
+   239→    [activeChatId, isAuthenticated]
+   240→  )
+   241→
+   242→  const renameChat = React.useCallback(
+   243→    async (id: string, title: string) => {
+   244→      setChats((prev) => prev.map((c) => (c.id === id ? { ...c, title } : c)))
+   245→      if (!isAuthenticated) {
+   246→        const g = guestChatsRef.current.get(id)
+   247→        if (g) g.title = title
+   248→        return
+   249→      }
+   250→      try {
+   251→        await fetch(`/api/ai/chats/${id}`, {
+   252→          method: "PATCH",
+   253→          headers: { "Content-Type": "application/json" },
+   254→          body: JSON.stringify({ title }),
+   255→        })
+   256→      } catch {
+   257→        // ignore
+   258→      }
+   259→    },
+   260→    [isAuthenticated]
+   261→  )
+   262→
+   263→  const deleteChat = React.useCallback(
+   264→    async (id: string) => {
+   265→      setChats((prev) => prev.filter((c) => c.id !== id))
+   266→      if (activeChatId === id) {
+   267→        setActiveChatId(null)
+   268→        setMessages([])
+   269→      }
+   270→      if (!isAuthenticated) {
+   271→        guestChatsRef.current.delete(id)
+   272→        return
+   273→      }
+   274→      try {
+   275→        await fetch(`/api/ai/chats/${id}`, { method: "DELETE" })
+   276→      } catch {
+   277→        // ignore
+   278→      }
+   279→    },
+   280→    [activeChatId, isAuthenticated]
+   281→  )
+   282→
+   283→  // --- Message send ---
+   284→
+   285→  const sendMessage = async (content: string) => {
+   286→    if (!content.trim() || loading) return
+   287→
+   288→    const userMsg: ChatMessage = {
+   289→      id: `msg-${Date.now()}`,
+   290→      role: "user",
+   291→      content: content.trim(),
+   292→      timestamp: new Date(),
+   293→    }
+   294→
+   295→    // Optimistic UI update
+   296→    setMessages((prev) => [...prev, userMsg])
+   297→    setInput("")
+   298→    setLoading(true)
+   299→    // The "picking up where we left off" banner has served its purpose once
+   300→    // the user sends a new message — clear it so it doesn't linger.
+   301→    setReopenSummary(null)
+   302→
+   303→    // If this is the first message of a new chat, derive a title and persist the chat
+   304→    let chatId = activeChatId
+   305→    const isNewChat = !chatId
+   306→    const title = deriveTitle(content)
+   307→
+   308→    if (isNewChat) {
+   309→      if (isAuthenticated) {
+   310→        try {
+   311→          const res = await fetch("/api/ai/chats", {
+   312→            method: "POST",
+   313→            headers: { "Content-Type": "application/json" },
+   314→            body: JSON.stringify({ title }),
+   315→          })
+   316→          if (res.ok) {
+   317→            const data = await res.json()
+   318→            chatId = data.chat.id
+   319→          }
+   320→        } catch {
+   321→          // continue even if chat couldn't be created — message still works
+   322→        }
+   323→      } else {
+   324→        chatId = `guest-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+   325→        guestChatsRef.current.set(chatId!, {
+   326→          title,
+   327→          messages: [userMsg],
+   328→          updatedAt: new Date().toISOString(),
+   329→        })
+   330→      }
+   331→      if (chatId) {
+   332→        setActiveChatId(chatId)
+   333→        setChats((prev) => [
+   334→          {
+   335→            id: chatId!,
+   336→            title,
+   337→            updatedAt: new Date().toISOString(),
+   338→            messageCount: 1,
+   339→          },
+   340→          ...prev,
+   341→        ])
+   342→      }
+   343→    } else if (!isAuthenticated) {
+   344→      // append to guest chat cache
+   345→      const g = guestChatsRef.current.get(chatId!)
+   346→      if (g) {
+   347→        g.messages.push(userMsg)
+   348→        g.updatedAt = new Date().toISOString()
+   349→      }
+   350→      setChats((prev) =>
+   351→        prev.map((c) =>
+   352→          c.id === chatId
+   353→            ? { ...c, updatedAt: new Date().toISOString(), messageCount: (c.messageCount ?? 0) + 1 }
+   354→            : c
+   355→        )
+   356→      )
+   357→    }
+   358→
+   359→    try {
+   360→      const history = messages.slice(-4).map((m) => ({
+   361→        role: m.role,
+   362→        content: m.content,
+   363→      }))
+   364→
+   365→      const res = await fetch("/api/ai/chat/public", {
+   366→        method: "POST",
+   367→        headers: { "Content-Type": "application/json" },
+   368→        body: JSON.stringify({ message: content.trim(), history }),
+   369→      })
+   370→
+   371→      const data = await res.json()
+   372→
+   373→      const responseText =
+   374→        data.response ||
+   375→        data.details ||
+   376→        "I'm sorry, I couldn't generate a response. Please try again."
+   377→
+   378→      const hasStructured =
+   379→        data.responseType ||
+   380→        data.heading ||
+   381→        data.description ||
+   382→        data.subheading ||
+   383→        data.steps?.length ||
+   384→        data.paragraphs?.length ||
+   385→        data.answer ||
+   386→        data.optionA ||
+   387→        data.optionB ||
+   388→        data.question
+   389→
+   390→      const structured: StructuredAIResponse | undefined = hasStructured
+   391→        ? {
+   392→            responseType: data.responseType as StructuredAIResponse["responseType"],
+   393→            heading: data.heading,
+   394→            description: data.description,
+   395→            subheading: data.subheading,
+   396→            steps: data.steps,
+   397→            paragraphs: data.paragraphs,
+   398→            answer: data.answer,
+   399→            optionA: data.optionA,
+   400→            optionB: data.optionB,
+   401→            question: data.question,
+   402→          }
+   403→        : undefined
+   404→
+   405→      const assistantMsg: ChatMessage = {
+   406→        id: `msg-${Date.now()}-ai`,
+   407→        role: "assistant",
+   408→        content: responseText,
+   409→        timestamp: new Date(),
+   410→        structured,
+   411→      }
+   412→
+   413→      setMessages((prev) => [...prev, assistantMsg])
+   414→
+   415→      // Persist the user + assistant messages to the chat record (authed only)
+   416→      if (chatId && isAuthenticated) {
+   417→        const structuredJson = structured ? JSON.stringify(structured) : null
+   418→        try {
+   419→          await fetch(`/api/ai/chats/${chatId}/messages`, {
+   420→            method: "POST",
+   421→            headers: { "Content-Type": "application/json" },
+   422→            body: JSON.stringify({
+   423→              messages: [
+   424→                { role: "user", content: userMsg.content },
+   425→                { role: "assistant", content: responseText, structuredJson },
+   426→              ],
+   427→            }),
+   428→          })
+   429→          // bump local list
+   430→          setChats((prev) =>
+   431→            prev.map((c) =>
+   432→              c.id === chatId
+   433→                ? {
+   434→                    ...c,
+   435→                    updatedAt: new Date().toISOString(),
+   436→                    messageCount: (c.messageCount ?? 0) + 2,
+   437→                  }
+   438→                : c
+   439→            )
+   440→          )
+   441→        } catch {
+   442→          // ignore — chat still works in-session
+   443→        }
+   444→      } else if (chatId && !isAuthenticated) {
+   445→        const g = guestChatsRef.current.get(chatId)
+   446→        if (g) {
+   447→          g.messages.push(assistantMsg)
+   448→          g.updatedAt = new Date().toISOString()
+   449→          setChats((prev) =>
+   450→            prev.map((c) =>
+   451→              c.id === chatId
+   452→                ? {
+   453→                    ...c,
+   454→                    updatedAt: new Date().toISOString(),
+   455→                    messageCount: (c.messageCount ?? 0) + 1,
+   456→                  }
+   457→                : c
+   458→            )
+   459→          )
+   460→        }
+   461→      }
+   462→    } catch {
+   463→      const errorMsg: ChatMessage = {
+   464→        id: `msg-${Date.now()}-error`,
+   465→        role: "assistant",
+   466→        content: "I'm having trouble connecting right now. Please try again.",
+   467→        timestamp: new Date(),
+   468→      }
+   469→      setMessages((prev) => [...prev, errorMsg])
+   470→    } finally {
+   471→      setLoading(false)
+   472→    }
+   473→  }
+   474→
+   475→  const resetChat = () => startNewChat()
+   476→
+   477→  const modelLabel = status?.label || "GLM-5.2"
+   478→  const isOnline = status?.online ?? false
+   479→
+   480→  // Sidebar props shared by desktop + mobile
+   481→  const sidebarProps = {
+   482→    chats,
+   483→    activeChatId,
+   484→    isAuthenticated,
+   485→    loading: chatsLoading,
+   486→    onSelect: selectChat,
+   487→    onNew: startNewChat,
+   488→    onRename: renameChat,
+   489→    onDelete: deleteChat,
+   490→  }
+   491→
+   492→  return (
+   493→    <div className="min-h-screen flex flex-col bg-background">
+   494→      <PublicNavbar />
+   495→      <div className="flex flex-1">
+   496→        {/* Desktop sidebar (sticky) */}
+   497→        <aside className="hidden lg:flex w-72 shrink-0 border-r border-black/5 dark:border-white/10 sticky top-16 sm:top-20 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] overflow-hidden">
+   498→          <ChatSidebarContent {...sidebarProps} />
+   499→        </aside>
+   500→
+   501→        {/* Main column */}
+   502→        <div className="flex-1 flex flex-col min-w-0">
+   503→          <main className="flex-1 pb-5">
+   504→            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-0">
+   505→              {/* Status warning if offline */}
+   506→              {!isOnline && status?.hint && (
+   507→                <div className="mb-6 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900">
+   508→                  <p className="text-sm text-amber-800 dark:text-amber-200">{status.hint}</p>
+   509→                </div>
+   510→              )}
+   511→
+   512→              {/* Mobile sidebar toggle (top-left) */}
+   513→              <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+   514→                <SheetTrigger asChild>
+   515→                  <Button
+   516→                    variant="ghost"
+   517→                    size="icon"
+   518→                    className="lg:hidden h-9 w-9 shrink-0 mb-2"
+   519→                    aria-label="Open chat history"
+   520→                  >
+   521→                    <PanelLeft className="size-5" />
+   522→                  </Button>
+   523→                </SheetTrigger>
+   524→                <SheetContent side="left" className="w-80 max-w-[85vw] p-0 pt-10 flex flex-col overflow-hidden">
+   525→                  <SheetHeader className="sr-only">
+   526→                    <SheetTitle>Chat history</SheetTitle>
+   527→                  </SheetHeader>
+   528→                  <ChatSidebarContent {...sidebarProps} />
+   529→                </SheetContent>
+   530→              </Sheet>
+   531→
+   532→              {messages.length > 0 && (
+   533→                <div className="flex justify-end py-2">
+   534→                  <Button
+   535→                    variant="ghost"
+   536→                    size="sm"
+   537→                    onClick={resetChat}
+   538→                    className="h-8 gap-1.5 text-xs shrink-0"
+   539→                  >
+   540→                    <RotateCcw className="size-3.5" />
+   541→                    <span className="hidden sm:inline">New chat</span>
+   542→                  </Button>
+   543→                </div>
+   544→              )}
+   545→
+   546→              {/* Messages (flow with page) */}
+   547→              <div className="py-4">
+   548→                {messages.length === 0 ? (
+   549→                  <div className="flex flex-col items-center justify-center text-center py-12">
+   550→                    <motion.div
+   551→                      initial={{ opacity: 0, scale: 0.9 }}
+   552→                      animate={{ opacity: 1, scale: 1 }}
+   553→                      transition={{ duration: 0.4 }}
+   554→                      className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center mb-6 shadow-xl shadow-[#7CFC00]/20"
+   555→                    >
+   556→                      <Sparkles className="size-10 text-white" />
+   557→                    </motion.div>
+   558→                    <motion.div
+   559→                      initial={{ opacity: 0, y: 10 }}
+   560→                      animate={{ opacity: 1, y: 0 }}
+   561→                      transition={{ duration: 0.4, delay: 0.1 }}
+   562→                    >
+   563→                      <h3 className="text-2xl font-heading font-bold text-foreground">
+   564→                        Hi{session?.user?.name ? `, ${session.user.name.split(" ")[0]}` : " there"}!
+   565→                      </h3>
+   566→                      <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto leading-relaxed">
+   567→                        I&apos;m Upmind&apos;s AI consultant. Ask me anything about strategy,
+   568→                        planning, growth, or get feedback on your ideas.
+   569→                      </p>
+   570→                    </motion.div>
+   571→
+   572→                    <motion.div
+   573→                      initial={{ opacity: 0, y: 10 }}
+   574→                      animate={{ opacity: 1, y: 0 }}
+   575→                      transition={{ duration: 0.4, delay: 0.2 }}
+   576→                      className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-2xl mt-8"
+   577→                    >
+   578→                      {quickPrompts.map((qp) => {
+   579→                        const Icon = qp.icon
+   580→                        return (
+   581→                          <button
+   582→                            key={qp.label}
+   583→                            onClick={() => sendMessage(qp.prompt)}
+   584→                            className="group flex items-center gap-3 p-4 rounded-2xl border border-black/5 dark:border-white/10 hover:border-[#7CFC00]/40 hover:bg-[#7CFC00]/5 transition-all text-left"
+   585→                          >
+   586→                            <div
+   587→                              className={`w-10 h-10 rounded-xl bg-gradient-to-br ${qp.color} flex items-center justify-center shrink-0 shadow-sm`}
+   588→                            >
+   589→                              <Icon className="size-5 text-white" />
+   590→                            </div>
+   591→                            <div className="flex-1 min-w-0">
+   592→                              <span className="text-sm font-medium text-foreground block">
+   593→                                {qp.label}
+   594→                              </span>
+   595→                              <span className="text-xs text-muted-foreground line-clamp-1">
+   596→                                Tap to ask
+   597→                              </span>
+   598→                            </div>
+   599→                            <ArrowRight className="size-4 text-muted-foreground group-hover:text-[#7CFC00] group-hover:translate-x-0.5 transition-all shrink-0" />
+   600→                          </button>
+   601→                        )
+   602→                      })}
+   603→                    </motion.div>
+   604→                  </div>
+   605→                ) : (
+   606→                  <div className="space-y-5">
+   607→                    {reopenSummary && (
+   608→                      <motion.div
+   609→                        initial={{ opacity: 0, y: -4 }}
+   610→                        animate={{ opacity: 1, y: 0 }}
+   611→                        className="flex items-start gap-2.5 rounded-lg border border-[#7CFC00]/20 dark:border-[#7CFC00]/15 bg-[#7CFC00]/5 dark:bg-[#7CFC00]/10 px-3.5 py-2.5"
+   612→                      >
+   613→                        <RotateCcw className="size-4 mt-0.5 text-[#7CFC00] shrink-0" />
+   614→                        <p className="text-xs leading-relaxed text-foreground/80">
+   615→                          {reopenSummary}
+   616→                        </p>
+   617→                      </motion.div>
+   618→                    )}
+   619→                    <AnimatePresence initial={false}>
+   620→                      {messages.map((msg) => (
+   621→                        <motion.div
+   622→                          key={msg.id}
+   623→                          initial={{ opacity: 0, y: 8 }}
+   624→                          animate={{ opacity: 1, y: 0 }}
+   625→                          transition={{ duration: 0.25 }}
+   626→                          className={`flex gap-3 ${
+   627→                            msg.role === "user" ? "justify-end" : "justify-start"
+   628→                          }`}
+   629→                        >
+   630→                          {msg.role === "assistant" && (
+   631→                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0 shadow-sm">
+   632→                              <Sparkles className="size-4 text-white" />
+   633→                            </div>
+   634→                          )}
+   635→                          <div
+   636→                            className={`max-w-[85%] sm:max-w-[75%] ${
+   637→                              msg.role === "user" ? "order-first" : ""
+   638→                            }`}
+   639→                          >
+   640→                            {msg.role === "assistant" && (
+   641→                              <div className="flex items-center gap-1.5 mb-1.5 px-1">
+   642→                                <span className="text-[11px] font-medium text-muted-foreground">
+   643→                                  Upmind AI · {modelLabel}
+   644→                                </span>
+   645→                              </div>
+   646→                            )}
+   647→                            <div
+   648→                              className={`${
+   649→                                msg.role === "user"
+   650→                                  ? "px-4 py-3 rounded-2xl bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-br-md text-sm leading-relaxed whitespace-pre-wrap shadow-sm shadow-[#7CFC00]/20"
+   651→                                  : "px-1 py-1 text-sm leading-relaxed"
+   652→                              }`}
+   653→                            >
+   654→                              {msg.role === "assistant" && msg.structured ? (
+   655→                                <AIResponse data={msg.structured} fallback={msg.content} />
+   656→                              ) : (
+   657→                                msg.content
+   658→                              )}
+   659→                            </div>
+   660→                          </div>
+   661→                        </motion.div>
+   662→                      ))}
+   663→                    </AnimatePresence>
+   664→                    {loading && (
+   665→                      <div className="flex gap-3 justify-start">
+   666→                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0 shadow-sm">
+   667→                          <Sparkles className="size-4 text-white" />
+   668→                        </div>
+   669→                        <div className="px-1 py-2">
+   670→                          <div className="flex gap-1">
+   671→                            <div className="w-2 h-2 rounded-full bg-[#7CFC00]/60 animate-bounce [animation-delay:0ms]" />
+   672→                            <div className="w-2 h-2 rounded-full bg-[#7CFC00]/60 animate-bounce [animation-delay:150ms]" />
+   673→                            <div className="w-2 h-2 rounded-full bg-[#7CFC00]/60 animate-bounce [animation-delay:300ms]" />
+   674→                          </div>
+   675→                        </div>
+   676→                      </div>
+   677→                    )}
+   678→                    <div ref={messagesEndRef} />
+   679→                  </div>
+   680→                )}
+   681→              </div>
+   682→            </div>
+   683→          </main>
+   684→
+   685→          {/* Input Bar */}
+   686→          <div className="px-4 sm:px-6 pt-4 pb-20">
+   687→            <div className="max-w-3xl mx-auto">
+   688→              {messages.length > 0 && (
+   689→                <div className="flex gap-2 mb-3 overflow-x-auto pb-1">
+   690→                  {quickPrompts.map((qp) => {
+   691→                    const Icon = qp.icon
+   692→                    return (
+   693→                      <Button
+   694→                        key={qp.label}
+   695→                        variant="outline"
+   696→                        size="sm"
+   697→                        className="shrink-0 text-xs h-8 gap-1.5 rounded-full border-black/10 dark:border-white/15 hover:border-[#7CFC00]/50 hover:text-[#7CFC00]"
+   698→                        onClick={() => sendMessage(qp.prompt)}
+   699→                      >
+   700→                        <Icon className="size-3" />
+   701→                        {qp.label}
+   702→                      </Button>
+   703→                    )
+   704→                  })}
+   705→                </div>
+   706→              )}
+   707→              <div className="flex items-center gap-2">
+   708→                <Input
+   709→                  ref={inputRef}
+   710→                  placeholder={`Ask ${modelLabel} anything about your startup...`}
+   711→                  value={input}
+   712→                  onChange={(e) => setInput(e.target.value)}
+   713→                  className="flex-1 h-11 rounded-full border-black/10 dark:border-white/15 bg-transparent px-5 text-sm focus-visible:border-[#7CFC00] focus-visible:ring-[#7CFC00]/20"
+   714→                  onKeyDown={(e) => {
+   715→                    if (e.key === "Enter" && input.trim()) {
+   716→                      sendMessage(input)
+   717→                    }
+   718→                  }}
+   719→                  disabled={loading}
+   720→                />
+   721→                <Button
+   722→                  size="icon"
+   723→                  className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shrink-0 h-11 w-11 rounded-full shadow-md shadow-[#7CFC00]/25 disabled:opacity-40"
+   724→                  disabled={!input.trim() || loading}
+   725→                  onClick={() => sendMessage(input)}
+   726→                >
+   727→                  {loading ? (
+   728→                    <Loader2 className="size-4 animate-spin" />
+   729→                  ) : (
+   730→                    <Send className="size-4" />
+   731→                  )}
+   732→                </Button>
+   733→              </div>
+   734→              <p className="text-[10px] text-muted-foreground text-center mt-2">
+   735→                AI can make mistakes. Verify important information.
+   736→              </p>
+   737→            </div>
+   738→          </div>
+   739→
+   740→        </div>
+   741→      </div>
+   742→    </div>
+   743→  )
+   744→}
+   745→
