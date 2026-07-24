@@ -16,11 +16,11 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
+  { label: "Solve Them", href: "/solve-them", icon: Sparkles, highlight: true },
   { label: "Services", href: "/services" },
   { label: "About", href: "/about" },
-  { label: "Pricing", href: "/pricing" },
   { label: "Resources", href: "/resources" },
-  { label: "AI Assistant", href: "/ai-assistant", icon: Sparkles, highlight: true },
+  { label: "AI Assistant", href: "/ai-assistant" },
 ]
 
 const moreLinks: NavLink[] = [

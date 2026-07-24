@@ -40,6 +40,7 @@ import {
   Crown,
   ArrowLeft,
   Home,
+  Lightbulb,
 } from "lucide-react"
 
 interface SidebarItem {
@@ -98,6 +99,11 @@ const sidebarItems: SidebarItem[] = [
     title: "Analytics",
     href: "/dashboard/analytics",
     icon: BarChart3,
+  },
+  {
+    title: "Innovation Engine",
+    href: "/dashboard/innovation-engine",
+    icon: Lightbulb,
   },
   {
     title: "AI Assistant",
