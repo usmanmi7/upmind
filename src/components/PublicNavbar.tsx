@@ -15,16 +15,15 @@ interface NavLink {
 }
 
 const navLinks: NavLink[] = [
-  { label: "Home", href: "/" },
-  { label: "Solve Them", href: "/solve-them", icon: Sparkles, highlight: true },
-  { label: "Services", href: "/services" },
-  { label: "About", href: "/about" },
   { label: "Resources", href: "/resources" },
+  { label: "Solve Them", href: "/solve-them", icon: Sparkles, highlight: true },
   { label: "AI Assistant", href: "/ai-assistant" },
+  { label: "About", href: "/about" },
 ]
 
 const moreLinks: NavLink[] = [
   { label: "Success Stories", href: "/success-stories", icon: Trophy },
+  { label: "Services", href: "/services", icon: Briefcase },
   { label: "Careers", href: "/careers", icon: Briefcase },
   { label: "FAQ", href: "/faq", icon: HelpCircle },
 ]

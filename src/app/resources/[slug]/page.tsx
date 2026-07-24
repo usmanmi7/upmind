@@ -1,6 +1,6 @@
 "use client"
 
-import { useParams, useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import PublicNavbar from "@/components/PublicNavbar"
@@ -27,6 +27,11 @@ import {
   X,
 } from "lucide-react"
 import * as React from "react"
+import {
+  getResourceBySlug,
+  getRelatedResources,
+} from "@/lib/resources"
+import type { EngineeringResource } from "@/lib/resources-data"
 
 const typeIcons: Record<string, React.ElementType> = {
   BLOG: BookOpen,
@@ -46,24 +51,25 @@ const typeColors: Record<string, string> = {
 
 export default function ResourceDetailPage() {
   const params = useParams()
-  const router = useRouter()
   const { data: session, status } = useSession()
   const slug = params.slug as string
 
-  const [resource, setResource] = React.useState<any>(null)
-  const [accessLevel, setAccessLevel] = React.useState<string>("none")
-  const [userInfo, setUserInfo] = React.useState<any>(null)
-  const [loading, setLoading] = React.useState(true)
+  const resource = React.useMemo<EngineeringResource | undefined>(
+    () => getResourceBySlug(slug),
+    [slug]
+  )
+  const relatedResources = React.useMemo(
+    () => (resource ? getRelatedResources(slug, 3) : []),
+    [slug, resource]
+  )
+
   const [modalOpen, setModalOpen] = React.useState(false)
   const [modalType, setModalType] = React.useState<"signin" | "upgrade">("signin")
-  const [relatedResources, setRelatedResources] = React.useState<any[]>([])
 
   // Timed overlay for non-logged-in users
   const [showAuthOverlay, setShowAuthOverlay] = React.useState(false)
 
   React.useEffect(() => {
-    // Show auth overlay after 5 seconds for non-logged-in users
-    // Only start timer once we know user is unauthenticated (not just loading)
     if (status === "unauthenticated") {
       const timer = setTimeout(() => {
         setShowAuthOverlay(true)
@@ -72,89 +78,14 @@ export default function ResourceDetailPage() {
     }
   }, [status])
 
-  React.useEffect(() => {
-    const fetchResource = async () => {
-      try {
-        const res = await fetch(`/api/resources/${slug}`)
-        if (res.ok) {
-          const data = await res.json()
-          setResource(data.resource)
-          setAccessLevel(data.resource.accessLevel)
-          setUserInfo(data.user)
-
-          // Fetch related resources
-          if (data.resource.category) {
-            const relatedRes = await fetch(
-              `/api/resources/public?category=${data.resource.category}&limit=3`
-            )
-            if (relatedRes.ok) {
-              const relatedData = await relatedRes.json()
-              setRelatedResources(
-                relatedData.resources.filter((r: any) => r.id !== data.resource.id).slice(0, 3)
-              )
-            }
-          }
-        }
-      } catch (err) {
-        console.error("Failed to fetch resource:", err)
-      } finally {
-        setLoading(false)
-      }
-    }
-    if (slug) fetchResource()
-  }, [slug])
-
-  // Auto-show upgrade modal for logged-in free users on premium resources
-  React.useEffect(() => {
-    if (!loading && resource && accessLevel === "preview") {
-      setModalType("upgrade")
-      setModalOpen(true)
-    }
-  }, [loading, resource, accessLevel])
-
-  const isPaidUser = userInfo?.subscription?.status === "ACTIVE" &&
-    (userInfo.subscription.plan === "GROWTH_PRO" || userInfo.subscription.plan === "ENTERPRISE")
-
-  const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    })
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <PublicNavbar />
-        <main className="flex-1 pt-20">
-          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="animate-pulse space-y-6 max-w-3xl mx-auto">
-              <div className="h-4 bg-gray-200 rounded w-1/4" />
-              <div className="h-10 bg-gray-200 rounded w-3/4" />
-              <div className="h-6 bg-gray-200 rounded w-1/2" />
-              <div className="h-64 bg-gray-200 rounded-xl" />
-              <div className="space-y-3">
-                {[...Array(8)].map((_, i) => (
-                  <div key={i} className="h-4 bg-gray-200 rounded w-full" />
-                ))}
-              </div>
-            </div>
-          </div>
-        </main>
-        <PublicFooter />
-      </div>
-    )
-  }
-
   if (!resource) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-background">
         <PublicNavbar />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Resource not found</h2>
-            <p className="text-gray-500 mb-6">The resource you&apos;re looking for doesn&apos;t exist.</p>
+            <h2 className="text-2xl font-bold mb-2">Resource not found</h2>
+            <p className="text-muted-foreground mb-6">The resource you&apos;re looking for doesn&apos;t exist.</p>
             <Link
               href="/resources"
               className="inline-flex items-center gap-2 bg-[#1A2E1A] text-white rounded-full px-6 py-3 font-medium hover:bg-[#243824] transition-colors"
@@ -171,22 +102,32 @@ export default function ResourceDetailPage() {
 
   const Icon = typeIcons[resource.type] || BookOpen
   const colorClass = typeColors[resource.type] || "bg-gray-100 text-gray-700"
-  const isLocked = accessLevel === "none" || accessLevel === "preview"
+  // All resources are currently free in our static dataset; show full content
+  // to logged-in users, and a preview with overlay to anonymous users.
+  const isLocked = status === "unauthenticated"
+
+  const formatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    })
+  }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <PublicNavbar />
 
       <main className="flex-1 pt-8 pb-16">
         <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm text-gray-400 mb-8">
-            <Link href="/resources" className="hover:text-[#2D4A2D] transition-colors flex items-center gap-1">
+          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
+            <Link href="/resources" className="hover:text-foreground transition-colors flex items-center gap-1">
               <ArrowLeft className="w-3.5 h-3.5" />
               Resources
             </Link>
             <span>/</span>
-            <span className="text-gray-600 truncate max-w-xs">{resource.title}</span>
+            <span className="text-foreground truncate max-w-xs">{resource.title}</span>
           </nav>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -205,11 +146,9 @@ export default function ResourceDetailPage() {
                       <Icon className="w-3 h-3" />
                       {resource.type}
                     </span>
-                    {resource.category && (
-                      <span className="text-xs font-medium text-[#7CFC00] tracking-wide uppercase">
-                        {resource.category}
-                      </span>
-                    )}
+                    <span className="text-xs font-medium text-[#2D4A2D] dark:text-[#7CFC00] tracking-wide uppercase">
+                      {resource.category}
+                    </span>
                     {resource.isPremium && (
                       <span className="inline-flex items-center gap-1 bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs font-bold px-3 py-1 rounded-full">
                         <Crown className="w-3 h-3" />
@@ -219,39 +158,33 @@ export default function ResourceDetailPage() {
                   </div>
 
                   {/* Title */}
-                  <h1 className="text-3xl sm:text-4xl font-bold text-[#1A2E1A] leading-tight mb-4">
+                  <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
                     {resource.title}
                   </h1>
 
                   {/* Description */}
-                  {resource.description && (
-                    <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                      {resource.description}
-                    </p>
-                  )}
+                  <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                    {resource.description}
+                  </p>
 
                   {/* Meta */}
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 pb-6 border-b border-gray-100">
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground pb-6 border-b">
                     {resource.author && (
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded-full bg-[#2D4A2D] flex items-center justify-center text-white text-xs font-bold">
                           {resource.author.name.charAt(0)}
                         </div>
-                        <span className="text-gray-600 font-medium">{resource.author.name}</span>
+                        <span className="font-medium text-foreground">{resource.author.name}</span>
                       </div>
                     )}
-                    {resource.createdAt && (
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3.5 h-3.5" />
-                        {formatDate(resource.createdAt)}
-                      </span>
-                    )}
-                    {resource.readTime && (
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5" />
-                        {resource.readTime}
-                      </span>
-                    )}
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5" />
+                      {formatDate(resource.createdAt)}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5" />
+                      {resource.readTime}
+                    </span>
                     <span className="flex items-center gap-1">
                       <Eye className="w-3.5 h-3.5" />
                       {resource.downloadCount} views
@@ -272,46 +205,38 @@ export default function ResourceDetailPage() {
 
                 {/* Content */}
                 <div className="article-content">
-                  {resource.content ? (
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{resource.content}</ReactMarkdown>
-                  ) : (
-                    <p className="text-gray-500">No content available for this resource.</p>
-                  )}
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {isLocked
+                      ? resource.content.split("\n\n").slice(0, 3).join("\n\n") + "\n\n..."
+                      : resource.content}
+                  </ReactMarkdown>
                 </div>
 
-                {/* Blur overlay for locked content */}
-                {isLocked && resource.content && (
-                  <div className="relative mt-[-200px] h-[200px]" style={{
-                    background: "linear-gradient(to bottom, transparent, white)",
-                  }}>
-                    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center w-full px-8">
+                {/* Auth overlay for non-logged-in users */}
+                {isLocked && (
+                  <div className="relative mt-12">
+                    <div
+                      className="absolute -top-32 left-0 right-0 h-32 pointer-events-none"
+                      style={{
+                        background:
+                          "linear-gradient(to bottom, transparent, var(--background))",
+                      }}
+                    />
+                    <div className="text-center py-8 px-6 rounded-2xl border bg-card">
                       <div className="inline-flex flex-col items-center gap-3">
                         <div className="w-12 h-12 rounded-full bg-[#1A2E1A] flex items-center justify-center">
                           <Lock className="w-5 h-5 text-[#7CFC00]" />
                         </div>
-                        <p className="text-gray-700 font-semibold">
-                          {accessLevel === "none"
-                            ? "Sign in to read the full article"
-                            : "Upgrade to access premium content"}
+                        <p className="font-semibold">
+                          Sign in to read the full article
                         </p>
-                        {accessLevel === "none" ? (
-                          <Link
-                            href="/auth/login"
-                            className="inline-flex items-center gap-2 bg-[#1A2E1A] text-white rounded-full px-6 py-2.5 text-sm font-medium hover:bg-[#243824] transition-colors"
-                          >
-                            Sign In
-                            <ArrowRight className="w-4 h-4" />
-                          </Link>
-                        ) : (
-                          <Link
-                            href="/pricing"
-                            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-full px-6 py-2.5 text-sm font-bold hover:shadow-lg transition-all"
-                          >
-                            <Crown className="w-4 h-4" />
-                            Upgrade to Pro
-                            <ArrowRight className="w-4 h-4" />
-                          </Link>
-                        )}
+                        <Link
+                          href="/auth/login"
+                          className="inline-flex items-center gap-2 bg-[#1A2E1A] text-white rounded-full px-6 py-2.5 text-sm font-medium hover:bg-[#243824] transition-colors"
+                        >
+                          Sign In
+                          <ArrowRight className="w-4 h-4" />
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -319,12 +244,12 @@ export default function ResourceDetailPage() {
 
                 {/* Tags */}
                 {resource.tags && (
-                  <div className="mt-8 pt-6 border-t border-gray-100">
+                  <div className="mt-8 pt-6 border-t">
                     <div className="flex flex-wrap gap-2">
-                      {resource.tags.split(",").map((tag: string) => (
+                      {resource.tags.split(",").map((tag) => (
                         <span
                           key={tag}
-                          className="bg-gray-100 text-gray-600 text-sm px-3 py-1 rounded-full"
+                          className="bg-muted text-muted-foreground text-sm px-3 py-1 rounded-full"
                         >
                           {tag.trim()}
                         </span>
@@ -340,56 +265,54 @@ export default function ResourceDetailPage() {
               <div className="sticky top-24 space-y-6">
                 {/* Author Card */}
                 {resource.author && (
-                  <div className="p-6 rounded-2xl border border-gray-100 bg-white">
-                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Author</h3>
+                  <div className="p-6 rounded-2xl border bg-card">
+                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Author</h3>
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-12 h-12 rounded-full bg-[#2D4A2D] flex items-center justify-center text-white font-bold text-lg">
                         {resource.author.name.charAt(0)}
                       </div>
                       <div>
-                        <p className="font-semibold text-[#1A2E1A]">{resource.author.name}</p>
+                        <p className="font-semibold">{resource.author.name}</p>
                         {resource.author.bio && (
-                          <p className="text-xs text-gray-500 line-clamp-2">{resource.author.bio}</p>
+                          <p className="text-xs text-muted-foreground line-clamp-2">{resource.author.bio}</p>
                         )}
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* Premium CTA Card */}
-                {!isPaidUser && (
-                  <div className="p-6 rounded-2xl bg-gradient-to-br from-[#1A2E1A] to-[#2D4A2D] text-white">
-                    <div className="w-10 h-10 rounded-xl bg-[#7CFC00]/20 flex items-center justify-center mb-4">
-                      <Crown className="w-5 h-5 text-[#7CFC00]" />
-                    </div>
-                    <h3 className="text-lg font-bold mb-2">Get full access</h3>
-                    <p className="text-white/70 text-sm mb-4">
-                      Upgrade to Growth Pro to unlock all premium resources, consultations, and AI-powered insights.
-                    </p>
-                    <ul className="space-y-2 mb-6">
-                      {["Premium resources", "4 consultations/mo", "AI insights", "Custom roadmap"].map((item) => (
-                        <li key={item} className="flex items-center gap-2 text-sm text-white/80">
-                          <Check className="w-3.5 h-3.5 text-[#7CFC00]" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                    <Link
-                      href="/pricing"
-                      className="w-full flex items-center justify-center gap-2 bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-3 text-sm font-bold hover:shadow-lg hover:shadow-[#7CFC00]/20 transition-all"
-                    >
-                      Upgrade Now
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
+                {/* Innovation Engine CTA */}
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-[#1A2E1A] to-[#2D4A2D] text-white">
+                  <div className="w-10 h-10 rounded-xl bg-[#7CFC00]/20 flex items-center justify-center mb-4">
+                    <Sparkles className="w-5 h-5 text-[#7CFC00]" />
                   </div>
-                )}
+                  <h3 className="text-lg font-bold mb-2">Find a problem for your skills</h3>
+                  <p className="text-white/70 text-sm mb-4">
+                    The Innovation Engine matches your engineering skills to real-world problems you can solve.
+                  </p>
+                  <ul className="space-y-2 mb-6">
+                    {["30+ curated problems", "Skill-to-problem matching", "Team templates & roadmaps"].map((line) => (
+                      <li key={line} className="flex items-center gap-2 text-sm text-white/80">
+                        <Check className="w-3.5 h-3.5 text-[#7CFC00]" />
+                        {line}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/dashboard/innovation-engine"
+                    className="w-full flex items-center justify-center gap-2 bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-3 text-sm font-bold hover:shadow-lg hover:shadow-[#7CFC00]/20 transition-all"
+                  >
+                    Launch Innovation Engine
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
 
                 {/* Related Resources */}
                 {relatedResources.length > 0 && (
-                  <div className="p-6 rounded-2xl border border-gray-100 bg-white">
-                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Related</h3>
+                  <div className="p-6 rounded-2xl border bg-card">
+                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Related</h3>
                     <div className="space-y-4">
-                      {relatedResources.map((related: any) => {
+                      {relatedResources.map((related) => {
                         const RIcon = typeIcons[related.type] || BookOpen
                         return (
                           <Link
@@ -398,19 +321,19 @@ export default function ResourceDetailPage() {
                             className="group block"
                           >
                             <div className="flex gap-3">
-                              <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 group-hover:bg-[#7CFC00]/10 transition-colors">
-                                <RIcon className="w-4 h-4 text-gray-400 group-hover:text-[#2D4A2D] transition-colors" />
+                              <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 group-hover:bg-[#7CFC00]/10 transition-colors">
+                                <RIcon className="w-4 h-4 text-muted-foreground group-hover:text-[#2D4A2D] dark:group-hover:text-[#7CFC00] transition-colors" />
                               </div>
                               <div className="flex-1 min-w-0">
-                                <h4 className="text-sm font-medium text-[#1A2E1A] leading-snug line-clamp-2 group-hover:text-[#2D4A2D] transition-colors">
+                                <h4 className="text-sm font-medium leading-snug line-clamp-2 group-hover:text-[#2D4A2D] dark:group-hover:text-[#7CFC00] transition-colors">
                                   {related.title}
                                 </h4>
                                 <div className="flex items-center gap-2 mt-1">
                                   {related.readTime && (
-                                    <span className="text-xs text-gray-400">{related.readTime}</span>
+                                    <span className="text-xs text-muted-foreground">{related.readTime}</span>
                                   )}
                                   {related.isPremium && (
-                                    <Crown className="w-3 h-3 text-[#7CFC00]" />
+                                    <Crown className="w-3 h-3 text-[#2D4A2D] dark:text-[#7CFC00]" />
                                   )}
                                 </div>
                               </div>
@@ -447,38 +370,38 @@ export default function ResourceDetailPage() {
           />
 
           {/* Modal */}
-          <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+          <div className="relative w-full max-w-lg bg-card rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
             {/* Close button */}
             <button
               onClick={() => setShowAuthOverlay(false)}
               aria-label="Close"
-              className="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 active:bg-black/15 transition-colors"
+              className="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-muted hover:bg-muted/70 transition-colors"
             >
-              <X className="w-4 h-4 text-gray-600" />
+              <X className="w-4 h-4" />
             </button>
 
             <div className="p-8 sm:p-10">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center mb-6">
                 <Sparkles className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#1A2E1A] mb-3">
-                Unlock exclusive resources
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3">
+                Unlock engineering innovation playbooks
               </h2>
-              <p className="text-gray-600 text-base leading-relaxed mb-8">
-                Sign in to access our full library of startup guides, templates, and tools curated by industry experts. Join thousands of founders accelerating their growth.
+              <p className="text-muted-foreground text-base leading-relaxed mb-8">
+                Sign in to access our full library of engineering playbooks, build templates, and problem-discovery guides. Join thousands of engineers building things that matter.
               </p>
 
               <div className="space-y-3 mb-8">
                 {[
-                  "Access free guides and templates instantly",
-                  "Save resources to read later",
-                  "Track your learning progress",
-                ].map((item) => (
-                  <div key={item} className="flex items-center gap-3">
+                  "Read full playbooks on problem discovery & building",
+                  "Access team templates and project roadmaps",
+                  "Match your skills to problems via the Innovation Engine",
+                ].map((line) => (
+                  <div key={line} className="flex items-center gap-3">
                     <div className="w-5 h-5 rounded-full bg-[#7CFC00]/20 flex items-center justify-center flex-shrink-0">
                       <Check className="w-3 h-3 text-[#2D4A2D]" />
                     </div>
-                    <span className="text-sm text-gray-700">{item}</span>
+                    <span className="text-sm">{line}</span>
                   </div>
                 ))}
               </div>
@@ -490,9 +413,9 @@ export default function ResourceDetailPage() {
                 Sign In to Continue
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <p className="text-center text-sm text-gray-500 mt-4">
+              <p className="text-center text-sm text-muted-foreground mt-4">
                 Don&apos;t have an account?{" "}
-                <Link href="/auth/signup" className="text-[#2D4A2D] font-semibold hover:underline">
+                <Link href="/auth/signup" className="text-[#2D4A2D] dark:text-[#7CFC00] font-semibold hover:underline">
                   Sign up free
                 </Link>
               </p>

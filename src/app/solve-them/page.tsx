@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react"
 import Link from "next/link"
+import { motion } from "framer-motion"
 import {
   Search,
   Filter,
@@ -13,9 +14,16 @@ import {
   Lock,
   X,
   SlidersHorizontal,
+  ArrowRight,
+  Compass,
+  Microscope,
+  Hammer,
+  Rocket,
+  CheckCircle2,
 } from "lucide-react"
 import PublicNavbar from "@/components/PublicNavbar"
-import Footer from "@/components/Footer"
+import PublicFooter from "@/components/PublicFooter"
+import PageHero from "@/components/PageHero"
 import {
   getAllProblems,
   getAllCategories,
@@ -26,10 +34,10 @@ import {
 import type { DifficultyLevel, ProblemScope } from "@/lib/solve-them/types"
 
 const difficultyColors: Record<DifficultyLevel, string> = {
-  EASY: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
-  MEDIUM: "bg-amber-500/15 text-amber-300 border-amber-500/30",
-  HARD: "bg-orange-500/15 text-orange-300 border-orange-500/30",
-  EXTREME: "bg-rose-500/15 text-rose-300 border-rose-500/30",
+  EASY: "bg-emerald-100 text-emerald-700",
+  MEDIUM: "bg-amber-100 text-amber-700",
+  HARD: "bg-orange-100 text-orange-700",
+  EXTREME: "bg-rose-100 text-rose-700",
 }
 
 const difficultyLabels: Record<DifficultyLevel, string> = {
@@ -55,6 +63,47 @@ const projectTypeOptions = [
   "Open Source",
   "Government",
   "Infrastructure",
+]
+
+const container = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.05 } },
+}
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+}
+
+const processSteps = [
+  {
+    step: "01",
+    icon: Compass,
+    title: "Discover",
+    description:
+      "Browse curated world problems sourced from WHO, UN, IEA, IPCC and more. Filter by category, scope, and difficulty to find what resonates.",
+  },
+  {
+    step: "02",
+    icon: Microscope,
+    title: "Analyze",
+    description:
+      "Open any problem to see severity, impact, market need, affected regions, and the engineering skills required to make a dent.",
+  },
+  {
+    step: "03",
+    icon: Hammer,
+    title: "Build",
+    description:
+      "Use the recommended team templates, build roadmap, and starter solutions to launch a project that actually moves the needle.",
+  },
+  {
+    step: "04",
+    icon: Rocket,
+    title: "Scale",
+    description:
+      "Open-source your work, attract collaborators through the Innovation Engine, and turn an engineering project into a real venture.",
+  },
 ]
 
 export default function SolveThemPage() {
@@ -120,40 +169,21 @@ export default function SolveThemPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0A150A]">
+    <div className="min-h-screen flex flex-col bg-background">
       <PublicNavbar />
 
       <main className="flex-1">
-        {/* HERO */}
-        <section className="relative overflow-hidden py-20 sm:py-28">
-          <div
-            className="absolute inset-0 opacity-30"
-            style={{
-              background:
-                "radial-gradient(circle at 30% 20%, rgba(124,252,0,0.15), transparent 50%), radial-gradient(circle at 70% 70%, rgba(34,197,94,0.1), transparent 50%)",
-            }}
-          />
-          <div className="relative max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#7CFC00]/10 border border-[#7CFC00]/30 mb-6">
-              <Sparkles className="w-4 h-4 text-[#7CFC00]" />
-              <span className="text-sm text-[#7CFC00] font-medium">
-                Engineering Innovation Platform
-              </span>
-            </div>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-6 font-heading">
-              Find Problems
-              <br />
-              <span className="bg-gradient-to-r from-[#7CFC00] to-emerald-400 bg-clip-text text-transparent">
-                Worth Solving
-              </span>
-            </h1>
-            <p className="max-w-2xl mx-auto text-lg sm:text-xl text-white/70 mb-10">
-              {stats.total}+ curated world problems. Each one is a chance to build something that
-              matters. Find the one that matches your skills and start innovating.
-            </p>
+        <PageHero
+          badge="Solve Them"
+          title="Find problems"
+          highlight="worth solving"
+          description={`${stats.total}+ curated world problems across ${stats.categories} categories — each one a chance to build something that matters. Sourced from WHO, UN, IEA, IPCC, and more.`}
+        />
 
-            {/* STATS BAR */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto mb-10">
+        {/* STATS BAR */}
+        <section className="pb-12">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <StatCard label="Problems" value={`${stats.total}+`} />
               <StatCard label="Categories" value={`${stats.categories}`} />
               <StatCard label="People Affected" value={stats.totalPeopleAffected} />
@@ -163,7 +193,7 @@ export default function SolveThemPage() {
         </section>
 
         {/* BODY: LEFT FILTERS + RIGHT GRID */}
-        <section className="py-8 sm:py-12">
+        <section className="pb-20">
           <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex gap-8">
               {/* LEFT FILTERS (desktop) */}
@@ -199,40 +229,40 @@ export default function SolveThemPage() {
                 {/* Mobile: search bar + filter toggle */}
                 <div className="lg:hidden mb-4 flex gap-2">
                   <div className="relative flex-1">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                     <input
                       type="text"
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
                       placeholder="Search problems..."
-                      className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50"
+                      className="w-full pl-12 pr-4 py-3 bg-card border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50"
                     />
                   </div>
                   <button
                     onClick={() => setMobileFiltersOpen(true)}
-                    className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 flex items-center gap-2 relative"
+                    className="px-4 py-3 rounded-xl bg-card border text-foreground hover:bg-muted flex items-center gap-2 relative"
                   >
                     <SlidersHorizontal className="w-5 h-5" />
                     Filters
                     {activeFilterCount > 0 && (
-                      <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#7CFC00] text-[#0A150A] text-xs font-bold flex items-center justify-center">
+                      <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#7CFC00] text-[#1A2E1A] text-xs font-bold flex items-center justify-center">
                         {activeFilterCount}
                       </span>
                     )}
                   </button>
                 </div>
 
-                {/* Result count + sort (desktop shows it inline) */}
+                {/* Result count + clear (desktop inline) */}
                 <div className="hidden lg:flex items-center justify-between mb-5">
-                  <div className="text-sm text-white/60 flex items-center gap-2">
+                  <div className="text-sm text-muted-foreground flex items-center gap-2">
                     <Filter className="w-4 h-4" />
-                    Showing <span className="text-white font-medium">{filtered.length}</span> of{" "}
+                    Showing <span className="text-foreground font-medium">{filtered.length}</span> of{" "}
                     {allProblems.length} problems
                   </div>
                   {activeFilterCount > 0 && (
                     <button
                       onClick={clearAll}
-                      className="text-sm text-white/50 hover:text-white flex items-center gap-1"
+                      className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
                     >
                       <X className="w-3.5 h-3.5" />
                       Clear {activeFilterCount} filter{activeFilterCount > 1 ? "s" : ""}
@@ -243,47 +273,100 @@ export default function SolveThemPage() {
                 {/* GRID */}
                 {filtered.length === 0 ? (
                   <div className="text-center py-20">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/5 mb-4">
-                      <Search className="w-8 h-8 text-white/40" />
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
+                      <Search className="w-8 h-8 text-muted-foreground" />
                     </div>
-                    <h3 className="text-xl font-semibold text-white mb-2">No problems found</h3>
-                    <p className="text-white/60 mb-4">Try a different search or filter.</p>
+                    <h3 className="text-xl font-semibold mb-2">No problems found</h3>
+                    <p className="text-muted-foreground mb-4">Try a different search or filter.</p>
                     <button
                       onClick={clearAll}
-                      className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 text-sm"
+                      className="px-4 py-2 rounded-xl bg-card border hover:bg-muted text-sm"
                     >
                       Clear all filters
                     </button>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-5">
+                  <motion.div
+                    variants={container}
+                    initial="hidden"
+                    animate="show"
+                    className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-5"
+                  >
                     {filtered.map((problem) => (
-                      <ProblemCard key={problem.slug} problem={problem} />
+                      <motion.div key={problem.slug} variants={item}>
+                        <ProblemCard problem={problem} />
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
                 )}
               </div>
             </div>
           </div>
         </section>
 
+        {/* HOW WE WORK */}
+        <section className="py-20 bg-muted/30">
+          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <h2 className="text-2xl sm:text-3xl font-heading font-bold">
+                How <span className="gradient-text">Solve Them</span> Works
+              </h2>
+              <p className="mt-4 text-muted-foreground">
+                A four-step path from "I want to build something that matters" to a real engineering project.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {processSteps.map((step, i) => (
+                <motion.div
+                  key={step.step}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.15 }}
+                  className="relative"
+                >
+                  <div className="p-6 rounded-2xl bg-card border shadow-sm text-center h-full">
+                    <div className="text-4xl font-bold gradient-text mb-4">{step.step}</div>
+                    <div className="w-12 h-12 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center mx-auto mb-4">
+                      <step.icon className="size-6 text-[#2D4A2D] dark:text-[#7CFC00]" />
+                    </div>
+                    <h3 className="text-lg font-heading font-semibold mb-2">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+                  </div>
+                  {i < processSteps.length - 1 && (
+                    <div className="hidden lg:block absolute top-1/2 -right-3 w-6 text-muted-foreground/30">
+                      <ArrowRight className="size-6" />
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* CTA */}
-        <section className="py-20 border-t border-white/5">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 font-heading">
-              Don&apos;t know where to start?
-            </h2>
-            <p className="text-lg text-white/70 mb-8">
-              Tell us your skills and interests. Our AI Innovation Engine will match you to problems
-              you&apos;re uniquely positioned to solve.
-            </p>
-            <Link
-              href="/dashboard/innovation-engine"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#7CFC00] text-[#0A150A] font-semibold hover:bg-[#6BE000] transition-all"
-            >
-              <Sparkles className="w-5 h-5" />
-              Launch Innovation Engine
-            </Link>
+        <section className="py-20">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] relative overflow-hidden">
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iYSIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVHJhbnNmb3JtPSJyb3RhdGUoNDUpIj48cGF0aCBkPSJNLTEwIDMwaDYwdi0yMGgtNjB6IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDMpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCBmaWxsPSJ1cmwoI2EpIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+PC9zdmc+')] opacity-50" />
+              <div className="relative z-10">
+                <h2 className="text-3xl sm:text-4xl font-heading font-bold">Don&apos;t know where to start?</h2>
+                <p className="mt-4 text-lg text-[#1A2E1A]/80 max-w-xl mx-auto">
+                  Tell us your skills and interests. Our AI Innovation Engine will match you to problems
+                  you&apos;re uniquely positioned to solve.
+                </p>
+                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <Link
+                    href="/dashboard/innovation-engine"
+                    className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white text-[#2D4A2D] font-semibold hover:bg-white/90 shadow-xl text-base h-12"
+                  >
+                    <Sparkles className="w-5 h-5" />
+                    Launch Innovation Engine
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </main>
@@ -295,17 +378,17 @@ export default function SolveThemPage() {
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={() => setMobileFiltersOpen(false)}
           />
-          <div className="relative ml-auto w-full max-w-sm h-full bg-[#0A150A] border-l border-white/10 overflow-y-auto">
-            <div className="sticky top-0 bg-[#0A150A] border-b border-white/10 p-4 flex items-center justify-between z-10">
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+          <div className="relative ml-auto w-full max-w-sm h-full bg-background border-l overflow-y-auto">
+            <div className="sticky top-0 bg-background border-b p-4 flex items-center justify-between z-10">
+              <h2 className="text-lg font-bold flex items-center gap-2">
                 <SlidersHorizontal className="w-5 h-5" />
                 Filters
               </h2>
               <button
                 onClick={() => setMobileFiltersOpen(false)}
-                className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10"
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-muted hover:bg-muted/70"
               >
-                <X className="w-5 h-5 text-white" />
+                <X className="w-5 h-5" />
               </button>
             </div>
             <div className="p-4">
@@ -334,7 +417,7 @@ export default function SolveThemPage() {
               />
               <button
                 onClick={() => setMobileFiltersOpen(false)}
-                className="mt-4 w-full px-4 py-3 rounded-xl bg-[#7CFC00] text-[#0A150A] font-semibold hover:bg-[#6BE000]"
+                className="mt-4 w-full px-4 py-3 rounded-xl bg-[#7CFC00] text-[#1A2E1A] font-semibold hover:bg-[#6BE000]"
               >
                 Show {filtered.length} results
               </button>
@@ -343,7 +426,7 @@ export default function SolveThemPage() {
         </div>
       )}
 
-      <Footer />
+      <PublicFooter />
     </div>
   )
 }
@@ -399,11 +482,11 @@ function FiltersPanel({
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-bold text-white uppercase tracking-wide flex items-center gap-2">
-          <Filter className="w-4 h-4 text-[#7CFC00]" />
+        <h2 className="text-sm font-bold uppercase tracking-wide flex items-center gap-2">
+          <Filter className="w-4 h-4 text-[#2D4A2D] dark:text-[#7CFC00]" />
           Filters
           {activeFilterCount > 0 && (
-            <span className="text-xs px-2 py-0.5 rounded-full bg-[#7CFC00]/15 text-[#7CFC00] border border-[#7CFC00]/30">
+            <span className="text-xs px-2 py-0.5 rounded-full bg-[#7CFC00]/15 text-[#2D4A2D] dark:text-[#7CFC00] border border-[#7CFC00]/30">
               {activeFilterCount}
             </span>
           )}
@@ -411,7 +494,7 @@ function FiltersPanel({
         {activeFilterCount > 0 && (
           <button
             onClick={clearAll}
-            className="text-xs text-white/50 hover:text-white flex items-center gap-1"
+            className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
           >
             <X className="w-3 h-3" />
             Clear
@@ -421,13 +504,13 @@ function FiltersPanel({
 
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search problems..."
-          className="w-full pl-10 pr-3 py-2.5 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50"
+          className="w-full pl-10 pr-3 py-2.5 text-sm bg-card border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50"
         />
       </div>
 
@@ -443,13 +526,11 @@ function FiltersPanel({
           ].map((opt) => (
             <button
               key={opt.value}
-              onClick={() =>
-                setSortBy(opt.value as typeof sortBy)
-              }
+              onClick={() => setSortBy(opt.value as typeof sortBy)}
               className={`text-xs px-2.5 py-2 rounded-lg border transition-all text-left ${
                 sortBy === opt.value
-                  ? "bg-[#7CFC00]/15 text-[#7CFC00] border-[#7CFC00]/30"
-                  : "bg-white/5 text-white/60 border-white/10 hover:bg-white/10 hover:text-white"
+                  ? "bg-[#2D4A2D] text-white border-[#2D4A2D] dark:bg-[#7CFC00]/15 dark:text-[#7CFC00] dark:border-[#7CFC00]/30"
+                  : "bg-card text-muted-foreground border-border hover:bg-muted hover:text-foreground"
               }`}
             >
               {opt.label}
@@ -465,12 +546,12 @@ function FiltersPanel({
             onClick={() => setCategory("All")}
             className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center justify-between ${
               category === "All"
-                ? "bg-[#7CFC00]/15 text-[#7CFC00]"
-                : "text-white/60 hover:bg-white/5 hover:text-white"
+                ? "bg-[#2D4A2D]/10 text-[#2D4A2D] dark:bg-[#7CFC00]/15 dark:text-[#7CFC00]"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
           >
             All Categories
-            <span className="text-xs text-white/40">{totalCount}</span>
+            <span className="text-xs text-muted-foreground">{totalCount}</span>
           </button>
           {categories.map((cat) => (
             <button
@@ -478,8 +559,8 @@ function FiltersPanel({
               onClick={() => setCategory(cat)}
               className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center justify-between ${
                 category === cat
-                  ? "bg-[#7CFC00]/15 text-[#7CFC00]"
-                  : "text-white/60 hover:bg-white/5 hover:text-white"
+                  ? "bg-[#2D4A2D]/10 text-[#2D4A2D] dark:bg-[#7CFC00]/15 dark:text-[#7CFC00]"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               <span className="truncate">{cat}</span>
@@ -536,15 +617,15 @@ function FiltersPanel({
               onClick={() => toggleProjectType(t)}
               className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center gap-2 ${
                 projectTypes.includes(t)
-                  ? "bg-[#7CFC00]/15 text-[#7CFC00]"
-                  : "text-white/60 hover:bg-white/5 hover:text-white"
+                  ? "bg-[#2D4A2D]/10 text-[#2D4A2D] dark:bg-[#7CFC00]/15 dark:text-[#7CFC00]"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               <span
                 className={`w-4 h-4 rounded border flex items-center justify-center text-[10px] ${
                   projectTypes.includes(t)
-                    ? "bg-[#7CFC00] border-[#7CFC00] text-[#0A150A]"
-                    : "border-white/20"
+                    ? "bg-[#7CFC00] border-[#7CFC00] text-[#1A2E1A]"
+                    : "border-border"
                 }`}
               >
                 {projectTypes.includes(t) ? "✓" : ""}
@@ -565,8 +646,8 @@ function FiltersPanel({
                 onClick={() => toggleTag(t)}
                 className={`text-xs px-2 py-1 rounded-md border transition-all ${
                   activeTags.includes(t)
-                    ? "bg-[#7CFC00]/15 text-[#7CFC00] border-[#7CFC00]/30"
-                    : "bg-white/5 text-white/50 border-white/10 hover:bg-white/10 hover:text-white"
+                    ? "bg-[#2D4A2D]/10 text-[#2D4A2D] border-[#2D4A2D]/30 dark:bg-[#7CFC00]/15 dark:text-[#7CFC00] dark:border-[#7CFC00]/30"
+                    : "bg-card text-muted-foreground border-border hover:bg-muted hover:text-foreground"
                 }`}
               >
                 {t}
@@ -578,8 +659,8 @@ function FiltersPanel({
 
       {/* Footer count */}
       {!isMobile && (
-        <div className="pt-2 border-t border-white/5 text-xs text-white/40">
-          <span className="text-white font-medium">{resultCount}</span> of {totalCount} problems
+        <div className="pt-2 border-t text-xs text-muted-foreground">
+          <span className="text-foreground font-medium">{resultCount}</span> of {totalCount} problems
         </div>
       )}
     </div>
@@ -594,8 +675,8 @@ function FilterGroup({
   children: React.ReactNode
 }) {
   return (
-    <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10">
-      <h3 className="text-xs font-bold text-white/40 uppercase tracking-wide mb-3">{title}</h3>
+    <div className="p-4 rounded-xl bg-card border">
+      <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wide mb-3">{title}</h3>
       {children}
     </div>
   )
@@ -616,21 +697,21 @@ function FilterRadio({
     <button
       onClick={onClick}
       className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center gap-2 ${
-        active ? "bg-[#7CFC00]/15 text-[#7CFC00]" : "text-white/60 hover:bg-white/5 hover:text-white"
+        active
+          ? "bg-[#2D4A2D]/10 text-[#2D4A2D] dark:bg-[#7CFC00]/15 dark:text-[#7CFC00]"
+          : "text-muted-foreground hover:bg-muted hover:text-foreground"
       }`}
     >
       <span
         className={`w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center ${
-          active ? "border-[#7CFC00]" : "border-white/20"
+          active ? "border-[#2D4A2D] dark:border-[#7CFC00]" : "border-border"
         }`}
       >
-        {active && <span className="w-1.5 h-1.5 rounded-full bg-[#7CFC00]" />}
+        {active && <span className="w-1.5 h-1.5 rounded-full bg-[#2D4A2D] dark:bg-[#7CFC00]" />}
       </span>
       {label}
       {badgeClass && (
-        <span
-          className={`ml-auto text-[10px] px-1.5 py-0.5 rounded border ${badgeClass}`}
-        >
+        <span className={`ml-auto text-[10px] px-1.5 py-0.5 rounded ${badgeClass}`}>
           ●
         </span>
       )}
@@ -640,9 +721,9 @@ function FilterRadio({
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-      <div className="text-2xl sm:text-3xl font-bold text-[#7CFC00]">{value}</div>
-      <div className="text-sm text-white/60 mt-1">{label}</div>
+    <div className="p-4 rounded-xl bg-card border shadow-sm">
+      <div className="text-2xl sm:text-3xl font-bold gradient-text">{value}</div>
+      <div className="text-sm text-muted-foreground mt-1">{label}</div>
     </div>
   )
 }
@@ -651,52 +732,54 @@ function ProblemCard({ problem }: { problem: ReturnType<typeof getAllProblems>[0
   return (
     <Link
       href={`/solve-them/${problem.slug}`}
-      className="group relative flex flex-col p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#7CFC00]/40 hover:bg-white/[0.07] transition-all overflow-hidden"
+      className="group p-6 rounded-2xl bg-card border shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col"
     >
-      {/* Category badge */}
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-[#7CFC00]/10 text-[#7CFC00] border border-[#7CFC00]/20">
+      {/* Category + difficulty */}
+      <div className="flex items-start justify-between gap-3 mb-4">
+        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-[#7CFC00]/10 text-[#2D4A2D] dark:text-[#7CFC00] border border-[#7CFC00]/20">
           {problem.category}
         </span>
         <span
-          className={`text-xs font-medium px-2.5 py-1 rounded-full border ${difficultyColors[problem.difficultyLevel]}`}
+          className={`text-xs font-medium px-2.5 py-1 rounded-full ${difficultyColors[problem.difficultyLevel]}`}
         >
           {difficultyLabels[problem.difficultyLevel]}
         </span>
       </div>
 
       {/* Title */}
-      <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#7CFC00] transition-colors line-clamp-2">
+      <h3 className="text-lg font-heading font-semibold mb-2 group-hover:text-[#2D4A2D] dark:group-hover:text-[#7CFC00] transition-colors line-clamp-2">
         {problem.title}
       </h3>
 
       {/* Summary */}
-      <p className="text-sm text-white/60 mb-4 line-clamp-3 flex-1">{problem.summary}</p>
+      <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 flex-1">
+        {problem.summary}
+      </p>
 
       {/* Tags */}
       <div className="flex flex-wrap gap-1.5 mb-4">
         {problem.tags.slice(0, 3).map((tag) => (
           <span
             key={tag}
-            className="text-xs px-2 py-0.5 rounded-md bg-white/5 text-white/50 border border-white/5"
+            className="text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground"
           >
             {tag}
           </span>
         ))}
         {problem.tags.length > 3 && (
-          <span className="text-xs px-2 py-0.5 text-white/40">+{problem.tags.length - 3}</span>
+          <span className="text-xs px-2 py-0.5 text-muted-foreground">+{problem.tags.length - 3}</span>
         )}
       </div>
 
       {/* Metrics */}
-      <div className="grid grid-cols-3 gap-2 mb-4 pt-4 border-t border-white/5">
-        <Metric icon={AlertCircle} label="Severity" value={problem.severity} color="text-rose-400" />
-        <Metric icon={TrendingUp} label="Impact" value={problem.impactScore} color="text-emerald-400" />
-        <Metric icon={Sparkles} label="Innovation" value={problem.innovationScore} color="text-amber-400" />
+      <div className="grid grid-cols-3 gap-2 mb-4 pt-4 border-t">
+        <Metric icon={AlertCircle} label="Severity" value={problem.severity} color="text-rose-500" />
+        <Metric icon={TrendingUp} label="Impact" value={problem.impactScore} color="text-emerald-500" />
+        <Metric icon={Sparkles} label="Innovation" value={problem.innovationScore} color="text-amber-500" />
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between text-xs text-white/40">
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
         <span className="flex items-center gap-1">
           <Users className="w-3 h-3" />
           {problem.teamTemplates[0]?.minMembers || 3}+ engineers
@@ -709,9 +792,10 @@ function ProblemCard({ problem }: { problem: ReturnType<typeof getAllProblems>[0
       </div>
 
       {/* Locked indicator */}
-      <div className="mt-3 flex items-center gap-1 text-xs text-white/30">
+      <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground/70">
         <Lock className="w-3 h-3" />
         Solutions, skills, team templates & roadmap unlocked on detail page
+        <CheckCircle2 className="w-3 h-3 ml-auto text-[#2D4A2D] dark:text-[#7CFC00]" />
       </div>
     </Link>
   )
@@ -730,7 +814,7 @@ function Metric({
 }) {
   return (
     <div>
-      <div className="flex items-center gap-1 text-white/40 mb-0.5">
+      <div className="flex items-center gap-1 text-muted-foreground mb-0.5">
         <Icon className={`w-3 h-3 ${color}`} />
         <span className="text-[10px] uppercase tracking-wide">{label}</span>
       </div>
