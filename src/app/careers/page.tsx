@@ -44,11 +44,11 @@ import {
 import * as React from "react"
 
 const openings = [
-  { title: "Senior Full-Stack Engineer", department: "Engineering", location: "Remote", type: "Full-time", color: "from-[#2D4A2D] to-[#8FBC8F]" },
-  { title: "Product Designer", department: "Design", location: "San Francisco / Remote", type: "Full-time", color: "from-[#7CFC00] to-[#2D4A2D]" },
+  { title: "Senior Full-Stack Engineer", department: "Engineering", location: "Remote", type: "Full-time", color: "from-[#1E3A8A] to-[#93C5FD]" },
+  { title: "Product Designer", department: "Design", location: "San Francisco / Remote", type: "Full-time", color: "from-[#3B82F6] to-[#1E3A8A]" },
   { title: "Startup Consultant", department: "Consulting", location: "Remote", type: "Full-time", color: "from-green-500 to-emerald-500" },
   { title: "AI/ML Engineer", department: "Engineering", location: "Remote", type: "Full-time", color: "from-orange-500 to-red-500" },
-  { title: "Content Marketing Manager", department: "Marketing", location: "Remote", type: "Full-time", color: "from-[#8FBC8F] to-[#2D4A2D]" },
+  { title: "Content Marketing Manager", department: "Marketing", location: "Remote", type: "Full-time", color: "from-[#93C5FD] to-[#1E3A8A]" },
   { title: "Customer Success Lead", department: "Success", location: "San Francisco", type: "Full-time", color: "from-yellow-500 to-orange-500" },
 ]
 
@@ -266,14 +266,14 @@ export default function CareersPage() {
                       </div>
                     </div>
                     {isJobApplied(job.title) ? (
-                      <Badge className="bg-[#7CFC00]/20 text-[#2D4A2D] border-[#7CFC00]/30 shrink-0">
+                      <Badge className="bg-[#3B82F6]/20 text-[#1E3A8A] border-[#3B82F6]/30 shrink-0">
                         <Check className="size-3 mr-1" /> Applied
                       </Badge>
                     ) : (
                       <Button
                         variant="outline"
                         size="sm"
-                        className="shrink-0 group-hover:bg-[#E8F5E9] dark:group-hover:bg-[#2D4A2D]/20"
+                        className="shrink-0 group-hover:bg-[#E8F5E9] dark:group-hover:bg-[#1E3A8A]/20"
                         onClick={() => handleApplyClick(job)}
                       >
                         Apply <ArrowRight className="size-3.5 ml-1" />
@@ -304,8 +304,8 @@ export default function CareersPage() {
                   transition={{ delay: i * 0.05 }}
                 >
                   <div className="p-5 rounded-2xl bg-card border shadow-sm h-full">
-                    <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center mb-3">
-                      <benefit.icon className="size-5 text-[#2D4A2D] dark:text-[#7CFC00]" />
+                    <div className="w-10 h-10 rounded-xl bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 flex items-center justify-center mb-3">
+                      <benefit.icon className="size-5 text-[#1E3A8A] dark:text-[#3B82F6]" />
                     </div>
                     <h3 className="text-sm font-heading font-semibold mb-1">{benefit.title}</h3>
                     <p className="text-xs text-muted-foreground leading-relaxed">{benefit.description}</p>
@@ -346,14 +346,14 @@ export default function CareersPage() {
         {/* CTA Section */}
         <section className="py-20 bg-muted/30">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] relative overflow-hidden">
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] relative overflow-hidden">
               <div className="relative z-10">
                 <h2 className="text-3xl sm:text-4xl font-heading font-bold">Don&apos;t see the right role?</h2>
                 <p className="mt-4 text-lg text-white/80 max-w-xl mx-auto">
                   We&apos;re always looking for talented people. Send us your resume and we&apos;ll keep you in mind.
                 </p>
                 <div className="mt-8">
-                  <Button asChild size="lg" className="bg-white text-[#2D4A2D] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
+                  <Button asChild size="lg" className="bg-white text-[#1E3A8A] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
                     <Link href="/contact">
                       Get In Touch
                       <ArrowRight className="size-5" />
@@ -372,10 +372,10 @@ export default function CareersPage() {
       <Dialog open={authDialogOpen} onOpenChange={setAuthDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center mb-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center mb-4">
               <Briefcase className="w-7 h-7 text-white" />
             </div>
-            <DialogTitle className="text-2xl font-bold text-[#1A2E1A]">
+            <DialogTitle className="text-2xl font-bold text-[#0F1B3D]">
               Apply for {selectedJob?.title}
             </DialogTitle>
             <DialogDescription className="text-gray-600 text-base">
@@ -390,8 +390,8 @@ export default function CareersPage() {
               "Get notified about updates",
             ].map((item) => (
               <div key={item} className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full bg-[#7CFC00]/20 flex items-center justify-center flex-shrink-0">
-                  <Check className="w-3 h-3 text-[#2D4A2D]" />
+                <div className="w-5 h-5 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0">
+                  <Check className="w-3 h-3 text-[#1E3A8A]" />
                 </div>
                 <span className="text-sm text-gray-700">{item}</span>
               </div>
@@ -400,14 +400,14 @@ export default function CareersPage() {
 
           <Link
             href="/auth/login"
-            className="w-full flex items-center justify-center gap-2 bg-[#1A2E1A] text-white rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#243824] transition-colors"
+            className="w-full flex items-center justify-center gap-2 bg-[#0F1B3D] text-white rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#1E3A8A] transition-colors"
           >
             Sign In to Apply
             <ArrowRight className="w-4 h-4" />
           </Link>
           <p className="text-center text-sm text-gray-500 mt-3">
             Don&apos;t have an account?{" "}
-            <Link href="/auth/signup" className="text-[#2D4A2D] font-semibold hover:underline">
+            <Link href="/auth/signup" className="text-[#1E3A8A] font-semibold hover:underline">
               Sign up free
             </Link>
           </p>
@@ -420,14 +420,14 @@ export default function CareersPage() {
           {submitted ? (
             /* Success State */
             <div className="py-8 text-center">
-              <div className="w-16 h-16 rounded-full bg-[#7CFC00]/20 flex items-center justify-center mx-auto mb-4">
-                <Check className="w-8 h-8 text-[#2D4A2D]" />
+              <div className="w-16 h-16 rounded-full bg-[#3B82F6]/20 flex items-center justify-center mx-auto mb-4">
+                <Check className="w-8 h-8 text-[#1E3A8A]" />
               </div>
-              <h3 className="text-2xl font-bold text-[#1A2E1A] mb-2">Application Submitted!</h3>
+              <h3 className="text-2xl font-bold text-[#0F1B3D] mb-2">Application Submitted!</h3>
               <p className="text-gray-600 mb-6">
                 Your application for <span className="font-semibold">{selectedJob?.title}</span> has been received. We&apos;ll review it and get back to you soon.
               </p>
-              <Button onClick={closeApplyDialog} className="bg-[#1A2E1A] hover:bg-[#243824] text-white">
+              <Button onClick={closeApplyDialog} className="bg-[#0F1B3D] hover:bg-[#1E3A8A] text-white">
                 Done
               </Button>
             </div>
@@ -440,7 +440,7 @@ export default function CareersPage() {
                     <Briefcase className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <DialogTitle className="text-lg font-bold text-[#1A2E1A]">
+                    <DialogTitle className="text-lg font-bold text-[#0F1B3D]">
                       Apply for {selectedJob?.title}
                     </DialogTitle>
                     <DialogDescription className="text-sm text-gray-500">
@@ -510,10 +510,10 @@ export default function CareersPage() {
                   <div
                     className={`relative border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all duration-200 ${
                       cvFile
-                        ? "border-[#7CFC00] bg-[#7CFC00]/5"
+                        ? "border-[#3B82F6] bg-[#3B82F6]/5"
                         : cvError
                           ? "border-red-300 bg-red-50"
-                          : "border-gray-300 hover:border-[#7CFC00]/50 hover:bg-[#7CFC00]/5"
+                          : "border-gray-300 hover:border-[#3B82F6]/50 hover:bg-[#3B82F6]/5"
                     }`}
                     onClick={() => document.getElementById("cv-upload")?.click()}
                   >
@@ -526,11 +526,11 @@ export default function CareersPage() {
                     />
                     {cvFile ? (
                       <div className="flex items-center justify-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-[#7CFC00]/20 flex items-center justify-center">
-                          <FileText className="w-4 h-4 text-[#2D4A2D]" />
+                        <div className="w-8 h-8 rounded-lg bg-[#3B82F6]/20 flex items-center justify-center">
+                          <FileText className="w-4 h-4 text-[#1E3A8A]" />
                         </div>
                         <div className="text-left">
-                          <p className="text-sm font-medium text-[#1A2E1A] truncate max-w-[200px]">{cvFileName}</p>
+                          <p className="text-sm font-medium text-[#0F1B3D] truncate max-w-[200px]">{cvFileName}</p>
                           <p className="text-xs text-gray-500">{(cvFile.size / 1024 / 1024).toFixed(2)} MB · Click to change</p>
                         </div>
                         <button
@@ -599,7 +599,7 @@ export default function CareersPage() {
               <Button
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="w-full mt-6 bg-[#1A2E1A] hover:bg-[#243824] text-white h-12 text-base font-semibold"
+                className="w-full mt-6 bg-[#0F1B3D] hover:bg-[#1E3A8A] text-white h-12 text-base font-semibold"
               >
                 {submitting ? (
                   <>

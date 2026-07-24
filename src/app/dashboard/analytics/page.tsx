@@ -77,7 +77,7 @@ export default function AnalyticsPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
           <p className="text-sm text-muted-foreground">Loading analytics...</p>
         </div>
       </div>
@@ -91,9 +91,9 @@ export default function AnalyticsPage() {
 
   const overviewCards = [
     { icon: CheckCircle2, label: "Tasks Completed", value: String(overview?.tasksCompleted || 0), change: `${overview?.totalTasks || 0} total`, color: "text-green-600 dark:text-green-400", bg: "bg-green-100 dark:bg-green-900/30" },
-    { icon: Calendar, label: "Appointments Attended", value: String(overview?.appointmentsAttended || 0), change: `${overview?.scheduledAppointments || 0} scheduled`, color: "text-[#1A2E1A] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
-    { icon: BookOpen, label: "Resources Viewed", value: String(overview?.resourcesUsed || 0), change: "unique resources opened", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
-    { icon: TrendingUp, label: "Startup Score", value: `${startupScore}/100`, change: startupScore >= 70 ? "Strong" : startupScore >= 40 ? "Growing" : "Getting started", color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
+    { icon: Calendar, label: "Appointments Attended", value: String(overview?.appointmentsAttended || 0), change: `${overview?.scheduledAppointments || 0} scheduled`, color: "text-[#0F1B3D] dark:text-[#3B82F6]", bg: "bg-[#DBEAFE] dark:bg-[#1E3A8A]/30" },
+    { icon: BookOpen, label: "Resources Viewed", value: String(overview?.resourcesUsed || 0), change: "unique resources opened", color: "text-[#1E3A8A] dark:text-[#3B82F6]", bg: "bg-[#DBEAFE] dark:bg-[#1E3A8A]/30" },
+    { icon: TrendingUp, label: "Startup Score", value: `${startupScore}/100`, change: startupScore >= 70 ? "Strong" : startupScore >= 40 ? "Growing" : "Getting started", color: "text-[#1E3A8A] dark:text-[#3B82F6]", bg: "bg-[#DBEAFE] dark:bg-[#1E3A8A]/30" },
   ]
 
   // Build resource data from actual types
@@ -108,7 +108,7 @@ export default function AnalyticsPage() {
 
   const taskCompletionData = [
     { name: "Completed", value: taskBreakdown.completed, color: "#10B981" },
-    { name: "In Progress", value: taskBreakdown.inProgress, color: "#7CFC00" },
+    { name: "In Progress", value: taskBreakdown.inProgress, color: "#3B82F6" },
     { name: "To Do", value: taskBreakdown.todo, color: "#94A3B8" },
   ].filter((d) => d.value > 0)
 
@@ -181,8 +181,8 @@ export default function AnalyticsPage() {
                   />
                   <defs>
                     <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#7CFC00" />
-                      <stop offset="100%" stopColor="#2D4A2D" />
+                      <stop offset="0%" stopColor="#3B82F6" />
+                      <stop offset="100%" stopColor="#1E3A8A" />
                     </linearGradient>
                   </defs>
                 </svg>
@@ -222,7 +222,7 @@ export default function AnalyticsPage() {
                         fontSize: "12px",
                       }}
                     />
-                    <Bar dataKey="used" fill="#7CFC00" radius={[6, 6, 0, 0]} />
+                    <Bar dataKey="used" fill="#3B82F6" radius={[6, 6, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               ) : (
@@ -301,8 +301,8 @@ export default function AnalyticsPage() {
                 />
                 <defs>
                   <linearGradient id="healthGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#7CFC00" />
-                    <stop offset="100%" stopColor="#2D4A2D" />
+                    <stop offset="0%" stopColor="#3B82F6" />
+                    <stop offset="100%" stopColor="#1E3A8A" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -342,8 +342,8 @@ export default function AnalyticsPage() {
             <div className="space-y-3">
               {recommendations.map((rec, i) => (
                 <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
-                  <div className="w-8 h-8 rounded-lg bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center shrink-0">
-                    <rec.icon className="size-4 text-[#2D4A2D] dark:text-[#7CFC00]" />
+                  <div className="w-8 h-8 rounded-lg bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 flex items-center justify-center shrink-0">
+                    <rec.icon className="size-4 text-[#1E3A8A] dark:text-[#3B82F6]" />
                   </div>
                   <div>
                     <p className="text-sm font-medium">{rec.title}</p>

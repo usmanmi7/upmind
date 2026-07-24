@@ -24,21 +24,21 @@ const contactInfo = [
     title: "Email Us",
     detail: "hello@upmind.io",
     description: "We respond within 24 hours",
-    color: "from-[#2D4A2D] to-[#8FBC8F]",
+    color: "from-[#1E3A8A] to-[#93C5FD]",
   },
   {
     icon: Phone,
     title: "Call Us",
     detail: "+1 (555) 123-4567",
     description: "Mon–Fri, 9am–6pm EST",
-    color: "from-[#7CFC00] to-[#2D4A2D]",
+    color: "from-[#3B82F6] to-[#1E3A8A]",
   },
   {
     icon: MapPin,
     title: "Visit Us",
     detail: "123 Innovation Drive",
     description: "San Francisco, CA 94105",
-    color: "from-green-500 to-emerald-500",
+    color: "from-blue-500 to-blue-700",
   },
 ]
 
@@ -79,7 +79,7 @@ export default function ContactPage() {
                       <info.icon className="size-6 text-white" />
                     </div>
                     <h3 className="text-base font-heading font-semibold mb-1">{info.title}</h3>
-                    <p className="text-sm font-medium text-[#2D4A2D] dark:text-[#7CFC00]">{info.detail}</p>
+                    <p className="text-sm font-medium text-[#1E3A8A] dark:text-[#3B82F6]">{info.detail}</p>
                     <p className="text-xs text-muted-foreground mt-1">{info.description}</p>
                   </div>
                 </motion.div>
@@ -132,7 +132,7 @@ export default function ContactPage() {
                     </div>
                     <Button
                       type="submit"
-                      className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+                      className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
                     >
                       {submitted ? "Message Sent!" : "Send Message"}
                       <Send className="size-4 ml-2" />
@@ -159,13 +159,13 @@ export default function ContactPage() {
                 <div className="p-6 rounded-2xl bg-card border shadow-sm">
                   <h3 className="text-base font-heading font-semibold mb-4">Follow Us</h3>
                   <div className="flex gap-4">
-                    <a href="#" className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center hover:bg-[#C8E6C9] dark:hover:bg-[#2D4A2D]/30 hover:text-[#2D4A2D] transition-smooth">
+                    <a href="#" className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center hover:bg-[#DBEAFE] dark:hover:bg-[#1E3A8A]/30 hover:text-[#1E3A8A] transition-smooth">
                       <Twitter className="size-5" />
                     </a>
-                    <a href="#" className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center hover:bg-[#C8E6C9] dark:hover:bg-[#2D4A2D]/30 hover:text-[#2D4A2D] transition-smooth">
+                    <a href="#" className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center hover:bg-[#DBEAFE] dark:hover:bg-[#1E3A8A]/30 hover:text-[#1E3A8A] transition-smooth">
                       <Linkedin className="size-5" />
                     </a>
-                    <a href="#" className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center hover:bg-[#C8E6C9] dark:hover:bg-[#2D4A2D]/30 hover:text-[#1A2E1A] transition-smooth">
+                    <a href="#" className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center hover:bg-[#DBEAFE] dark:hover:bg-[#1E3A8A]/30 hover:text-[#0F1B3D] transition-smooth">
                       <Github className="size-5" />
                     </a>
                   </div>

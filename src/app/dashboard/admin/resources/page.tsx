@@ -79,8 +79,8 @@ const typeIcons: Record<string, React.ElementType> = {
 }
 
 const typeColors: Record<string, string> = {
-  BLOG: "bg-[#7CFC00]/20 text-[#7CFC00]",
-  TEMPLATE: "bg-[#7CFC00]/20 text-[#7CFC00]",
+  BLOG: "bg-[#3B82F6]/20 text-[#3B82F6]",
+  TEMPLATE: "bg-[#3B82F6]/20 text-[#3B82F6]",
   VIDEO: "bg-red-500/20 text-red-400",
   PDF: "bg-green-500/20 text-green-400",
   GUIDE: "bg-yellow-500/20 text-yellow-400",
@@ -209,7 +209,7 @@ export default function AdminResourcesPage() {
             setForm({ title: "", description: "", type: "GUIDE", category: "", tags: "", isPremium: false })
             setAddOpen(true)
           }}
-          className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] hover:from-[#6BE000] hover:to-[#1A2E1A] text-white"
+          className="bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] hover:from-[#2563EB] hover:to-[#0F1B3D] text-white"
         >
           <Plus className="size-4 mr-2" />
           Add Resource
@@ -378,7 +378,7 @@ export default function AdminResourcesPage() {
               <div><Label>Premium</Label><p className="text-xs text-muted-foreground">Only for paid users</p></div>
               <Switch checked={form.isPremium} onCheckedChange={(checked) => setForm((p) => ({ ...p, isPremium: checked }))} />
             </div>
-            <Button onClick={handleAdd} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">Create Resource</Button>
+            <Button onClick={handleAdd} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] text-white">Create Resource</Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -412,7 +412,7 @@ export default function AdminResourcesPage() {
               <div><Label>Premium</Label><p className="text-xs text-muted-foreground">Only for paid users</p></div>
               <Switch checked={form.isPremium} onCheckedChange={(checked) => setForm((p) => ({ ...p, isPremium: checked }))} />
             </div>
-            <Button onClick={handleEdit} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">Save Changes</Button>
+            <Button onClick={handleEdit} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] text-white">Save Changes</Button>
           </div>
         </DialogContent>
       </Dialog>

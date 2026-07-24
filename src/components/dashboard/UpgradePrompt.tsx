@@ -49,7 +49,7 @@ export function UpgradePrompt({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex items-center justify-center mb-2">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00] via-[#2D4A2D] to-[#8FBC8F] flex items-center justify-center shadow-lg shadow-[#7CFC00]/25">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#3B82F6] via-[#1E3A8A] to-[#93C5FD] flex items-center justify-center shadow-lg shadow-[#3B82F6]/25">
               <Crown className="size-8 text-white" />
             </div>
           </div>
@@ -64,15 +64,15 @@ export function UpgradePrompt({
 
         <div className="space-y-4 mt-2">
           {/* Feature Preview */}
-          <div className="p-4 rounded-xl bg-gradient-to-br from-[#E8F5E9] to-[#C8E6C9] dark:from-[#2D4A2D]/20 dark:to-[#1A2E1A]/20 border border-[#7CFC00]/30 dark:border-[#2D4A2D]/50">
+          <div className="p-4 rounded-xl bg-gradient-to-br from-[#E8F5E9] to-[#DBEAFE] dark:from-[#1E3A8A]/20 dark:to-[#0F1B3D]/20 border border-[#3B82F6]/30 dark:border-[#1E3A8A]/50">
             <div className="flex items-center gap-2 mb-3">
-              <Lock className="size-4 text-[#2D4A2D] dark:text-[#7CFC00]" />
+              <Lock className="size-4 text-[#1E3A8A] dark:text-[#3B82F6]" />
               <span className="text-sm font-semibold">You&apos;re missing out on</span>
             </div>
             <div className="space-y-2">
               {planFeatures.slice(0, 4).map((feat) => (
                 <div key={feat} className="flex items-center gap-2">
-                  <Check className="size-3.5 text-[#7CFC00] shrink-0" />
+                  <Check className="size-3.5 text-[#3B82F6] shrink-0" />
                   <span className="text-sm text-muted-foreground">{feat}</span>
                 </div>
               ))}
@@ -88,8 +88,8 @@ export function UpgradePrompt({
               <p className="text-lg font-bold">$0</p>
               <p className="text-[10px] text-muted-foreground">Basic access</p>
             </div>
-            <div className="p-3 rounded-lg border border-[#7CFC00]/50 bg-[#E8F5E9] dark:bg-[#2D4A2D]/20 text-center relative">
-              <Badge className="text-xs mb-1 bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] border-0 text-[#1A2E1A]">
+            <div className="p-3 rounded-lg border border-[#3B82F6]/50 bg-[#E8F5E9] dark:bg-[#1E3A8A]/20 text-center relative">
+              <Badge className="text-xs mb-1 bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] border-0 text-[#0F1B3D]">
                 <Sparkles className="size-3 mr-1" /> Pro
               </Badge>
               <p className="text-lg font-bold">$49</p>
@@ -100,7 +100,7 @@ export function UpgradePrompt({
           {/* CTA */}
           <Button
             asChild
-            className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shadow-lg shadow-[#7CFC00]/25"
+            className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D] shadow-lg shadow-[#3B82F6]/25"
           >
             <Link href="/dashboard/subscription">
               <Rocket className="size-4 mr-2" />
@@ -130,8 +130,8 @@ export function InlineUpgradePrompt({
     <div className="relative group">
       <div className="absolute inset-0 bg-background/60 backdrop-blur-[2px] rounded-xl z-10 flex items-center justify-center">
         <div className="text-center p-4">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center mx-auto mb-2">
-            <Lock className="size-5 text-[#1A2E1A]" />
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center mx-auto mb-2">
+            <Lock className="size-5 text-[#0F1B3D]" />
           </div>
           <p className="text-sm font-semibold mb-1">{feature}</p>
           <p className="text-xs text-muted-foreground mb-3">
@@ -139,7 +139,7 @@ export function InlineUpgradePrompt({
           </p>
           <Button
             size="sm"
-            className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+            className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
             onClick={onUpgrade}
             asChild
           >

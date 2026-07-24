@@ -163,7 +163,7 @@ export default function AdminCMSPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <Card className="border-0 bg-gradient-to-br from-background to-muted/30 shadow-sm">
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center shrink-0">
               <HelpCircle className="size-5 text-white" />
             </div>
             <div>
@@ -185,7 +185,7 @@ export default function AdminCMSPage() {
         </Card>
         <Card className="border-0 bg-gradient-to-br from-background to-muted/30 shadow-sm">
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#2D4A2D] to-[#8FBC8F] flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#1E3A8A] to-[#93C5FD] flex items-center justify-center shrink-0">
               <MessageSquareQuote className="size-5 text-white" />
             </div>
             <div>
@@ -217,7 +217,7 @@ export default function AdminCMSPage() {
         <TabsContent value="faqs" className="space-y-4 mt-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              These FAQs appear on the <a href="/faq" target="_blank" className="text-[#7CFC00] hover:underline">public FAQ page</a>
+              These FAQs appear on the <a href="/faq" target="_blank" className="text-[#3B82F6] hover:underline">public FAQ page</a>
             </p>
             <Button
               onClick={() => {
@@ -225,7 +225,7 @@ export default function AdminCMSPage() {
                 setFaqForm({ id: "", question: "", answer: "", category: "", order: faqs.length, isPublished: true })
                 setFaqDialogOpen(true)
               }}
-              className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white"
+              className="bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] text-white"
             >
               <Plus className="size-4 mr-2" />New FAQ
             </Button>
@@ -300,7 +300,7 @@ export default function AdminCMSPage() {
         <TabsContent value="testimonials" className="space-y-4 mt-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              These testimonials appear on the <a href="/success-stories" target="_blank" className="text-[#7CFC00] hover:underline">Success Stories page</a>
+              These testimonials appear on the <a href="/success-stories" target="_blank" className="text-[#3B82F6] hover:underline">Success Stories page</a>
             </p>
             <Button
               onClick={() => {
@@ -308,7 +308,7 @@ export default function AdminCMSPage() {
                 setTestimonialForm({ id: "", name: "", role: "", company: "", content: "", rating: 5, isPublished: true, order: testimonials.length })
                 setTestimonialDialogOpen(true)
               }}
-              className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white"
+              className="bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] text-white"
             >
               <Plus className="size-4 mr-2" />New Testimonial
             </Button>
@@ -397,7 +397,7 @@ export default function AdminCMSPage() {
               </div>
               <Switch checked={faqForm.isPublished} onCheckedChange={(c) => setFaqForm((p) => ({ ...p, isPublished: c }))} />
             </div>
-            <Button onClick={handleFaqSave} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
+            <Button onClick={handleFaqSave} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] text-white">
               {isEditFaq ? "Update" : "Create"} FAQ
             </Button>
           </div>
@@ -426,7 +426,7 @@ export default function AdminCMSPage() {
               </div>
               <Switch checked={testimonialForm.isPublished} onCheckedChange={(c) => setTestimonialForm((p) => ({ ...p, isPublished: c }))} />
             </div>
-            <Button onClick={handleTestimonialSave} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
+            <Button onClick={handleTestimonialSave} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] text-white">
               {isEditTestimonial ? "Update" : "Create"} Testimonial
             </Button>
           </div>

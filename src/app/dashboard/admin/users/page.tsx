@@ -60,15 +60,15 @@ interface User {
 const roleColors: Record<string, string> = {
   FREE_USER: "bg-slate-500/20 text-slate-400 border-slate-500/30",
   PAID_USER: "bg-green-500/20 text-green-400 border-green-500/30",
-  CONSULTANT: "bg-[#7CFC00]/20 text-[#7CFC00] border-[#7CFC00]/30",
-  ADMIN: "bg-[#7CFC00]/20 text-[#7CFC00] border-[#7CFC00]/30",
+  CONSULTANT: "bg-[#3B82F6]/20 text-[#3B82F6] border-[#3B82F6]/30",
+  ADMIN: "bg-[#3B82F6]/20 text-[#3B82F6] border-[#3B82F6]/30",
   SUPER_ADMIN: "bg-orange-500/20 text-orange-400 border-orange-500/30",
 }
 
 const planColors: Record<string, string> = {
   FREE: "bg-slate-500/20 text-slate-400",
-  GROWTH_PRO: "bg-[#7CFC00]/20 text-[#7CFC00]",
-  ENTERPRISE: "bg-[#8FBC8F]/20 text-[#7CFC00]",
+  GROWTH_PRO: "bg-[#3B82F6]/20 text-[#3B82F6]",
+  ENTERPRISE: "bg-[#93C5FD]/20 text-[#3B82F6]",
 }
 
 export default function AdminUsersPage() {
@@ -252,7 +252,7 @@ export default function AdminUsersPage() {
                         <div className="flex items-center gap-3">
                           <Avatar className="size-9">
                             <AvatarImage src={user.image || undefined} />
-                            <AvatarFallback className={`text-xs ${user.banned ? "bg-red-500/20 text-red-400" : "bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white"}`}>
+                            <AvatarFallback className={`text-xs ${user.banned ? "bg-red-500/20 text-red-400" : "bg-gradient-to-br from-[#5CBF00] to-[#1E3A8A] text-white"}`}>
                               {user.name.split(" ").map((n) => n[0]).join("")}
                             </AvatarFallback>
                           </Avatar>
@@ -376,7 +376,7 @@ export default function AdminUsersPage() {
               <div className="flex items-center gap-4">
                 <Avatar className="size-16">
                   <AvatarImage src={selectedUser.image || undefined} />
-                  <AvatarFallback className={`text-xl ${selectedUser.banned ? "bg-red-500/20 text-red-400" : "bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white"}`}>
+                  <AvatarFallback className={`text-xl ${selectedUser.banned ? "bg-red-500/20 text-red-400" : "bg-gradient-to-br from-[#5CBF00] to-[#1E3A8A] text-white"}`}>
                     {selectedUser.name.split(" ").map((n) => n[0]).join("")}
                   </AvatarFallback>
                 </Avatar>

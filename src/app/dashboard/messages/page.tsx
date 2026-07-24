@@ -400,7 +400,7 @@ export default function MessagesPage() {
             if (open) fetchAdminUsers()
           }}>
             <DialogTrigger asChild>
-              <Button className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]">
+              <Button className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]">
                 <Plus className="size-4 mr-2" /> New Conversation
               </Button>
             </DialogTrigger>
@@ -421,7 +421,7 @@ export default function MessagesPage() {
                 <ScrollArea className="h-[300px]">
                   {adminUsersLoading ? (
                     <div className="flex items-center justify-center py-8">
-                      <Loader2 className="size-6 animate-spin text-[#7CFC00]" />
+                      <Loader2 className="size-6 animate-spin text-[#3B82F6]" />
                     </div>
                   ) : filteredAdminUsers.length === 0 ? (
                     <div className="text-center py-8">
@@ -437,7 +437,7 @@ export default function MessagesPage() {
                         >
                           <Avatar className="size-9">
                             <AvatarImage src={user.image || undefined} />
-                            <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                            <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                               {(user.name || user.email).split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
                             </AvatarFallback>
                           </Avatar>
@@ -501,7 +501,7 @@ export default function MessagesPage() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="mt-2 text-[#7CFC00]"
+                      className="mt-2 text-[#3B82F6]"
                       onClick={() => setNewConvDialogOpen(true)}
                     >
                       Start a new conversation
@@ -510,23 +510,23 @@ export default function MessagesPage() {
                     <div className="mt-4">
                       <p className="text-xs text-muted-foreground mb-3">Message the admin to get started</p>
                       <button
-                        className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-[#E8F5E9] dark:hover:bg-[#2D4A2D]/20 transition-colors text-left border border-[#7CFC00]/20"
+                        className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-[#E8F5E9] dark:hover:bg-[#1E3A8A]/20 transition-colors text-left border border-[#3B82F6]/20"
                         onClick={() => startNewConversation(adminContact.id, adminContact.name)}
                       >
                         <div className="relative shrink-0">
                           <Avatar className="size-10">
                             <AvatarImage src={adminContact.image || undefined} />
-                            <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                            <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                               {adminContact.name.split(" ").map((n) => n[0]).join("").toUpperCase()}
                             </AvatarFallback>
                           </Avatar>
-                          <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#7CFC00] border-2 border-card" />
+                          <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#3B82F6] border-2 border-card" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold truncate">{adminContact.name}</p>
-                          <p className="text-xs text-[#7CFC00]">Admin · Online</p>
+                          <p className="text-xs text-[#3B82F6]">Admin · Online</p>
                         </div>
-                        <Send className="size-4 text-[#7CFC00] shrink-0" />
+                        <Send className="size-4 text-[#3B82F6] shrink-0" />
                       </button>
                     </div>
                   ) : null}
@@ -545,14 +545,14 @@ export default function MessagesPage() {
                     }}
                     className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-all duration-200 ${
                       activeChat === conv.id
-                        ? "bg-[#E8F5E9] dark:bg-[#2D4A2D]/20"
+                        ? "bg-[#E8F5E9] dark:bg-[#1E3A8A]/20"
                         : "hover:bg-muted/50"
                     }`}
                   >
                     <div className="relative shrink-0">
                       <Avatar className="size-10">
                         <AvatarImage src={conv.user.image || undefined} />
-                        <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                        <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                           {conv.user.name
                             .split(" ")
                             .map((n) => n[0])
@@ -573,13 +573,13 @@ export default function MessagesPage() {
                       <div className="flex items-center justify-between">
                         <p className="text-xs text-muted-foreground truncate">
                           {typingUsers[conv.id] ? (
-                            <span className="text-[#7CFC00] italic">typing...</span>
+                            <span className="text-[#3B82F6] italic">typing...</span>
                           ) : (
                             conv.lastMessage
                           )}
                         </p>
                         {conv.unread > 0 && (
-                          <Badge className="bg-[#7CFC00] text-white text-[10px] ml-2 shrink-0 h-5 min-w-5 flex items-center justify-center p-0">
+                          <Badge className="bg-[#3B82F6] text-white text-[10px] ml-2 shrink-0 h-5 min-w-5 flex items-center justify-center p-0">
                             {conv.unread}
                           </Badge>
                         )}
@@ -617,7 +617,7 @@ export default function MessagesPage() {
                   <div className="relative">
                     <Avatar className="size-9">
                       <AvatarImage src={activeConv.user.image || undefined} />
-                      <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                      <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                         {activeConv.user.name
                           .split(" ")
                           .map((n) => n[0])
@@ -632,7 +632,7 @@ export default function MessagesPage() {
                     <p className="text-sm font-semibold">{activeConv.user.name}</p>
                     <p className="text-xs text-muted-foreground">
                       {isPartnerTyping ? (
-                        <span className="text-[#7CFC00]">typing...</span>
+                        <span className="text-[#3B82F6]">typing...</span>
                       ) : onlineUsers.includes(activeConv.user.id) ? (
                         "Online"
                       ) : (
@@ -668,7 +668,7 @@ export default function MessagesPage() {
                           <div
                             className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
                               isMe
-                                ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-br-md"
+                                ? "bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] rounded-br-md"
                                 : "bg-muted/50 rounded-bl-md"
                             }`}
                           >
@@ -689,7 +689,7 @@ export default function MessagesPage() {
                                 {msg.status === "sending" ? (
                                   <span className="text-[10px]">...</span>
                                 ) : msg.status === "read" || msg.isRead ? (
-                                  <CheckCheck className="size-3 text-[#7CFC00]" />
+                                  <CheckCheck className="size-3 text-[#3B82F6]" />
                                 ) : (
                                   <Check className="size-3" />
                                 )}
@@ -740,7 +740,7 @@ export default function MessagesPage() {
                   />
                   <Button
                     size="icon"
-                    className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shrink-0"
+                    className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D] shrink-0"
                     disabled={!message.trim()}
                     onClick={handleSend}
                   >
@@ -759,7 +759,7 @@ export default function MessagesPage() {
                 </p>
                 {isAdmin && (
                   <Button
-                    className="mt-4 bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+                    className="mt-4 bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
                     onClick={() => setNewConvDialogOpen(true)}
                   >
                     <Plus className="size-4 mr-2" /> New Conversation

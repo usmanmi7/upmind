@@ -5,68 +5,68 @@ import PublicNavbar from "@/components/PublicNavbar"
 import PublicFooter from "@/components/PublicFooter"
 import PageHero from "@/components/PageHero"
 import { motion } from "framer-motion"
-import { ArrowRight, CheckCircle2, Users, Target, Award, Lightbulb, Globe, Heart } from "lucide-react"
+import { ArrowRight, Compass, Users, Target, Lightbulb, Globe, Code, Wrench } from "lucide-react"
 
 const values = [
   {
-    icon: Target,
-    title: "Strategy First",
-    description: "Every decision starts with data and strategy. We don't guess, we analyze, plan, and execute with precision.",
+    icon: Compass,
+    title: "Problem-First",
+    description: "We start with real, documented problems — not clever technology in search of a market. Every problem in our database is sourced from authoritative bodies and validated for engineering leverage.",
   },
   {
     icon: Users,
-    title: "Client Obsessed",
-    description: "Your success is our success. We go above and beyond to ensure every client achieves their growth targets.",
+    title: "Engineer-Built",
+    description: "Upmind is built by engineers for engineers. We know the pain of building something nobody wanted, and we're obsessed with making problem selection as rigorous as engineering itself.",
   },
   {
     icon: Lightbulb,
-    title: "Innovation Driven",
-    description: "We embrace new technologies and methodologies to stay ahead of the curve and deliver cutting-edge solutions.",
+    title: "AI-Matched",
+    description: "Your time is finite. Our Innovation Engine uses AI to match your specific skills to problems you can actually solve — so you start with leverage instead of uphill battles.",
   },
   {
-    icon: Heart,
-    title: "People Centered",
-    description: "We believe the best strategies are built on understanding people, their needs, behaviors, and aspirations.",
+    icon: Code,
+    title: "Open by Default",
+    description: "We default to open. Our problem briefs, roadmaps, and team templates are public. We believe engineering innovation compounds when builders can learn from each other.",
   },
   {
     icon: Globe,
     title: "Global Perspective",
-    description: "With experience across markets and industries, we bring a worldwide view to every local challenge.",
+    description: "The hardest problems are global — climate, health, energy, food. We source from WHO, UN, IEA, IPCC because that's where real, sized, documented problems live.",
   },
   {
-    icon: Award,
-    title: "Results Oriented",
-    description: "We measure everything. Every engagement is tied to clear KPIs and tangible, trackable outcomes.",
+    icon: Target,
+    title: "Impact-Oriented",
+    description: "We measure what matters. Every problem includes severity, people affected, and impact scores — so you can pick work that moves real numbers, not vanity metrics.",
   },
 ]
 
 const stats = [
-  { value: "500+", label: "Startups Served" },
-  { value: "95%", label: "Client Satisfaction" },
-  { value: "12+", label: "Years of Experience" },
-  { value: "$5M+", label: "Revenue Generated" },
+  { value: "30+", label: "Curated Problems" },
+  { value: "26", label: "Categories" },
+  { value: "5+B", label: "People Affected" },
+  { value: "100%", label: "Sourced Publicly" },
 ]
 
 const team = [
   {
-    name: "Sarah Mitchell",
-    role: "CEO & Co-Founder",
-    description: "Former VP of Strategy at Deloitte. 15+ years guiding startups from seed to Series C.",
+    name: "The Curators",
+    role: "Problem Discovery",
+    description: "Engineers and researchers who read WHO reports, UN briefings, and IPCC chapters so you don't have to. They extract, size, and frame problems for engineering leverage.",
   },
   {
-    name: "David Chen",
-    role: "Head of Product",
-    description: "Ex-Google PM. Specializes in product-market fit and growth strategy for B2B SaaS.",
+    name: "The Builders",
+    role: "Platform & AI",
+    description: "The team shipping the Solve Them database, the Innovation Engine, and the resources library. Engineers who care about craft and impact.",
   },
   {
-    name: "Amara Okafor",
-    role: "Lead Consultant",
-    description: "MBA from Wharton. Expert in fundraising, investor relations, and financial modeling.",
+    name: "The Field Network",
+    role: "Domain Experts",
+    description: "A network of practitioners in climate, health, agriculture, energy, and AI safety who validate problems and review solutions for real-world feasibility.",
   },
   {
-    name: "James Rivera",
-    role: "AI & Tech Lead",
-    description: "Former ML engineer at Meta. Leads our AI-powered insights and digital transformation practice.",
+    name: "The Community",
+    role: "Open Contributors",
+    description: "Engineers, students, researchers, and founders who contribute problems, review briefs, and share build lessons. Upmind is theirs as much as ours.",
   },
 ]
 
@@ -78,9 +78,9 @@ export default function AboutPage() {
       <main className="flex-1">
         <PageHero
           badge="About Us"
-          title="We help startups build"
-          highlight="smarter"
-          description="Upmind is a strategic consulting platform that combines expert guidance with AI-powered tools to help startups validate, launch, and scale with confidence."
+          title="We help engineers build"
+          highlight="what matters"
+          description="Upmind is an engineering innovation platform. We curate real-world problems, match them to engineering skills with AI, and give builders the playbooks to ship solutions that count."
         />
 
         {/* Story Section */}
@@ -93,20 +93,29 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.7 }}
               >
-                <span className="text-[#7CFC00] text-sm font-semibold tracking-[0.15em] uppercase block mb-4">
+                <span className="text-[#3B82F6] text-sm font-semibold tracking-[0.15em] uppercase block mb-4">
                   Our Story
                 </span>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-6 leading-tight">
-                  Born from the trenches of startup life
+                  Built by engineers, for{' '}
+                  <span className="font-serif-accent-italic text-[#1E3A8A]">builders</span>
                 </h2>
                 <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">
-                  Upmind was founded by a team of entrepreneurs, consultants, and technologists who experienced firsthand the challenges of building and scaling startups. We saw too many promising ideas fail, not because of bad products, but because of bad strategy.
+                  Upmind started with a simple observation: talented engineers keep building clever
+                  solutions in search of problems. The technology is rarely the bottleneck —
+                  problem selection is. We watched friends burn years on products nobody wanted,
+                  while real, documented problems went unsolved.
                 </p>
                 <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">
-                  That's why we built Upmind: a platform that bridges the gap between raw ambition and structured execution. We combine the human expertise of seasoned consultants with AI-powered tools that give founders the insights they need, when they need them.
+                  So we flipped the workflow. Instead of starting from what you can build, start
+                  from what actually needs building. We curate real, documented problems from WHO,
+                  UN, IEA, IPCC, and other authoritative sources — then match them to engineering
+                  skills that can actually move the needle.
                 </p>
                 <p className="text-[#666666] text-base sm:text-lg leading-relaxed">
-                  Today, we've helped over 500 startups across 20+ industries turn their visions into viable, growing businesses. And we're just getting started.
+                  Today, Upmind is the home for engineers who want their work to matter: a curated
+                  problem database, an AI Innovation Engine for skill matching, playbooks for
+                  building, and a community of people shipping things that count.
                 </p>
               </motion.div>
               <motion.div
@@ -116,9 +125,9 @@ export default function AboutPage() {
                 transition={{ duration: 0.7, delay: 0.2 }}
               >
                 <div className="grid grid-cols-2 gap-4">
-                  {stats.map((stat, i) => (
-                    <div key={stat.label} className="bg-[#1A2E1A] rounded-2xl p-6 text-center">
-                      <div className="text-2xl sm:text-3xl font-bold text-[#7CFC00] font-heading">{stat.value}</div>
+                  {stats.map((stat) => (
+                    <div key={stat.label} className="bg-[#0F1B3D] rounded-2xl p-6 text-center">
+                      <div className="text-2xl sm:text-3xl font-bold text-[#3B82F6] font-heading">{stat.value}</div>
                       <div className="text-white/60 text-sm mt-1">{stat.label}</div>
                     </div>
                   ))}
@@ -129,17 +138,18 @@ export default function AboutPage() {
         </section>
 
         {/* Values Section */}
-        <section className="py-20 bg-[#F5F5F5]">
+        <section className="py-20 bg-[#F5F7FB]">
           <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
-              <span className="text-[#7CFC00] text-sm font-semibold tracking-[0.15em] uppercase block mb-4">
+              <span className="text-[#3B82F6] text-sm font-semibold tracking-[0.15em] uppercase block mb-4">
                 Our Values
               </span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-4">
-                What drives everything we do
+                What drives everything we{' '}
+                <span className="font-serif-accent-italic text-[#1E3A8A]">build</span>
               </h2>
               <p className="text-[#666666] text-base sm:text-lg">
-                Our core values shape our culture, our decisions, and the way we serve our clients every day.
+                Our values shape the problems we curate, the AI we build, and the way we serve the engineering community.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -150,10 +160,10 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="bg-white rounded-2xl p-6 sm:p-7 shadow-sm hover:shadow-lg transition-all duration-300 border border-transparent hover:border-[#7CFC00]/20"
+                  className="bg-white rounded-2xl p-6 sm:p-7 shadow-sm hover:shadow-lg transition-all duration-300 border border-transparent hover:border-[#3B82F6]/20"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-[#1A2E1A] flex items-center justify-center mb-4">
-                    <value.icon className="w-6 h-6 text-[#7CFC00]" />
+                  <div className="w-12 h-12 rounded-xl bg-[#0F1B3D] flex items-center justify-center mb-4">
+                    <value.icon className="w-6 h-6 text-[#3B82F6]" />
                   </div>
                   <h3 className="text-lg font-bold text-[#1A1A1A] mb-2">{value.title}</h3>
                   <p className="text-[#666666] text-sm leading-relaxed">{value.description}</p>
@@ -167,14 +177,15 @@ export default function AboutPage() {
         <section className="py-20">
           <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
-              <span className="text-[#7CFC00] text-sm font-semibold tracking-[0.15em] uppercase block mb-4">
-                Our Team
+              <span className="text-[#3B82F6] text-sm font-semibold tracking-[0.15em] uppercase block mb-4">
+                Who We Are
               </span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-4">
-                Meet the people behind Upmind
+                The people behind{' '}
+                <span className="font-serif-accent-italic text-[#1E3A8A]">Upmind</span>
               </h2>
               <p className="text-[#666666] text-base sm:text-lg">
-                A diverse team of strategists, builders, and innovators committed to your success.
+                A small core team, a global field network, and a community of builders — all working to make engineering innovation more accessible.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -185,13 +196,13 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="text-center bg-[#F5F5F5] rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
+                  className="text-center bg-[#F5F7FB] rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
                 >
-                  <div className="w-20 h-20 rounded-full bg-[#1A2E1A] flex items-center justify-center mx-auto mb-4 text-[#7CFC00] text-2xl font-bold font-heading">
+                  <div className="w-20 h-20 rounded-full bg-[#0F1B3D] flex items-center justify-center mx-auto mb-4 text-[#3B82F6] text-2xl font-bold font-heading">
                     {member.name.split(' ').map(n => n[0]).join('')}
                   </div>
                   <h3 className="text-lg font-bold text-[#1A1A1A]">{member.name}</h3>
-                  <p className="text-[#7CFC00] text-sm font-medium mb-3">{member.role}</p>
+                  <p className="text-[#3B82F6] text-sm font-medium mb-3">{member.role}</p>
                   <p className="text-[#666666] text-sm leading-relaxed">{member.description}</p>
                 </motion.div>
               ))}
@@ -200,20 +211,21 @@ export default function AboutPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-[#1A2E1A]">
+        <section className="py-20 bg-[#0F1B3D]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-6">
-              Ready to grow with us?
+              Ready to build something{' '}
+              <span className="font-serif-accent-italic text-[#93C5FD]">that matters?</span>
             </h2>
             <p className="text-white/60 text-base sm:text-lg max-w-xl mx-auto mb-8">
-              Join 500+ startups who have accelerated their growth with Upmind's strategic guidance.
+              Browse 30+ curated world problems. Run the Innovation Engine. Start your build.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href="/auth/signup"
-                className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20 flex items-center gap-2 group"
+                href="/solve-them"
+                className="bg-[#3B82F6] text-white rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#2563EB] transition-all duration-300 shadow-lg shadow-[#3B82F6]/20 flex items-center gap-2 group"
               >
-                Get Started Free
+                Browse Problems
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link

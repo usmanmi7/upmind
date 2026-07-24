@@ -208,10 +208,10 @@ export function GlmSearchBar() {
           <SheetTrigger asChild>
             <button
               type="button"
-              className="group w-full flex items-center gap-3 px-4 py-3 rounded-full bg-background/95 backdrop-blur border border-border shadow-lg shadow-black/10 hover:shadow-xl hover:border-[#7CFC00]/50 transition-all duration-200"
+              className="group w-full flex items-center gap-3 px-4 py-3 rounded-full bg-background/95 backdrop-blur border border-border shadow-lg shadow-black/10 hover:shadow-xl hover:border-[#3B82F6]/50 transition-all duration-200"
               aria-label="Open AI Assistant"
             >
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                 <Sparkles className="size-4 text-white" />
               </div>
               <span className="flex-1 text-left text-sm text-muted-foreground">
@@ -221,13 +221,13 @@ export function GlmSearchBar() {
                 variant="outline"
                 className="hidden sm:flex items-center gap-1 text-xs shrink-0"
               >
-                <Brain className="size-3 text-[#7CFC00]" />
+                <Brain className="size-3 text-[#3B82F6]" />
                 {modelLabel}
               </Badge>
               <kbd className="hidden md:inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-mono bg-muted border border-border rounded shrink-0">
                 /
               </kbd>
-              <ChevronUp className="size-4 text-muted-foreground shrink-0 group-hover:text-[#7CFC00] transition-colors" />
+              <ChevronUp className="size-4 text-muted-foreground shrink-0 group-hover:text-[#3B82F6] transition-colors" />
             </button>
           </SheetTrigger>
 
@@ -238,12 +238,12 @@ export function GlmSearchBar() {
             <SheetHeader className="px-4 py-3 border-b shrink-0">
               <div className="flex items-center justify-between">
                 <SheetTitle className="flex items-center gap-2 text-base">
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
                     <Sparkles className="size-4 text-white" />
                   </div>
                   <span>AI Assistant</span>
                   <Badge variant="secondary" className="text-xs ml-1">
-                    <Brain className="size-3 mr-1 text-[#7CFC00]" />
+                    <Brain className="size-3 mr-1 text-[#3B82F6]" />
                     {modelLabel}
                   </Badge>
                 </SheetTitle>
@@ -267,7 +267,7 @@ export function GlmSearchBar() {
             <ScrollArea className="flex-1 px-4 py-4">
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-6 py-8">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
                     <Sparkles className="size-8 text-white" />
                   </div>
                   <div>
@@ -286,7 +286,7 @@ export function GlmSearchBar() {
                         className="h-auto py-3 px-3 text-left justify-start"
                         onClick={() => sendMessage(qp.prompt)}
                       >
-                        <qp.icon className="size-4 mr-2 text-[#7CFC00] shrink-0" />
+                        <qp.icon className="size-4 mr-2 text-[#3B82F6] shrink-0" />
                         <span className="text-xs font-medium">{qp.label}</span>
                       </Button>
                     ))}
@@ -304,7 +304,7 @@ export function GlmSearchBar() {
                       <div className="max-w-[85%] sm:max-w-[75%]">
                         {msg.role === "assistant" && (
                           <div className="flex items-center gap-2 mb-1">
-                            <div className="w-5 h-5 rounded-md bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+                            <div className="w-5 h-5 rounded-md bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
                               <Sparkles className="size-3 text-white" />
                             </div>
                             <span className="text-xs font-medium text-muted-foreground">
@@ -315,7 +315,7 @@ export function GlmSearchBar() {
                         <div
                           className={`px-4 py-3 rounded-2xl ${
                             msg.role === "user"
-                              ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-br-md text-sm leading-relaxed whitespace-pre-wrap"
+                              ? "bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] rounded-br-md text-sm leading-relaxed whitespace-pre-wrap"
                               : "bg-muted/50 rounded-bl-md"
                           }`}
                         >
@@ -381,7 +381,7 @@ export function GlmSearchBar() {
                 />
                 <Button
                   size="icon"
-                  className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shrink-0"
+                  className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D] shrink-0"
                   disabled={!input.trim() || loading}
                   onClick={() => sendMessage(input)}
                 >

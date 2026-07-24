@@ -44,10 +44,10 @@ export default function SubscriptionModal({ isOpen, onClose, type }: Subscriptio
               {type === "signin" ? (
                 /* Sign In Modal */
                 <div className="p-8 sm:p-10">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center mb-6">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center mb-6">
                     <Sparkles className="w-8 h-8 text-white" />
                   </div>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-[#1A2E1A] mb-3">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-[#0F1B3D] mb-3">
                     Unlock exclusive resources
                   </h2>
                   <p className="text-gray-600 text-base leading-relaxed mb-8">
@@ -61,8 +61,8 @@ export default function SubscriptionModal({ isOpen, onClose, type }: Subscriptio
                       "Track your learning progress",
                     ].map((item) => (
                       <div key={item} className="flex items-center gap-3">
-                        <div className="w-5 h-5 rounded-full bg-[#7CFC00]/20 flex items-center justify-center flex-shrink-0">
-                          <Check className="w-3 h-3 text-[#2D4A2D]" />
+                        <div className="w-5 h-5 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0">
+                          <Check className="w-3 h-3 text-[#1E3A8A]" />
                         </div>
                         <span className="text-sm text-gray-700">{item}</span>
                       </div>
@@ -71,14 +71,14 @@ export default function SubscriptionModal({ isOpen, onClose, type }: Subscriptio
 
                   <Link
                     href="/auth/login"
-                    className="w-full flex items-center justify-center gap-2 bg-[#1A2E1A] text-white rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#243824] transition-colors"
+                    className="w-full flex items-center justify-center gap-2 bg-[#0F1B3D] text-white rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#1E3A8A] transition-colors"
                   >
                     Sign In to Continue
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <p className="text-center text-sm text-gray-500 mt-4">
                     Don&apos;t have an account?{" "}
-                    <Link href="/auth/signup" className="text-[#2D4A2D] font-semibold hover:underline">
+                    <Link href="/auth/signup" className="text-[#1E3A8A] font-semibold hover:underline">
                       Sign up free
                     </Link>
                   </p>
@@ -87,12 +87,12 @@ export default function SubscriptionModal({ isOpen, onClose, type }: Subscriptio
                 /* Upgrade Modal */
                 <div>
                   {/* Header with gradient */}
-                  <div className="bg-gradient-to-br from-[#1A2E1A] to-[#2D4A2D] p-8 sm:p-10 pb-12 relative">
-                    <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-[#7CFC00]/10 -translate-y-1/2 translate-x-1/2" />
-                    <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-[#7CFC00]/5 translate-y-1/3 -translate-x-1/3" />
+                  <div className="bg-gradient-to-br from-[#0F1B3D] to-[#1E3A8A] p-8 sm:p-10 pb-12 relative">
+                    <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-[#3B82F6]/10 -translate-y-1/2 translate-x-1/2" />
+                    <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-[#3B82F6]/5 translate-y-1/3 -translate-x-1/3" />
                     <div className="relative z-10">
-                      <div className="w-14 h-14 rounded-2xl bg-[#7CFC00]/20 flex items-center justify-center mb-4">
-                        <Crown className="w-7 h-7 text-[#7CFC00]" />
+                      <div className="w-14 h-14 rounded-2xl bg-[#3B82F6]/20 flex items-center justify-center mb-4">
+                        <Crown className="w-7 h-7 text-[#3B82F6]" />
                       </div>
                       <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
                         Premium Resource
@@ -106,7 +106,7 @@ export default function SubscriptionModal({ isOpen, onClose, type }: Subscriptio
                   {/* Body */}
                   <div className="p-8 sm:p-10 pt-6 -mt-4 bg-white rounded-t-3xl relative z-10">
                     <div className="mb-6">
-                      <h3 className="text-lg font-bold text-[#1A2E1A] mb-1">
+                      <h3 className="text-lg font-bold text-[#0F1B3D] mb-1">
                         Upgrade to Growth Pro
                       </h3>
                       <p className="text-gray-500 text-sm">
@@ -124,8 +124,8 @@ export default function SubscriptionModal({ isOpen, onClose, type }: Subscriptio
                         "Document vault & templates",
                       ].map((item) => (
                         <div key={item} className="flex items-center gap-3">
-                          <div className="w-5 h-5 rounded-full bg-[#7CFC00]/20 flex items-center justify-center flex-shrink-0">
-                            <Check className="w-3 h-3 text-[#2D4A2D]" />
+                          <div className="w-5 h-5 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0">
+                            <Check className="w-3 h-3 text-[#1E3A8A]" />
                           </div>
                           <span className="text-sm text-gray-700">{item}</span>
                         </div>
@@ -134,7 +134,7 @@ export default function SubscriptionModal({ isOpen, onClose, type }: Subscriptio
 
                     <Link
                       href="/pricing"
-                      className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-full px-8 py-3.5 text-base font-bold hover:shadow-lg hover:shadow-[#7CFC00]/20 transition-all"
+                      className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] rounded-full px-8 py-3.5 text-base font-bold hover:shadow-lg hover:shadow-[#3B82F6]/20 transition-all"
                     >
                       <Crown className="w-4 h-4" />
                       Upgrade to Growth Pro, $49/mo

@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Plus_Jakarta_Sans, Inter } from "next/font/google"
+import { Plus_Jakarta_Sans, Inter, Playfair_Display } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "@/components/ThemeProvider"
@@ -19,11 +19,19 @@ const inter = Inter({
   display: "swap",
 })
 
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+  style: ["normal", "italic"],
+  display: "swap",
+})
+
 export const metadata: Metadata = {
-  title: "Upmind - Strategic Consulting for Startups",
+  title: "Upmind — Engineering Innovation Platform",
   description:
-    "We help startups and growing teams validate ideas, scale products, and make data-driven decisions. Clear insights. Real strategy. Sustainable growth.",
-  keywords: ["Upmind", "startup consulting", "strategy", "growth", "digital transformation"],
+    "We help engineers find problems worth solving. Curated world problems, AI-powered skill matching, and playbooks for builders who want to make things that matter.",
+  keywords: ["Upmind", "engineering innovation", "problems worth solving", "innovation engine", "build"],
   authors: [{ name: "Upmind" }],
   icons: {
     icon: [
@@ -44,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body
-        className={`${plusJakarta.variable} ${inter.variable} antialiased bg-background text-foreground`}
+        className={`${plusJakarta.variable} ${inter.variable} ${playfair.variable} antialiased bg-background text-foreground`}
       >
         <ThemeProvider
           attribute="class"

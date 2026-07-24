@@ -142,7 +142,7 @@ export default function StartupPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
           <p className="text-sm text-muted-foreground">Loading startup data...</p>
         </div>
       </div>
@@ -155,9 +155,9 @@ export default function StartupPage() {
 
   const quickStats = [
     { icon: CheckCircle2, label: "Tasks Completed", value: `${completedTasks}/${totalTasks}`, color: "text-green-600 dark:text-green-400", bg: "bg-green-100 dark:bg-green-900/30" },
-    { icon: Calendar, label: "Upcoming Appointments", value: String(analytics?.scheduledAppointments || 0), color: "text-[#1A2E1A] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
-    { icon: BookOpen, label: "Resources Used", value: String(analytics?.resourcesUsed || 0), color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
-    { icon: TrendingUp, label: "Startup Score", value: `${analytics?.startupScore || 0}/100`, color: "text-[#2D4A2D] dark:text-[#7CFC00]", bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30" },
+    { icon: Calendar, label: "Upcoming Appointments", value: String(analytics?.scheduledAppointments || 0), color: "text-[#0F1B3D] dark:text-[#3B82F6]", bg: "bg-[#DBEAFE] dark:bg-[#1E3A8A]/30" },
+    { icon: BookOpen, label: "Resources Used", value: String(analytics?.resourcesUsed || 0), color: "text-[#1E3A8A] dark:text-[#3B82F6]", bg: "bg-[#DBEAFE] dark:bg-[#1E3A8A]/30" },
+    { icon: TrendingUp, label: "Startup Score", value: `${analytics?.startupScore || 0}/100`, color: "text-[#1E3A8A] dark:text-[#3B82F6]", bg: "bg-[#DBEAFE] dark:bg-[#1E3A8A]/30" },
   ]
 
   const stages = [
@@ -182,7 +182,7 @@ export default function StartupPage() {
             else setEditing(true)
           }}
           disabled={saving}
-          className={editing ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A]" : ""}
+          className={editing ? "bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D]" : ""}
         >
           {saving ? (
             <><Loader2 className="size-4 mr-2 animate-spin" /> Saving...</>
@@ -198,7 +198,7 @@ export default function StartupPage() {
       <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row sm:items-start gap-4 mb-6">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center shrink-0">
               <Rocket className="size-7 text-white" />
             </div>
             <div className="flex-1">
@@ -218,7 +218,7 @@ export default function StartupPage() {
                 <>
                   <div className="flex items-center gap-2 flex-wrap">
                     <h2 className="text-xl font-heading font-bold">{startup.name || "My Startup"}</h2>
-                    <Badge className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">{startup.businessStage || "Idea"}</Badge>
+                    <Badge className="bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">{startup.businessStage || "Idea"}</Badge>
                     {startup.industry && <Badge variant="outline" className="text-xs">{startup.industry}</Badge>}
                   </div>
                   <p className="text-sm text-muted-foreground mt-1">{startup.vision || "Add your startup vision to get started."}</p>
@@ -281,7 +281,7 @@ export default function StartupPage() {
                     stage.progress === 100
                       ? "bg-green-500 text-white"
                       : stage.progress > 0
-                        ? "bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A]"
+                        ? "bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D]"
                         : "bg-muted text-muted-foreground"
                   }`}>
                     {stage.progress === 100 ? <CheckCircle2 className="size-5" /> : i + 1}
@@ -322,7 +322,7 @@ export default function StartupPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Button asChild variant="outline" className="h-auto p-4 justify-start">
           <Link href="/dashboard/roadmap">
-            <Target className="size-5 mr-3 text-[#7CFC00]" />
+            <Target className="size-5 mr-3 text-[#3B82F6]" />
             <div className="text-left">
               <p className="text-sm font-medium">View Roadmap</p>
               <p className="text-xs text-muted-foreground">Track your milestones</p>
@@ -331,7 +331,7 @@ export default function StartupPage() {
         </Button>
         <Button asChild variant="outline" className="h-auto p-4 justify-start">
           <Link href="/dashboard/appointments">
-            <Calendar className="size-5 mr-3 text-[#2D4A2D]" />
+            <Calendar className="size-5 mr-3 text-[#1E3A8A]" />
             <div className="text-left">
               <p className="text-sm font-medium">Book Consultation</p>
               <p className="text-xs text-muted-foreground">Get expert advice</p>
@@ -340,7 +340,7 @@ export default function StartupPage() {
         </Button>
         <Button asChild variant="outline" className="h-auto p-4 justify-start">
           <Link href="/dashboard/resources">
-            <BookOpen className="size-5 mr-3 text-[#8FBC8F]" />
+            <BookOpen className="size-5 mr-3 text-[#93C5FD]" />
             <div className="text-left">
               <p className="text-sm font-medium">Browse Resources</p>
               <p className="text-xs text-muted-foreground">Templates & guides</p>

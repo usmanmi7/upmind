@@ -45,7 +45,7 @@ export default function Blog() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
-            className="text-[#7CFC00] text-sm font-semibold tracking-[0.15em] uppercase block mb-4"
+            className="text-[#3B82F6] text-sm font-semibold tracking-[0.15em] uppercase block mb-4"
           >
             INSIGHTS
           </motion.span>
@@ -86,11 +86,11 @@ export default function Blog() {
                   />
                 </div>
               </Link>
-              <span className="text-[#7CFC00] text-xs font-semibold tracking-wider">
+              <span className="text-[#3B82F6] text-xs font-semibold tracking-wider">
                 {post.date}
               </span>
               <Link href={post.link}>
-                <h3 className="text-lg sm:text-xl font-bold text-[#1A1A1A] mt-2 mb-2 group-hover:text-[#1A2E1A] transition-colors">
+                <h3 className="text-lg sm:text-xl font-bold text-[#1A1A1A] mt-2 mb-2 group-hover:text-[#0F1B3D] transition-colors">
                   {post.title}
                 </h3>
               </Link>
@@ -99,7 +99,7 @@ export default function Blog() {
               </p>
               <Link
                 href={post.link}
-                className="inline-flex items-center gap-1 text-[#1A2E1A] text-sm font-medium group-hover:gap-2 transition-all duration-300"
+                className="inline-flex items-center gap-1 text-[#0F1B3D] text-sm font-medium group-hover:gap-2 transition-all duration-300"
               >
                 Read More
                 <ArrowRight className="w-4 h-4" />
@@ -117,7 +117,7 @@ export default function Blog() {
         >
           <Link
             href="/resources"
-            className="inline-flex items-center gap-2 bg-[#1A2E1A] text-white rounded-full px-8 py-3.5 text-sm sm:text-base font-medium hover:bg-[#243824] transition-colors duration-300 group shadow-lg shadow-[#1A2E1A]/10"
+            className="inline-flex items-center gap-2 bg-[#0F1B3D] text-white rounded-full px-8 py-3.5 text-sm sm:text-base font-medium hover:bg-[#1E3A8A] transition-colors duration-300 group shadow-lg shadow-[#0F1B3D]/10"
           >
             VIEW ALL RESOURCES
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

@@ -46,7 +46,7 @@ const typeColors: Record<string, string> = {
   TEMPLATE: "bg-purple-100 text-purple-700",
   VIDEO: "bg-red-100 text-red-700",
   PDF: "bg-orange-100 text-orange-700",
-  GUIDE: "bg-emerald-100 text-emerald-700",
+  GUIDE: "bg-blue-100 text-blue-700",
 }
 
 export default function ResourceDetailPage() {
@@ -88,7 +88,7 @@ export default function ResourceDetailPage() {
             <p className="text-muted-foreground mb-6">The resource you&apos;re looking for doesn&apos;t exist.</p>
             <Link
               href="/resources"
-              className="inline-flex items-center gap-2 bg-[#1A2E1A] text-white rounded-full px-6 py-3 font-medium hover:bg-[#243824] transition-colors"
+              className="inline-flex items-center gap-2 bg-[#0F1B3D] text-white rounded-full px-6 py-3 font-medium hover:bg-[#1E3A8A] transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Resources
@@ -146,11 +146,11 @@ export default function ResourceDetailPage() {
                       <Icon className="w-3 h-3" />
                       {resource.type}
                     </span>
-                    <span className="text-xs font-medium text-[#2D4A2D] dark:text-[#7CFC00] tracking-wide uppercase">
+                    <span className="text-xs font-medium text-[#1E3A8A] dark:text-[#3B82F6] tracking-wide uppercase">
                       {resource.category}
                     </span>
                     {resource.isPremium && (
-                      <span className="inline-flex items-center gap-1 bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs font-bold px-3 py-1 rounded-full">
+                      <span className="inline-flex items-center gap-1 bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs font-bold px-3 py-1 rounded-full">
                         <Crown className="w-3 h-3" />
                         Premium
                       </span>
@@ -171,7 +171,7 @@ export default function ResourceDetailPage() {
                   <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground pb-6 border-b">
                     {resource.author && (
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-[#2D4A2D] flex items-center justify-center text-white text-xs font-bold">
+                        <div className="w-8 h-8 rounded-full bg-[#1E3A8A] flex items-center justify-center text-white text-xs font-bold">
                           {resource.author.name.charAt(0)}
                         </div>
                         <span className="font-medium text-foreground">{resource.author.name}</span>
@@ -224,15 +224,15 @@ export default function ResourceDetailPage() {
                     />
                     <div className="text-center py-8 px-6 rounded-2xl border bg-card">
                       <div className="inline-flex flex-col items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-[#1A2E1A] flex items-center justify-center">
-                          <Lock className="w-5 h-5 text-[#7CFC00]" />
+                        <div className="w-12 h-12 rounded-full bg-[#0F1B3D] flex items-center justify-center">
+                          <Lock className="w-5 h-5 text-[#3B82F6]" />
                         </div>
                         <p className="font-semibold">
                           Sign in to read the full article
                         </p>
                         <Link
                           href="/auth/login"
-                          className="inline-flex items-center gap-2 bg-[#1A2E1A] text-white rounded-full px-6 py-2.5 text-sm font-medium hover:bg-[#243824] transition-colors"
+                          className="inline-flex items-center gap-2 bg-[#0F1B3D] text-white rounded-full px-6 py-2.5 text-sm font-medium hover:bg-[#1E3A8A] transition-colors"
                         >
                           Sign In
                           <ArrowRight className="w-4 h-4" />
@@ -268,7 +268,7 @@ export default function ResourceDetailPage() {
                   <div className="p-6 rounded-2xl border bg-card">
                     <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Author</h3>
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-12 h-12 rounded-full bg-[#2D4A2D] flex items-center justify-center text-white font-bold text-lg">
+                      <div className="w-12 h-12 rounded-full bg-[#1E3A8A] flex items-center justify-center text-white font-bold text-lg">
                         {resource.author.name.charAt(0)}
                       </div>
                       <div>
@@ -282,9 +282,9 @@ export default function ResourceDetailPage() {
                 )}
 
                 {/* Innovation Engine CTA */}
-                <div className="p-6 rounded-2xl bg-gradient-to-br from-[#1A2E1A] to-[#2D4A2D] text-white">
-                  <div className="w-10 h-10 rounded-xl bg-[#7CFC00]/20 flex items-center justify-center mb-4">
-                    <Sparkles className="w-5 h-5 text-[#7CFC00]" />
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-[#0F1B3D] to-[#1E3A8A] text-white">
+                  <div className="w-10 h-10 rounded-xl bg-[#3B82F6]/20 flex items-center justify-center mb-4">
+                    <Sparkles className="w-5 h-5 text-[#3B82F6]" />
                   </div>
                   <h3 className="text-lg font-bold mb-2">Find a problem for your skills</h3>
                   <p className="text-white/70 text-sm mb-4">
@@ -293,14 +293,14 @@ export default function ResourceDetailPage() {
                   <ul className="space-y-2 mb-6">
                     {["30+ curated problems", "Skill-to-problem matching", "Team templates & roadmaps"].map((line) => (
                       <li key={line} className="flex items-center gap-2 text-sm text-white/80">
-                        <Check className="w-3.5 h-3.5 text-[#7CFC00]" />
+                        <Check className="w-3.5 h-3.5 text-[#3B82F6]" />
                         {line}
                       </li>
                     ))}
                   </ul>
                   <Link
                     href="/dashboard/innovation-engine"
-                    className="w-full flex items-center justify-center gap-2 bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-3 text-sm font-bold hover:shadow-lg hover:shadow-[#7CFC00]/20 transition-all"
+                    className="w-full flex items-center justify-center gap-2 bg-[#3B82F6] text-white rounded-full px-6 py-3 text-sm font-bold hover:shadow-lg hover:shadow-[#3B82F6]/20 transition-all"
                   >
                     Launch Innovation Engine
                     <ArrowRight className="w-4 h-4" />
@@ -321,11 +321,11 @@ export default function ResourceDetailPage() {
                             className="group block"
                           >
                             <div className="flex gap-3">
-                              <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 group-hover:bg-[#7CFC00]/10 transition-colors">
-                                <RIcon className="w-4 h-4 text-muted-foreground group-hover:text-[#2D4A2D] dark:group-hover:text-[#7CFC00] transition-colors" />
+                              <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 group-hover:bg-[#3B82F6]/10 transition-colors">
+                                <RIcon className="w-4 h-4 text-muted-foreground group-hover:text-[#1E3A8A] dark:group-hover:text-[#3B82F6] transition-colors" />
                               </div>
                               <div className="flex-1 min-w-0">
-                                <h4 className="text-sm font-medium leading-snug line-clamp-2 group-hover:text-[#2D4A2D] dark:group-hover:text-[#7CFC00] transition-colors">
+                                <h4 className="text-sm font-medium leading-snug line-clamp-2 group-hover:text-[#1E3A8A] dark:group-hover:text-[#3B82F6] transition-colors">
                                   {related.title}
                                 </h4>
                                 <div className="flex items-center gap-2 mt-1">
@@ -333,7 +333,7 @@ export default function ResourceDetailPage() {
                                     <span className="text-xs text-muted-foreground">{related.readTime}</span>
                                   )}
                                   {related.isPremium && (
-                                    <Crown className="w-3 h-3 text-[#2D4A2D] dark:text-[#7CFC00]" />
+                                    <Crown className="w-3 h-3 text-[#1E3A8A] dark:text-[#3B82F6]" />
                                   )}
                                 </div>
                               </div>
@@ -381,7 +381,7 @@ export default function ResourceDetailPage() {
             </button>
 
             <div className="p-8 sm:p-10">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center mb-6">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center mb-6">
                 <Sparkles className="w-8 h-8 text-white" />
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold mb-3">
@@ -398,8 +398,8 @@ export default function ResourceDetailPage() {
                   "Match your skills to problems via the Innovation Engine",
                 ].map((line) => (
                   <div key={line} className="flex items-center gap-3">
-                    <div className="w-5 h-5 rounded-full bg-[#7CFC00]/20 flex items-center justify-center flex-shrink-0">
-                      <Check className="w-3 h-3 text-[#2D4A2D]" />
+                    <div className="w-5 h-5 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0">
+                      <Check className="w-3 h-3 text-[#1E3A8A]" />
                     </div>
                     <span className="text-sm">{line}</span>
                   </div>
@@ -408,14 +408,14 @@ export default function ResourceDetailPage() {
 
               <Link
                 href="/auth/login"
-                className="w-full flex items-center justify-center gap-2 bg-[#1A2E1A] text-white rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#243824] transition-colors"
+                className="w-full flex items-center justify-center gap-2 bg-[#0F1B3D] text-white rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#1E3A8A] transition-colors"
               >
                 Sign In to Continue
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <p className="text-center text-sm text-muted-foreground mt-4">
                 Don&apos;t have an account?{" "}
-                <Link href="/auth/signup" className="text-[#2D4A2D] dark:text-[#7CFC00] font-semibold hover:underline">
+                <Link href="/auth/signup" className="text-[#1E3A8A] dark:text-[#3B82F6] font-semibold hover:underline">
                   Sign up free
                 </Link>
               </p>

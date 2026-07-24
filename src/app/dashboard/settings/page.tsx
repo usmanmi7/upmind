@@ -273,20 +273,20 @@ function AdminUserManager() {
 
   const planBadgeColors: Record<string, string> = {
     FREE: "bg-muted text-muted-foreground",
-    GROWTH_PRO: "bg-[#C8E6C9] text-[#1A2E1A] dark:bg-[#2D4A2D]/30 dark:text-[#7CFC00]",
-    ENTERPRISE: "bg-[#7CFC00]/20 text-[#2D4A2D] dark:bg-[#7CFC00]/10 dark:text-[#7CFC00]",
+    GROWTH_PRO: "bg-[#DBEAFE] text-[#0F1B3D] dark:bg-[#1E3A8A]/30 dark:text-[#3B82F6]",
+    ENTERPRISE: "bg-[#3B82F6]/20 text-[#1E3A8A] dark:bg-[#3B82F6]/10 dark:text-[#3B82F6]",
   }
 
   const displayCount = expanded ? filteredUsers.length : Math.min(5, filteredUsers.length)
   const displayUsers = expanded ? paginatedUsers : filteredUsers.slice(0, 5)
 
   return (
-    <Card className="border-0 shadow-md shadow-black/5 border-l-4 border-l-[#7CFC00]">
+    <Card className="border-0 shadow-md shadow-black/5 border-l-4 border-l-[#3B82F6]">
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <CardTitle className="text-base font-heading flex items-center gap-2">
-              <Shield className="size-4 text-[#7CFC00]" /> Admin: Manage Users
+              <Shield className="size-4 text-[#3B82F6]" /> Admin: Manage Users
             </CardTitle>
             <CardDescription>
               {totalUsers} total users - View and manage subscription plans
@@ -296,7 +296,7 @@ function AdminUserManager() {
             <Button
               variant="outline"
               size="sm"
-              className="gap-1.5 text-[#7CFC00] border-[#7CFC00]/30 hover:bg-[#7CFC00]/10"
+              className="gap-1.5 text-[#3B82F6] border-[#3B82F6]/30 hover:bg-[#3B82F6]/10"
             >
               <ExternalLink className="size-3.5" />
               Full User Management
@@ -330,7 +330,7 @@ function AdminUserManager() {
 
         {loading ? (
           <div className="flex items-center justify-center py-8">
-            <Loader2 className="size-6 animate-spin text-[#7CFC00]" />
+            <Loader2 className="size-6 animate-spin text-[#3B82F6]" />
           </div>
         ) : filteredUsers.length === 0 ? (
           <div className="text-center py-8">
@@ -349,7 +349,7 @@ function AdminUserManager() {
                   <div className="flex items-center gap-3 flex-1 min-w-0">
                     <Avatar className="size-8 shrink-0">
                       <AvatarImage src={user.image || undefined} />
-                      <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                      <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                         {(user.name || user.email).split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
                       </AvatarFallback>
                     </Avatar>
@@ -430,7 +430,7 @@ function AdminUserManager() {
                           onClick={() => setCurrentPage(pageNum)}
                           className={
                             currentPage === pageNum
-                              ? "bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] w-8 h-8 p-0"
+                              ? "bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D] w-8 h-8 p-0"
                               : "w-8 h-8 p-0"
                           }
                         >
@@ -464,7 +464,7 @@ function AdminUserManager() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setExpanded(true)}
-                  className="text-[#7CFC00] hover:text-[#6BE000] gap-1 text-xs"
+                  className="text-[#3B82F6] hover:text-[#2563EB] gap-1 text-xs"
                 >
                   View all users
                   <ArrowRight className="size-3" />

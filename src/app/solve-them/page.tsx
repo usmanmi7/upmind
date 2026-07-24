@@ -235,7 +235,7 @@ export default function SolveThemPage() {
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
                       placeholder="Search problems..."
-                      className="w-full pl-12 pr-4 py-3 bg-card border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50"
+                      className="w-full pl-12 pr-4 py-3 bg-card border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/50"
                     />
                   </div>
                   <button
@@ -245,7 +245,7 @@ export default function SolveThemPage() {
                     <SlidersHorizontal className="w-5 h-5" />
                     Filters
                     {activeFilterCount > 0 && (
-                      <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#7CFC00] text-[#1A2E1A] text-xs font-bold flex items-center justify-center">
+                      <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#3B82F6] text-white text-xs font-bold flex items-center justify-center">
                         {activeFilterCount}
                       </span>
                     )}
@@ -309,7 +309,7 @@ export default function SolveThemPage() {
           <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="text-2xl sm:text-3xl font-heading font-bold">
-                How <span className="gradient-text">Solve Them</span> Works
+                How <span className="font-serif-accent-italic gradient-text">Solve Them</span> works
               </h2>
               <p className="mt-4 text-muted-foreground">
                 A four-step path from "I want to build something that matters" to a real engineering project.
@@ -327,8 +327,8 @@ export default function SolveThemPage() {
                 >
                   <div className="p-6 rounded-2xl bg-card border shadow-sm text-center h-full">
                     <div className="text-4xl font-bold gradient-text mb-4">{step.step}</div>
-                    <div className="w-12 h-12 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center mx-auto mb-4">
-                      <step.icon className="size-6 text-[#2D4A2D] dark:text-[#7CFC00]" />
+                    <div className="w-12 h-12 rounded-xl bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 flex items-center justify-center mx-auto mb-4">
+                      <step.icon className="size-6 text-[#1E3A8A] dark:text-[#3B82F6]" />
                     </div>
                     <h3 className="text-lg font-heading font-semibold mb-2">{step.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
@@ -347,18 +347,21 @@ export default function SolveThemPage() {
         {/* CTA */}
         <section className="py-20">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] relative overflow-hidden">
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] relative overflow-hidden">
               <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iYSIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVHJhbnNmb3JtPSJyb3RhdGUoNDUpIj48cGF0aCBkPSJNLTEwIDMwaDYwdi0yMGgtNjB6IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDMpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCBmaWxsPSJ1cmwoI2EpIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+PC9zdmc+')] opacity-50" />
               <div className="relative z-10">
-                <h2 className="text-3xl sm:text-4xl font-heading font-bold">Don&apos;t know where to start?</h2>
-                <p className="mt-4 text-lg text-[#1A2E1A]/80 max-w-xl mx-auto">
+                <h2 className="text-3xl sm:text-4xl font-heading font-bold">
+                  Don&apos;t know where to{' '}
+                  <span className="font-serif-accent-italic">start?</span>
+                </h2>
+                <p className="mt-4 text-lg text-[#0F1B3D]/80 max-w-xl mx-auto">
                   Tell us your skills and interests. Our AI Innovation Engine will match you to problems
                   you&apos;re uniquely positioned to solve.
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Link
                     href="/dashboard/innovation-engine"
-                    className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white text-[#2D4A2D] font-semibold hover:bg-white/90 shadow-xl text-base h-12"
+                    className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white text-[#1E3A8A] font-semibold hover:bg-white/90 shadow-xl text-base h-12"
                   >
                     <Sparkles className="w-5 h-5" />
                     Launch Innovation Engine
@@ -417,7 +420,7 @@ export default function SolveThemPage() {
               />
               <button
                 onClick={() => setMobileFiltersOpen(false)}
-                className="mt-4 w-full px-4 py-3 rounded-xl bg-[#7CFC00] text-[#1A2E1A] font-semibold hover:bg-[#6BE000]"
+                className="mt-4 w-full px-4 py-3 rounded-xl bg-[#3B82F6] text-white font-semibold hover:bg-[#2563EB]"
               >
                 Show {filtered.length} results
               </button>
@@ -483,10 +486,10 @@ function FiltersPanel({
       {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-bold uppercase tracking-wide flex items-center gap-2">
-          <Filter className="w-4 h-4 text-[#2D4A2D] dark:text-[#7CFC00]" />
+          <Filter className="w-4 h-4 text-[#1E3A8A] dark:text-[#3B82F6]" />
           Filters
           {activeFilterCount > 0 && (
-            <span className="text-xs px-2 py-0.5 rounded-full bg-[#7CFC00]/15 text-[#2D4A2D] dark:text-[#7CFC00] border border-[#7CFC00]/30">
+            <span className="text-xs px-2 py-0.5 rounded-full bg-[#3B82F6]/15 text-[#1E3A8A] dark:text-[#3B82F6] border border-[#3B82F6]/30">
               {activeFilterCount}
             </span>
           )}
@@ -510,7 +513,7 @@ function FiltersPanel({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search problems..."
-          className="w-full pl-10 pr-3 py-2.5 text-sm bg-card border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50"
+          className="w-full pl-10 pr-3 py-2.5 text-sm bg-card border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/50"
         />
       </div>
 
@@ -529,7 +532,7 @@ function FiltersPanel({
               onClick={() => setSortBy(opt.value as typeof sortBy)}
               className={`text-xs px-2.5 py-2 rounded-lg border transition-all text-left ${
                 sortBy === opt.value
-                  ? "bg-[#2D4A2D] text-white border-[#2D4A2D] dark:bg-[#7CFC00]/15 dark:text-[#7CFC00] dark:border-[#7CFC00]/30"
+                  ? "bg-[#1E3A8A] text-white border-[#1E3A8A] dark:bg-[#3B82F6]/15 dark:text-[#3B82F6] dark:border-[#3B82F6]/30"
                   : "bg-card text-muted-foreground border-border hover:bg-muted hover:text-foreground"
               }`}
             >
@@ -546,7 +549,7 @@ function FiltersPanel({
             onClick={() => setCategory("All")}
             className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center justify-between ${
               category === "All"
-                ? "bg-[#2D4A2D]/10 text-[#2D4A2D] dark:bg-[#7CFC00]/15 dark:text-[#7CFC00]"
+                ? "bg-[#1E3A8A]/10 text-[#1E3A8A] dark:bg-[#3B82F6]/15 dark:text-[#3B82F6]"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
           >
@@ -559,7 +562,7 @@ function FiltersPanel({
               onClick={() => setCategory(cat)}
               className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center justify-between ${
                 category === cat
-                  ? "bg-[#2D4A2D]/10 text-[#2D4A2D] dark:bg-[#7CFC00]/15 dark:text-[#7CFC00]"
+                  ? "bg-[#1E3A8A]/10 text-[#1E3A8A] dark:bg-[#3B82F6]/15 dark:text-[#3B82F6]"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
@@ -617,14 +620,14 @@ function FiltersPanel({
               onClick={() => toggleProjectType(t)}
               className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center gap-2 ${
                 projectTypes.includes(t)
-                  ? "bg-[#2D4A2D]/10 text-[#2D4A2D] dark:bg-[#7CFC00]/15 dark:text-[#7CFC00]"
+                  ? "bg-[#1E3A8A]/10 text-[#1E3A8A] dark:bg-[#3B82F6]/15 dark:text-[#3B82F6]"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               <span
                 className={`w-4 h-4 rounded border flex items-center justify-center text-[10px] ${
                   projectTypes.includes(t)
-                    ? "bg-[#7CFC00] border-[#7CFC00] text-[#1A2E1A]"
+                    ? "bg-[#3B82F6] border-[#3B82F6] text-[#0F1B3D]"
                     : "border-border"
                 }`}
               >
@@ -646,7 +649,7 @@ function FiltersPanel({
                 onClick={() => toggleTag(t)}
                 className={`text-xs px-2 py-1 rounded-md border transition-all ${
                   activeTags.includes(t)
-                    ? "bg-[#2D4A2D]/10 text-[#2D4A2D] border-[#2D4A2D]/30 dark:bg-[#7CFC00]/15 dark:text-[#7CFC00] dark:border-[#7CFC00]/30"
+                    ? "bg-[#1E3A8A]/10 text-[#1E3A8A] border-[#1E3A8A]/30 dark:bg-[#3B82F6]/15 dark:text-[#3B82F6] dark:border-[#3B82F6]/30"
                     : "bg-card text-muted-foreground border-border hover:bg-muted hover:text-foreground"
                 }`}
               >
@@ -698,16 +701,16 @@ function FilterRadio({
       onClick={onClick}
       className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center gap-2 ${
         active
-          ? "bg-[#2D4A2D]/10 text-[#2D4A2D] dark:bg-[#7CFC00]/15 dark:text-[#7CFC00]"
+          ? "bg-[#1E3A8A]/10 text-[#1E3A8A] dark:bg-[#3B82F6]/15 dark:text-[#3B82F6]"
           : "text-muted-foreground hover:bg-muted hover:text-foreground"
       }`}
     >
       <span
         className={`w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center ${
-          active ? "border-[#2D4A2D] dark:border-[#7CFC00]" : "border-border"
+          active ? "border-[#1E3A8A] dark:border-[#3B82F6]" : "border-border"
         }`}
       >
-        {active && <span className="w-1.5 h-1.5 rounded-full bg-[#2D4A2D] dark:bg-[#7CFC00]" />}
+        {active && <span className="w-1.5 h-1.5 rounded-full bg-[#1E3A8A] dark:bg-[#3B82F6]" />}
       </span>
       {label}
       {badgeClass && (
@@ -736,7 +739,7 @@ function ProblemCard({ problem }: { problem: ReturnType<typeof getAllProblems>[0
     >
       {/* Category + difficulty */}
       <div className="flex items-start justify-between gap-3 mb-4">
-        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-[#7CFC00]/10 text-[#2D4A2D] dark:text-[#7CFC00] border border-[#7CFC00]/20">
+        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-[#3B82F6]/10 text-[#1E3A8A] dark:text-[#3B82F6] border border-[#3B82F6]/20">
           {problem.category}
         </span>
         <span
@@ -747,7 +750,7 @@ function ProblemCard({ problem }: { problem: ReturnType<typeof getAllProblems>[0
       </div>
 
       {/* Title */}
-      <h3 className="text-lg font-heading font-semibold mb-2 group-hover:text-[#2D4A2D] dark:group-hover:text-[#7CFC00] transition-colors line-clamp-2">
+      <h3 className="text-lg font-heading font-semibold mb-2 group-hover:text-[#1E3A8A] dark:group-hover:text-[#3B82F6] transition-colors line-clamp-2">
         {problem.title}
       </h3>
 
@@ -795,7 +798,7 @@ function ProblemCard({ problem }: { problem: ReturnType<typeof getAllProblems>[0
       <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground/70">
         <Lock className="w-3 h-3" />
         Solutions, skills, team templates & roadmap unlocked on detail page
-        <CheckCircle2 className="w-3 h-3 ml-auto text-[#2D4A2D] dark:text-[#7CFC00]" />
+        <CheckCircle2 className="w-3 h-3 ml-auto text-[#1E3A8A] dark:text-[#3B82F6]" />
       </div>
     </Link>
   )

@@ -23,7 +23,7 @@ export default function Error({
         <div className="flex items-center justify-center gap-3">
           <Button
             onClick={reset}
-            className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+            className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
           >
             <RefreshCw className="size-4 mr-2" /> Try Again
           </Button>

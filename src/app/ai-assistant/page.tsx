@@ -57,13 +57,13 @@ const quickPrompts = [
     label: "Analyze my startup idea",
     icon: Target,
     prompt: "I have an idea for a SaaS tool for solo founders. What should I think about first?",
-    color: "from-[#2D4A2D] to-[#8FBC8F]",
+    color: "from-[#1E3A8A] to-[#93C5FD]",
   },
   {
     label: "Business plan help",
     icon: FileText,
     prompt: "Help me create a business plan for my startup. What sections should I include?",
-    color: "from-[#7CFC00] to-[#2D4A2D]",
+    color: "from-[#3B82F6] to-[#1E3A8A]",
   },
   {
     label: "Growth strategy",
@@ -551,7 +551,7 @@ export default function PublicAIAssistantPage() {
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.4 }}
-                      className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center mb-6 shadow-xl shadow-[#7CFC00]/20"
+                      className="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center mb-6 shadow-xl shadow-[#3B82F6]/20"
                     >
                       <Sparkles className="size-10 text-white" />
                     </motion.div>
@@ -581,7 +581,7 @@ export default function PublicAIAssistantPage() {
                           <button
                             key={qp.label}
                             onClick={() => sendMessage(qp.prompt)}
-                            className="group flex items-center gap-3 p-4 rounded-2xl border border-black/5 dark:border-white/10 hover:border-[#7CFC00]/40 hover:bg-[#7CFC00]/5 transition-all text-left"
+                            className="group flex items-center gap-3 p-4 rounded-2xl border border-black/5 dark:border-white/10 hover:border-[#3B82F6]/40 hover:bg-[#3B82F6]/5 transition-all text-left"
                           >
                             <div
                               className={`w-10 h-10 rounded-xl bg-gradient-to-br ${qp.color} flex items-center justify-center shrink-0 shadow-sm`}
@@ -596,7 +596,7 @@ export default function PublicAIAssistantPage() {
                                 Tap to ask
                               </span>
                             </div>
-                            <ArrowRight className="size-4 text-muted-foreground group-hover:text-[#7CFC00] group-hover:translate-x-0.5 transition-all shrink-0" />
+                            <ArrowRight className="size-4 text-muted-foreground group-hover:text-[#3B82F6] group-hover:translate-x-0.5 transition-all shrink-0" />
                           </button>
                         )
                       })}
@@ -608,9 +608,9 @@ export default function PublicAIAssistantPage() {
                       <motion.div
                         initial={{ opacity: 0, y: -4 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="flex items-start gap-2.5 rounded-lg border border-[#7CFC00]/20 dark:border-[#7CFC00]/15 bg-[#7CFC00]/5 dark:bg-[#7CFC00]/10 px-3.5 py-2.5"
+                        className="flex items-start gap-2.5 rounded-lg border border-[#3B82F6]/20 dark:border-[#3B82F6]/15 bg-[#3B82F6]/5 dark:bg-[#3B82F6]/10 px-3.5 py-2.5"
                       >
-                        <RotateCcw className="size-4 mt-0.5 text-[#7CFC00] shrink-0" />
+                        <RotateCcw className="size-4 mt-0.5 text-[#3B82F6] shrink-0" />
                         <p className="text-xs leading-relaxed text-foreground/80">
                           {reopenSummary}
                         </p>
@@ -628,7 +628,7 @@ export default function PublicAIAssistantPage() {
                           }`}
                         >
                           {msg.role === "assistant" && (
-                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0 shadow-sm">
+                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center shrink-0 shadow-sm">
                               <Sparkles className="size-4 text-white" />
                             </div>
                           )}
@@ -647,7 +647,7 @@ export default function PublicAIAssistantPage() {
                             <div
                               className={`${
                                 msg.role === "user"
-                                  ? "px-4 py-3 rounded-2xl bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-br-md text-sm leading-relaxed whitespace-pre-wrap shadow-sm shadow-[#7CFC00]/20"
+                                  ? "px-4 py-3 rounded-2xl bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] rounded-br-md text-sm leading-relaxed whitespace-pre-wrap shadow-sm shadow-[#3B82F6]/20"
                                   : "px-1 py-1 text-sm leading-relaxed"
                               }`}
                             >
@@ -663,14 +663,14 @@ export default function PublicAIAssistantPage() {
                     </AnimatePresence>
                     {loading && (
                       <div className="flex gap-3 justify-start">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0 shadow-sm">
+                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center shrink-0 shadow-sm">
                           <Sparkles className="size-4 text-white" />
                         </div>
                         <div className="px-1 py-2">
                           <div className="flex gap-1">
-                            <div className="w-2 h-2 rounded-full bg-[#7CFC00]/60 animate-bounce [animation-delay:0ms]" />
-                            <div className="w-2 h-2 rounded-full bg-[#7CFC00]/60 animate-bounce [animation-delay:150ms]" />
-                            <div className="w-2 h-2 rounded-full bg-[#7CFC00]/60 animate-bounce [animation-delay:300ms]" />
+                            <div className="w-2 h-2 rounded-full bg-[#3B82F6]/60 animate-bounce [animation-delay:0ms]" />
+                            <div className="w-2 h-2 rounded-full bg-[#3B82F6]/60 animate-bounce [animation-delay:150ms]" />
+                            <div className="w-2 h-2 rounded-full bg-[#3B82F6]/60 animate-bounce [animation-delay:300ms]" />
                           </div>
                         </div>
                       </div>
@@ -694,7 +694,7 @@ export default function PublicAIAssistantPage() {
                         key={qp.label}
                         variant="outline"
                         size="sm"
-                        className="shrink-0 text-xs h-8 gap-1.5 rounded-full border-black/10 dark:border-white/15 hover:border-[#7CFC00]/50 hover:text-[#7CFC00]"
+                        className="shrink-0 text-xs h-8 gap-1.5 rounded-full border-black/10 dark:border-white/15 hover:border-[#3B82F6]/50 hover:text-[#3B82F6]"
                         onClick={() => sendMessage(qp.prompt)}
                       >
                         <Icon className="size-3" />
@@ -710,7 +710,7 @@ export default function PublicAIAssistantPage() {
                   placeholder={`Ask ${modelLabel} anything about your startup...`}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  className="flex-1 h-11 rounded-full border-black/10 dark:border-white/15 bg-transparent px-5 text-sm focus-visible:border-[#7CFC00] focus-visible:ring-[#7CFC00]/20"
+                  className="flex-1 h-11 rounded-full border-black/10 dark:border-white/15 bg-transparent px-5 text-sm focus-visible:border-[#3B82F6] focus-visible:ring-[#3B82F6]/20"
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && input.trim()) {
                       sendMessage(input)
@@ -720,7 +720,7 @@ export default function PublicAIAssistantPage() {
                 />
                 <Button
                   size="icon"
-                  className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shrink-0 h-11 w-11 rounded-full shadow-md shadow-[#7CFC00]/25 disabled:opacity-40"
+                  className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D] shrink-0 h-11 w-11 rounded-full shadow-md shadow-[#3B82F6]/25 disabled:opacity-40"
                   disabled={!input.trim() || loading}
                   onClick={() => sendMessage(input)}
                 >

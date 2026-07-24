@@ -3,32 +3,32 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ArrowRight, FileText, Video, BookOpen } from 'lucide-react';
+import { ArrowRight, FileText, Compass, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
 const resources = [
   {
-    icon: FileText,
+    icon: Compass,
     tag: 'Guide',
-    title: 'Startup Validation Playbook',
+    title: 'How to Find Problems Worth Solving',
     description:
-      'A step-by-step framework to test your assumptions, validate your market, and avoid costly mistakes before launch.',
+      'A field guide for engineers — sourcing real problems from WHO, UN, IEA, and direct field research instead of brainstorming from a whiteboard.',
     link: '/resources',
   },
   {
-    icon: Video,
-    tag: 'Webinar',
-    title: 'Fundraising Masterclass',
+    icon: FileText,
+    tag: 'Template',
+    title: 'Engineering Project Roadmap (12-month)',
     description:
-      'Learn how to craft a compelling pitch, identify the right investors, and navigate the fundraising process with confidence.',
+      'A 4-phase roadmap template — validation, prototype, pilot, scale — with milestones, deliverables, and exit criteria for engineering innovation projects.',
     link: '/resources',
   },
   {
     icon: BookOpen,
-    tag: 'Template',
-    title: 'Growth Strategy Toolkit',
+    tag: 'Reading List',
+    title: 'Reading List for Engineering Innovators',
     description:
-      'Ready-to-use templates for roadmap planning, OKR setting, and growth experiments that drive measurable results.',
+      '30 essential books, papers, and long-form essays for engineers who want to build things that matter — across systems, climate, AI, and field work.',
     link: '/resources',
   },
 ];
@@ -45,7 +45,7 @@ export default function Resources() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
-            className="text-[#7CFC00] text-sm font-semibold tracking-[0.15em] uppercase block mb-4"
+            className="text-[#3B82F6] text-sm font-semibold tracking-[0.15em] uppercase block mb-4"
           >
             RESOURCES
           </motion.span>
@@ -55,7 +55,8 @@ export default function Resources() {
             transition={{ duration: 0.6 }}
             className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-4"
           >
-            Tools to accelerate your growth
+            Playbooks for{' '}
+            <span className="font-serif-accent-italic text-[#1E3A8A]">builders</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
@@ -63,7 +64,7 @@ export default function Resources() {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="text-[#666666] text-base sm:text-lg"
           >
-            Free guides, templates, and webinars to help you build smarter and scale faster.
+            Field guides, templates, and frameworks written for engineers — not generic startup advice.
           </motion.p>
         </div>
 
@@ -74,15 +75,15 @@ export default function Resources() {
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }}
-              className="group bg-[#F5F5F5] rounded-2xl p-6 sm:p-8 hover:shadow-lg transition-all duration-300 border border-transparent hover:border-[#7CFC00]/20"
+              className="group bg-[#F5F7FB] rounded-2xl p-6 sm:p-8 hover:shadow-lg transition-all duration-300 border border-transparent hover:border-[#3B82F6]/20"
             >
-              <div className="w-12 h-12 rounded-xl bg-[#1A2E1A] flex items-center justify-center mb-5 group-hover:bg-[#7CFC00] transition-colors duration-300">
-                <resource.icon className="w-6 h-6 text-white group-hover:text-[#1A2E1A] transition-colors duration-300" />
+              <div className="w-12 h-12 rounded-xl bg-[#0F1B3D] flex items-center justify-center mb-5 group-hover:bg-[#3B82F6] transition-colors duration-300">
+                <resource.icon className="w-6 h-6 text-white group-hover:text-white transition-colors duration-300" />
               </div>
-              <span className="text-[#7CFC00] text-xs font-semibold tracking-wider uppercase">
+              <span className="text-[#3B82F6] text-xs font-semibold tracking-wider uppercase">
                 {resource.tag}
               </span>
-              <h3 className="text-lg sm:text-xl font-bold text-[#1A1A1A] mt-2 mb-3 group-hover:text-[#1A2E1A] transition-colors">
+              <h3 className="text-lg sm:text-xl font-bold text-[#1A1A1A] mt-2 mb-3 group-hover:text-[#0F1B3D] transition-colors">
                 {resource.title}
               </h3>
               <p className="text-[#666666] text-sm sm:text-base leading-relaxed mb-5">
@@ -90,9 +91,9 @@ export default function Resources() {
               </p>
               <Link
                 href={resource.link}
-                className="inline-flex items-center gap-1.5 text-[#1A2E1A] text-sm font-semibold group-hover:text-[#7CFC00] transition-colors"
+                className="inline-flex items-center gap-1.5 text-[#0F1B3D] text-sm font-semibold group-hover:text-[#3B82F6] transition-colors"
               >
-                Access Now
+                Read Now
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
@@ -108,7 +109,7 @@ export default function Resources() {
         >
           <Link
             href="/resources"
-            className="inline-flex items-center gap-2 bg-[#1A2E1A] text-white rounded-full px-8 py-3.5 text-sm sm:text-base font-medium hover:bg-[#243824] transition-colors duration-300 group shadow-lg shadow-[#1A2E1A]/10"
+            className="inline-flex items-center gap-2 bg-[#0F1B3D] text-white rounded-full px-8 py-3.5 text-sm sm:text-base font-medium hover:bg-[#1E3A8A] transition-colors duration-300 group shadow-lg shadow-[#0F1B3D]/10"
           >
             View All Resources
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

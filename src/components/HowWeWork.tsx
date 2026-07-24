@@ -9,33 +9,33 @@ import Link from 'next/link';
 const steps = [
   {
     number: '1/5',
-    title: 'Initial Diagnosis',
+    title: 'Discover Problems',
     description:
-      'We start with a deep-dive assessment of your current business landscape, identifying key challenges and untapped opportunities to build a clear roadmap forward.',
+      'Browse 30+ curated world problems sourced from WHO, UN, IEA, IPCC and more. Filter by category, scope, and difficulty to find ones that resonate with your engineering skills.',
   },
   {
     number: '2/5',
-    title: 'Strategic Planning',
+    title: 'Match Your Skills',
     description:
-      'Based on our diagnosis, we craft a tailored strategic plan that aligns with your vision and sets measurable milestones for growth and innovation.',
+      'Run the AI Innovation Engine. Tell us your skills, interests, time, and team size — get a ranked shortlist of problems you are uniquely positioned to solve, with match reasons.',
   },
   {
     number: '3/5',
-    title: 'Implementation',
+    title: 'Read the Brief',
     description:
-      'We work alongside your team to execute the strategy, ensuring every initiative is implemented with precision and aligned with your core objectives.',
+      'Open any problem to see severity, impact, market need, affected regions, existing solutions, recommended team templates, and a 4-phase build roadmap ready to execute.',
   },
   {
     number: '4/5',
-    title: 'Optimization',
+    title: 'Build the Solution',
     description:
-      'Through continuous monitoring and data analysis, we refine and optimize strategies to maximize impact and adapt to evolving market conditions.',
+      'Use the engineering solution briefs, skill requirements, and team templates to assemble a project. Tap our resources library for playbooks on every stage — from prototype to pilot.',
   },
   {
     number: '5/5',
-    title: 'Scale & Grow',
+    title: 'Ship & Scale',
     description:
-      'With proven processes in place, we help you scale sustainably, expanding reach, deepening impact, and building long-term competitive advantage.',
+      'Deploy, measure, iterate. Open-source where appropriate, find funding through our field guide, and turn an engineering project into a venture, paper, or infrastructure that lasts.',
   },
 ];
 
@@ -50,21 +50,21 @@ export default function HowWeWork() {
   return (
     <section className="relative overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[500px] sm:min-h-[600px]">
-        {/* Left Side - Dark Green */}
+        {/* Left Side - Deep Navy */}
         <motion.div
           ref={ref}
           initial={{ opacity: 0, x: -40 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="bg-[#1A2E1A] p-8 sm:p-12 lg:p-16 flex flex-col justify-center relative"
+          className="bg-[#0F1B3D] p-8 sm:p-12 lg:p-16 flex flex-col justify-center relative"
         >
-          <span className="text-[#7CFC00] text-sm font-semibold tracking-wider mb-4">
-            HOW WE WORK
+          <span className="text-[#3B82F6] text-sm font-semibold tracking-wider mb-4">
+            HOW IT WORKS
           </span>
-          <span className="text-[#7CFC00]/60 text-sm font-medium tracking-wider mb-4">
+          <span className="text-[#93C5FD]/60 text-sm font-medium tracking-wider mb-4">
             {steps[current].number}
           </span>
-          <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#7CFC00] mb-6">
+          <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#93C5FD] mb-6">
             {steps[current].title}
           </h3>
           <p className="text-white/70 text-base sm:text-lg leading-relaxed mb-8 max-w-md">
@@ -73,24 +73,24 @@ export default function HowWeWork() {
 
           {/* CTA */}
           <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 bg-[#7CFC00] text-[#1A2E1A] rounded-full px-7 py-3 text-sm sm:text-base font-semibold hover:bg-[#6BE000] transition-colors duration-300 self-start mb-8 group shadow-lg shadow-[#7CFC00]/20"
+            href="/solve-them"
+            className="inline-flex items-center gap-2 bg-[#3B82F6] text-white rounded-full px-7 py-3 text-sm sm:text-base font-semibold hover:bg-[#2563EB] transition-colors duration-300 self-start mb-8 group shadow-lg shadow-[#3B82F6]/20"
           >
-            START YOUR JOURNEY
+            START EXPLORING
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
 
           <div className="flex items-center gap-3">
             <button
               onClick={prev}
-              className="w-11 h-11 rounded-full border border-white/30 flex items-center justify-center text-white/70 hover:border-[#7CFC00] hover:text-[#7CFC00] transition-colors duration-300"
+              className="w-11 h-11 rounded-full border border-white/30 flex items-center justify-center text-white/70 hover:border-[#3B82F6] hover:text-[#3B82F6] transition-colors duration-300"
               aria-label="Previous step"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={next}
-              className="w-11 h-11 rounded-full border border-white/30 flex items-center justify-center text-white/70 hover:border-[#7CFC00] hover:text-[#7CFC00] transition-colors duration-300"
+              className="w-11 h-11 rounded-full border border-white/30 flex items-center justify-center text-white/70 hover:border-[#3B82F6] hover:text-[#3B82F6] transition-colors duration-300"
               aria-label="Next step"
             >
               <ChevronRight className="w-5 h-5" />
@@ -104,7 +104,7 @@ export default function HowWeWork() {
                 key={i}
                 onClick={() => setCurrent(i)}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === current ? 'w-8 bg-[#7CFC00]' : 'w-4 bg-white/20'
+                  i === current ? 'w-8 bg-[#3B82F6]' : 'w-4 bg-white/20'
                 }`}
                 aria-label={`Go to step ${i + 1}`}
               />
@@ -121,14 +121,14 @@ export default function HowWeWork() {
         >
           <img
             src="/images/howwework-team.jpg"
-            alt="Team working together on strategy"
+            alt="Engineers working together on a build"
             className="absolute inset-0 w-full h-full object-cover"
           />
           {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#1A2E1A]/20 lg:bg-gradient-to-l lg:from-transparent lg:to-[#1A2E1A]/10" />
-          {/* Green circular overlay graphic */}
-          <div className="absolute -left-16 top-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-[3px] border-[#7CFC00]/30 hidden lg:block" />
-          <div className="absolute -left-8 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-[#7CFC00]/10 hidden lg:block" />
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0F1B3D]/20 lg:bg-gradient-to-l lg:from-transparent lg:to-[#0F1B3D]/10" />
+          {/* Blue circular overlay graphic */}
+          <div className="absolute -left-16 top-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-[3px] border-[#3B82F6]/30 hidden lg:block" />
+          <div className="absolute -left-8 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-[#3B82F6]/10 hidden lg:block" />
         </motion.div>
       </div>
     </section>

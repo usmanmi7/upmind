@@ -149,8 +149,8 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
     <div className="flex flex-col h-full">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2 px-4 h-16 border-b border-sidebar-border hover:bg-sidebar-accent/30 transition-colors">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shrink-0">
-          <span className="text-[#1A2E1A] font-bold text-base">U</span>
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center shrink-0">
+          <span className="text-[#0F1B3D] font-bold text-base">U</span>
         </div>
         {!collapsed && (
           <span className="text-xl font-bold font-heading text-sidebar-foreground">
@@ -158,7 +158,7 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
           </span>
         )}
         {isAdmin && !collapsed && (
-          <span className="text-[10px] font-medium bg-[#7CFC00]/20 text-[#7CFC00] px-1.5 py-0.5 rounded ml-auto">
+          <span className="text-[10px] font-medium bg-[#3B82F6]/20 text-[#3B82F6] px-1.5 py-0.5 rounded ml-auto">
             ADMIN
           </span>
         )}
@@ -181,14 +181,14 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
                   isActive
                     ? "bg-sidebar-accent text-sidebar-primary"
                     : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground",
-                  item.adminOnly && "border border-[#7CFC00]/30 hover:bg-[#7CFC00]/10"
+                  item.adminOnly && "border border-[#3B82F6]/30 hover:bg-[#3B82F6]/10"
                 )}
               >
                 <item.icon
                   className={cn(
                     "size-5 shrink-0",
                     isActive ? "text-sidebar-primary" : "",
-                    item.adminOnly && "text-[#7CFC00]"
+                    item.adminOnly && "text-[#3B82F6]"
                   )}
                 />
                 {!collapsed && <span>{item.title}</span>}
@@ -228,7 +228,7 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
       {/* Upgrade Card - Only for FREE_USER (non-admin, non-paid) */}
       {!collapsed && !isAdmin && session?.user?.role === "FREE_USER" && (
         <div className="px-3 pb-4">
-          <div className="rounded-xl bg-gradient-to-br from-[#7CFC00]/20 to-[#2D4A2D]/20 border border-sidebar-border p-4">
+          <div className="rounded-xl bg-gradient-to-br from-[#3B82F6]/20 to-[#1E3A8A]/20 border border-sidebar-border p-4">
             <div className="flex items-center gap-2 mb-2">
               <Sparkles className="size-4 text-sidebar-primary" />
               <span className="text-sm font-medium text-sidebar-foreground">
@@ -240,7 +240,7 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
             </p>
             <Button
               size="sm"
-              className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] text-xs"
+              className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D] text-xs"
               asChild
             >
               <Link href="/dashboard/subscription">Upgrade Now</Link>
@@ -252,9 +252,9 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
       {/* Pro Member Card - For paid users */}
       {!collapsed && !isAdmin && session?.user?.role === "PAID_USER" && (
         <div className="px-3 pb-4">
-          <div className="rounded-xl bg-gradient-to-br from-[#7CFC00]/10 to-[#2D4A2D]/10 border border-[#7CFC00]/20 p-4">
+          <div className="rounded-xl bg-gradient-to-br from-[#3B82F6]/10 to-[#1E3A8A]/10 border border-[#3B82F6]/20 p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Crown className="size-4 text-[#7CFC00]" />
+              <Crown className="size-4 text-[#3B82F6]" />
               <span className="text-sm font-medium text-sidebar-foreground">
                 Pro Member
               </span>
@@ -265,7 +265,7 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
             <Button
               size="sm"
               variant="outline"
-              className="w-full border-[#7CFC00]/30 text-[#1A2E1A] hover:bg-[#7CFC00]/10 text-xs"
+              className="w-full border-[#3B82F6]/30 text-[#0F1B3D] hover:bg-[#3B82F6]/10 text-xs"
               asChild
             >
               <Link href="/dashboard/subscription">Manage Plan</Link>
@@ -277,9 +277,9 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
       {/* Admin Badge Card - Only for admins */}
       {!collapsed && isAdmin && (
         <div className="px-3 pb-4">
-          <div className="rounded-xl bg-gradient-to-br from-[#7CFC00]/10 to-[#2D4A2D]/10 border border-[#7CFC00]/20 p-4">
+          <div className="rounded-xl bg-gradient-to-br from-[#3B82F6]/10 to-[#1E3A8A]/10 border border-[#3B82F6]/20 p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Shield className="size-4 text-[#7CFC00]" />
+              <Shield className="size-4 text-[#3B82F6]" />
               <span className="text-sm font-medium text-sidebar-foreground">
                 Admin Access
               </span>
@@ -289,7 +289,7 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
             </p>
             <Button
               size="sm"
-              className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] text-xs"
+              className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D] text-xs"
               asChild
             >
               <Link href="/admin">Open Admin Panel</Link>
@@ -377,7 +377,7 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
               <Button
                 variant="outline"
                 size="sm"
-                className="hidden sm:flex items-center gap-1.5 text-[#7CFC00] border-[#7CFC00]/30 hover:bg-[#7CFC00]/10"
+                className="hidden sm:flex items-center gap-1.5 text-[#3B82F6] border-[#3B82F6]/30 hover:bg-[#3B82F6]/10"
               >
                 <Shield className="size-3.5" />
                 Admin
@@ -395,7 +395,7 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
             <Link href="/dashboard/notifications">
               <Bell className="size-5" />
               {unreadCount > 0 && (
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#7CFC00]" />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#3B82F6]" />
               )}
             </Link>
           </Button>
@@ -412,7 +412,7 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
                     src={session?.user?.image || undefined}
                     alt={session?.user?.name || "User"}
                   />
-                  <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                  <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                     {userInitials}
                   </AvatarFallback>
                 </Avatar>
@@ -431,7 +431,7 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
                     {session?.user?.email || ""}
                   </p>
                   {isAdmin && (
-                    <span className="text-[10px] font-medium bg-[#7CFC00]/20 text-[#7CFC00] px-1.5 py-0.5 rounded w-fit">
+                    <span className="text-[10px] font-medium bg-[#3B82F6]/20 text-[#3B82F6] px-1.5 py-0.5 rounded w-fit">
                       ADMIN
                     </span>
                   )}

@@ -97,7 +97,7 @@ export default function AdminChatsPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { title: "Open", value: openConversations, icon: MessageSquare, color: "from-[#2D4A2D] to-[#8FBC8F]" },
+          { title: "Open", value: openConversations, icon: MessageSquare, color: "from-[#1E3A8A] to-[#93C5FD]" },
           { title: "In Progress", value: inProgressConversations, icon: Clock, color: "from-yellow-500 to-orange-500" },
           { title: "Resolved", value: resolvedConversations, icon: CheckCircle, color: "from-green-500 to-emerald-500" },
           { title: "Flagged", value: flaggedMessages, icon: AlertTriangle, color: "from-red-500 to-orange-500" },
@@ -140,12 +140,12 @@ export default function AdminChatsPage() {
                 key={conv.id}
                 onClick={() => setSelectedConversation(conv)}
                 className={`w-full text-left p-3 rounded-lg mb-1 transition-colors ${
-                  selectedConversation?.id === conv.id ? "bg-[#7CFC00]/20 border border-[#7CFC00]/30" : "hover:bg-muted/50"
+                  selectedConversation?.id === conv.id ? "bg-[#3B82F6]/20 border border-[#3B82F6]/30" : "hover:bg-muted/50"
                 }`}
               >
                 <div className="flex items-center gap-2 mb-1">
                   <Avatar className="size-7">
-                    <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white text-xs">
+                    <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#1E3A8A] text-white text-xs">
                       {conv.participants[0].name.split(" ").map((n) => n[0]).join("")}
                     </AvatarFallback>
                   </Avatar>
@@ -153,7 +153,7 @@ export default function AdminChatsPage() {
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-medium truncate">{conv.participants[0].name}</p>
                       {conv.unreadCount > 0 && (
-                        <Badge className="bg-[#7CFC00] text-white text-xs ml-1">{conv.unreadCount}</Badge>
+                        <Badge className="bg-[#3B82F6] text-white text-xs ml-1">{conv.unreadCount}</Badge>
                       )}
                     </div>
                     <p className="text-xs text-muted-foreground">with {conv.participants[1].name}</p>
@@ -174,7 +174,7 @@ export default function AdminChatsPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Avatar className="size-10">
-                      <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white">
+                      <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#1E3A8A] text-white">
                         {selectedConversation.participants[0].name.split(" ").map((n) => n[0]).join("")}
                       </AvatarFallback>
                     </Avatar>
@@ -183,7 +183,7 @@ export default function AdminChatsPage() {
                       <CardDescription>with {selectedConversation.participants[1].name}</CardDescription>
                     </div>
                   </div>
-                  <Badge className={selectedConversation.status === "open" ? "bg-[#7CFC00]/20 text-[#7CFC00]" : selectedConversation.status === "in-progress" ? "bg-yellow-500/20 text-yellow-400" : "bg-green-500/20 text-green-400"}>
+                  <Badge className={selectedConversation.status === "open" ? "bg-[#3B82F6]/20 text-[#3B82F6]" : selectedConversation.status === "in-progress" ? "bg-yellow-500/20 text-yellow-400" : "bg-green-500/20 text-green-400"}>
                     {selectedConversation.status}
                   </Badge>
                 </div>
@@ -197,13 +197,13 @@ export default function AdminChatsPage() {
                       <div key={msg.id} className={`flex gap-2 ${isSender ? "justify-start" : "justify-end"}`}>
                         {isSender && (
                           <Avatar className="size-7 mt-1">
-                            <AvatarFallback className="bg-[#7CFC00]/20 text-[#7CFC00] text-xs">
+                            <AvatarFallback className="bg-[#3B82F6]/20 text-[#3B82F6] text-xs">
                               {msg.senderName.split(" ").map((n) => n[0]).join("")}
                             </AvatarFallback>
                           </Avatar>
                         )}
                         <div className={`max-w-[70%] rounded-lg p-3 ${
-                          isSender ? "bg-muted" : "bg-[#7CFC00]/20 border border-[#7CFC00]/30"
+                          isSender ? "bg-muted" : "bg-[#3B82F6]/20 border border-[#3B82F6]/30"
                         }`}>
                           <p className="text-sm">{msg.content}</p>
                           <div className="flex items-center gap-2 mt-1">
@@ -254,7 +254,7 @@ export default function AdminChatsPage() {
                         setReplyText("")
                       }
                     }}
-                    className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white shrink-0"
+                    className="bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] text-white shrink-0"
                   >
                     <Send className="size-4" />
                   </Button>

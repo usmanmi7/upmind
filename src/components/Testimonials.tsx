@@ -63,7 +63,7 @@ export default function Testimonials() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
-            className="text-[#7CFC00] text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase block mb-6"
+            className="text-[#3B82F6] text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase block mb-6"
           >
             TESTIMONIALS
           </motion.span>
@@ -74,12 +74,14 @@ export default function Testimonials() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-10"
           >
-            What our clients say
+            What our{' '}
+            <span className="font-serif-accent-italic text-[#1E3A8A]">builders</span>{' '}
+            say
           </motion.h2>
 
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+              <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
             </div>
           ) : (
             <>
@@ -88,7 +90,7 @@ export default function Testimonials() {
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <Quote className="w-10 h-10 text-[#7CFC00]/30 mx-auto mb-6" />
+                <Quote className="w-10 h-10 text-[#3B82F6]/30 mx-auto mb-6" />
 
                 {/* Star Rating */}
                 <div className="flex items-center justify-center gap-1 mb-6">
@@ -102,7 +104,7 @@ export default function Testimonials() {
                 </p>
 
                 <div className="flex items-center justify-center gap-4 mb-8">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
                     <span className="text-white font-bold text-sm">
                       {testimonials[current].author.split(' ').map((n) => n[0]).join('')}
                     </span>
@@ -123,7 +125,7 @@ export default function Testimonials() {
                 <div className="flex items-center justify-center gap-3 mb-10">
                   <button
                     onClick={prev}
-                    className="w-11 h-11 rounded-full border border-[#1A2E1A]/20 flex items-center justify-center text-[#1A2E1A]/50 hover:border-[#7CFC00] hover:text-[#1A2E1A] transition-colors duration-300"
+                    className="w-11 h-11 rounded-full border border-[#0F1B3D]/20 flex items-center justify-center text-[#0F1B3D]/50 hover:border-[#3B82F6] hover:text-[#0F1B3D] transition-colors duration-300"
                     aria-label="Previous testimonial"
                   >
                     <ChevronLeft className="w-5 h-5" />
@@ -134,7 +136,7 @@ export default function Testimonials() {
                         key={i}
                         onClick={() => setCurrent(i)}
                         className={`h-1.5 rounded-full transition-all duration-300 ${
-                          i === current ? 'w-8 bg-[#7CFC00]' : 'w-4 bg-[#1A2E1A]/15'
+                          i === current ? 'w-8 bg-[#3B82F6]' : 'w-4 bg-[#0F1B3D]/15'
                         }`}
                         aria-label={`Go to testimonial ${i + 1}`}
                       />
@@ -142,7 +144,7 @@ export default function Testimonials() {
                   </div>
                   <button
                     onClick={next}
-                    className="w-11 h-11 rounded-full border border-[#1A2E1A]/20 flex items-center justify-center text-[#1A2E1A]/50 hover:border-[#7CFC00] hover:text-[#1A2E1A] transition-colors duration-300"
+                    className="w-11 h-11 rounded-full border border-[#0F1B3D]/20 flex items-center justify-center text-[#0F1B3D]/50 hover:border-[#3B82F6] hover:text-[#0F1B3D] transition-colors duration-300"
                     aria-label="Next testimonial"
                   >
                     <ChevronRight className="w-5 h-5" />
@@ -155,7 +157,7 @@ export default function Testimonials() {
           {/* CTA */}
           <Link
             href="/success-stories"
-            className="inline-flex items-center gap-2 bg-[#1A2E1A] text-white rounded-full px-7 py-3 text-sm sm:text-base font-medium hover:bg-[#243824] transition-colors duration-300 group"
+            className="inline-flex items-center gap-2 bg-[#0F1B3D] text-white rounded-full px-7 py-3 text-sm sm:text-base font-medium hover:bg-[#1E3A8A] transition-colors duration-300 group"
           >
             READ SUCCESS STORIES
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

@@ -137,7 +137,7 @@ function StepsView({ data }: { data: StructuredAIResponse }) {
           {steps.map((step, i) => (
             <li key={i} className="flex gap-3 text-sm leading-relaxed">
               <span
-                className="flex-shrink-0 w-6 h-6 rounded-full bg-[#7CFC00]/20 dark:bg-[#7CFC00]/15 text-[#2D4A2D] dark:text-[#7CFC00] flex items-center justify-center text-xs font-bold mt-0.5"
+                className="flex-shrink-0 w-6 h-6 rounded-full bg-[#3B82F6]/20 dark:bg-[#3B82F6]/15 text-[#1E3A8A] dark:text-[#3B82F6] flex items-center justify-center text-xs font-bold mt-0.5"
                 aria-hidden="true"
               >
                 {i + 1}
@@ -262,7 +262,7 @@ function ComparisonCard({
   if (!option) return null
   const color =
     accent === "primary"
-      ? "border-[#7CFC00]/30 bg-[#7CFC00]/5"
+      ? "border-[#3B82F6]/30 bg-[#3B82F6]/5"
       : "border-black/10 dark:border-white/10 bg-muted/40"
   return (
     <div className={`rounded-lg border p-3 ${color}`}>
@@ -293,7 +293,7 @@ function ClarifyView({ data }: { data: StructuredAIResponse }) {
         </h3>
       )}
       {question && (
-        <div className="border-l-2 border-[#7CFC00] pl-3 py-1">
+        <div className="border-l-2 border-[#3B82F6] pl-3 py-1">
           <p className="text-sm leading-relaxed text-foreground/90 italic">
             {question}
           </p>

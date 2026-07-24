@@ -13,28 +13,36 @@ import * as React from "react"
 // Fallback hardcoded FAQs used when database is empty
 const fallbackFaqs: Record<string, { q: string; a: string }[]> = {
   General: [
-    { q: "What is Upmind?", a: "Upmind is a strategic consulting platform designed specifically for startups. We combine expert human consultants with AI-powered insights to help founders validate ideas, build products, raise funding, and scale their businesses." },
-    { q: "Who is Upmind for?", a: "Upmind is for early-stage and growth-stage startup founders who want access to premium consulting, resources, and tools without the cost of a full-time advisory team. Whether you're pre-launch or scaling, we have something for you." },
-    { q: "How does Upmind differ from traditional consulting?", a: "Traditional consulting is expensive and slow. Upmind provides on-demand access to expert consultants, AI-powered insights, and a library of proven resources, all at a fraction of the cost, available 24/7." },
-    { q: "Is my data secure?", a: "Absolutely. We use enterprise-grade encryption, follow SOC 2 best practices, and never share your data with third parties. Your startup information is protected with the highest security standards." },
+    { q: "What is Upmind?", a: "Upmind is an engineering innovation platform. We curate real-world problems from WHO, UN, IEA, IPCC, and other authoritative sources, then use AI to match them to your engineering skills — so you spend your time on problems you can actually solve." },
+    { q: "Who is Upmind for?", a: "Upmind is for engineers, researchers, builders, and innovators who want their work to matter. Whether you're a student looking for a meaningful project, a senior engineer considering a startup, or a research lab hunting for high-impact problems — Upmind helps you find what to build." },
+    { q: "How does Upmind differ from startup consulting?", a: "Traditional consulting starts from your idea and tries to find a market. Upmind flips the workflow — we start from real, documented problems and match them to engineering skills. No more clever tech in search of a problem." },
+    { q: "Is my data secure?", a: "Absolutely. We use enterprise-grade encryption, follow SOC 2 best practices, and never share your data with third parties. Your skill profile and project notes are protected with the highest security standards." },
   ],
   Pricing: [
-    { q: "Is there a free plan?", a: "Yes! Our Free plan includes 1 startup profile, basic resources, community access, and 1 consultation per month. It's a great way to experience Upmind before upgrading." },
+    { q: "Is there a free plan?", a: "Yes! Our Free plan includes browsing all 30+ curated problems, public metrics, 1 Innovation Engine run per month, and community access. It's a great way to experience Upmind before upgrading." },
     { q: "Can I switch plans at any time?", a: "Yes, you can upgrade or downgrade at any time. Upgrades take effect immediately with prorated billing, and downgrades take effect at the next billing cycle." },
     { q: "Do you offer refunds?", a: "We offer a 30-day money-back guarantee on all paid plans. If you're not satisfied, contact support for a full refund." },
+    { q: "Do you offer discounts for students, researchers, or nonprofits?", a: "Yes! We offer special pricing for students, academic research labs, and nonprofit engineering teams. Contact our team for details." },
   ],
-  Consulting: [
-    { q: "How do consultations work?", a: "Book a session through your dashboard, choose your consultant, pick a time slot, and meet via video, phone, or in-person. Sessions typically last 60 minutes, and you'll receive a summary with action items afterward." },
-    { q: "Who are the consultants?", a: "Our consultants are experienced founders, operators, and domain experts with proven track records. They've collectively helped hundreds of startups succeed across various industries." },
-    { q: "How often can I book consultations?", a: "Free plan users get 1 consultation per month. Growth Pro users get 4 priority consultations. Enterprise users enjoy unlimited consultations." },
+  "Solve Them": [
+    { q: "Where do the problems come from?", a: "Problems are curated from authoritative multilateral sources — WHO, UN, UNICEF, World Bank, IEA, IPCC, FAO, UNESCO, UNEP, NIST, ESA, and WEF. Each problem includes a source citation and is validated for engineering leverage." },
+    { q: "How are problems scored?", a: "Each problem has severity (0-100), impact score, innovation score, market need, global demand, and future importance — all derived from source data and editorial review. Difficulty is rated Easy / Medium / Hard / Frontier based on technical complexity." },
+    { q: "How often are new problems added?", a: "We add new problems monthly. The curated database grows over time as we cover more categories and dive deeper into specific domains." },
+    { q: "Can I suggest a problem?", a: "Yes — Team plan subscribers can request custom problems. We also accept community suggestions through our contact form." },
+  ],
+  "Innovation Engine": [
+    { q: "How does the AI matching work?", a: "The Innovation Engine scores each problem against your profile using a weighted algorithm: skill coverage (60%), interest overlap (30%), plus bonuses for difficulty fit, time commitment, and team size. Each match includes reason highlights explaining why." },
+    { q: "What should I enter as my skills?", a: "Enter 5-8 specific engineering skills — e.g., 'Python, Machine Learning, Distributed Systems, React, Embedded C'. The more specific, the better the matches. Avoid vague terms like 'programming'." },
+    { q: "How many matches do I get?", a: "The Engine returns your top 12 matches, sorted by match score. Matches below 50 are filtered out — they're likely not the right problems for your current skill set." },
+    { q: "Can I save my matches?", a: "Yes — Builder Pro and Team plans include project tracking. Save matched problems, add notes, and track your build progress over time." },
   ],
   Resources: [
-    { q: "What types of resources are available?", a: "We offer blog posts, templates, video tutorials, PDF guides, and interactive tools, all curated by our expert consultants for startup relevance." },
-    { q: "What's included in premium resources?", a: "Premium resources include advanced templates (pitch decks, financial models), in-depth guides, exclusive video content, and AI-powered analysis tools. They're available on Growth Pro and Enterprise plans." },
+    { q: "What types of resources are available?", a: "Field guides, templates, and frameworks written for engineers — problem-discovery guides, build-vs-research decision frameworks, team templates, 12-month roadmap templates, ethics frameworks, funding field guides, and reading lists." },
+    { q: "Are resources free?", a: "Most resources are free to read. Some premium templates and deep-dive guides require a Builder Pro or Team plan. Sign-in is required to read full articles." },
   ],
   Technical: [
     { q: "What browsers are supported?", a: "Upmind works on all modern browsers including Chrome, Firefox, Safari, and Edge. We recommend keeping your browser updated for the best experience." },
-    { q: "Is there a mobile app?", a: "Our platform is fully responsive and works great on mobile browsers. A dedicated mobile app is on our roadmap for 2025." },
+    { q: "Is there a mobile app?", a: "Our platform is fully responsive and works great on mobile browsers. A dedicated mobile app is on our roadmap." },
   ],
 }
 
@@ -106,8 +114,8 @@ export default function FAQPage() {
         <PageHero
           badge="FAQ"
           title="Got questions?"
-          highlight="We've got answers"
-          description="Find answers to the most common questions about Upmind's platform, pricing, and services."
+          highlight="we've got answers"
+          description="Find answers to the most common questions about Upmind, the Solve Them database, the Innovation Engine, and our pricing."
         />
 
         {/* Search */}
@@ -135,7 +143,7 @@ export default function FAQPage() {
                   variant={activeCategory === cat ? "default" : "outline"}
                   size="sm"
                   onClick={() => setActiveCategory(cat)}
-                  className={activeCategory === cat ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A]" : ""}
+                  className={activeCategory === cat ? "bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D]" : ""}
                 >
                   {cat}
                 </Button>
@@ -149,7 +157,7 @@ export default function FAQPage() {
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="size-6 animate-spin text-[#7CFC00]" />
+                <Loader2 className="size-6 animate-spin text-[#3B82F6]" />
               </div>
             ) : (
               <Accordion type="single" collapsible className="w-full">
@@ -174,7 +182,7 @@ export default function FAQPage() {
         {/* Still Have Questions CTA */}
         <section className="py-20 bg-muted/30">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] relative overflow-hidden">
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] relative overflow-hidden">
               <div className="relative z-10">
                 <MessageCircle className="size-12 mx-auto mb-4 opacity-80" />
                 <h2 className="text-3xl sm:text-4xl font-heading font-bold">Still have questions?</h2>
@@ -182,7 +190,7 @@ export default function FAQPage() {
                   Our team is here to help. Reach out and we&apos;ll get back to you within 24 hours.
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Button asChild size="lg" className="bg-white text-[#2D4A2D] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
+                  <Button asChild size="lg" className="bg-white text-[#1E3A8A] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
                     <Link href="/contact">
                       Contact Us
                       <ArrowRight className="size-5" />

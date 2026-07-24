@@ -47,7 +47,7 @@ const typeColors: Record<string, string> = {
   TEMPLATE: "bg-purple-100 text-purple-700",
   VIDEO: "bg-red-100 text-red-700",
   PDF: "bg-orange-100 text-orange-700",
-  GUIDE: "bg-emerald-100 text-emerald-700",
+  GUIDE: "bg-blue-100 text-blue-700",
 }
 
 const container = {
@@ -138,7 +138,7 @@ export default function ResourcesPage() {
                 <SlidersHorizontal className="w-4 h-4" />
                 Filters
                 {(activeCategory !== "All" || activeType !== "All" || filterPremium !== "all") && (
-                  <span className="w-5 h-5 rounded-full bg-[#7CFC00] text-[#1A2E1A] text-xs flex items-center justify-center font-bold">
+                  <span className="w-5 h-5 rounded-full bg-[#3B82F6] text-white text-xs flex items-center justify-center font-bold">
                     !
                   </span>
                 )}
@@ -181,7 +181,7 @@ export default function ResourcesPage() {
                         onClick={() => setActiveCategory(cat)}
                         className={
                           activeCategory === cat
-                            ? "bg-[#1A2E1A] text-white hover:bg-[#243824]"
+                            ? "bg-[#0F1B3D] text-white hover:bg-[#1E3A8A]"
                             : ""
                         }
                       >
@@ -203,7 +203,7 @@ export default function ResourcesPage() {
                         onClick={() => setActiveType(type as ResourceType | "All")}
                         className={
                           activeType === type
-                            ? "bg-[#1A2E1A] text-white hover:bg-[#243824]"
+                            ? "bg-[#0F1B3D] text-white hover:bg-[#1E3A8A]"
                             : ""
                         }
                       >
@@ -225,7 +225,7 @@ export default function ResourcesPage() {
                         onClick={() => setFilterPremium(val)}
                         className={
                           filterPremium === val
-                            ? "bg-[#1A2E1A] text-white hover:bg-[#243824]"
+                            ? "bg-[#0F1B3D] text-white hover:bg-[#1E3A8A]"
                             : ""
                         }
                       >
@@ -306,7 +306,7 @@ export default function ResourcesPage() {
                           {/* Premium badge */}
                           {resource.isPremium && (
                             <div className="absolute top-3 right-3">
-                              <span className="inline-flex items-center gap-1 bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                              <span className="inline-flex items-center gap-1 bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                                 <Crown className="w-3 h-3" />
                                 Premium
                               </span>
@@ -324,12 +324,12 @@ export default function ResourcesPage() {
                         {/* Content */}
                         <div className="p-5 flex flex-col flex-1">
                           {/* Category */}
-                          <span className="text-xs font-medium text-[#2D4A2D] dark:text-[#7CFC00] tracking-wide uppercase mb-2">
+                          <span className="text-xs font-medium text-[#1E3A8A] dark:text-[#3B82F6] tracking-wide uppercase mb-2">
                             {resource.category}
                           </span>
 
                           {/* Title */}
-                          <h3 className="text-lg font-bold leading-snug mb-2 group-hover:text-[#2D4A2D] dark:group-hover:text-[#7CFC00] transition-colors line-clamp-2">
+                          <h3 className="text-lg font-bold leading-snug mb-2 group-hover:text-[#1E3A8A] dark:group-hover:text-[#3B82F6] transition-colors line-clamp-2">
                             {resource.title}
                           </h3>
 
@@ -352,7 +352,7 @@ export default function ResourcesPage() {
                                 {resource.downloadCount}
                               </span>
                             </div>
-                            <span className="text-sm font-medium text-[#2D4A2D] dark:text-[#7CFC00] group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                            <span className="text-sm font-medium text-[#1E3A8A] dark:text-[#3B82F6] group-hover:translate-x-1 transition-transform flex items-center gap-1">
                               Read
                               <ArrowRight className="w-3.5 h-3.5" />
                             </span>
@@ -391,12 +391,12 @@ export default function ResourcesPage() {
         {/* CTA Section */}
         <section className="py-20 bg-muted/30">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#1A2E1A] to-[#2D4A2D] relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-[#7CFC00]/10 -translate-y-1/2 translate-x-1/2" />
-              <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full bg-[#7CFC00]/5 translate-y-1/2 -translate-x-1/2" />
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#0F1B3D] to-[#1E3A8A] relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-[#3B82F6]/10 -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full bg-[#3B82F6]/5 translate-y-1/2 -translate-x-1/2" />
               <div className="relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-[#7CFC00]/20 flex items-center justify-center mx-auto mb-6">
-                  <Sparkles className="w-6 h-6 text-[#7CFC00]" />
+                <div className="w-12 h-12 rounded-xl bg-[#3B82F6]/20 flex items-center justify-center mx-auto mb-6">
+                  <Sparkles className="w-6 h-6 text-[#3B82F6]" />
                 </div>
                 <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
                   Find a problem worth your skills
@@ -406,7 +406,7 @@ export default function ResourcesPage() {
                 </p>
                 <Link
                   href="/solve-them"
-                  className="inline-flex items-center gap-2 bg-[#7CFC00] text-[#1A2E1A] rounded-full px-8 py-3.5 text-base font-bold hover:shadow-lg hover:shadow-[#7CFC00]/20 transition-all"
+                  className="inline-flex items-center gap-2 bg-[#3B82F6] text-white rounded-full px-8 py-3.5 text-base font-bold hover:shadow-lg hover:shadow-[#3B82F6]/20 transition-all"
                 >
                   Browse Problems
                   <ArrowRight className="w-5 h-5" />

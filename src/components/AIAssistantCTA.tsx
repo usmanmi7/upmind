@@ -11,18 +11,18 @@ export default function AIAssistantCTA() {
   const isInView = useInView(ref, { once: true, margin: '-50px' });
 
   return (
-    <section className="bg-[#F5F5F5] py-16 sm:py-20 lg:py-24">
+    <section className="bg-[#F5F7FB] py-16 sm:py-20 lg:py-24">
       <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="relative bg-gradient-to-br from-[#1A2E1A] to-[#2D4A2D] rounded-3xl overflow-hidden shadow-2xl shadow-black/20"
+          className="relative bg-gradient-to-br from-[#0F1B3D] to-[#1E3A8A] rounded-3xl overflow-hidden shadow-2xl shadow-black/20"
         >
           {/* Decorative elements */}
-          <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-[#7CFC00]/10 blur-3xl" />
-          <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-[#7CFC00]/5 blur-3xl" />
+          <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-[#3B82F6]/10 blur-3xl" />
+          <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-[#3B82F6]/5 blur-3xl" />
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 p-8 sm:p-12 lg:p-16 items-center">
             {/* Left content */}
@@ -31,10 +31,10 @@ export default function AIAssistantCTA() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="inline-flex items-center gap-2 bg-[#7CFC00]/10 border border-[#7CFC00]/20 text-[#7CFC00] text-sm px-4 py-1.5 rounded-full font-medium mb-6"
+                className="inline-flex items-center gap-2 bg-[#3B82F6]/10 border border-[#3B82F6]/20 text-[#3B82F6] text-sm px-4 py-1.5 rounded-full font-medium mb-6"
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                AI-POWERED CONSULTING
+                AI-POWERED PROBLEM MATCHING
               </motion.span>
 
               <motion.h2
@@ -43,8 +43,9 @@ export default function AIAssistantCTA() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-[1.1] mb-6 tracking-tight"
               >
-                Meet your <span className="text-[#7CFC00]">AI consultant</span>,
-                available 24/7
+                Meet your{' '}
+                <span className="font-serif-accent-italic text-[#93C5FD]">innovation</span>{' '}
+                <span className="text-[#3B82F6]">engine</span>
               </motion.h2>
 
               <motion.p
@@ -53,9 +54,9 @@ export default function AIAssistantCTA() {
                 transition={{ duration: 0.6, delay: 0.35 }}
                 className="text-white/70 text-base sm:text-lg leading-relaxed mb-8 max-w-lg"
               >
-                Get instant, personalized advice on startup strategy, business
-                planning, growth, fundraising, and more. Powered by GLM-5.2 and
-                trained on Upmind&apos;s full consulting framework.
+                Tell us your engineering skills, interests, time, and team size. Our AI scores every
+                problem in the database for fit, so you start with problems you can actually solve —
+                not clever ideas in search of a market.
               </motion.p>
 
               <motion.div
@@ -65,17 +66,17 @@ export default function AIAssistantCTA() {
                 className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 mb-8"
               >
                 <Link
-                  href="/ai-assistant"
-                  className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-7 py-3.5 text-sm sm:text-base font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20 flex items-center gap-2 group"
+                  href="/dashboard/innovation-engine"
+                  className="bg-[#3B82F6] text-white rounded-full px-7 py-3.5 text-sm sm:text-base font-semibold hover:bg-[#2563EB] transition-all duration-300 shadow-lg shadow-[#3B82F6]/20 flex items-center gap-2 group"
                 >
-                  Try AI Assistant Free
+                  Try Innovation Engine
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
-                  href="/auth/signup"
+                  href="/ai-assistant"
                   className="text-white/80 border border-white/15 rounded-full px-7 py-3.5 text-sm sm:text-base font-medium hover:bg-white/5 hover:border-white/25 transition-all duration-300"
                 >
-                  Sign up for full access
+                  Talk to the AI Assistant
                 </Link>
               </motion.div>
 
@@ -86,13 +87,13 @@ export default function AIAssistantCTA() {
                 className="flex flex-wrap items-center gap-x-6 gap-y-2 text-white/40 text-sm"
               >
                 <span className="flex items-center gap-1.5">
-                  <Zap className="w-3.5 h-3.5 text-[#7CFC00]" />
+                  <Zap className="w-3.5 h-3.5 text-[#3B82F6]" />
                   No sign-up needed
                 </span>
                 <span className="hidden sm:inline text-white/10">|</span>
                 <span className="flex items-center gap-1.5">
-                  <Brain className="w-3.5 h-3.5 text-[#7CFC00]" />
-                  Powered by GLM-5.2
+                  <Brain className="w-3.5 h-3.5 text-[#3B82F6]" />
+                  Trained on engineering playbooks
                 </span>
               </motion.div>
             </div>
@@ -110,11 +111,11 @@ export default function AIAssistantCTA() {
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-400/40" />
                     <div className="w-3 h-3 rounded-full bg-yellow-400/40" />
-                    <div className="w-3 h-3 rounded-full bg-green-400/40" />
+                    <div className="w-3 h-3 rounded-full bg-blue-400/40" />
                   </div>
                   <div className="flex-1 mx-6">
                     <div className="bg-white/5 rounded-md px-3 py-1.5 text-white/30 text-xs text-center max-w-xs mx-auto">
-                      upmind-seven.vercel.app/ai-assistant
+                      app.upmind.io/dashboard/innovation-engine
                     </div>
                   </div>
                 </div>
@@ -123,8 +124,8 @@ export default function AIAssistantCTA() {
                 <div className="p-5 space-y-4">
                   {/* User message */}
                   <div className="flex justify-end">
-                    <div className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-2xl rounded-br-md px-4 py-2.5 text-sm max-w-[80%]">
-                      What should I focus on for my SaaS MVP?
+                    <div className="bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-white rounded-2xl rounded-br-md px-4 py-2.5 text-sm max-w-[80%]">
+                      I know Python, ML, and distributed systems. What should I build?
                     </div>
                   </div>
 
@@ -132,23 +133,23 @@ export default function AIAssistantCTA() {
                   <div className="flex justify-start">
                     <div className="bg-white/5 rounded-2xl rounded-bl-md px-4 py-3 max-w-[85%]">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="w-5 h-5 rounded-md bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+                        <div className="w-5 h-5 rounded-md bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
                           <Sparkles className="w-3 h-3 text-white" />
                         </div>
-                        <span className="text-xs font-medium text-white/60">GLM-5.2</span>
+                        <span className="text-xs font-medium text-white/60">Innovation Engine</span>
                       </div>
                       <h4 className="text-sm font-bold text-white mb-1">
-                        Nail one problem before scaling
+                        Top match: Early warning systems for pandemics
                       </h4>
                       <p className="text-xs text-white/70 leading-relaxed mb-2">
-                        Pick the single biggest pain your users feel and ship the
-                        smallest fix that solves it. Don&apos;t build features
-                        until 10 users ask for the same one.
+                        Your ML + distributed systems skills directly cover 64% of the
+                        problem&apos;s importance-weighted skill requirements. WHO-documented
+                        severity, 5+ billion affected globally.
                       </p>
                       <div className="space-y-1.5 mt-2">
-                        {['Talk to 10 potential users this week', 'Ship the smallest fix that solves their top complaint', 'Charge from day one to test real demand'].map((step, i) => (
+                        {['Skill coverage: 64% (ML + distributed systems)', 'Match score: 92/100', 'Estimated timeline: 14 months', 'Recommended team: 5-7 engineers'].map((step, i) => (
                           <div key={i} className="flex gap-2 text-xs text-white/70">
-                            <span className="w-4 h-4 rounded-full bg-[#7CFC00]/20 text-[#7CFC00] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
+                            <span className="w-4 h-4 rounded-full bg-[#3B82F6]/20 text-[#3B82F6] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
                               {i + 1}
                             </span>
                             <span>{step}</span>

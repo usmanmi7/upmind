@@ -56,7 +56,7 @@ interface Consultant {
 const typeIcons: Record<string, React.ElementType> = { VIDEO: Video, PHONE: Phone, IN_PERSON: MapPin }
 const statusColors: Record<string, string> = {
   PENDING: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
-  SCHEDULED: "bg-[#C8E6C9] text-[#1A2E1A] dark:bg-[#2D4A2D]/30 dark:text-[#7CFC00]",
+  SCHEDULED: "bg-[#DBEAFE] text-[#0F1B3D] dark:bg-[#1E3A8A]/30 dark:text-[#3B82F6]",
   COMPLETED: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
   CANCELLED: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
   RESCHEDULED: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
@@ -229,7 +229,7 @@ export default function AppointmentsPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
           <p className="text-sm text-muted-foreground">Loading appointments...</p>
         </div>
       </div>
@@ -246,7 +246,7 @@ export default function AppointmentsPage() {
         {!isAdmin && consultants.length > 0 && (
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]">
+              <Button className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]">
                 <Plus className="size-4 mr-2" /> Book Appointment
               </Button>
             </DialogTrigger>
@@ -313,7 +313,7 @@ export default function AppointmentsPage() {
                   <p className="text-xs text-yellow-700 dark:text-yellow-300">Your appointment will be submitted for admin approval. You&apos;ll be notified once it&apos;s approved.</p>
                 </div>
                 <Button
-                  className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+                  className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
                   onClick={handleBook}
                   disabled={booking || !selectedConsultant || !selectedDate || !selectedTime}
                 >
@@ -329,7 +329,7 @@ export default function AppointmentsPage() {
       {isAdmin && (
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <Shield className="size-5 text-[#7CFC00]" />
+            <Shield className="size-5 text-[#3B82F6]" />
             <h2 className="text-lg font-heading font-semibold">Pending Approval</h2>
             {pendingAppointments.length > 0 && (
               <Badge className="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
@@ -351,7 +351,7 @@ export default function AppointmentsPage() {
                           <div className="flex items-center gap-3 flex-1">
                             <Avatar className="size-10">
                               <AvatarImage src={apt.user?.image || undefined} />
-                              <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                              <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                                 {userName.split(" ").map((n) => n[0]).join("")}
                               </AvatarFallback>
                             </Avatar>
@@ -383,7 +383,7 @@ export default function AppointmentsPage() {
                           </Button>
                           <Button
                             size="sm"
-                            className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+                            className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
                             onClick={() => handleAdminAction(apt.id, "SCHEDULED")}
                             disabled={approving === apt.id}
                           >
@@ -400,7 +400,7 @@ export default function AppointmentsPage() {
           ) : (
             <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
               <CardContent className="p-8 text-center">
-                <CheckCircle2 className="size-10 text-[#7CFC00]/40 mx-auto mb-3" />
+                <CheckCircle2 className="size-10 text-[#3B82F6]/40 mx-auto mb-3" />
                 <p className="text-sm font-medium">No pending appointments</p>
                 <p className="text-xs text-muted-foreground mt-1">All appointment requests have been reviewed</p>
               </CardContent>
@@ -428,7 +428,7 @@ export default function AppointmentsPage() {
                         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                           <div className="flex items-center gap-3 flex-1">
                             <Avatar className="size-9">
-                              <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                              <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                                 {userName.split(" ").map((n) => n[0]).join("")}
                               </AvatarFallback>
                             </Avatar>
@@ -480,7 +480,7 @@ export default function AppointmentsPage() {
                         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                           <div className="flex items-center gap-3 flex-1">
                             <Avatar className="size-10">
-                              <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                              <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                                 {consultantName.split(" ").map((n) => n[0]).join("")}
                               </AvatarFallback>
                             </Avatar>
@@ -524,7 +524,7 @@ export default function AppointmentsPage() {
                         <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                           <div className="flex items-center gap-3 flex-1">
                             <Avatar className="size-10">
-                              <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                              <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                                 {consultantName.split(" ").map((n) => n[0]).join("")}
                               </AvatarFallback>
                             </Avatar>

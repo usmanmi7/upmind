@@ -20,7 +20,7 @@ export default function CTASection() {
         style={{ backgroundImage: "url('/images/cta-pic.jpg')" }}
       />
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#1A2E1A]/90 to-[#1A2E1A]/75" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0F1B3D]/90 to-[#0F1B3D]/75" />
 
       {/* Content */}
       <div className="relative z-10 max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -30,21 +30,22 @@ export default function CTASection() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
         >
-          <span className="text-[#7CFC00] text-sm font-semibold tracking-[0.15em] uppercase block mb-4">
-            GET STARTED TODAY
+          <span className="text-[#3B82F6] text-sm font-semibold tracking-[0.15em] uppercase block mb-4">
+            START BUILDING TODAY
           </span>
           <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-            Ready to elevate your business?
+            Ready to build something{' '}
+            <span className="font-serif-accent-italic text-[#93C5FD]">that matters?</span>
           </h2>
           <p className="text-white/70 text-base sm:text-lg max-w-xl mx-auto mb-10">
-            Partner with us to take your digital presence to the next level.
-            Start your free trial and see results in just 14 days.
+            Browse 30+ curated world problems. Match your skills with the AI Innovation Engine.
+            Pick a problem and start building.
           </p>
           <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
             {session ? (
               <Link
                 href="/dashboard"
-                className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-8 py-3.5 text-sm sm:text-base font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/25 flex items-center gap-2 group"
+                className="bg-[#3B82F6] text-white rounded-full px-8 py-3.5 text-sm sm:text-base font-semibold hover:bg-[#2563EB] transition-all duration-300 shadow-lg shadow-[#3B82F6]/25 flex items-center gap-2 group"
               >
                 GO TO DASHBOARD
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -52,17 +53,17 @@ export default function CTASection() {
             ) : (
               <>
                 <Link
-                  href="/auth/signup"
-                  className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-8 py-3.5 text-sm sm:text-base font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/25 flex items-center gap-2 group"
+                  href="/solve-them"
+                  className="bg-[#3B82F6] text-white rounded-full px-8 py-3.5 text-sm sm:text-base font-semibold hover:bg-[#2563EB] transition-all duration-300 shadow-lg shadow-[#3B82F6]/25 flex items-center gap-2 group"
                 >
-                  GET STARTED FREE
+                  EXPLORE PROBLEMS
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
-                  href="/contact"
-                  className="border border-white/40 text-white rounded-full px-8 py-3.5 text-sm sm:text-base font-medium hover:bg-white hover:text-[#1A2E1A] transition-all duration-300 backdrop-blur-sm"
+                  href="/auth/signup"
+                  className="border border-white/40 text-white rounded-full px-8 py-3.5 text-sm sm:text-base font-medium hover:bg-white hover:text-[#0F1B3D] transition-all duration-300 backdrop-blur-sm"
                 >
-                  BOOK A DEMO
+                  CREATE FREE ACCOUNT
                 </Link>
               </>
             )}
@@ -71,16 +72,16 @@ export default function CTASection() {
           {/* Trust badges */}
           <div className="flex flex-wrap justify-center gap-6 mt-10 text-white/40 text-sm">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-[#7CFC00]" />
-              <span>No credit card required</span>
+              <div className="w-2 h-2 rounded-full bg-[#3B82F6]" />
+              <span>30+ curated problems</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-[#7CFC00]" />
-              <span>14-day free trial</span>
+              <div className="w-2 h-2 rounded-full bg-[#3B82F6]" />
+              <span>AI skill matching</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-[#7CFC00]" />
-              <span>Cancel anytime</span>
+              <div className="w-2 h-2 rounded-full bg-[#3B82F6]" />
+              <span>Free to start</span>
             </div>
           </div>
         </motion.div>

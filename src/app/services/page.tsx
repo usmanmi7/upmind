@@ -7,62 +7,62 @@ import PublicFooter from "@/components/PublicFooter"
 import PageHero from "@/components/PageHero"
 import { motion } from "framer-motion"
 import {
-  Rocket,
-  BarChart3,
-  Megaphone,
-  DollarSign,
+  Compass,
+  Sparkles,
+  Wrench,
+  BookOpen,
   Users,
-  Bot,
+  Cpu,
   ArrowRight,
   CheckCircle2,
   Search,
   Lightbulb,
-  Wrench,
-  Zap,
+  Hammer,
+  Rocket,
 } from "lucide-react"
 
 const services = [
   {
-    icon: Rocket,
-    title: "Startup Strategy & Validation",
-    description: "Validate your idea before investing time and money. We help you test assumptions, identify your market, and build a solid foundation.",
-    features: ["Market Research & Analysis", "Idea Validation Sprints", "Business Model Canvas", "Competitive Landscape Mapping"],
-    color: "from-[#2D4A2D] to-[#8FBC8F]",
+    icon: Compass,
+    title: "Solve Them — Problem Database",
+    description: "30+ curated world problems across 26 categories. Each problem is sourced from WHO, UN, IEA, IPCC, and other authoritative bodies — with severity, scope, affected populations, and existing-solution analysis.",
+    features: ["26 problem categories", "Severity & impact scoring (0-100)", "Regional & scope filters", "Sources from multilateral orgs"],
+    color: "from-[#1E3A8A] to-[#93C5FD]",
   },
   {
-    icon: BarChart3,
-    title: "Product Development & Growth",
-    description: "From MVP to scale. Get expert guidance on product strategy, user acquisition, and growth loops that actually work.",
-    features: ["MVP Roadmap Planning", "Product-Market Fit Analysis", "Growth Hacking Strategies", "User Retention Optimization"],
-    color: "from-[#7CFC00] to-[#2D4A2D]",
+    icon: Sparkles,
+    title: "AI Innovation Engine",
+    description: "Tell us your engineering skills, interests, time, and team size. Our matching algorithm scores every problem in the database for fit — so you start with problems you can actually solve.",
+    features: ["Skill-coverage scoring (0-60)", "Interest overlap matching (0-30)", "Team & time constraint bonuses", "Reason-highlight explanations"],
+    color: "from-[#3B82F6] to-[#1E3A8A]",
   },
   {
-    icon: Megaphone,
-    title: "Marketing & Brand Building",
-    description: "Build a brand that resonates and a marketing engine that scales. From content strategy to paid acquisition.",
-    features: ["Brand Identity & Positioning", "Content Marketing Strategy", "Paid Acquisition Playbook", "Social Media Growth"],
-    color: "from-green-500 to-emerald-500",
+    icon: Wrench,
+    title: "Engineering Build Playbooks",
+    description: "Open any problem to see engineering solutions, a 4-phase build roadmap, required skills, and recommended team templates — everything you need to move from problem to project.",
+    features: ["Engineering solution briefs", "12-month roadmap templates", "Skill requirement maps", "Battle-tested team templates"],
+    color: "from-blue-500 to-blue-700",
   },
   {
-    icon: DollarSign,
-    title: "Fundraising & Investor Relations",
-    description: "Navigate the fundraising landscape with confidence. We help you prepare, pitch, and close your next round.",
-    features: ["Pitch Deck Optimization", "Financial Model Building", "Investor Introduction", "Due Diligence Prep"],
-    color: "from-orange-500 to-red-500",
+    icon: BookOpen,
+    title: "Engineering Resources Library",
+    description: "Field guides, templates, and frameworks written for engineers — not generic startup advice. Reading lists, ethics frameworks, funding field guides, and lessons from builders in the field.",
+    features: ["Problem-discovery guides", "Engineering skills self-assessment", "Career paths for innovators", "Open-source playbooks"],
+    color: "from-[#93C5FD] to-[#1E3A8A]",
   },
   {
     icon: Users,
-    title: "Team Building & Culture",
-    description: "Your startup is only as strong as your team. Learn to hire, retain, and build a culture that scales.",
-    features: ["Hiring Frameworks", "Culture Playbook", "Compensation Strategy", "Remote Team Management"],
-    color: "from-[#8FBC8F] to-[#2D4A2D]",
+    title: "Team Templates",
+    description: "Five battle-tested team structures for software, hardware, research, open source, and field-deployment projects — including role definitions, sizes, and hiring sequences.",
+    features: ["Lean software (3-5 people)", "Hardware + software (5-8)", "Research lab (3-6)", "Field deployment (6-12)"],
+    color: "from-indigo-500 to-blue-700",
   },
   {
-    icon: Bot,
-    title: "AI & Digital Transformation",
-    description: "Leverage AI to automate, optimize, and innovate. Stay ahead of the curve with practical AI implementation.",
-    features: ["AI Strategy Assessment", "Automation Roadmap", "AI-Powered Product Features", "Data Infrastructure"],
-    color: "from-yellow-500 to-orange-500",
+    icon: Cpu,
+    title: "AI Assistant",
+    description: "An AI assistant trained on our engineering innovation framework — interview-first protocol, problem framing, build decisions, and pointers to the right resources for where you are.",
+    features: ["Interview-first protocol", "Problem framing help", "Build-vs-research guidance", "Resource recommendations"],
+    color: "from-sky-500 to-blue-700",
   },
 ]
 
@@ -70,26 +70,26 @@ const processSteps = [
   {
     step: "01",
     icon: Search,
-    title: "Discovery",
-    description: "We start by understanding your vision, market, and challenges through deep-dive sessions.",
+    title: "Discover",
+    description: "Browse curated world problems sourced from WHO, UN, IEA, IPCC and more. Filter by category, scope, and difficulty to find what resonates.",
   },
   {
     step: "02",
     icon: Lightbulb,
-    title: "Strategy",
-    description: "We craft a tailored strategy with clear milestones, KPIs, and actionable steps.",
+    title: "Match",
+    description: "Run the Innovation Engine. Tell us your skills, interests, time, and team — get a ranked shortlist of problems you can actually solve.",
   },
   {
     step: "03",
-    icon: Wrench,
-    title: "Execution",
-    description: "We work alongside you to implement the strategy, providing hands-on guidance.",
+    icon: Hammer,
+    title: "Build",
+    description: "Use the recommended team templates, build roadmap, and starter solutions to launch a project that actually moves the needle.",
   },
   {
     step: "04",
-    icon: Zap,
-    title: "Optimization",
-    description: "We measure results, iterate, and optimize for sustainable, long-term growth.",
+    icon: Rocket,
+    title: "Scale",
+    description: "Open-source your work, attract collaborators through the Innovation Engine, and turn an engineering project into a real venture.",
   },
 ]
 
@@ -110,10 +110,10 @@ export default function ServicesPage() {
 
       <main className="flex-1">
         <PageHero
-          badge="Our Services"
-          title="Everything you need to"
-          highlight="build & scale"
-          description="From idea validation to global expansion, our expert consultants and AI-powered platform guide you through every stage of your startup journey."
+          badge="What We Built"
+          title="A complete platform for"
+          highlight="engineering innovators"
+          description="From problem discovery to deployment — everything engineers need to find problems worth solving, match them to skills, and ship solutions that matter."
         />
 
         {/* Services Grid */}
@@ -137,7 +137,7 @@ export default function ServicesPage() {
                     <ul className="space-y-2 mt-auto">
                       {service.features.map((feature) => (
                         <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <CheckCircle2 className="size-3.5 text-green-500 shrink-0" />
+                          <CheckCircle2 className="size-3.5 text-[#3B82F6] shrink-0" />
                           {feature}
                         </li>
                       ))}
@@ -149,15 +149,15 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* How We Work */}
+        {/* How It Works */}
         <section className="py-20 bg-muted/30">
           <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="text-2xl sm:text-3xl font-heading font-bold">
-                How We <span className="gradient-text">Work</span>
+                How <span className="gradient-text">Upmind</span> Works
               </h2>
               <p className="mt-4 text-muted-foreground">
-                A proven 4-step process that turns ideas into thriving businesses
+                A four-step path from "I want to build something that matters" to a real engineering project.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -170,10 +170,10 @@ export default function ServicesPage() {
                   transition={{ delay: i * 0.15 }}
                   className="relative"
                 >
-                  <div className="p-6 rounded-2xl bg-card border shadow-sm text-center">
+                  <div className="p-6 rounded-2xl bg-card border shadow-sm text-center h-full">
                     <div className="text-4xl font-bold gradient-text mb-4">{step.step}</div>
-                    <div className="w-12 h-12 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center mx-auto mb-4">
-                      <step.icon className="size-6 text-[#2D4A2D] dark:text-[#7CFC00]" />
+                    <div className="w-12 h-12 rounded-xl bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 flex items-center justify-center mx-auto mb-4">
+                      <step.icon className="size-6 text-[#1E3A8A] dark:text-[#3B82F6]" />
                     </div>
                     <h3 className="text-lg font-heading font-semibold mb-2">{step.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
@@ -192,17 +192,20 @@ export default function ServicesPage() {
         {/* CTA Section */}
         <section className="py-20">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] relative overflow-hidden">
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-white relative overflow-hidden">
               <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iYSIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVHJhbnNmb3JtPSJyb3RhdGUoNDUpIj48cGF0aCBkPSJNLTEwIDMwaDYwdi0yMGgtNjB6IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDMpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCBmaWxsPSJ1cmwoI2EpIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+PC9zdmc+')] opacity-50" />
               <div className="relative z-10">
-                <h2 className="text-3xl sm:text-4xl font-heading font-bold">Ready to transform your startup?</h2>
+                <h2 className="text-3xl sm:text-4xl font-heading font-bold">
+                  Ready to find your{' '}
+                  <span className="font-serif-accent-italic">problem?</span>
+                </h2>
                 <p className="mt-4 text-lg text-white/80 max-w-xl mx-auto">
-                  Book a free consultation and discover how our services can accelerate your growth.
+                  Browse 30+ curated world problems and run the Innovation Engine to find the ones you&apos;re uniquely positioned to solve.
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Button asChild size="lg" className="bg-white text-[#2D4A2D] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
-                    <Link href="/auth/signup">
-                      Book Free Consultation
+                  <Button asChild size="lg" className="bg-white text-[#1E3A8A] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
+                    <Link href="/solve-them">
+                      Browse Problems
                       <ArrowRight className="size-5" />
                     </Link>
                   </Button>

@@ -11,7 +11,7 @@ export default function NotFound() {
             404
           </h1>
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shadow-lg shadow-[#7CFC00]/25">
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center shadow-lg shadow-[#3B82F6]/25">
               <Search className="size-10 text-white" />
             </div>
           </div>
@@ -26,7 +26,7 @@ export default function NotFound() {
         <div className="flex items-center justify-center gap-3">
           <Button
             asChild
-            className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+            className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
           >
             <Link href="/">
               <Home className="size-4 mr-2" /> Go Home

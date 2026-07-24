@@ -57,7 +57,7 @@ export default function ProblemDetailPage() {
   const isSignedIn = !!session
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0A150A]">
+    <div className="min-h-screen flex flex-col bg-[#0A1228]">
       <PublicNavbar />
 
       <main className="flex-1">
@@ -78,12 +78,12 @@ export default function ProblemDetailPage() {
             className="absolute inset-0 opacity-30"
             style={{
               background:
-                "radial-gradient(circle at 20% 0%, rgba(124,252,0,0.15), transparent 50%), radial-gradient(circle at 80% 50%, rgba(34,197,94,0.1), transparent 50%)",
+                "radial-gradient(circle at 20% 0%, rgba(59, 130, 246,0.15), transparent 50%), radial-gradient(circle at 80% 50%, rgba(34,197,94,0.1), transparent 50%)",
             }}
           />
           <div className="relative max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-wrap items-center gap-3 mb-6">
-              <span className="text-sm font-medium px-3 py-1 rounded-full bg-[#7CFC00]/10 text-[#7CFC00] border border-[#7CFC00]/20">
+              <span className="text-sm font-medium px-3 py-1 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20">
                 {problem.category}
               </span>
               <span
@@ -151,7 +151,7 @@ export default function ProblemDetailPage() {
               {(problem.regions.length > 0 || problem.countriesAffected.length > 0) && (
                 <div>
                   <h2 className="text-2xl font-bold text-white mb-4 font-heading flex items-center gap-2">
-                    <MapPin className="w-6 h-6 text-[#7CFC00]" />
+                    <MapPin className="w-6 h-6 text-[#3B82F6]" />
                     Where It Hits
                   </h2>
                   {problem.regions.length > 0 && (
@@ -245,7 +245,7 @@ export default function ProblemDetailPage() {
             <aside className="lg:col-span-1">
               <div className="sticky top-32 space-y-6">
                 {/* CTAs */}
-                <div className="p-6 rounded-2xl bg-gradient-to-br from-[#7CFC00]/10 to-emerald-500/5 border border-[#7CFC00]/30">
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-[#3B82F6]/10 to-emerald-500/5 border border-[#3B82F6]/30">
                   <h3 className="text-lg font-bold text-white mb-2">Ready to take this on?</h3>
                   <p className="text-sm text-white/60 mb-4">
                     {isSignedIn
@@ -255,7 +255,7 @@ export default function ProblemDetailPage() {
                   {isSignedIn ? (
                     <Link
                       href={`/dashboard/innovation-engine?problem=${problem.slug}`}
-                      className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-[#7CFC00] text-[#0A150A] font-semibold hover:bg-[#6BE000] transition-all"
+                      className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-[#3B82F6] text-white font-semibold hover:bg-[#2563EB] transition-all"
                     >
                       <Sparkles className="w-4 h-4" />
                       Check My Match
@@ -263,7 +263,7 @@ export default function ProblemDetailPage() {
                   ) : (
                     <Link
                       href={`/auth/signin?callbackUrl=/solve-them/${problem.slug}`}
-                      className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-[#7CFC00] text-[#0A150A] font-semibold hover:bg-[#6BE000] transition-all"
+                      className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-[#3B82F6] text-white font-semibold hover:bg-[#2563EB] transition-all"
                     >
                       <Lock className="w-4 h-4" />
                       Sign in to unlock
@@ -288,7 +288,7 @@ export default function ProblemDetailPage() {
                         href={problem.sourceUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-2 inline-flex items-center gap-1 text-xs text-[#7CFC00] hover:underline"
+                        className="mt-2 inline-flex items-center gap-1 text-xs text-[#3B82F6] hover:underline"
                       >
                         Open source <ArrowRight className="w-3 h-3" />
                       </a>
@@ -303,7 +303,7 @@ export default function ProblemDetailPage() {
                     {problem.projectTypes.map((t) => (
                       <span
                         key={t}
-                        className="text-xs px-2.5 py-1 rounded-full bg-[#7CFC00]/10 text-[#7CFC00] border border-[#7CFC00]/20"
+                        className="text-xs px-2.5 py-1 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20"
                       >
                         {t}
                       </span>
@@ -385,7 +385,7 @@ function LockedSection({
   return (
     <div>
       <h2 className="text-2xl font-bold text-white mb-1 font-heading flex items-center gap-2">
-        <Icon className="w-6 h-6 text-[#7CFC00]" />
+        <Icon className="w-6 h-6 text-[#3B82F6]" />
         {title}
       </h2>
       <p className="text-white/50 text-sm mb-5">{description}</p>
@@ -401,7 +401,7 @@ function LockedSection({
           </p>
           <Link
             href="/auth/signin"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#7CFC00] text-[#0A150A] text-sm font-semibold hover:bg-[#6BE000] transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#3B82F6] text-white text-sm font-semibold hover:bg-[#2563EB] transition-all"
           >
             <Lock className="w-3.5 h-3.5" />
             Sign in
@@ -412,10 +412,10 @@ function LockedSection({
           {items.map((item, i) => (
             <div
               key={i}
-              className="p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#7CFC00]/30 transition-all"
+              className="p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#3B82F6]/30 transition-all"
             >
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-[#7CFC00]/10 text-[#7CFC00] flex items-center justify-center text-sm font-bold">
+                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] flex items-center justify-center text-sm font-bold">
                   {i + 1}
                 </div>
                 <div>
@@ -431,15 +431,15 @@ function LockedSection({
           {phases.map((p, i) => (
             <div
               key={i}
-              className="p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#7CFC00]/30 transition-all"
+              className="p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#3B82F6]/30 transition-all"
             >
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-[#7CFC00]/10 text-[#7CFC00] flex items-center justify-center text-sm font-bold">
+                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] flex items-center justify-center text-sm font-bold">
                   {i + 1}
                 </div>
                 <div className="flex-1">
                   <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <span className="text-xs uppercase tracking-wide text-[#7CFC00] font-bold">
+                    <span className="text-xs uppercase tracking-wide text-[#3B82F6] font-bold">
                       {p.phase}
                     </span>
                     {p.duration && (
@@ -460,7 +460,7 @@ function LockedSection({
           {skills.map((s, i) => (
             <div
               key={i}
-              className="p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#7CFC00]/30 transition-all"
+              className="p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#3B82F6]/30 transition-all"
             >
               <div className="flex items-center justify-between mb-2">
                 <span className="font-medium text-white">{s.skill}</span>
@@ -468,7 +468,7 @@ function LockedSection({
               </div>
               <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-[#7CFC00] to-emerald-400 rounded-full"
+                  className="h-full bg-gradient-to-r from-[#3B82F6] to-emerald-400 rounded-full"
                   style={{ width: `${s.importance * 10}%` }}
                 />
               </div>
@@ -480,7 +480,7 @@ function LockedSection({
           {teams.map((t, i) => (
             <div
               key={i}
-              className="p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#7CFC00]/30 transition-all"
+              className="p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#3B82F6]/30 transition-all"
             >
               <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
                 <span className="font-bold text-white">{t.templateName}</span>
@@ -501,7 +501,7 @@ function LockedSection({
                 {t.roles.map((r) => (
                   <span
                     key={r}
-                    className="text-xs px-2.5 py-1 rounded-full bg-[#7CFC00]/10 text-[#7CFC00] border border-[#7CFC00]/20"
+                    className="text-xs px-2.5 py-1 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20"
                   >
                     {r}
                   </span>

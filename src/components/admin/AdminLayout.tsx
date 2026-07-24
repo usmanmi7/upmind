@@ -58,7 +58,7 @@ function AdminSidebarContent({ collapsed = false }: { collapsed?: boolean }) {
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className="flex items-center gap-2 px-4 h-16 border-b border-sidebar-border">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] flex items-center justify-center shrink-0">
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#5CBF00] to-[#1E3A8A] flex items-center justify-center shrink-0">
           <Shield className="size-5 text-white" />
         </div>
         {!collapsed && (
@@ -66,7 +66,7 @@ function AdminSidebarContent({ collapsed = false }: { collapsed?: boolean }) {
             <span className="text-lg font-bold font-heading text-sidebar-foreground">
               Upmind
             </span>
-            <span className="text-[10px] text-[#7CFC00] font-medium uppercase tracking-wider">Admin Panel</span>
+            <span className="text-[10px] text-[#3B82F6] font-medium uppercase tracking-wider">Admin Panel</span>
           </div>
         )}
       </div>
@@ -86,19 +86,19 @@ function AdminSidebarContent({ collapsed = false }: { collapsed?: boolean }) {
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
                   isActive
-                    ? "bg-[#7CFC00]/20 text-[#7CFC00] border border-[#7CFC00]/30"
-                    : "text-sidebar-foreground/70 hover:bg-[#2D4A2D]/50 hover:text-sidebar-foreground border border-transparent"
+                    ? "bg-[#3B82F6]/20 text-[#3B82F6] border border-[#3B82F6]/30"
+                    : "text-sidebar-foreground/70 hover:bg-[#1E3A8A]/50 hover:text-sidebar-foreground border border-transparent"
                 )}
               >
                 <item.icon
                   className={cn(
                     "size-5 shrink-0",
-                    isActive ? "text-[#7CFC00]" : ""
+                    isActive ? "text-[#3B82F6]" : ""
                   )}
                 />
                 {!collapsed && <span>{item.title}</span>}
                 {isActive && !collapsed && (
-                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#7CFC00]" />
+                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#3B82F6]" />
                 )}
               </Link>
             )
@@ -154,7 +154,7 @@ function AdminTopBar({ onMenuClick }: { onMenuClick: () => void }) {
 
           <div className="flex items-center gap-2">
             <h1 className="text-lg font-semibold">{getPageTitle()}</h1>
-            <Badge className="bg-[#7CFC00]/20 text-[#7CFC00] border-[#7CFC00]/30 text-xs">
+            <Badge className="bg-[#3B82F6]/20 text-[#3B82F6] border-[#3B82F6]/30 text-xs">
               <Shield className="size-3 mr-1" />
               {session?.user?.role === "SUPER_ADMIN" ? "Super Admin" : "Admin"}
             </Badge>
@@ -169,7 +169,7 @@ function AdminTopBar({ onMenuClick }: { onMenuClick: () => void }) {
               <Button variant="ghost" className="flex items-center gap-2 px-2">
                 <Avatar className="size-8">
                   <AvatarImage src={session?.user?.image || undefined} alt={session?.user?.name || "Admin"} />
-                  <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                  <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                     {userInitials}
                   </AvatarFallback>
                 </Avatar>
@@ -183,7 +183,7 @@ function AdminTopBar({ onMenuClick }: { onMenuClick: () => void }) {
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium">{session?.user?.name || "Admin"}</p>
                   <p className="text-xs text-muted-foreground">{session?.user?.email || ""}</p>
-                  <Badge className="bg-[#7CFC00]/20 text-[#7CFC00] border-[#7CFC00]/30 text-xs w-fit mt-1">
+                  <Badge className="bg-[#3B82F6]/20 text-[#3B82F6] border-[#3B82F6]/30 text-xs w-fit mt-1">
                     {session?.user?.role === "SUPER_ADMIN" ? "Super Admin" : "Admin"}
                   </Badge>
                 </div>
@@ -240,7 +240,7 @@ export default function AdminLayout({
           <Button
             variant="ghost"
             size="sm"
-            className="w-full text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-[#2D4A2D]/50"
+            className="w-full text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-[#1E3A8A]/50"
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
           >
             <ChevronLeft

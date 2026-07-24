@@ -144,8 +144,8 @@ export default function InnovationEnginePage() {
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7CFC00] to-emerald-600 flex items-center justify-center">
-              <Lightbulb className="w-5 h-5 text-[#0A150A]" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#3B82F6] to-emerald-600 flex items-center justify-center">
+              <Lightbulb className="w-5 h-5 text-[#0A1228]" />
             </div>
             AI Innovation Engine
           </h1>
@@ -160,7 +160,7 @@ export default function InnovationEnginePage() {
         <div className="lg:col-span-1 space-y-5">
           <div className="p-5 rounded-2xl bg-white/5 border border-white/10">
             <div className="flex items-center gap-2 mb-3">
-              <Brain className="w-5 h-5 text-[#7CFC00]" />
+              <Brain className="w-5 h-5 text-[#3B82F6]" />
               <h3 className="font-bold text-white">Your Skills</h3>
             </div>
 
@@ -168,7 +168,7 @@ export default function InnovationEnginePage() {
               {skills.map((s) => (
                 <span
                   key={s}
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#7CFC00]/15 text-[#7CFC00] border border-[#7CFC00]/30 text-sm"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#3B82F6]/15 text-[#3B82F6] border border-[#3B82F6]/30 text-sm"
                 >
                   {s}
                   <button
@@ -196,11 +196,11 @@ export default function InnovationEnginePage() {
                   }
                 }}
                 placeholder="Type a skill and press Enter"
-                className="flex-1 px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50"
+                className="flex-1 px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/50"
               />
               <button
                 onClick={() => addSkill(skillInput)}
-                className="px-3 py-2 rounded-lg bg-[#7CFC00]/15 text-[#7CFC00] hover:bg-[#7CFC00]/25 border border-[#7CFC00]/30"
+                className="px-3 py-2 rounded-lg bg-[#3B82F6]/15 text-[#3B82F6] hover:bg-[#3B82F6]/25 border border-[#3B82F6]/30"
               >
                 <Plus className="w-4 h-4" />
               </button>
@@ -225,7 +225,7 @@ export default function InnovationEnginePage() {
 
           <div className="p-5 rounded-2xl bg-white/5 border border-white/10">
             <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-5 h-5 text-[#7CFC00]" />
+              <Sparkles className="w-5 h-5 text-[#3B82F6]" />
               <h3 className="font-bold text-white">Your Interests</h3>
             </div>
 
@@ -261,11 +261,11 @@ export default function InnovationEnginePage() {
                   }
                 }}
                 placeholder="Type an interest and press Enter"
-                className="flex-1 px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50"
+                className="flex-1 px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/50"
               />
               <button
                 onClick={() => addInterest(interestInput)}
-                className="px-3 py-2 rounded-lg bg-[#7CFC00]/15 text-[#7CFC00] hover:bg-[#7CFC00]/25 border border-[#7CFC00]/30"
+                className="px-3 py-2 rounded-lg bg-[#3B82F6]/15 text-[#3B82F6] hover:bg-[#3B82F6]/25 border border-[#3B82F6]/30"
               >
                 <Plus className="w-4 h-4" />
               </button>
@@ -290,7 +290,7 @@ export default function InnovationEnginePage() {
 
           <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-4">
             <div className="flex items-center gap-2 mb-1">
-              <Zap className="w-5 h-5 text-[#7CFC00]" />
+              <Zap className="w-5 h-5 text-[#3B82F6]" />
               <h3 className="font-bold text-white">Constraints</h3>
             </div>
 
@@ -300,7 +300,7 @@ export default function InnovationEnginePage() {
                   <Calendar className="w-3.5 h-3.5" />
                   Time commitment
                 </span>
-                <span className="text-[#7CFC00] font-medium">{timeCommitment} months</span>
+                <span className="text-[#3B82F6] font-medium">{timeCommitment} months</span>
               </label>
               <input
                 type="range"
@@ -308,7 +308,7 @@ export default function InnovationEnginePage() {
                 max={60}
                 value={timeCommitment}
                 onChange={(e) => setTimeCommitment(Number(e.target.value))}
-                className="w-full accent-[#7CFC00]"
+                className="w-full accent-[#3B82F6]"
               />
             </div>
 
@@ -318,7 +318,7 @@ export default function InnovationEnginePage() {
                   <Users className="w-3.5 h-3.5" />
                   Team size
                 </span>
-                <span className="text-[#7CFC00] font-medium">{teamSize} engineers</span>
+                <span className="text-[#3B82F6] font-medium">{teamSize} engineers</span>
               </label>
               <input
                 type="range"
@@ -326,7 +326,7 @@ export default function InnovationEnginePage() {
                 max={30}
                 value={teamSize}
                 onChange={(e) => setTeamSize(Number(e.target.value))}
-                className="w-full accent-[#7CFC00]"
+                className="w-full accent-[#3B82F6]"
               />
             </div>
 
@@ -335,20 +335,20 @@ export default function InnovationEnginePage() {
               <select
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value as DifficultyLevel | "ANY")}
-                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50"
+                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/50"
               >
-                <option value="ANY" className="bg-[#1A2E1A]">Any difficulty</option>
-                <option value="EASY" className="bg-[#1A2E1A]">Easy</option>
-                <option value="MEDIUM" className="bg-[#1A2E1A]">Medium</option>
-                <option value="HARD" className="bg-[#1A2E1A]">Hard</option>
-                <option value="EXTREME" className="bg-[#1A2E1A]">Frontier</option>
+                <option value="ANY" className="bg-[#0F1B3D]">Any difficulty</option>
+                <option value="EASY" className="bg-[#0F1B3D]">Easy</option>
+                <option value="MEDIUM" className="bg-[#0F1B3D]">Medium</option>
+                <option value="HARD" className="bg-[#0F1B3D]">Hard</option>
+                <option value="EXTREME" className="bg-[#0F1B3D]">Frontier</option>
               </select>
             </div>
           </div>
 
           <button
             onClick={() => setHasRun(true)}
-            className="w-full px-5 py-3 rounded-xl bg-[#7CFC00] text-[#0A150A] font-semibold hover:bg-[#6BE000] transition-all flex items-center justify-center gap-2"
+            className="w-full px-5 py-3 rounded-xl bg-[#3B82F6] text-white font-semibold hover:bg-[#2563EB] transition-all flex items-center justify-center gap-2"
           >
             <Sparkles className="w-4 h-4" />
             Generate Innovations
@@ -359,8 +359,8 @@ export default function InnovationEnginePage() {
           {!hasRun ? (
             <div className="h-full flex items-center justify-center p-12 rounded-2xl bg-white/5 border border-dashed border-white/15 text-center">
               <div>
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#7CFC00]/10 mb-4">
-                  <Lightbulb className="w-7 h-7 text-[#7CFC00]" />
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#3B82F6]/10 mb-4">
+                  <Lightbulb className="w-7 h-7 text-[#3B82F6]" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">
                   Your matches will appear here
@@ -411,7 +411,7 @@ function MatchCard({ match }: { match: InnovationMatchResult }) {
   return (
     <Link
       href={`/solve-them/${problem.slug}`}
-      className="block p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-[#7CFC00]/40 hover:bg-white/[0.07] transition-all"
+      className="block p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-[#3B82F6]/40 hover:bg-white/[0.07] transition-all"
     >
       <div className="flex items-start gap-4">
         <div className="flex-shrink-0 text-center">
@@ -422,7 +422,7 @@ function MatchCard({ match }: { match: InnovationMatchResult }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-3 mb-2">
             <div>
-              <div className="text-xs text-[#7CFC00] font-medium mb-1">{problem.category}</div>
+              <div className="text-xs text-[#3B82F6] font-medium mb-1">{problem.category}</div>
               <h4 className="text-lg font-bold text-white">{problem.title}</h4>
             </div>
             <ArrowRight className="w-5 h-5 text-white/30 flex-shrink-0" />
@@ -433,7 +433,7 @@ function MatchCard({ match }: { match: InnovationMatchResult }) {
           <div className="space-y-1 mb-3">
             {reasonHighlights.map((r, i) => (
               <div key={i} className="flex items-start gap-2 text-sm text-white/70">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#7CFC00] flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#3B82F6] flex-shrink-0 mt-0.5" />
                 <span>{r}</span>
               </div>
             ))}
@@ -444,7 +444,7 @@ function MatchCard({ match }: { match: InnovationMatchResult }) {
               {matchedSkills.slice(0, 5).map((s) => (
                 <span
                   key={s}
-                  className="text-xs px-2 py-0.5 rounded-md bg-[#7CFC00]/15 text-[#7CFC00] border border-[#7CFC00]/30"
+                  className="text-xs px-2 py-0.5 rounded-md bg-[#3B82F6]/15 text-[#3B82F6] border border-[#3B82F6]/30"
                 >
                   {s}
                 </span>

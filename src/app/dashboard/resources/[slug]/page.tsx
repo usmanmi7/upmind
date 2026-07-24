@@ -108,7 +108,7 @@ export default function ResourceDetailPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
           <p className="text-sm text-muted-foreground">Loading resource...</p>
         </div>
       </div>
@@ -132,14 +132,14 @@ export default function ResourceDetailPage() {
       <div className="space-y-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-3">
-            <div className="w-12 h-12 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center shrink-0 mt-1">
-              <Icon className="size-6 text-[#2D4A2D] dark:text-[#7CFC00]" />
+            <div className="w-12 h-12 rounded-xl bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 flex items-center justify-center shrink-0 mt-1">
+              <Icon className="size-6 text-[#1E3A8A] dark:text-[#3B82F6]" />
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-2xl font-heading font-bold">{resource.title}</h1>
                 {resource.isPremium && (
-                  <Badge className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                  <Badge className="bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                     <Crown className="size-3 mr-1" /> Premium
                   </Badge>
                 )}
@@ -162,7 +162,7 @@ export default function ResourceDetailPage() {
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <Button variant="ghost" size="icon" onClick={toggleSave} disabled={saving}>
-              {isSaved ? <BookmarkCheck className="size-5 text-[#7CFC00]" /> : <Bookmark className="size-5" />}
+              {isSaved ? <BookmarkCheck className="size-5 text-[#3B82F6]" /> : <Bookmark className="size-5" />}
             </Button>
             <Button variant="ghost" size="icon">
               <Share2 className="size-5" />
@@ -205,7 +205,7 @@ export default function ResourceDetailPage() {
               </div>
 
               <div className="text-center py-8 border-t mt-4">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center mx-auto mb-4">
                   <Lock className="size-7 text-white" />
                 </div>
                 <h3 className="text-lg font-heading font-semibold mb-2">
@@ -217,13 +217,13 @@ export default function ResourceDetailPage() {
                     : "Sign in to access this resource and many more."}
                 </p>
                 {isPreview ? (
-                  <Button className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]" asChild>
+                  <Button className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]" asChild>
                     <Link href="/dashboard/subscription">
                       <Crown className="size-4 mr-2" /> Upgrade Plan
                     </Link>
                   </Button>
                 ) : (
-                  <Button className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]" asChild>
+                  <Button className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]" asChild>
                     <Link href="/auth/login">Sign In</Link>
                   </Button>
                 )}
@@ -246,7 +246,7 @@ export default function ResourceDetailPage() {
             <div className="flex items-start gap-4">
               <Avatar className="size-12">
                 <AvatarImage src={resource.author.image || undefined} />
-                <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A]">
+                <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D]">
                   {resource.author.name.split(" ").map((n) => n[0]).join("")}
                 </AvatarFallback>
               </Avatar>

@@ -35,12 +35,12 @@ export default function PublicNavbar() {
   const [userMenuOpen, setUserMenuOpen] = React.useState(false)
 
   return (
-    <header className="sticky top-0 z-50 bg-[#1A2E1A]/95 backdrop-blur-lg border-b border-white/5">
+    <header className="sticky top-0 z-50 bg-[#0F1B3D]/95 backdrop-blur-lg border-b border-white/5">
       <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="w-3 h-3 rounded-full bg-[#7CFC00] group-hover:scale-110 transition-transform" />
+            <span className="w-3 h-3 rounded-full bg-[#3B82F6] group-hover:scale-110 transition-transform" />
             <span className="text-white font-bold text-xl tracking-tight font-heading">
               Upmind
             </span>
@@ -56,13 +56,13 @@ export default function PublicNavbar() {
                   href={link.href}
                   className={`text-base font-medium capitalize transition-colors relative group flex items-center gap-1.5 ${
                     link.highlight
-                      ? "text-[#7CFC00] hover:text-[#6BE000]"
+                      ? "text-[#3B82F6] hover:text-[#2563EB]"
                       : "text-white/80 hover:text-white"
                   }`}
                 >
                   {link.highlight && Icon && <Icon className="w-4 h-4" />}
                   {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7CFC00] transition-all group-hover:w-full" />
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#3B82F6] transition-all group-hover:w-full" />
                 </Link>
               )
             })}
@@ -84,7 +84,7 @@ export default function PublicNavbar() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute top-full right-0 mt-2 w-48 bg-[#1A2E1A] border border-white/10 rounded-xl shadow-xl overflow-hidden"
+                    className="absolute top-full right-0 mt-2 w-48 bg-[#0F1B3D] border border-white/10 rounded-xl shadow-xl overflow-hidden"
                   >
                     {moreLinks.map((link) => {
                       const Icon = link.icon
@@ -113,7 +113,7 @@ export default function PublicNavbar() {
               <div className="flex items-center gap-3">
                 <Link
                   href="/contact"
-                  className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20"
+                  className="bg-[#3B82F6] text-white rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#2563EB] transition-all duration-300 shadow-lg shadow-[#3B82F6]/20"
                 >
                   Contact
                 </Link>
@@ -141,14 +141,14 @@ export default function PublicNavbar() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.95 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute top-full right-0 mt-2 w-56 bg-[#1A2E1A] border border-white/10 rounded-xl shadow-xl overflow-hidden"
+                        className="absolute top-full right-0 mt-2 w-56 bg-[#0F1B3D] border border-white/10 rounded-xl shadow-xl overflow-hidden"
                       >
                         {/* User Info */}
                         <div className="px-4 py-3 border-b border-white/10">
                           <div className="flex items-center gap-2">
                             <p className="text-white text-sm font-medium truncate">{session.user?.name || 'User'}</p>
                             {(session.user?.role === "ADMIN" || session.user?.role === "SUPER_ADMIN") && (
-                              <span className="text-[9px] font-semibold bg-[#7CFC00]/20 text-[#7CFC00] px-1.5 py-0.5 rounded">ADMIN</span>
+                              <span className="text-[9px] font-semibold bg-[#3B82F6]/20 text-[#3B82F6] px-1.5 py-0.5 rounded">ADMIN</span>
                             )}
                           </div>
                           <p className="text-white/50 text-xs truncate">{session.user?.email}</p>
@@ -191,7 +191,7 @@ export default function PublicNavbar() {
                         {(session.user?.role === "ADMIN" || session.user?.role === "SUPER_ADMIN") && (
                           <Link
                             href="/admin"
-                            className="flex items-center gap-2.5 px-4 py-2.5 text-[#7CFC00] hover:text-[#7CFC00] hover:bg-[#7CFC00]/5 text-sm transition-colors"
+                            className="flex items-center gap-2.5 px-4 py-2.5 text-[#3B82F6] hover:text-[#3B82F6] hover:bg-[#3B82F6]/5 text-sm transition-colors"
                             onClick={() => setUserMenuOpen(false)}
                           >
                             <Shield className="w-4 h-4" />
@@ -216,13 +216,13 @@ export default function PublicNavbar() {
               <>
                 <Link
                   href="/auth/login"
-                  className="text-white border border-white/30 rounded-full px-5 py-2 text-sm font-medium hover:bg-white hover:text-[#1A2E1A] transition-all duration-300"
+                  className="text-white border border-white/30 rounded-full px-5 py-2 text-sm font-medium hover:bg-white hover:text-[#0F1B3D] transition-all duration-300"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/auth/signup"
-                  className="bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#6BE000] transition-all duration-300 shadow-lg shadow-[#7CFC00]/20"
+                  className="bg-[#3B82F6] text-white rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#2563EB] transition-all duration-300 shadow-lg shadow-[#3B82F6]/20"
                 >
                   Get Started
                 </Link>
@@ -258,7 +258,7 @@ export default function PublicNavbar() {
                       href={link.href}
                       className={`flex items-center gap-2 text-base font-medium capitalize py-2.5 px-3 rounded-lg transition-colors ${
                         link.highlight
-                          ? "text-[#7CFC00] hover:bg-[#7CFC00]/10"
+                          ? "text-[#3B82F6] hover:bg-[#3B82F6]/10"
                           : "text-white/80 hover:text-white hover:bg-white/5"
                       }`}
                       onClick={() => setMobileMenuOpen(false)}
@@ -273,7 +273,7 @@ export default function PublicNavbar() {
                     <>
                       <Link
                         href="/dashboard"
-                        className="block bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-[#6BE000] transition-all duration-300"
+                        className="block bg-[#3B82F6] text-white rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-[#2563EB] transition-all duration-300"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Dashboard
@@ -321,7 +321,7 @@ export default function PublicNavbar() {
                         {(session.user?.role === "ADMIN" || session.user?.role === "SUPER_ADMIN") && (
                           <Link
                             href="/admin"
-                            className="flex items-center gap-2.5 text-[#7CFC00] text-sm py-2 px-3 rounded-lg hover:bg-[#7CFC00]/5 transition-colors"
+                            className="flex items-center gap-2.5 text-[#3B82F6] text-sm py-2 px-3 rounded-lg hover:bg-[#3B82F6]/5 transition-colors"
                             onClick={() => setMobileMenuOpen(false)}
                           >
                             <Shield className="w-4 h-4" />
@@ -341,14 +341,14 @@ export default function PublicNavbar() {
                     <>
                       <Link
                         href="/auth/login"
-                        className="block text-white border border-white/30 rounded-full px-6 py-2.5 text-sm font-medium text-center hover:bg-white hover:text-[#1A2E1A] transition-all duration-300"
+                        className="block text-white border border-white/30 rounded-full px-6 py-2.5 text-sm font-medium text-center hover:bg-white hover:text-[#0F1B3D] transition-all duration-300"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Sign In
                       </Link>
                       <Link
                         href="/auth/signup"
-                        className="block bg-[#7CFC00] text-[#1A2E1A] rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-[#6BE000] transition-all duration-300"
+                        className="block bg-[#3B82F6] text-white rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-[#2563EB] transition-all duration-300"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Get Started

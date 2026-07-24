@@ -66,7 +66,7 @@ export function ChatSidebarContent({
       {/* Header: brand + New chat */}
       <div className="px-4 pt-4 pb-3 space-y-3 shrink-0">
         <Link href="/ai-assistant" className="flex items-center gap-2 text-sm font-semibold min-w-0">
-          <span className="size-7 rounded-lg bg-[#7CFC00]/15 text-[#7CFC00] grid place-items-center shrink-0">
+          <span className="size-7 rounded-lg bg-[#3B82F6]/15 text-[#3B82F6] grid place-items-center shrink-0">
             <Sparkles className="size-4" />
           </span>
           <span className="text-foreground truncate">Upmind AI</span>
@@ -75,7 +75,7 @@ export function ChatSidebarContent({
         <Button
           onClick={onNew}
           variant="outline"
-          className="w-full justify-start gap-2 rounded-lg border-black/10 dark:border-white/15 hover:border-[#7CFC00]/50 hover:text-[#7CFC00] hover:bg-[#7CFC00]/5"
+          className="w-full justify-start gap-2 rounded-lg border-black/10 dark:border-white/15 hover:border-[#3B82F6]/50 hover:text-[#3B82F6] hover:bg-[#3B82F6]/5"
         >
           <Plus className="size-4 shrink-0" />
           <span className="truncate">New chat</span>
@@ -201,14 +201,14 @@ function ChatRow({ chat, active, onSelect, onRename, onDelete }: ChatRowProps) {
         className={cn(
           "group flex items-center gap-2 px-2.5 py-2 rounded-lg cursor-pointer text-sm transition-colors overflow-hidden",
           active
-            ? "bg-[#7CFC00]/10 text-foreground"
+            ? "bg-[#3B82F6]/10 text-foreground"
             : "hover:bg-muted/60 text-muted-foreground hover:text-foreground"
         )}
       >
         <MessageSquare
           className={cn(
             "size-4 shrink-0",
-            active ? "text-[#7CFC00]" : "text-muted-foreground/70"
+            active ? "text-[#3B82F6]" : "text-muted-foreground/70"
           )}
         />
         <div className="flex-1 min-w-0 overflow-hidden">

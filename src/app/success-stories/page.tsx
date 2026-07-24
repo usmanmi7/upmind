@@ -13,80 +13,80 @@ import * as React from "react"
 const fallbackTestimonials = [
   {
     name: "Sarah Chen",
-    role: "CEO",
-    company: "TechFlow",
-    content: "Upmind helped us validate our idea in just 2 weeks. We saved months of wasted effort and $50K in potential missteps. Their strategic guidance was invaluable during our early stages.",
+    role: "ML Engineer",
+    company: "Independent",
+    content: "I was about to take another FAANG job. The Innovation Engine matched me to an early-warning pandemic surveillance problem — my ML + distributed systems skills covered 64% of the requirements. Six months in, we have a working pilot with a national health agency.",
     rating: 5,
   },
   {
     name: "Marcus Johnson",
-    role: "Founder",
-    company: "GreenScale",
-    content: "The consulting sessions were game-changing. Our consultant helped us see blind spots we never would have caught on our own. We went from idea to revenue in 4 months.",
+    role: "Hardware Engineer",
+    company: "Open Source Contributor",
+    content: "I'd been building IoT side projects for years without direction. Upmind's curated air-quality problem showed me the missing middle — accurate sensors at affordable prices. The team template told me exactly who I needed to find.",
     rating: 5,
   },
   {
     name: "Priya Sharma",
-    role: "CTO",
-    company: "DataBridge",
-    content: "The resources and templates alone are worth the subscription. They saved us hundreds of hours of research. Upmind is like having a seasoned advisor on demand.",
+    role: "Research Engineer",
+    company: "University Lab",
+    content: "The resources library alone is worth it. The build-vs-research decision framework helped me pick the right output type for my water-quality work — open source, not a startup. Saved me from a wrong path.",
     rating: 5,
   },
   {
     name: "David Kim",
-    role: "Co-Founder",
-    company: "NexGen AI",
-    content: "From pitch deck to Series A in 6 months. Upmind's fundraising guidance was the difference between a failed round and a successful one.",
+    role: "Senior Engineer",
+    company: "Career Switcher",
+    content: "After 8 years in adtech, I wanted to do something that mattered. The skill-matching surfaced climate hardware problems where my distributed-systems background was surprisingly relevant. Now I'm full-time on a carbon-capture startup.",
     rating: 5,
   },
   {
     name: "Lisa Martinez",
-    role: "CEO",
-    company: "HealthPulse",
-    content: "The AI insights feature identified market opportunities we completely overlooked. It felt like having a crystal ball for our product roadmap.",
+    role: "Student",
+    company: "Final-Year Project",
+    content: "I needed a meaningful capstone project. Browsed Solve Them, picked affordable neonatal monitoring. The 12-month roadmap scaled down to my 6-month timeline perfectly. Got hired by a health-tech startup straight out of school.",
     rating: 5,
   },
   {
     name: "James Wright",
     role: "Founder",
-    company: "FinEdge",
-    content: "Upmind's roadmap tool kept us focused and accountable. We hit every milestone on time and under budget. I can't imagine building without it.",
+    company: "Pre-seed",
+    content: "We were about to build a B2B SaaS for adtech. One session with the Innovation Engine showed us our skills fit medical cold-chain logistics 3x better. Pivoted. Closed pre-seed 4 months later.",
     rating: 5,
   },
 ]
 
 const caseStudies = [
   {
-    company: "TechFlow",
-    industry: "SaaS",
-    challenge: "Struggling to find product-market fit after 8 months of development.",
-    solution: "Used Upmind's validation framework to pivot strategy and identify the right customer segment.",
-    result: "300% user growth in 3 months, raised $2.5M Series A.",
-    color: "from-[#2D4A2D] to-[#8FBC8F]",
+    company: "AirNet",
+    industry: "Climate Hardware",
+    challenge: "Senior hardware engineer wanted out of consumer IoT but didn't know which climate problem to attack.",
+    solution: "Used Solve Them + Innovation Engine. Air-quality monitoring surfaced as the missing middle — accurate sensors at affordable prices. Used the team template to recruit a firmware engineer and field-ops lead.",
+    result: "Deployed 50 sensors across Delhi within 18 months. Now expanding to 4 more countries with foundation funding.",
+    color: "from-[#1E3A8A] to-[#93C5FD]",
   },
   {
-    company: "GreenScale",
-    industry: "CleanTech",
-    challenge: "Needed to prepare for investor meetings with no prior fundraising experience.",
-    solution: "Worked with Upmind consultants on pitch deck, financial model, and presentation skills.",
-    result: "Closed $1.2M seed round within 2 months of starting the program.",
-    color: "from-green-500 to-emerald-500",
+    company: "ColdChain",
+    industry: "Health Hardware",
+    challenge: "Two ML engineers wanted to leave adtech but had no medical or hardware experience.",
+    solution: "Innovation Engine flagged cold-chain vaccine logistics as a high-skill-fit problem. Used the build playbook to scope a 12-month pilot. Found a hardware co-founder through the community.",
+    result: "Pilot deployed in 3 rural clinics. Closed pre-seed round. WHO expressing interest in scaling.",
+    color: "from-blue-500 to-blue-700",
   },
   {
-    company: "NexGen AI",
-    industry: "AI/ML",
-    challenge: "Had the technology but couldn't articulate the business value to investors.",
-    solution: "Refined go-to-market strategy and messaging with expert guidance from Upmind.",
-    result: "Secured $8M Series A at a $40M valuation.",
-    color: "from-[#7CFC00] to-[#2D4A2D]",
+    company: "OpenGrid",
+    industry: "Open Source",
+    challenge: "Distributed-systems engineer wanted to contribute to climate but didn't want to start a company.",
+    solution: "Build-vs-research framework pointed to open source. Used the open-source playbook to launch a grid monitoring library. Team template recommended a 3-person maintainer structure.",
+    result: "500+ GitHub stars, 30+ contributors, adopted by 2 national grid operators for research.",
+    color: "from-[#3B82F6] to-[#1E3A8A]",
   },
 ]
 
 const stats = [
-  { icon: DollarSign, value: "$2B+", label: "Total Funding Raised" },
-  { icon: TrendingUp, value: "92%", label: "Success Rate" },
-  { icon: Users, value: "500+", label: "Startups Helped" },
-  { icon: Star, value: "4.9/5", label: "Average Rating" },
+  { icon: TrendingUp, value: "30+", label: "Curated Problems" },
+  { icon: Users, value: "26", label: "Categories Covered" },
+  { icon: Star, value: "5+", label: "Team Templates" },
+  { icon: DollarSign, value: "100%", label: "Publicly Sourced" },
 ]
 
 const container = {
@@ -146,10 +146,10 @@ export default function SuccessStoriesPage() {
 
       <main className="flex-1">
         <PageHero
-          badge="Success Stories"
-          title="Startups that"
-          highlight="made it happen"
-          description="Real stories from real founders who turned their visions into thriving businesses with Upmind."
+          badge="Builder Stories"
+          title="Engineers who found"
+          highlight="what to build"
+          description="Real stories from engineers, researchers, and builders who used Upmind to find problems worth solving — and shipped solutions that matter."
         />
 
         {/* Stats */}
@@ -158,8 +158,8 @@ export default function SuccessStoriesPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               {stats.map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div className="w-12 h-12 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center mx-auto mb-3">
-                    <stat.icon className="size-6 text-[#2D4A2D] dark:text-[#7CFC00]" />
+                  <div className="w-12 h-12 rounded-xl bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 flex items-center justify-center mx-auto mb-3">
+                    <stat.icon className="size-6 text-[#1E3A8A] dark:text-[#3B82F6]" />
                   </div>
                   <p className="text-3xl sm:text-4xl font-bold gradient-text">{stat.value}</p>
                   <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
@@ -174,12 +174,12 @@ export default function SuccessStoriesPage() {
           <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="text-2xl sm:text-3xl font-heading font-bold">
-                What <span className="gradient-text">founders</span> say
+                What <span className="font-serif-accent-italic gradient-text">builders</span> say
               </h2>
             </div>
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+                <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
               </div>
             ) : (
               <motion.div
@@ -197,11 +197,11 @@ export default function SuccessStoriesPage() {
                           <Star key={i} className="size-4 fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
-                      <Quote className="size-6 text-[#7CFC00]/30 mb-2" />
+                      <Quote className="size-6 text-[#3B82F6]/30 mb-2" />
                       <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">&ldquo;{t.content}&rdquo;</p>
                       <div className="border-t pt-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
                             <span className="text-white text-sm font-bold">{t.name[0]}</span>
                           </div>
                           <div>
@@ -223,7 +223,7 @@ export default function SuccessStoriesPage() {
           <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="text-2xl sm:text-3xl font-heading font-bold">
-                Case <span className="gradient-text">Studies</span>
+                Case <span className="font-serif-accent-italic gradient-text">studies</span>
               </h2>
             </div>
             <div className="space-y-6">
@@ -251,11 +251,11 @@ export default function SuccessStoriesPage() {
                       <p className="text-sm text-muted-foreground">{cs.challenge}</p>
                     </div>
                     <div>
-                      <h4 className="text-sm font-semibold text-[#2D4A2D] dark:text-[#7CFC00] mb-2">Solution</h4>
+                      <h4 className="text-sm font-semibold text-[#1E3A8A] dark:text-[#3B82F6] mb-2">Solution</h4>
                       <p className="text-sm text-muted-foreground">{cs.solution}</p>
                     </div>
                     <div>
-                      <h4 className="text-sm font-semibold text-green-600 dark:text-green-400 mb-2">Result</h4>
+                      <h4 className="text-sm font-semibold text-[#1E3A8A] dark:text-[#3B82F6] mb-2">Result</h4>
                       <p className="text-sm text-muted-foreground">{cs.result}</p>
                     </div>
                   </div>
@@ -268,16 +268,19 @@ export default function SuccessStoriesPage() {
         {/* CTA Section */}
         <section className="py-20">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] relative overflow-hidden">
+            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] relative overflow-hidden">
               <div className="relative z-10">
-                <h2 className="text-3xl sm:text-4xl font-heading font-bold">Write your own success story</h2>
+                <h2 className="text-3xl sm:text-4xl font-heading font-bold">
+                  Find your{' '}
+                  <span className="font-serif-accent-italic">problem</span>
+                </h2>
                 <p className="mt-4 text-lg text-white/80 max-w-xl mx-auto">
-                  Join 500+ founders who&apos;ve accelerated their growth with Upmind.
+                  Browse 30+ curated world problems and let the Innovation Engine match you to ones you can actually solve.
                 </p>
                 <div className="mt-8">
-                  <Button asChild size="lg" className="bg-white text-[#2D4A2D] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
-                    <Link href="/auth/signup">
-                      Start Your Journey
+                  <Button asChild size="lg" className="bg-white text-[#1E3A8A] hover:bg-white/90 shadow-xl w-full sm:w-auto text-base px-8 h-12">
+                    <Link href="/solve-them">
+                      Browse Problems
                       <ArrowRight className="size-5" />
                     </Link>
                   </Button>

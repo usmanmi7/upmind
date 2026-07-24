@@ -215,7 +215,7 @@ export default function SubscriptionPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
           <p className="text-sm text-muted-foreground">Loading subscription...</p>
         </div>
       </div>
@@ -253,7 +253,7 @@ export default function SubscriptionPage() {
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
                 <Crown className="size-6 text-white" />
               </div>
               <div>
@@ -331,21 +331,21 @@ export default function SubscriptionPage() {
                   key={plan.key}
                   className={`relative p-5 rounded-xl border-2 transition-all duration-200 ${
                     isCurrent
-                      ? "border-[#7CFC00] bg-[#E8F5E9]/50 dark:bg-[#2D4A2D]/10"
+                      ? "border-[#3B82F6] bg-[#E8F5E9]/50 dark:bg-[#1E3A8A]/10"
                       : action === "upgrade"
-                        ? "border-transparent bg-muted/30 hover:border-[#7CFC00]/40 hover:shadow-md"
+                        ? "border-transparent bg-muted/30 hover:border-[#3B82F6]/40 hover:shadow-md"
                         : "border-transparent bg-muted/30 hover:border-yellow-500/40 hover:shadow-md"
                   }`}
                 >
                   {plan.popular && !isCurrent && (
                     <div className="absolute -top-2.5 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-[#7CFC00] text-[#1A2E1A] text-[10px] font-semibold px-2">Popular</Badge>
+                      <Badge className="bg-[#3B82F6] text-white text-[10px] font-semibold px-2">Popular</Badge>
                     </div>
                   )}
                   <div className="flex items-center gap-2 mb-2">
-                    <plan.icon className="size-5 text-[#7CFC00]" />
+                    <plan.icon className="size-5 text-[#3B82F6]" />
                     <h3 className="font-heading font-semibold">{plan.name}</h3>
-                    {isCurrent && <Badge className="bg-[#7CFC00] text-white text-[10px]">Current</Badge>}
+                    {isCurrent && <Badge className="bg-[#3B82F6] text-white text-[10px]">Current</Badge>}
                   </div>
                   <p className="text-lg font-bold mb-1">
                     {plan.price === 0 ? "Free" : `$${plan.price}`}
@@ -364,9 +364,9 @@ export default function SubscriptionPage() {
                     size="sm"
                     className={`w-full ${
                       isCurrent
-                        ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] cursor-default"
+                        ? "bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] cursor-default"
                         : action === "upgrade"
-                          ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] hover:opacity-90"
+                          ? "bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] hover:opacity-90"
                           : "hover:border-yellow-500 hover:text-yellow-600"
                     }`}
                     disabled={isCurrent}
@@ -480,7 +480,7 @@ export default function SubscriptionPage() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
                 <Sparkles className="size-5 text-white" />
               </div>
               <div>
@@ -499,12 +499,12 @@ export default function SubscriptionPage() {
                 <p className="text-lg font-bold">${PLANS[currentPlan].price}<span className="text-xs font-normal text-muted-foreground">/mo</span></p>
               </div>
               <div className="px-3">
-                <ArrowUpRight className="size-5 text-[#7CFC00]" />
+                <ArrowUpRight className="size-5 text-[#3B82F6]" />
               </div>
               <div className="text-center flex-1">
                 <p className="text-xs text-muted-foreground mb-0.5">New</p>
                 <p className="text-sm font-semibold">{selectedPlanConfig?.name}</p>
-                <p className="text-lg font-bold text-[#7CFC00]">${selectedPlanConfig?.price}<span className="text-xs font-normal text-muted-foreground">/mo</span></p>
+                <p className="text-lg font-bold text-[#3B82F6]">${selectedPlanConfig?.price}<span className="text-xs font-normal text-muted-foreground">/mo</span></p>
               </div>
             </div>
 
@@ -512,7 +512,7 @@ export default function SubscriptionPage() {
             {gainedFeatures.length > 0 && (
               <div>
                 <p className="text-sm font-medium mb-2 flex items-center gap-1.5">
-                  <Sparkles className="size-4 text-[#7CFC00]" />
+                  <Sparkles className="size-4 text-[#3B82F6]" />
                   What you&apos;ll gain
                 </p>
                 <div className="space-y-1.5">
@@ -554,7 +554,7 @@ export default function SubscriptionPage() {
             <Button
               onClick={handleChangePlan}
               disabled={changing}
-              className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] hover:opacity-90"
+              className="bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] hover:opacity-90"
             >
               {changing ? (
                 <Loader2 className="size-4 animate-spin mr-2" />
@@ -670,7 +670,7 @@ export default function SubscriptionPage() {
             <div className="flex flex-col items-center text-center gap-3 py-4">
               <div className={`w-16 h-16 rounded-full flex items-center justify-center ${
                 successData?.action === "upgraded"
-                  ? "bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D]"
+                  ? "bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A]"
                   : "bg-yellow-100 dark:bg-yellow-900/30"
               }`}>
                 {successData?.action === "upgraded" ? (
@@ -711,7 +711,7 @@ export default function SubscriptionPage() {
           </AlertDialogHeader>
           <AlertDialogFooter className="sm:justify-center">
             <AlertDialogAction
-              className="bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] hover:opacity-90"
+              className="bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] hover:opacity-90"
               onClick={() => setSuccessDialogOpen(false)}
             >
               {successData?.action === "upgraded" ? "Explore My Plan" : "Got It"}

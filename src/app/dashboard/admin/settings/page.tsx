@@ -132,7 +132,7 @@ export default function AdminSettingsPage() {
                 <div className="space-y-2"><Label>LinkedIn</Label><Input value={settings.socialLinks.linkedin} onChange={(e) => updateSettings("socialLinks.linkedin", e.target.value)} /></div>
                 <div className="space-y-2"><Label>GitHub</Label><Input value={settings.socialLinks.github} onChange={(e) => updateSettings("socialLinks.github", e.target.value)} /></div>
               </div>
-              <Button onClick={() => handleSave("Platform")} className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
+              <Button onClick={() => handleSave("Platform")} className="bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] text-white">
                 <Save className="size-4 mr-2" />Save Changes
               </Button>
             </CardContent>
@@ -166,7 +166,7 @@ export default function AdminSettingsPage() {
                 <Textarea value={settings.emailTemplates.planExpiryNotice} onChange={(e) => updateSettings("emailTemplates.planExpiryNotice", e.target.value)} rows={3} />
                 <p className="text-xs text-muted-foreground mt-1">Variables: {`{name}, {plan}, {date}`}</p>
               </div>
-              <Button onClick={() => handleSave("Email")} className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
+              <Button onClick={() => handleSave("Email")} className="bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] text-white">
                 <Save className="size-4 mr-2" />Save Templates
               </Button>
             </CardContent>
@@ -183,8 +183,8 @@ export default function AdminSettingsPage() {
             <CardContent className="space-y-6">
               {[
                 { key: "free" as const, label: "Free Plan", color: "from-slate-500 to-slate-600" },
-                { key: "growthPro" as const, label: "Growth Pro Plan", color: "from-[#5CBF00] to-[#2D4A2D]" },
-                { key: "enterprise" as const, label: "Enterprise Plan", color: "from-[#8FBC8F] to-[#2D4A2D]" },
+                { key: "growthPro" as const, label: "Growth Pro Plan", color: "from-[#5CBF00] to-[#1E3A8A]" },
+                { key: "enterprise" as const, label: "Enterprise Plan", color: "from-[#93C5FD] to-[#1E3A8A]" },
               ].map((plan) => (
                 <div key={plan.key} className="p-4 rounded-lg border bg-muted/30 space-y-3">
                   <div className="flex items-center gap-2">
@@ -205,7 +205,7 @@ export default function AdminSettingsPage() {
                   </div>
                 </div>
               ))}
-              <Button onClick={() => handleSave("Pricing")} className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
+              <Button onClick={() => handleSave("Pricing")} className="bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] text-white">
                 <Save className="size-4 mr-2" />Save Pricing
               </Button>
             </CardContent>
@@ -237,7 +237,7 @@ export default function AdminSettingsPage() {
                   />
                 </div>
               ))}
-              <Button onClick={() => handleSave("Notification")} className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
+              <Button onClick={() => handleSave("Notification")} className="bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] text-white">
                 <Save className="size-4 mr-2" />Save Preferences
               </Button>
             </CardContent>

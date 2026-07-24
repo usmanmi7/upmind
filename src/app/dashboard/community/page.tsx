@@ -36,11 +36,11 @@ import {
 import { toast } from "sonner"
 
 const categories = [
-  { id: "general", name: "General Discussion", icon: MessageCircle, color: "from-[#2D4A2D] to-[#8FBC8F]" },
+  { id: "general", name: "General Discussion", icon: MessageCircle, color: "from-[#1E3A8A] to-[#93C5FD]" },
   { id: "fundraising", name: "Fundraising", icon: DollarSign, color: "from-green-500 to-emerald-500" },
-  { id: "marketing", name: "Marketing", icon: Megaphone, color: "from-[#7CFC00] to-[#2D4A2D]" },
+  { id: "marketing", name: "Marketing", icon: Megaphone, color: "from-[#3B82F6] to-[#1E3A8A]" },
   { id: "product", name: "Product Development", icon: Code2, color: "from-orange-500 to-red-500" },
-  { id: "culture", name: "Team & Culture", icon: HeartHandshake, color: "from-[#8FBC8F] to-[#2D4A2D]" },
+  { id: "culture", name: "Team & Culture", icon: HeartHandshake, color: "from-[#93C5FD] to-[#1E3A8A]" },
 ]
 
 interface PostAuthor {
@@ -259,7 +259,7 @@ export default function CommunityPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-heading font-bold flex items-center gap-2">
-            <UsersRound className="size-6 text-[#7CFC00]" />
+            <UsersRound className="size-6 text-[#3B82F6]" />
             Community
           </h1>
           <p className="text-muted-foreground mt-1">
@@ -268,7 +268,7 @@ export default function CommunityPage() {
         </div>
         {canPost && (
           <Button
-            className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+            className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
             onClick={() => setDialogOpen(true)}
           >
             <Plus className="size-4 mr-2" /> New Post
@@ -284,8 +284,8 @@ export default function CommunityPage() {
             onClick={() => setActiveCategory(activeCategory === cat.id ? "all" : cat.id)}
             className={`flex items-center gap-2 p-3 rounded-xl border transition-all duration-200 text-left ${
               activeCategory === cat.id
-                ? "border-[#7CFC00]/50 bg-[#E8F5E9] dark:bg-[#2D4A2D]/20 shadow-sm"
-                : "border-border hover:border-[#7CFC00]/30 hover:shadow-sm"
+                ? "border-[#3B82F6]/50 bg-[#E8F5E9] dark:bg-[#1E3A8A]/20 shadow-sm"
+                : "border-border hover:border-[#3B82F6]/30 hover:shadow-sm"
             }`}
           >
             <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${cat.color} flex items-center justify-center shrink-0`}>
@@ -324,7 +324,7 @@ export default function CommunityPage() {
 
           {loading ? (
             <div className="flex items-center justify-center py-16">
-              <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+              <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
             </div>
           ) : posts.length === 0 ? (
             <div className="text-center py-12">
@@ -333,7 +333,7 @@ export default function CommunityPage() {
               <p className="text-sm text-muted-foreground/60 mt-1">Be the first to start a conversation!</p>
               {canPost && (
                 <Button
-                  className="mt-4 bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+                  className="mt-4 bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
                   onClick={() => setDialogOpen(true)}
                 >
                   <Plus className="size-4 mr-2" /> Create Post
@@ -352,12 +352,12 @@ export default function CommunityPage() {
                     <div className="flex items-start gap-3">
                       <Avatar className="size-10 shrink-0 mt-0.5">
                         <AvatarImage src={post.author.image || undefined} />
-                        <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                        <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                           {post.author.name.split(" ").map((n) => n[0]).join("")}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0 overflow-hidden">
-                        <h3 className="text-sm font-semibold group-hover:text-[#7CFC00] transition-colors flex items-center gap-2 truncate">
+                        <h3 className="text-sm font-semibold group-hover:text-[#3B82F6] transition-colors flex items-center gap-2 truncate">
                           <span className="truncate">{post.title}</span>
                           {post.likeCount >= 10 && (
                             <Badge className="bg-red-500/10 text-red-500 text-[10px] border-0 px-1.5 py-0 shrink-0">
@@ -373,7 +373,7 @@ export default function CommunityPage() {
                             {categories.find((c) => c.id === post.category)?.name || "General"}
                           </Badge>
                           <button
-                            className="text-[10px] text-muted-foreground flex items-center gap-1 hover:text-[#7CFC00] transition-colors shrink-0"
+                            className="text-[10px] text-muted-foreground flex items-center gap-1 hover:text-[#3B82F6] transition-colors shrink-0"
                             onClick={(e) => {
                               e.stopPropagation()
                               handleLike(post.id)
@@ -403,14 +403,14 @@ export default function CommunityPage() {
         {/* Founder Directory - Coming Soon */}
         <TabsContent value="founders" className="mt-4">
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#7CFC00]/20 to-[#2D4A2D]/20 flex items-center justify-center mb-6">
-              <Lock className="size-8 text-[#7CFC00]" />
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#3B82F6]/20 to-[#1E3A8A]/20 flex items-center justify-center mb-6">
+              <Lock className="size-8 text-[#3B82F6]" />
             </div>
             <h2 className="text-xl font-heading font-bold mb-2">Founder Directory</h2>
             <p className="text-muted-foreground max-w-md mb-2">
               We&apos;re building a curated directory of startup founders so you can discover, connect, and collaborate with like-minded entrepreneurs.
             </p>
-            <p className="text-sm text-[#7CFC00] font-medium flex items-center gap-1.5 mb-6">
+            <p className="text-sm text-[#3B82F6] font-medium flex items-center gap-1.5 mb-6">
               <Sparkles className="size-4" /> Coming Soon
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
@@ -463,7 +463,7 @@ export default function CommunityPage() {
               />
             </div>
             <Button
-              className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+              className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
               onClick={handleCreatePost}
               disabled={!newPost.title.trim() || !newPost.content.trim() || creating}
             >
@@ -487,7 +487,7 @@ export default function CommunityPage() {
                 <div className="flex items-center gap-3">
                   <Avatar className="size-9">
                     <AvatarImage src={expandedPost.author.image || undefined} />
-                    <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-xs">
+                    <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-xs">
                       {expandedPost.author.name.split(" ").map((n) => n[0]).join("")}
                     </AvatarFallback>
                   </Avatar>
@@ -534,7 +534,7 @@ export default function CommunityPage() {
                   <h4 className="text-sm font-semibold">Comments</h4>
                   {commentsLoading ? (
                     <div className="flex justify-center py-4">
-                      <Loader2 className="size-5 animate-spin text-[#7CFC00]" />
+                      <Loader2 className="size-5 animate-spin text-[#3B82F6]" />
                     </div>
                   ) : comments.length === 0 ? (
                     <p className="text-sm text-muted-foreground py-2">No comments yet. Be the first to share your thoughts!</p>
@@ -544,7 +544,7 @@ export default function CommunityPage() {
                         <div key={comment.id} className="flex gap-2.5">
                           <Avatar className="size-7 shrink-0">
                             <AvatarImage src={comment.author.image || undefined} />
-                            <AvatarFallback className="bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-[10px]">
+                            <AvatarFallback className="bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-[10px]">
                               {comment.author.name.split(" ").map((n) => n[0]).join("")}
                             </AvatarFallback>
                           </Avatar>
@@ -573,7 +573,7 @@ export default function CommunityPage() {
                     disabled={submittingComment}
                   />
                   <Button
-                    className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shrink-0"
+                    className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D] shrink-0"
                     size="icon"
                     onClick={handleAddComment}
                     disabled={!newComment.trim() || submittingComment}

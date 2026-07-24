@@ -35,8 +35,8 @@ import {
 import { toast } from "sonner"
 
 const phaseConfig: Record<string, { name: string; icon: React.ElementType; color: string; description: string }> = {
-  research: { name: "Research", icon: Search, color: "from-[#2D4A2D] to-[#8FBC8F]", description: "Validate your idea and understand your market" },
-  build: { name: "Build", icon: Wrench, color: "from-[#7CFC00] to-[#2D4A2D]", description: "Create your minimum viable product" },
+  research: { name: "Research", icon: Search, color: "from-[#1E3A8A] to-[#93C5FD]", description: "Validate your idea and understand your market" },
+  build: { name: "Build", icon: Wrench, color: "from-[#3B82F6] to-[#1E3A8A]", description: "Create your minimum viable product" },
   launch: { name: "Launch", icon: Zap, color: "from-green-500 to-emerald-500", description: "Get your product to market and first customers" },
   grow: { name: "Grow", icon: TrendingUp, color: "from-orange-500 to-red-500", description: "Scale your business and optimize performance" },
 }
@@ -199,7 +199,7 @@ export default function RoadmapPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
           <p className="text-sm text-muted-foreground">Loading roadmap...</p>
         </div>
       </div>
@@ -209,7 +209,7 @@ export default function RoadmapPage() {
   // Default phases if none exist
   const displayPhases = Object.keys(phases).length > 0
     ? Object.entries(phases).map(([key, items]) => {
-        const config = phaseConfig[key] || { name: key.charAt(0).toUpperCase() + key.slice(1), icon: Rocket, color: "from-[#2D4A2D] to-[#8FBC8F]", description: "" }
+        const config = phaseConfig[key] || { name: key.charAt(0).toUpperCase() + key.slice(1), icon: Rocket, color: "from-[#1E3A8A] to-[#93C5FD]", description: "" }
         const completed = items.filter((i) => i.isCompleted).length
         const progress = items.length > 0 ? Math.round((completed / items.length) * 100) : 0
         return { id: key, name: config.name, icon: config.icon, color: config.color, description: config.description, progress, items }
@@ -235,7 +235,7 @@ export default function RoadmapPage() {
           {isEmpty && (
             <Button
               variant="outline"
-              className="border-[#7CFC00]/50 text-[#7CFC00] hover:bg-[#7CFC00]/10"
+              className="border-[#3B82F6]/50 text-[#3B82F6] hover:bg-[#3B82F6]/10"
               onClick={handlePopulateDefaults}
               disabled={populating}
             >
@@ -244,7 +244,7 @@ export default function RoadmapPage() {
             </Button>
           )}
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <Button className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]" onClick={() => setDialogOpen(true)}>
+            <Button className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]" onClick={() => setDialogOpen(true)}>
               <Plus className="size-4 mr-2" /> Add Task
             </Button>
             <DialogContent>
@@ -274,7 +274,7 @@ export default function RoadmapPage() {
                   />
                 </div>
                 <Button
-                  className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+                  className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
                   onClick={addTask}
                 >
                   Add Task
@@ -289,15 +289,15 @@ export default function RoadmapPage() {
       {isEmpty && (
         <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20">
           <CardContent className="p-8 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00]/20 to-[#2D4A2D]/20 flex items-center justify-center mx-auto mb-4">
-              <Sparkles className="size-7 text-[#7CFC00]" />
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#3B82F6]/20 to-[#1E3A8A]/20 flex items-center justify-center mx-auto mb-4">
+              <Sparkles className="size-7 text-[#3B82F6]" />
             </div>
             <h2 className="text-lg font-heading font-bold mb-2">Not sure where to start?</h2>
             <p className="text-muted-foreground max-w-md mx-auto mb-4">
               We&apos;ve prepared 28 essential tasks across Research, Build, Launch, and Grow phases to guide you from idea to scale. These are proven steps that successful startups follow.
             </p>
             <Button
-              className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+              className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
               onClick={handlePopulateDefaults}
               disabled={populating}
             >
@@ -328,7 +328,7 @@ export default function RoadmapPage() {
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base font-heading flex items-center gap-2">
-                <Flag className="size-5 text-[#7CFC00]" /> Startup Milestones
+                <Flag className="size-5 text-[#3B82F6]" /> Startup Milestones
               </CardTitle>
               <Badge variant="secondary" className="text-xs">
                 <PartyPopper className="size-3 mr-1" />
@@ -351,7 +351,7 @@ export default function RoadmapPage() {
                           className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
                             isReached
                               ? isCurrent
-                                ? "bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] ring-4 ring-[#7CFC00]/20 shadow-lg shadow-[#7CFC00]/25"
+                                ? "bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] ring-4 ring-[#3B82F6]/20 shadow-lg shadow-[#3B82F6]/25"
                                 : "bg-gradient-to-br from-green-500 to-emerald-500 text-white"
                               : "bg-muted/50 text-muted-foreground/40 border-2 border-dashed border-muted-foreground/20"
                           }`}
@@ -367,8 +367,8 @@ export default function RoadmapPage() {
                         </p>
                         {isCurrent && (
                           <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7CFC00] opacity-75" />
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-[#7CFC00]" />
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3B82F6] opacity-75" />
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-[#3B82F6]" />
                           </span>
                         )}
                       </div>
@@ -379,7 +379,7 @@ export default function RoadmapPage() {
                               isReached && index < currentMilestoneIndex
                                 ? "bg-gradient-to-r from-green-500 to-emerald-500"
                                 : isReached && index === currentMilestoneIndex
-                                ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D]"
+                                ? "bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A]"
                                 : "bg-muted-foreground/20"
                             }`}
                             style={{
@@ -490,7 +490,7 @@ export default function RoadmapPage() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="mt-2 text-[#7CFC00]"
+                    className="mt-2 text-[#3B82F6]"
                     onClick={() => {
                       setSelectedPhase(phase.id)
                       setDialogOpen(true)

@@ -172,7 +172,7 @@ export default function ResourcesPage() {
         </div>
         {(isConsultant || isAdmin) && (
           <Button
-            className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+            className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
             onClick={() => setAddDialogOpen(true)}
           >
             <Plus className="size-4 mr-2" /> Add Resource
@@ -216,7 +216,7 @@ export default function ResourcesPage() {
       {loading ? (
         <div className="flex items-center justify-center py-16">
           <div className="flex flex-col items-center gap-3">
-            <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+            <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
             <p className="text-sm text-muted-foreground">Loading resources...</p>
           </div>
         </div>
@@ -231,15 +231,15 @@ export default function ResourcesPage() {
                     <Card className="border-0 shadow-md shadow-black/5 dark:shadow-black/20 group relative hover:shadow-lg transition-all duration-200 cursor-pointer h-full">
                       <CardContent className="p-5">
                         {resource.isPremium && (
-                          <Badge className="absolute top-3 right-3 bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] text-[10px]">
+                          <Badge className="absolute top-3 right-3 bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] text-[10px]">
                             <Lock className="size-2.5 mr-0.5" /> Premium
                           </Badge>
                         )}
-                        <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center mb-3">
-                          <Icon className="size-5 text-[#2D4A2D] dark:text-[#7CFC00]" />
+                        <div className="w-10 h-10 rounded-xl bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 flex items-center justify-center mb-3">
+                          <Icon className="size-5 text-[#1E3A8A] dark:text-[#3B82F6]" />
                         </div>
                         {resource.category && <Badge variant="outline" className="text-[10px] mb-2">{resource.category}</Badge>}
-                        <h3 className="text-sm font-heading font-semibold mb-1 leading-snug group-hover:text-[#7CFC00] transition-colors">{resource.title}</h3>
+                        <h3 className="text-sm font-heading font-semibold mb-1 leading-snug group-hover:text-[#3B82F6] transition-colors">{resource.title}</h3>
                         {resource.description && (
                           <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{resource.description}</p>
                         )}
@@ -259,7 +259,7 @@ export default function ResourcesPage() {
                             disabled={savingId === resource.id}
                           >
                             {resource.isSaved ? (
-                              <BookmarkCheck className="size-4 text-[#7CFC00]" />
+                              <BookmarkCheck className="size-4 text-[#3B82F6]" />
                             ) : (
                               <Bookmark className="size-4 text-muted-foreground" />
                             )}
@@ -278,13 +278,13 @@ export default function ResourcesPage() {
                 return (
                   <Link key={resource.id} href={`/dashboard/resources/${resource.slug || resource.id}`}>
                     <div className="flex items-center gap-3 p-3 rounded-lg bg-card border shadow-sm hover:shadow-md transition-all cursor-pointer group">
-                      <div className="w-9 h-9 rounded-lg bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center shrink-0">
-                        <Icon className="size-4 text-[#2D4A2D] dark:text-[#7CFC00]" />
+                      <div className="w-9 h-9 rounded-lg bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 flex items-center justify-center shrink-0">
+                        <Icon className="size-4 text-[#1E3A8A] dark:text-[#3B82F6]" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-sm font-medium truncate group-hover:text-[#7CFC00] transition-colors">{resource.title}</h3>
-                          {resource.isPremium && <Lock className="size-3 text-[#2D4A2D] shrink-0" />}
+                          <h3 className="text-sm font-medium truncate group-hover:text-[#3B82F6] transition-colors">{resource.title}</h3>
+                          {resource.isPremium && <Lock className="size-3 text-[#1E3A8A] shrink-0" />}
                         </div>
                         <p className="text-xs text-muted-foreground">{resource.category || "General"} · {resource.readTime || "5 min"}</p>
                       </div>
@@ -300,12 +300,12 @@ export default function ResourcesPage() {
                         disabled={savingId === resource.id}
                       >
                         {resource.isSaved ? (
-                          <BookmarkCheck className="size-4 text-[#7CFC00]" />
+                          <BookmarkCheck className="size-4 text-[#3B82F6]" />
                         ) : (
                           <Bookmark className="size-4 text-muted-foreground" />
                         )}
                       </Button>
-                      <ArrowRight className="size-4 text-muted-foreground group-hover:text-[#7CFC00] transition-colors shrink-0" />
+                      <ArrowRight className="size-4 text-muted-foreground group-hover:text-[#3B82F6] transition-colors shrink-0" />
                     </div>
                   </Link>
                 )
@@ -397,7 +397,7 @@ export default function ResourcesPage() {
               <label htmlFor="isPremium" className="text-sm">Premium resource (paid users only)</label>
             </div>
             <Button
-              className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A]"
+              className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D]"
               onClick={handleCreateResource}
               disabled={!newResource.title.trim() || creating}
             >

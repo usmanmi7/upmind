@@ -24,30 +24,30 @@ const legalLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0F1F0F] pt-12 sm:pt-16 pb-8">
+    <footer className="bg-[#0A1228] pt-12 sm:pt-16 pb-8">
       <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
           {/* Logo & Description */}
           <div className="col-span-2 md:col-span-4 lg:col-span-2 mb-4 lg:mb-0">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <span className="w-3 h-3 rounded-full bg-[#7CFC00]" />
-              <span className="text-[#7CFC00] font-bold text-xl tracking-tight font-heading">
+              <span className="w-3 h-3 rounded-full bg-[#3B82F6]" />
+              <span className="text-[#3B82F6] font-bold text-xl tracking-tight font-heading">
                 Upmind
               </span>
             </Link>
             <p className="text-white/40 text-sm leading-relaxed max-w-xs mb-6">
-              Strategic consulting for startups and growing teams. Build smarter,
-              scale faster with data-driven insights and expert guidance.
+              An engineering innovation platform. We help engineers find
+              problems worth solving — curated, AI-matched, and ready to build.
             </p>
             {/* Newsletter CTA */}
             <div className="flex items-center gap-2">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#7CFC00]/40 w-full max-w-[220px]"
+                className="bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#3B82F6]/40 w-full max-w-[220px]"
               />
-              <button className="bg-[#7CFC00] text-[#1A2E1A] rounded-full p-2.5 hover:bg-[#6BE000] transition-colors shrink-0">
+              <button className="bg-[#3B82F6] text-white rounded-full p-2.5 hover:bg-[#2563EB] transition-colors shrink-0">
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -63,7 +63,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-white/50 hover:text-[#7CFC00] text-sm transition-colors duration-200"
+                    className="text-white/50 hover:text-[#3B82F6] text-sm transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -82,7 +82,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-white/50 hover:text-[#7CFC00] text-sm transition-colors duration-200"
+                    className="text-white/50 hover:text-[#3B82F6] text-sm transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -100,7 +100,7 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:hello@upmind.io"
-                  className="text-white/50 hover:text-[#7CFC00] text-sm transition-colors duration-200"
+                  className="text-white/50 hover:text-[#3B82F6] text-sm transition-colors duration-200"
                 >
                   hello@upmind.io
                 </a>
@@ -108,7 +108,7 @@ export default function Footer() {
               <li>
                 <a
                   href="tel:+1234567890"
-                  className="text-white/50 hover:text-[#7CFC00] text-sm transition-colors duration-200"
+                  className="text-white/50 hover:text-[#3B82F6] text-sm transition-colors duration-200"
                 >
                   +1 (234) 567-890
                 </a>
@@ -117,21 +117,21 @@ export default function Footer() {
             <div className="flex gap-3 mt-4">
               <a
                 href="#"
-                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#7CFC00] hover:border-[#7CFC00]/40 transition-colors duration-200"
+                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#3B82F6] hover:border-[#3B82F6]/40 transition-colors duration-200"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-4 h-4" />
               </a>
               <a
                 href="#"
-                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#7CFC00] hover:border-[#7CFC00]/40 transition-colors duration-200"
+                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#3B82F6] hover:border-[#3B82F6]/40 transition-colors duration-200"
                 aria-label="Twitter"
               >
                 <Twitter className="w-4 h-4" />
               </a>
               <a
                 href="#"
-                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#7CFC00] hover:border-[#7CFC00]/40 transition-colors duration-200"
+                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#3B82F6] hover:border-[#3B82F6]/40 transition-colors duration-200"
                 aria-label="Instagram"
               >
                 <Instagram className="w-4 h-4" />

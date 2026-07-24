@@ -39,13 +39,13 @@ const quickPrompts = [
     label: "Analyze my startup",
     icon: BarChart3,
     prompt: "Can you analyze my startup and give me an overall assessment?",
-    color: "from-[#2D4A2D] to-[#8FBC8F]",
+    color: "from-[#1E3A8A] to-[#93C5FD]",
   },
   {
     label: "Business plan help",
     icon: FileText,
     prompt: "Help me create a business plan for my startup. What sections should I include?",
-    color: "from-[#7CFC00] to-[#2D4A2D]",
+    color: "from-[#3B82F6] to-[#1E3A8A]",
   },
   {
     label: "Pitch feedback",
@@ -66,15 +66,15 @@ const insightCards = [
     title: "Market Opportunity",
     description: "Ask me about market analysis and competitive positioning.",
     icon: Target,
-    color: "text-[#7CFC00]",
-    bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30",
+    color: "text-[#3B82F6]",
+    bg: "bg-[#DBEAFE] dark:bg-[#1E3A8A]/30",
   },
   {
     title: "Strategy Planning",
     description: "Get help with business plans, roadmaps, and growth strategies.",
     icon: Sparkles,
-    color: "text-[#2D4A2D]",
-    bg: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30",
+    color: "text-[#1E3A8A]",
+    bg: "bg-[#DBEAFE] dark:bg-[#1E3A8A]/30",
   },
   {
     title: "Revenue Model",
@@ -197,7 +197,7 @@ export default function AIAssistantPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-heading font-bold flex items-center gap-2">
-            <Sparkles className="size-6 text-[#7CFC00]" />
+            <Sparkles className="size-6 text-[#3B82F6]" />
             AI Assistant
           </h1>
           <p className="text-muted-foreground mt-1">
@@ -241,7 +241,7 @@ export default function AIAssistantPage() {
             <ScrollArea className="flex-1 p-4">
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-6 py-8">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
                     <Sparkles className="size-8 text-white" />
                   </div>
                   <div>
@@ -285,7 +285,7 @@ export default function AIAssistantPage() {
                       <div className={`max-w-[85%] sm:max-w-[75%]`}>
                         {msg.role === "assistant" && (
                           <div className="flex items-center gap-2 mb-1">
-                            <div className="w-5 h-5 rounded-md bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+                            <div className="w-5 h-5 rounded-md bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
                               <Sparkles className="size-3 text-white" />
                             </div>
                             <span className="text-xs font-medium text-muted-foreground">
@@ -296,7 +296,7 @@ export default function AIAssistantPage() {
                         <div
                           className={`px-4 py-3 rounded-2xl ${
                             msg.role === "user"
-                              ? "bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] text-[#1A2E1A] rounded-br-md text-sm leading-relaxed whitespace-pre-wrap"
+                              ? "bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] rounded-br-md text-sm leading-relaxed whitespace-pre-wrap"
                               : "bg-muted/50 rounded-bl-md"
                           }`}
                         >
@@ -362,7 +362,7 @@ export default function AIAssistantPage() {
                 />
                 <Button
                   size="icon"
-                  className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shrink-0"
+                  className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D] shrink-0"
                   disabled={!input.trim() || loading}
                   onClick={() => sendMessage(input)}
                 >

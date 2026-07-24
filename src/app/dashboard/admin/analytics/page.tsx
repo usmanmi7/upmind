@@ -74,7 +74,7 @@ interface AnalyticsData {
   messages: { total: number; unread: number }
 }
 
-const chartColors = ["#7CFC00", "#2D4A2D", "#10b981", "#f59e0b", "#ef4444", "#ec4899"]
+const chartColors = ["#3B82F6", "#1E3A8A", "#10b981", "#f59e0b", "#ef4444", "#ec4899"]
 
 export default function AdminAnalyticsPage() {
   const { toast } = useToast()
@@ -134,9 +134,9 @@ export default function AdminAnalyticsPage() {
         <TabsContent value="users" className="space-y-4 mt-4">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { title: "Total Users", value: d.users.total, icon: Users, color: "from-[#7CFC00] to-[#2D4A2D]" },
+              { title: "Total Users", value: d.users.total, icon: Users, color: "from-[#3B82F6] to-[#1E3A8A]" },
               { title: "Paid Users", value: d.users.paid, icon: TrendingUp, color: "from-green-500 to-emerald-500" },
-              { title: "New (30d)", value: d.users.recent, icon: ArrowUpRight, color: "from-[#2D4A2D] to-[#8FBC8F]" },
+              { title: "New (30d)", value: d.users.recent, icon: ArrowUpRight, color: "from-[#1E3A8A] to-[#93C5FD]" },
               { title: "Consultants", value: d.users.consultants, icon: Users, color: "from-orange-500 to-red-500" },
             ].map((stat) => (
               <Card key={stat.title} className="border-0 bg-gradient-to-br from-background to-muted/30 shadow-sm">
@@ -167,8 +167,8 @@ export default function AdminAnalyticsPage() {
                       <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
                       <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
                       <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px" }} />
-                      <Area type="monotone" dataKey="total" stroke="#7CFC00" fill="#7CFC0020" name="Total Users" />
-                      <Area type="monotone" dataKey="new" stroke="#2D4A2D" fill="#2D4A2D20" name="New Users" />
+                      <Area type="monotone" dataKey="total" stroke="#3B82F6" fill="#3B82F620" name="Total Users" />
+                      <Area type="monotone" dataKey="new" stroke="#1E3A8A" fill="#1E3A8A20" name="New Users" />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
@@ -192,7 +192,7 @@ export default function AdminAnalyticsPage() {
                         </div>
                         <div className="h-2 bg-muted rounded-full overflow-hidden">
                           <div
-                            className="h-full rounded-full bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D]"
+                            className="h-full rounded-full bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A]"
                             style={{ width: `${(c._count.country / d.users.total) * 100}%` }}
                           />
                         </div>
@@ -236,7 +236,7 @@ export default function AdminAnalyticsPage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
               { title: "Total Revenue", value: `$${d.revenue.total.toLocaleString()}`, color: "from-green-500 to-emerald-500" },
-              { title: "Active Subs", value: d.subscriptions.active, color: "from-[#7CFC00] to-[#2D4A2D]" },
+              { title: "Active Subs", value: d.subscriptions.active, color: "from-[#3B82F6] to-[#1E3A8A]" },
               { title: "Cancelled", value: d.subscriptions.cancelled, color: "from-red-500 to-orange-500" },
               { title: "Expired", value: d.subscriptions.expired, color: "from-yellow-500 to-amber-500" },
             ].map((stat) => (
@@ -262,7 +262,7 @@ export default function AdminAnalyticsPage() {
                       <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
                       <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
                       <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px" }} />
-                      <Line type="monotone" dataKey="revenue" stroke="#7CFC00" strokeWidth={2} dot={{ fill: "#7CFC00" }} name="Revenue ($)" />
+                      <Line type="monotone" dataKey="revenue" stroke="#3B82F6" strokeWidth={2} dot={{ fill: "#3B82F6" }} name="Revenue ($)" />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -338,7 +338,7 @@ export default function AdminAnalyticsPage() {
                       <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} />
                       <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
                       <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px" }} />
-                      <Bar dataKey="count" fill="#7CFC00" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="count" fill="#3B82F6" radius={[4, 4, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -353,7 +353,7 @@ export default function AdminAnalyticsPage() {
                 <div className="space-y-3">
                   {d.resources.topDownloads.map((r, i) => (
                     <div key={r.id} className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center text-white text-sm font-bold shrink-0">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center text-white text-sm font-bold shrink-0">
                         {i + 1}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -451,8 +451,8 @@ export default function AdminAnalyticsPage() {
                       <p className="text-xl font-bold text-green-500">{d.messages.total - d.messages.unread}</p>
                       <p className="text-xs text-muted-foreground">Read</p>
                     </div>
-                    <div className="p-3 rounded-lg bg-[#7CFC00]/10 text-center">
-                      <p className="text-xl font-bold text-[#7CFC00]">{d.messages.unread}</p>
+                    <div className="p-3 rounded-lg bg-[#3B82F6]/10 text-center">
+                      <p className="text-xl font-bold text-[#3B82F6]">{d.messages.unread}</p>
                       <p className="text-xs text-muted-foreground">Unread</p>
                     </div>
                   </div>
@@ -475,8 +475,8 @@ export default function AdminAnalyticsPage() {
                       <p className="text-xl font-bold text-green-500">{d.messages.total - d.messages.unread}</p>
                       <p className="text-xs text-muted-foreground">Read</p>
                     </div>
-                    <div className="p-3 rounded-lg bg-[#7CFC00]/10 text-center">
-                      <p className="text-xl font-bold text-[#7CFC00]">{d.messages.unread}</p>
+                    <div className="p-3 rounded-lg bg-[#3B82F6]/10 text-center">
+                      <p className="text-xl font-bold text-[#3B82F6]">{d.messages.unread}</p>
                       <p className="text-xs text-muted-foreground">Unread</p>
                     </div>
                   </div>

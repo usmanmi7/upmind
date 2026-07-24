@@ -165,7 +165,7 @@ export default function AdminConsultantsPage() {
         </div>
         <Button
           onClick={() => { fetchFreeUsers(); setAddOpen(true) }}
-          className="bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] hover:from-[#6BE000] hover:to-[#1A2E1A] text-white"
+          className="bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] hover:from-[#2563EB] hover:to-[#0F1B3D] text-white"
         >
           <Plus className="size-4 mr-2" />
           Add Consultant
@@ -175,10 +175,10 @@ export default function AdminConsultantsPage() {
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         {[
-          { title: "Total Consultants", value: consultants.length, icon: UserCog, color: "from-[#7CFC00] to-[#2D4A2D]" },
+          { title: "Total Consultants", value: consultants.length, icon: UserCog, color: "from-[#3B82F6] to-[#1E3A8A]" },
           { title: "Active", value: activeConsultants, icon: CheckCircle, color: "from-green-500 to-emerald-500" },
           { title: "Avg Rating", value: avgRating, icon: Star, color: "from-yellow-500 to-orange-500" },
-          { title: "Total Appointments", value: totalAppointments, icon: Calendar, color: "from-[#2D4A2D] to-[#8FBC8F]" },
+          { title: "Total Appointments", value: totalAppointments, icon: Calendar, color: "from-[#1E3A8A] to-[#93C5FD]" },
         ].map((stat) => (
           <Card key={stat.title} className="border-0 bg-gradient-to-br from-background to-muted/30 shadow-sm">
             <CardContent className="p-4 flex items-center gap-3">
@@ -209,7 +209,7 @@ export default function AdminConsultantsPage() {
                     <div className="flex items-center gap-3">
                       <Avatar className="size-12">
                         <AvatarImage src={consultant.user.image || undefined} />
-                        <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white">
+                        <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#1E3A8A] text-white">
                           {consultant.user.name.split(" ").map((n) => n[0]).join("")}
                         </AvatarFallback>
                       </Avatar>
@@ -233,7 +233,7 @@ export default function AdminConsultantsPage() {
                   {/* Specialties */}
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {(consultant.specialties || "").split(",").map((s) => (
-                      <Badge key={s} variant="secondary" className="text-xs bg-[#2D4A2D]/10 text-[#2D4A2D]">
+                      <Badge key={s} variant="secondary" className="text-xs bg-[#1E3A8A]/10 text-[#1E3A8A]">
                         {s.trim()}
                       </Badge>
                     ))}
@@ -321,7 +321,7 @@ export default function AdminConsultantsPage() {
                 placeholder="e.g., Mon-Fri, 9am-5pm EST"
               />
             </div>
-            <Button onClick={handleAddConsultant} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
+            <Button onClick={handleAddConsultant} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] text-white">
               Add Consultant
             </Button>
           </div>
@@ -368,7 +368,7 @@ export default function AdminConsultantsPage() {
                 onCheckedChange={(checked) => setEditForm((prev) => ({ ...prev, isActive: checked }))}
               />
             </div>
-            <Button onClick={handleEditConsultant} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#2D4A2D] text-white">
+            <Button onClick={handleEditConsultant} className="w-full bg-gradient-to-r from-[#5CBF00] to-[#1E3A8A] text-white">
               Save Changes
             </Button>
           </div>

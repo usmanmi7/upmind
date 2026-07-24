@@ -30,10 +30,10 @@ const typeIcons: Record<string, React.ElementType> = {
 }
 
 const typeColors: Record<string, string> = {
-  MESSAGE: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 text-[#2D4A2D] dark:text-[#7CFC00]",
-  APPOINTMENT: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 text-[#1A2E1A] dark:text-[#7CFC00]",
+  MESSAGE: "bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 text-[#1E3A8A] dark:text-[#3B82F6]",
+  APPOINTMENT: "bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 text-[#0F1B3D] dark:text-[#3B82F6]",
   PAYMENT: "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400",
-  RESOURCE: "bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 text-[#2D4A2D] dark:text-[#7CFC00]",
+  RESOURCE: "bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 text-[#1E3A8A] dark:text-[#3B82F6]",
   SYSTEM: "bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400",
 }
 
@@ -136,7 +136,7 @@ export default function NotificationsPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
           <p className="text-sm text-muted-foreground">Loading notifications...</p>
         </div>
       </div>
@@ -178,7 +178,7 @@ export default function NotificationsPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className={`text-sm font-medium ${!notif.isRead ? "font-semibold" : ""}`}>{notif.title}</p>
-                    {!notif.isRead && <div className="w-2 h-2 rounded-full bg-[#7CFC00] shrink-0" />}
+                    {!notif.isRead && <div className="w-2 h-2 rounded-full bg-[#3B82F6] shrink-0" />}
                   </div>
                   <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{notif.message}</p>
                   <p className="text-[10px] text-muted-foreground mt-1">{formatTime(notif.createdAt)}</p>
@@ -201,7 +201,7 @@ export default function NotificationsPage() {
             <Card
               key={notif.id}
               className={`border-0 shadow-md shadow-black/5 dark:shadow-black/20 transition-all duration-200 ${
-                !notif.isRead ? "bg-[#E8F5E9]/50 dark:bg-[#2D4A2D]/10" : ""
+                !notif.isRead ? "bg-[#E8F5E9]/50 dark:bg-[#1E3A8A]/10" : ""
               }`}
             >
               <CardContent className="p-4">

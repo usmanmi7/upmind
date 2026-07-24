@@ -49,7 +49,7 @@ const PLAN_LABELS: Record<AiUsage["plan"], string> = {
 const PLAN_COLORS: Record<AiUsage["plan"], string> = {
   FREE: "bg-muted text-muted-foreground border-muted",
   GROWTH_PRO:
-    "bg-gradient-to-r from-[#7CFC00]/15 to-[#2D4A2D]/15 text-[#2D4A2D] dark:text-[#7CFC00] border-[#7CFC00]/40",
+    "bg-gradient-to-r from-[#3B82F6]/15 to-[#1E3A8A]/15 text-[#1E3A8A] dark:text-[#3B82F6] border-[#3B82F6]/40",
   ENTERPRISE:
     "bg-gradient-to-r from-amber-400/15 to-orange-500/15 text-amber-700 dark:text-amber-300 border-amber-400/40",
   ANONYMOUS: "bg-muted text-muted-foreground border-muted",
@@ -134,7 +134,7 @@ export function AIUpgradeDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex items-center justify-center mb-2">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CFC00] via-[#2D4A2D] to-[#8FBC8F] flex items-center justify-center shadow-lg shadow-[#7CFC00]/25">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#3B82F6] via-[#1E3A8A] to-[#93C5FD] flex items-center justify-center shadow-lg shadow-[#3B82F6]/25">
               <Crown className="size-8 text-white" />
             </div>
           </div>
@@ -153,9 +153,9 @@ export function AIUpgradeDialog({
 
         <div className="space-y-4 mt-2">
           {/* Feature Preview */}
-          <div className="p-4 rounded-xl bg-gradient-to-br from-[#E8F5E9] to-[#C8E6C9] dark:from-[#2D4A2D]/20 dark:to-[#1A2E1A]/20 border border-[#7CFC00]/30 dark:border-[#2D4A2D]/50">
+          <div className="p-4 rounded-xl bg-gradient-to-br from-[#E8F5E9] to-[#DBEAFE] dark:from-[#1E3A8A]/20 dark:to-[#0F1B3D]/20 border border-[#3B82F6]/30 dark:border-[#1E3A8A]/50">
             <div className="flex items-center gap-2 mb-3">
-              <Lock className="size-4 text-[#2D4A2D] dark:text-[#7CFC00]" />
+              <Lock className="size-4 text-[#1E3A8A] dark:text-[#3B82F6]" />
               <span className="text-sm font-semibold">
                 {currentPlan === "ANONYMOUS"
                   ? "With a free account you get"
@@ -167,7 +167,7 @@ export function AIUpgradeDialog({
                 .slice(0, currentPlan === "ANONYMOUS" ? 3 : 4)
                 .map((feat) => (
                   <div key={feat} className="flex items-center gap-2">
-                    <Check className="size-3.5 text-[#7CFC00] shrink-0" />
+                    <Check className="size-3.5 text-[#3B82F6] shrink-0" />
                     <span className="text-sm text-muted-foreground">{feat}</span>
                   </div>
                 ))}
@@ -183,8 +183,8 @@ export function AIUpgradeDialog({
               <p className="text-lg font-bold">$0</p>
               <p className="text-[10px] text-muted-foreground">1 AI Q&amp;A/mo</p>
             </div>
-            <div className="p-3 rounded-lg border border-[#7CFC00]/50 bg-[#E8F5E9] dark:bg-[#2D4A2D]/20 text-center relative">
-              <Badge className="text-xs mb-1 bg-gradient-to-r from-[#7CFC00] to-[#2D4A2D] border-0 text-[#1A2E1A]">
+            <div className="p-3 rounded-lg border border-[#3B82F6]/50 bg-[#E8F5E9] dark:bg-[#1E3A8A]/20 text-center relative">
+              <Badge className="text-xs mb-1 bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] border-0 text-[#0F1B3D]">
                 <Sparkles className="size-3 mr-1" /> Growth Pro
               </Badge>
               <p className="text-lg font-bold">$49</p>
@@ -196,7 +196,7 @@ export function AIUpgradeDialog({
           {currentPlan === "ANONYMOUS" ? (
             <Button
               asChild
-              className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shadow-lg shadow-[#7CFC00]/25"
+              className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D] shadow-lg shadow-[#3B82F6]/25"
             >
               <Link href="/auth/signup">
                 <Rocket className="size-4 mr-2" />
@@ -207,7 +207,7 @@ export function AIUpgradeDialog({
           ) : (
             <Button
               asChild
-              className="w-full bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shadow-lg shadow-[#7CFC00]/25"
+              className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D] shadow-lg shadow-[#3B82F6]/25"
             >
               <Link href="/dashboard/subscription">
                 <Zap className="size-4 mr-2" />

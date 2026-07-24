@@ -15,8 +15,8 @@ export default function DocumentsPage() {
       <div className="max-w-lg w-full text-center space-y-6">
         {/* Icon */}
         <div className="relative mx-auto w-24 h-24">
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#7CFC00]/20 to-[#2D4A2D]/20 animate-pulse" />
-          <div className="relative w-24 h-24 rounded-3xl bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center shadow-lg shadow-[#7CFC00]/20">
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#3B82F6]/20 to-[#1E3A8A]/20 animate-pulse" />
+          <div className="relative w-24 h-24 rounded-3xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center shadow-lg shadow-[#3B82F6]/20">
             <FileText className="size-10 text-white" />
           </div>
           {/* Construction badge */}

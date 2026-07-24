@@ -213,11 +213,11 @@ export default function AdminApplicationsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="p-5 rounded-2xl bg-card border shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#7CFC00]/20 flex items-center justify-center">
-              <Briefcase className="w-5 h-5 text-[#2D4A2D]" />
+            <div className="w-10 h-10 rounded-xl bg-[#3B82F6]/20 flex items-center justify-center">
+              <Briefcase className="w-5 h-5 text-[#1E3A8A]" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#1A2E1A]">{total}</p>
+              <p className="text-2xl font-bold text-[#0F1B3D]">{total}</p>
               <p className="text-xs text-gray-500">Total Applications</p>
             </div>
           </div>
@@ -228,7 +228,7 @@ export default function AdminApplicationsPage() {
               <Clock className="w-5 h-5 text-yellow-700" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#1A2E1A]">{pendingCount}</p>
+              <p className="text-2xl font-bold text-[#0F1B3D]">{pendingCount}</p>
               <p className="text-xs text-gray-500">Pending Review</p>
             </div>
           </div>
@@ -239,7 +239,7 @@ export default function AdminApplicationsPage() {
               <Eye className="w-5 h-5 text-blue-700" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-[#1A2E1A]">
+              <p className="text-2xl font-bold text-[#0F1B3D]">
                 {applications.filter(a => a.status === "REVIEWING" || a.status === "SHORTLISTED").length}
               </p>
               <p className="text-xs text-gray-500">In Review</p>
@@ -309,12 +309,12 @@ export default function AdminApplicationsPage() {
                   <div className="flex items-center gap-3 flex-1 min-w-0">
                     <Avatar className="w-10 h-10 shrink-0">
                       <AvatarImage src={app.user.image || undefined} />
-                      <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white text-xs font-bold">
+                      <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#1E3A8A] text-white text-xs font-bold">
                         {app.fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}
                       </AvatarFallback>
                     </Avatar>
                     <div className="min-w-0">
-                      <h3 className="text-sm font-semibold text-[#1A2E1A] truncate group-hover:text-[#2D4A2D] transition-colors">
+                      <h3 className="text-sm font-semibold text-[#0F1B3D] truncate group-hover:text-[#1E3A8A] transition-colors">
                         {app.fullName}
                       </h3>
                       <p className="text-xs text-gray-500 truncate">{app.email}</p>
@@ -323,11 +323,11 @@ export default function AdminApplicationsPage() {
 
                   {/* Job Info */}
                   <div className="flex items-center gap-3 sm:min-w-[200px]">
-                    <div className="w-8 h-8 rounded-lg bg-[#2D4A2D]/10 flex items-center justify-center shrink-0">
-                      <Briefcase className="w-4 h-4 text-[#2D4A2D]" />
+                    <div className="w-8 h-8 rounded-lg bg-[#1E3A8A]/10 flex items-center justify-center shrink-0">
+                      <Briefcase className="w-4 h-4 text-[#1E3A8A]" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-[#1A2E1A] truncate">{app.jobTitle}</p>
+                      <p className="text-sm font-medium text-[#0F1B3D] truncate">{app.jobTitle}</p>
                       <p className="text-xs text-gray-400">{app.department}</p>
                     </div>
                   </div>
@@ -335,8 +335,8 @@ export default function AdminApplicationsPage() {
                   {/* Status & Date */}
                   <div className="flex items-center gap-3 shrink-0">
                     {app.resumeUrl && (
-                      <div className="w-7 h-7 rounded-lg bg-[#7CFC00]/10 flex items-center justify-center" title="CV attached">
-                        <FileText className="w-3.5 h-3.5 text-[#2D4A2D]" />
+                      <div className="w-7 h-7 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center" title="CV attached">
+                        <FileText className="w-3.5 h-3.5 text-[#1E3A8A]" />
                       </div>
                     )}
                     <Badge variant="outline" className={`text-xs ${statusColor}`}>
@@ -344,7 +344,7 @@ export default function AdminApplicationsPage() {
                       {app.status}
                     </Badge>
                     <span className="text-xs text-gray-400 hidden sm:inline">{formatDate(app.createdAt)}</span>
-                    <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-[#2D4A2D] transition-colors shrink-0" />
+                    <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-[#1E3A8A] transition-colors shrink-0" />
                   </div>
                 </div>
               </div>
@@ -401,16 +401,16 @@ export default function AdminApplicationsPage() {
                 <div className="flex items-center gap-3">
                   <Avatar className="w-12 h-12">
                     <AvatarImage src={selectedApp.user.image || undefined} />
-                    <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#2D4A2D] text-white font-bold">
+                    <AvatarFallback className="bg-gradient-to-br from-[#5CBF00] to-[#1E3A8A] text-white font-bold">
                       {selectedApp.fullName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <DialogTitle className="text-lg font-bold text-[#1A2E1A]">
+                    <DialogTitle className="text-lg font-bold text-[#0F1B3D]">
                       {selectedApp.fullName}
                     </DialogTitle>
                     <DialogDescription className="text-sm text-gray-500">
-                      Applied for <span className="font-medium text-[#1A2E1A]">{selectedApp.jobTitle}</span> · {selectedApp.department}
+                      Applied for <span className="font-medium text-[#0F1B3D]">{selectedApp.jobTitle}</span> · {selectedApp.department}
                     </DialogDescription>
                   </div>
                 </div>
@@ -420,7 +420,7 @@ export default function AdminApplicationsPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                 <div className="flex items-center gap-2 text-sm">
                   <Mail className="w-4 h-4 text-gray-400 shrink-0" />
-                  <a href={`mailto:${selectedApp.email}`} className="text-[#2D4A2D] hover:underline truncate">
+                  <a href={`mailto:${selectedApp.email}`} className="text-[#1E3A8A] hover:underline truncate">
                     {selectedApp.email}
                   </a>
                 </div>
@@ -433,7 +433,7 @@ export default function AdminApplicationsPage() {
                 {selectedApp.linkedIn && (
                   <div className="flex items-center gap-2 text-sm">
                     <Linkedin className="w-4 h-4 text-gray-400 shrink-0" />
-                    <a href={selectedApp.linkedIn.startsWith("http") ? selectedApp.linkedIn : `https://${selectedApp.linkedIn}`} target="_blank" rel="noopener noreferrer" className="text-[#2D4A2D] hover:underline truncate">
+                    <a href={selectedApp.linkedIn.startsWith("http") ? selectedApp.linkedIn : `https://${selectedApp.linkedIn}`} target="_blank" rel="noopener noreferrer" className="text-[#1E3A8A] hover:underline truncate">
                       {selectedApp.linkedIn}
                     </a>
                   </div>
@@ -441,14 +441,14 @@ export default function AdminApplicationsPage() {
                 {selectedApp.portfolio && (
                   <div className="flex items-center gap-2 text-sm">
                     <Sparkles className="w-4 h-4 text-gray-400 shrink-0" />
-                    <a href={selectedApp.portfolio.startsWith("http") ? selectedApp.portfolio : `https://${selectedApp.portfolio}`} target="_blank" rel="noopener noreferrer" className="text-[#2D4A2D] hover:underline truncate">
+                    <a href={selectedApp.portfolio.startsWith("http") ? selectedApp.portfolio : `https://${selectedApp.portfolio}`} target="_blank" rel="noopener noreferrer" className="text-[#1E3A8A] hover:underline truncate">
                       {selectedApp.portfolio}
                     </a>
                   </div>
                 )}
                 {selectedApp.resumeUrl && (
                   <div className="sm:col-span-2">
-                    <Button asChild variant="outline" size="sm" className="gap-2 border-[#7CFC00]/30 hover:bg-[#7CFC00]/10 text-[#2D4A2D]">
+                    <Button asChild variant="outline" size="sm" className="gap-2 border-[#3B82F6]/30 hover:bg-[#3B82F6]/10 text-[#1E3A8A]">
                       <a href={selectedApp.resumeUrl} target="_blank" rel="noopener noreferrer">
                         <Download className="w-4 h-4" />
                         Download CV / Resume
@@ -461,7 +461,7 @@ export default function AdminApplicationsPage() {
               {/* Cover Letter */}
               {selectedApp.coverLetter && (
                 <div className="mt-5">
-                  <h4 className="text-sm font-semibold text-[#1A2E1A] mb-2 flex items-center gap-2">
+                  <h4 className="text-sm font-semibold text-[#0F1B3D] mb-2 flex items-center gap-2">
                     <FileText className="w-4 h-4" />
                     Cover Letter
                   </h4>
@@ -474,7 +474,7 @@ export default function AdminApplicationsPage() {
               {/* Status Update */}
               <div className="mt-5 p-4 rounded-xl border bg-card">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
-                  <h4 className="text-sm font-semibold text-[#1A2E1A]">Update Status</h4>
+                  <h4 className="text-sm font-semibold text-[#0F1B3D]">Update Status</h4>
                   <div className="flex items-center gap-2 ml-auto">
                     <Badge variant="outline" className={`text-xs ${statusColors[selectedApp.status]}`}>
                       Current: {selectedApp.status}
@@ -494,7 +494,7 @@ export default function AdminApplicationsPage() {
                         variant={selectedApp.status === status ? "default" : "outline"}
                         className={
                           selectedApp.status === status
-                            ? "bg-[#1A2E1A] hover:bg-[#243824] text-white"
+                            ? "bg-[#0F1B3D] hover:bg-[#1E3A8A] text-white"
                             : "border-gray-200"
                         }
                         disabled={updating || selectedApp.status === status}
@@ -510,7 +510,7 @@ export default function AdminApplicationsPage() {
 
               {/* Admin Notes */}
               <div className="mt-5">
-                <h4 className="text-sm font-semibold text-[#1A2E1A] mb-2">Admin Notes</h4>
+                <h4 className="text-sm font-semibold text-[#0F1B3D] mb-2">Admin Notes</h4>
                 <Textarea
                   placeholder="Add internal notes about this candidate..."
                   rows={3}

@@ -43,7 +43,7 @@ const quickActions = [
     description: "Connect with fellow founders",
     icon: UsersRound,
     href: "/dashboard/community",
-    color: "from-[#8FBC8F] to-[#2D4A2D]",
+    color: "from-[#93C5FD] to-[#1E3A8A]",
   },
   {
     title: "View Roadmap",
@@ -67,7 +67,7 @@ const adminQuickActions = [
     description: "View and manage all users",
     icon: Users,
     href: "/admin/users",
-    color: "from-[#7CFC00] to-[#2D4A2D]",
+    color: "from-[#3B82F6] to-[#1E3A8A]",
   },
   {
     title: "View Analytics",
@@ -81,7 +81,7 @@ const adminQuickActions = [
     description: "Add and edit platform resources",
     icon: FileText,
     href: "/admin/resources",
-    color: "from-[#8FBC8F] to-[#2D4A2D]",
+    color: "from-[#93C5FD] to-[#1E3A8A]",
   },
   {
     title: "Platform Settings",
@@ -179,7 +179,7 @@ function AdminDashboardFallback() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
           <p className="text-sm text-muted-foreground">Loading admin dashboard...</p>
         </div>
       </div>
@@ -192,14 +192,14 @@ function AdminDashboardFallback() {
       value: data?.users.total || 0,
       change: `+${data?.users.recent || 0} this month`,
       icon: Users,
-      color: "from-[#2D4A2D] to-[#8FBC8F]",
+      color: "from-[#1E3A8A] to-[#93C5FD]",
     },
     {
       title: "Paid Users",
       value: data?.users.paid || 0,
       change: `${data?.users.total ? Math.round(((data?.users.paid || 0) / data?.users.total) * 100) : 0}% conversion`,
       icon: DollarSign,
-      color: "from-[#7CFC00] to-[#2D4A2D]",
+      color: "from-[#3B82F6] to-[#1E3A8A]",
     },
     {
       title: "Revenue",
@@ -223,7 +223,7 @@ function AdminDashboardFallback() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-heading font-bold flex items-center gap-2">
-            <Shield className="size-7 text-[#7CFC00]" />
+            <Shield className="size-7 text-[#3B82F6]" />
             Admin Dashboard
           </h1>
           <p className="text-muted-foreground mt-1">
@@ -232,7 +232,7 @@ function AdminDashboardFallback() {
         </div>
         <Button
           asChild
-          className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shadow-lg shadow-[#7CFC00]/25"
+          className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D] shadow-lg shadow-[#3B82F6]/25"
         >
           <Link href="/admin">
             <Shield className="size-4" />
@@ -302,7 +302,7 @@ function AdminDashboardFallback() {
               <div className="space-y-3">
                 {data.appointments.today.slice(0, 5).map((apt) => (
                   <div key={apt.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
-                    <div className="w-2 h-2 rounded-full bg-[#7CFC00] shrink-0" />
+                    <div className="w-2 h-2 rounded-full bg-[#3B82F6] shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{apt.user.name}</p>
                       <p className="text-xs text-muted-foreground">
@@ -335,7 +335,7 @@ function AdminDashboardFallback() {
                 { label: "Consultants", value: data?.users.consultants || 0, icon: Shield },
               ].map((metric) => (
                 <div key={metric.label} className="flex items-center gap-2 p-3 rounded-lg bg-muted/30">
-                  <metric.icon className="size-4 text-[#7CFC00] shrink-0" />
+                  <metric.icon className="size-4 text-[#3B82F6] shrink-0" />
                   <div>
                     <p className="text-lg font-bold">{metric.value}</p>
                     <p className="text-xs text-muted-foreground">{metric.label}</p>
@@ -401,7 +401,7 @@ function UserDashboard() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="size-8 animate-spin text-[#7CFC00]" />
+          <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
           <p className="text-sm text-muted-foreground">Loading your dashboard...</p>
         </div>
       </div>
@@ -422,7 +422,7 @@ function UserDashboard() {
         </div>
         <Button
           asChild
-          className="bg-[#7CFC00] hover:bg-[#6BE000] text-[#1A2E1A] shadow-lg shadow-[#7CFC00]/25"
+          className="bg-[#3B82F6] hover:bg-[#2563EB] text-[#0F1B3D] shadow-lg shadow-[#3B82F6]/25"
         >
           <Link href="/dashboard/startup">
             <Rocket className="size-4" />
@@ -441,8 +441,8 @@ function UserDashboard() {
                 <p className="text-sm text-muted-foreground">Startup Progress</p>
                 <p className="text-2xl font-bold mt-1">{progress}%</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center">
-                <TrendingUp className="size-5 text-[#2D4A2D] dark:text-[#7CFC00]" />
+              <div className="w-10 h-10 rounded-xl bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 flex items-center justify-center">
+                <TrendingUp className="size-5 text-[#1E3A8A] dark:text-[#3B82F6]" />
               </div>
             </div>
             <Progress value={progress} className="mt-3 h-1.5" />
@@ -471,8 +471,8 @@ function UserDashboard() {
                 <p className="text-sm text-muted-foreground">Appointments</p>
                 <p className="text-2xl font-bold mt-1">{overview?.scheduledAppointments || 0}</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center">
-                <Calendar className="size-5 text-[#1A2E1A] dark:text-[#7CFC00]" />
+              <div className="w-10 h-10 rounded-xl bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 flex items-center justify-center">
+                <Calendar className="size-5 text-[#0F1B3D] dark:text-[#3B82F6]" />
               </div>
             </div>
             <p className="text-xs text-muted-foreground mt-3">
@@ -488,8 +488,8 @@ function UserDashboard() {
                 <p className="text-sm text-muted-foreground">Resources Viewed</p>
                 <p className="text-2xl font-bold mt-1">{overview?.resourcesUsed || 0}</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-[#C8E6C9] dark:bg-[#2D4A2D]/30 flex items-center justify-center">
-                <BookOpen className="size-5 text-[#2D4A2D] dark:text-[#7CFC00]" />
+              <div className="w-10 h-10 rounded-xl bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 flex items-center justify-center">
+                <BookOpen className="size-5 text-[#1E3A8A] dark:text-[#3B82F6]" />
               </div>
             </div>
             <p className="text-xs text-muted-foreground mt-3">
@@ -548,7 +548,7 @@ function UserDashboard() {
                         task.status === "COMPLETED"
                           ? "bg-green-500"
                           : task.status === "IN_PROGRESS"
-                          ? "bg-[#7CFC00]"
+                          ? "bg-[#3B82F6]"
                           : "bg-muted-foreground/40"
                       }`}
                     />
@@ -583,7 +583,7 @@ function UserDashboard() {
                 <p className="text-sm text-muted-foreground">No tasks yet</p>
                 <p className="text-xs text-muted-foreground mt-1">
                   Create tasks in your{" "}
-                  <Link href="/dashboard/roadmap" className="text-[#7CFC00] hover:underline">
+                  <Link href="/dashboard/roadmap" className="text-[#3B82F6] hover:underline">
                     roadmap
                   </Link>{" "}
                   to track progress
@@ -600,7 +600,7 @@ function UserDashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle className="text-base font-heading flex items-center gap-2">
-                    <Zap className="size-4 text-[#7CFC00]" /> Quick Wins
+                    <Zap className="size-4 text-[#3B82F6]" /> Quick Wins
                   </CardTitle>
                   <CardDescription>
                     Complete these actions to earn XP and unlock badges
@@ -630,7 +630,7 @@ function UserDashboard() {
                       className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
                         item.completed
                           ? "bg-green-500"
-                          : "border-2 border-muted-foreground/30 group-hover:border-[#7CFC00]/50"
+                          : "border-2 border-muted-foreground/30 group-hover:border-[#3B82F6]/50"
                       }`}
                     >
                       {item.completed ? (
@@ -643,13 +643,13 @@ function UserDashboard() {
                       className={`text-sm flex-1 ${
                         item.completed
                           ? "line-through text-muted-foreground"
-                          : "font-medium group-hover:text-[#7CFC00]"
+                          : "font-medium group-hover:text-[#3B82F6]"
                       }`}
                     >
                       {item.title}
                     </span>
                     {!item.completed && (
-                      <ArrowRight className="size-3 text-muted-foreground/30 group-hover:text-[#7CFC00] transition-colors" />
+                      <ArrowRight className="size-3 text-muted-foreground/30 group-hover:text-[#3B82F6] transition-colors" />
                     )}
                     {item.completed && (
                       <Badge className="text-[10px] bg-green-500/10 text-green-600 dark:text-green-400 border-0 px-1.5 py-0">
@@ -677,9 +677,9 @@ function UserDashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-4 p-3 rounded-xl bg-gradient-to-br from-[#2D4A2D]/10 to-[#1A2E1A]/10 border border-[#7CFC00]/30 dark:border-[#2D4A2D]/50 mb-3">
+              <div className="flex items-center gap-4 p-3 rounded-xl bg-gradient-to-br from-[#1E3A8A]/10 to-[#0F1B3D]/10 border border-[#3B82F6]/30 dark:border-[#1E3A8A]/50 mb-3">
                 <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7CFC00] to-[#2D4A2D] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
                     <Sparkles className="size-5 text-white" />
                   </div>
                   <div>
