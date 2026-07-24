@@ -45,6 +45,8 @@ model User {
   sessions        Session[]
   accounts        Account[]
   chats           Chat[]
+  skills          UserSkill[]
+  innovationMatches InnovationMatch[]
 }
 
 enum Role {
@@ -513,4 +515,178 @@ model ChatMessage {
   chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
 
   @@index([chatId, createdAt])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SOLVE THEM — Engineering Innovation Platform models
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// World problems collected from WHO, UN, UNICEF, World Bank, research papers,
+/// etc. The heart of the Solve Them platform. Each problem has rich metadata
+/// for filtering, scoring, and matching engineers to problems they can solve.
+model Problem {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  title           String
+  summary         String   // 1-2 sentence description (public)
+  description     String   @db.Text // full description (public)
+
+  // Categorization
+  category        String   // e.g. "Healthcare", "Climate Change", "AI"
+  tags            String[] @default([]) // multi-tag for flexible filtering
+  source          String?  // e.g. "WHO", "United Nations", "Research Paper"
+  sourceUrl       String?
+
+  // Scope
+  scope           ProblemScope @default(GLOBAL) // GLOBAL | REGIONAL | NATIONAL
+  regions         String[] @default([]) // e.g. ["Sri Lanka", "South Asia"]
+  countriesAffected String[] @default([])
+  peopleAffected  String?  // e.g. "19 Million+" (kept as string for display)
+
+  // Scoring (0-100 unless noted)
+  severity        Int      @default(50) // how bad is this problem?
+  difficulty      Int      @default(5)  // 1-10 scale
+  marketNeed      Int      @default(50) // demand for solutions
+  globalDemand    Int      @default(50) // % of world that needs this solved
+  futureImportance Int     @default(50) // how important in 10 years
+  innovationScore Int      @default(50) // how much room for innovation
+  impactScore     Int      @default(50) // estimated impact if solved
+
+  // Solvability
+  canEngineersSolve Boolean @default(true)
+  engineerSolvableNote String? // brief note on why/why not
+
+  // Timeline estimates (in months) for a typical team
+  estimatedTimeline Int?   // e.g. 4 (months)
+
+  // Filtering flags
+  difficultyLevel DifficultyLevel @default(MEDIUM) // EASY | MEDIUM | HARD | EXTREME
+  projectTypes    String[] @default([]) // ["Startup", "Research", "Product", ...]
+
+  // Visibility / publishing
+  isPublished     Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations — locked content accessible to logged-in users
+  solutions       ProblemSolution[]
+  skills          ProblemSkill[]
+  teamTemplates   ProblemTeam[]
+  roadmaps        ProblemRoadmap[]
+  innovationMatches InnovationMatch[]
+
+  @@index([category])
+  @@index([difficultyLevel])
+  @@index([isPublished])
+}
+
+enum ProblemScope {
+  GLOBAL
+  REGIONAL
+  NATIONAL
+  LOCAL
+}
+
+enum DifficultyLevel {
+  EASY
+  MEDIUM
+  HARD
+  EXTREME
+}
+
+/// Engineering solutions for a problem — "What can engineers build?"
+/// Multiple solutions per problem, each is a concrete buildable thing.
+model ProblemSolution {
+  id          String   @id @default(cuid())
+  problemId   String
+  title       String   // e.g. "AI Flood Prediction Platform"
+  description String?  @db.Text
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  problem     Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@index([problemId])
+}
+
+/// Skills required to work on a problem. Used by the AI Innovation Engine
+/// to match user skills to problems.
+model ProblemSkill {
+  id          String   @id @default(cuid())
+  problemId   String
+  skill       String   // e.g. "Python", "Machine Learning", "Computer Vision"
+  importance  Int      @default(5) // 1-10, how critical for this problem
+  createdAt   DateTime @default(now())
+
+  problem     Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([problemId, skill])
+  @@index([problemId])
+  @@index([skill])
+}
+
+/// Recommended team structure for tackling a problem.
+/// One problem can have multiple team templates (e.g. small vs large team).
+model ProblemTeam {
+  id            String   @id @default(cuid())
+  problemId     String
+  templateName  String   @default("Recommended Team") // e.g. "Lean Team", "Full Team"
+  minMembers    Int      @default(3)
+  maxMembers    Int      @default(8)
+  estimatedTimelineMonths Int? // e.g. 4
+  roles         String[] @default([]) // ["AI Engineer", "Backend Engineer", ...]
+  createdAt     DateTime @default(now())
+
+  problem       Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@index([problemId])
+}
+
+/// Development roadmap for solving a problem — phased plan with tasks.
+model ProblemRoadmap {
+  id          String   @id @default(cuid())
+  problemId   String
+  phase       String   // e.g. "Research", "Prototype", "MVP", "Scale"
+  title       String
+  description String?  @db.Text
+  order       Int      @default(0)
+  duration    String?  // e.g. "2 weeks"
+  createdAt   DateTime @default(now())
+
+  problem     Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@index([problemId])
+}
+
+/// Skills a user has — used by the AI Innovation Engine for matching.
+/// Users add these via their profile or the Innovation Engine form.
+model UserSkill {
+  id        String   @id @default(cuid())
+  userId    String
+  skill     String
+  proficiency Int    @default(3) // 1-5 self-rated
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, skill])
+  @@index([userId])
+  @@index([skill])
+}
+
+/// Saved results from the AI Innovation Engine — when a user runs
+/// "Generate Innovations", we save the matches for later reference.
+model InnovationMatch {
+  id          String   @id @default(cuid())
+  userId      String
+  problemId   String
+  matchScore  Int      // 0-100, how well the problem matched the user's input
+  inputSnapshot String @db.Text // JSON: { skills, interests, time, teamSize }
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem     Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([problemId])
 }
