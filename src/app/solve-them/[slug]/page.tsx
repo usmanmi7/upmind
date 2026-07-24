@@ -60,7 +60,7 @@ export default function ProblemDetailPage() {
     <div className="min-h-screen flex flex-col bg-[#0A150A]">
       <PublicNavbar />
 
-      <main className="flex-1 pt-16 sm:pt-20">
+      <main className="flex-1">
         {/* BACK LINK */}
         <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Link

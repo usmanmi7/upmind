@@ -54,7 +54,7 @@ export default function SolveThemPage() {
     <div className="min-h-screen flex flex-col bg-[#0A150A]">
       <PublicNavbar />
 
-      <main className="flex-1 pt-16 sm:pt-20">
+      <main className="flex-1">
         {/* HERO */}
         <section className="relative overflow-hidden py-20 sm:py-28">
           <div
