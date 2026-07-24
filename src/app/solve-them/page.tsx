@@ -2,16 +2,28 @@
 
 import { useState, useMemo } from "react"
 import Link from "next/link"
-import { Search, Filter, TrendingUp, AlertCircle, Sparkles, Users, Globe, Lock } from "lucide-react"
+import {
+  Search,
+  Filter,
+  TrendingUp,
+  AlertCircle,
+  Sparkles,
+  Users,
+  Globe,
+  Lock,
+  X,
+  SlidersHorizontal,
+} from "lucide-react"
 import PublicNavbar from "@/components/PublicNavbar"
 import Footer from "@/components/Footer"
 import {
   getAllProblems,
   getAllCategories,
+  getAllTags,
   getProblemStats,
   filterProblems,
 } from "@/lib/solve-them"
-import type { DifficultyLevel } from "@/lib/solve-them/types"
+import type { DifficultyLevel, ProblemScope } from "@/lib/solve-them/types"
 
 const difficultyColors: Record<DifficultyLevel, string> = {
   EASY: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
@@ -27,17 +39,40 @@ const difficultyLabels: Record<DifficultyLevel, string> = {
   EXTREME: "Frontier",
 }
 
+const scopeLabels: Record<ProblemScope, string> = {
+  GLOBAL: "Global",
+  REGIONAL: "Regional",
+  NATIONAL: "National",
+  LOCAL: "Local",
+}
+
+const projectTypeOptions = [
+  "Startup",
+  "Research",
+  "Product",
+  "Hardware",
+  "NGO",
+  "Open Source",
+  "Government",
+  "Infrastructure",
+]
+
 export default function SolveThemPage() {
   const allProblems = useMemo(() => getAllProblems(), [])
   const categories = useMemo(() => getAllCategories(), [])
+  const allTags = useMemo(() => getAllTags(), [])
   const stats = useMemo(() => getProblemStats(), [])
 
   const [query, setQuery] = useState("")
   const [category, setCategory] = useState("All")
   const [difficulty, setDifficulty] = useState<DifficultyLevel | "ALL">("ALL")
+  const [scope, setScope] = useState<ProblemScope | "ALL">("ALL")
+  const [projectTypes, setProjectTypes] = useState<string[]>([])
+  const [activeTags, setActiveTags] = useState<string[]>([])
   const [sortBy, setSortBy] = useState<
     "impactScore" | "severity" | "innovationScore" | "marketNeed" | "futureImportance"
   >("impactScore")
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
   const filtered = useMemo(
     () =>
@@ -45,10 +80,44 @@ export default function SolveThemPage() {
         query,
         category,
         difficulty,
+        scope,
+        tags: activeTags,
         sortBy,
-      }),
-    [query, category, difficulty, sortBy]
+      }).filter(
+        (p) =>
+          projectTypes.length === 0 ||
+          projectTypes.some((t) => p.projectTypes.includes(t))
+      ),
+    [query, category, difficulty, scope, activeTags, projectTypes, sortBy]
   )
+
+  const activeFilterCount =
+    (category !== "All" ? 1 : 0) +
+    (difficulty !== "ALL" ? 1 : 0) +
+    (scope !== "ALL" ? 1 : 0) +
+    projectTypes.length +
+    activeTags.length
+
+  const clearAll = () => {
+    setQuery("")
+    setCategory("All")
+    setDifficulty("ALL")
+    setScope("ALL")
+    setProjectTypes([])
+    setActiveTags([])
+  }
+
+  const toggleProjectType = (t: string) => {
+    setProjectTypes((prev) =>
+      prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+    )
+  }
+
+  const toggleTag = (t: string) => {
+    setActiveTags((prev) =>
+      prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0A150A]">
@@ -93,89 +162,108 @@ export default function SolveThemPage() {
           </div>
         </section>
 
-        {/* SEARCH + FILTERS */}
-        <section className="sticky top-16 sm:top-20 z-30 bg-[#0A150A]/95 backdrop-blur-lg border-y border-white/5 py-4">
+        {/* BODY: LEFT FILTERS + RIGHT GRID */}
+        <section className="py-8 sm:py-12">
           <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col lg:flex-row gap-3">
-              {/* Search */}
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                <input
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search problems, tags, technologies..."
-                  className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50 focus:border-[#7CFC00]/50 transition-all"
-                />
-              </div>
-
-              {/* Category */}
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50 focus:border-[#7CFC00]/50 transition-all min-w-[180px]"
-              >
-                <option value="All" className="bg-[#1A2E1A]">All Categories</option>
-                {categories.map((cat) => (
-                  <option key={cat} value={cat} className="bg-[#1A2E1A]">
-                    {cat}
-                  </option>
-                ))}
-              </select>
-
-              {/* Difficulty */}
-              <select
-                value={difficulty}
-                onChange={(e) => setDifficulty(e.target.value as DifficultyLevel | "ALL")}
-                className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50 focus:border-[#7CFC00]/50 transition-all min-w-[140px]"
-              >
-                <option value="ALL" className="bg-[#1A2E1A]">All Difficulties</option>
-                <option value="EASY" className="bg-[#1A2E1A]">Easy</option>
-                <option value="MEDIUM" className="bg-[#1A2E1A]">Medium</option>
-                <option value="HARD" className="bg-[#1A2E1A]">Hard</option>
-                <option value="EXTREME" className="bg-[#1A2E1A]">Frontier</option>
-              </select>
-
-              {/* Sort */}
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50 focus:border-[#7CFC00]/50 transition-all min-w-[160px]"
-              >
-                <option value="impactScore" className="bg-[#1A2E1A]">Sort: Impact</option>
-                <option value="severity" className="bg-[#1A2E1A]">Sort: Severity</option>
-                <option value="innovationScore" className="bg-[#1A2E1A]">Sort: Innovation</option>
-                <option value="marketNeed" className="bg-[#1A2E1A]">Sort: Market Need</option>
-                <option value="futureImportance" className="bg-[#1A2E1A]">Sort: Future</option>
-              </select>
-            </div>
-
-            <div className="mt-3 text-sm text-white/50 flex items-center gap-2">
-              <Filter className="w-4 h-4" />
-              Showing <span className="text-white font-medium">{filtered.length}</span> of{" "}
-              {allProblems.length} problems
-            </div>
-          </div>
-        </section>
-
-        {/* PROBLEM GRID */}
-        <section className="py-12 sm:py-16">
-          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
-            {filtered.length === 0 ? (
-              <div className="text-center py-20">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/5 mb-4">
-                  <Search className="w-8 h-8 text-white/40" />
+            <div className="flex gap-8">
+              {/* LEFT FILTERS (desktop) */}
+              <aside className="hidden lg:block w-72 flex-shrink-0">
+                <div className="sticky top-24 space-y-4">
+                  <FiltersPanel
+                    query={query}
+                    setQuery={setQuery}
+                    category={category}
+                    setCategory={setCategory}
+                    difficulty={difficulty}
+                    setDifficulty={setDifficulty}
+                    scope={scope}
+                    setScope={setScope}
+                    projectTypes={projectTypes}
+                    toggleProjectType={toggleProjectType}
+                    activeTags={activeTags}
+                    toggleTag={toggleTag}
+                    sortBy={sortBy}
+                    setSortBy={setSortBy}
+                    clearAll={clearAll}
+                    activeFilterCount={activeFilterCount}
+                    categories={categories}
+                    allTags={allTags}
+                    resultCount={filtered.length}
+                    totalCount={allProblems.length}
+                  />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">No problems found</h3>
-                <p className="text-white/60">Try a different search or filter.</p>
+              </aside>
+
+              {/* RIGHT: GRID */}
+              <div className="flex-1 min-w-0">
+                {/* Mobile: search bar + filter toggle */}
+                <div className="lg:hidden mb-4 flex gap-2">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                    <input
+                      type="text"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Search problems..."
+                      className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50"
+                    />
+                  </div>
+                  <button
+                    onClick={() => setMobileFiltersOpen(true)}
+                    className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 flex items-center gap-2 relative"
+                  >
+                    <SlidersHorizontal className="w-5 h-5" />
+                    Filters
+                    {activeFilterCount > 0 && (
+                      <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#7CFC00] text-[#0A150A] text-xs font-bold flex items-center justify-center">
+                        {activeFilterCount}
+                      </span>
+                    )}
+                  </button>
+                </div>
+
+                {/* Result count + sort (desktop shows it inline) */}
+                <div className="hidden lg:flex items-center justify-between mb-5">
+                  <div className="text-sm text-white/60 flex items-center gap-2">
+                    <Filter className="w-4 h-4" />
+                    Showing <span className="text-white font-medium">{filtered.length}</span> of{" "}
+                    {allProblems.length} problems
+                  </div>
+                  {activeFilterCount > 0 && (
+                    <button
+                      onClick={clearAll}
+                      className="text-sm text-white/50 hover:text-white flex items-center gap-1"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                      Clear {activeFilterCount} filter{activeFilterCount > 1 ? "s" : ""}
+                    </button>
+                  )}
+                </div>
+
+                {/* GRID */}
+                {filtered.length === 0 ? (
+                  <div className="text-center py-20">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/5 mb-4">
+                      <Search className="w-8 h-8 text-white/40" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-white mb-2">No problems found</h3>
+                    <p className="text-white/60 mb-4">Try a different search or filter.</p>
+                    <button
+                      onClick={clearAll}
+                      className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 text-sm"
+                    >
+                      Clear all filters
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-5">
+                    {filtered.map((problem) => (
+                      <ProblemCard key={problem.slug} problem={problem} />
+                    ))}
+                  </div>
+                )}
               </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filtered.map((problem) => (
-                  <ProblemCard key={problem.slug} problem={problem} />
-                ))}
-              </div>
-            )}
+            </div>
           </div>
         </section>
 
@@ -200,8 +288,353 @@ export default function SolveThemPage() {
         </section>
       </main>
 
+      {/* MOBILE FILTERS DRAWER */}
+      {mobileFiltersOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 flex">
+          <div
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={() => setMobileFiltersOpen(false)}
+          />
+          <div className="relative ml-auto w-full max-w-sm h-full bg-[#0A150A] border-l border-white/10 overflow-y-auto">
+            <div className="sticky top-0 bg-[#0A150A] border-b border-white/10 p-4 flex items-center justify-between z-10">
+              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                <SlidersHorizontal className="w-5 h-5" />
+                Filters
+              </h2>
+              <button
+                onClick={() => setMobileFiltersOpen(false)}
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10"
+              >
+                <X className="w-5 h-5 text-white" />
+              </button>
+            </div>
+            <div className="p-4">
+              <FiltersPanel
+                query={query}
+                setQuery={setQuery}
+                category={category}
+                setCategory={setCategory}
+                difficulty={difficulty}
+                setDifficulty={setDifficulty}
+                scope={scope}
+                setScope={setScope}
+                projectTypes={projectTypes}
+                toggleProjectType={toggleProjectType}
+                activeTags={activeTags}
+                toggleTag={toggleTag}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                clearAll={clearAll}
+                activeFilterCount={activeFilterCount}
+                categories={categories}
+                allTags={allTags}
+                resultCount={filtered.length}
+                totalCount={allProblems.length}
+                isMobile
+              />
+              <button
+                onClick={() => setMobileFiltersOpen(false)}
+                className="mt-4 w-full px-4 py-3 rounded-xl bg-[#7CFC00] text-[#0A150A] font-semibold hover:bg-[#6BE000]"
+              >
+                Show {filtered.length} results
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </div>
+  )
+}
+
+function FiltersPanel({
+  query,
+  setQuery,
+  category,
+  setCategory,
+  difficulty,
+  setDifficulty,
+  scope,
+  setScope,
+  projectTypes,
+  toggleProjectType,
+  activeTags,
+  toggleTag,
+  sortBy,
+  setSortBy,
+  clearAll,
+  activeFilterCount,
+  categories,
+  allTags,
+  resultCount,
+  totalCount,
+  isMobile = false,
+}: {
+  query: string
+  setQuery: (v: string) => void
+  category: string
+  setCategory: (v: string) => void
+  difficulty: DifficultyLevel | "ALL"
+  setDifficulty: (v: DifficultyLevel | "ALL") => void
+  scope: ProblemScope | "ALL"
+  setScope: (v: ProblemScope | "ALL") => void
+  projectTypes: string[]
+  toggleProjectType: (t: string) => void
+  activeTags: string[]
+  toggleTag: (t: string) => void
+  sortBy: "impactScore" | "severity" | "innovationScore" | "marketNeed" | "futureImportance"
+  setSortBy: (
+    v: "impactScore" | "severity" | "innovationScore" | "marketNeed" | "futureImportance"
+  ) => void
+  clearAll: () => void
+  activeFilterCount: number
+  categories: string[]
+  allTags: string[]
+  resultCount: number
+  totalCount: number
+  isMobile?: boolean
+}) {
+  return (
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-bold text-white uppercase tracking-wide flex items-center gap-2">
+          <Filter className="w-4 h-4 text-[#7CFC00]" />
+          Filters
+          {activeFilterCount > 0 && (
+            <span className="text-xs px-2 py-0.5 rounded-full bg-[#7CFC00]/15 text-[#7CFC00] border border-[#7CFC00]/30">
+              {activeFilterCount}
+            </span>
+          )}
+        </h2>
+        {activeFilterCount > 0 && (
+          <button
+            onClick={clearAll}
+            className="text-xs text-white/50 hover:text-white flex items-center gap-1"
+          >
+            <X className="w-3 h-3" />
+            Clear
+          </button>
+        )}
+      </div>
+
+      {/* Search */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search problems..."
+          className="w-full pl-10 pr-3 py-2.5 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[#7CFC00]/50"
+        />
+      </div>
+
+      {/* Sort */}
+      <FilterGroup title="Sort by">
+        <div className="grid grid-cols-2 gap-1.5">
+          {[
+            { value: "impactScore", label: "Impact" },
+            { value: "severity", label: "Severity" },
+            { value: "innovationScore", label: "Innovation" },
+            { value: "marketNeed", label: "Market Need" },
+            { value: "futureImportance", label: "Future" },
+          ].map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() =>
+                setSortBy(opt.value as typeof sortBy)
+              }
+              className={`text-xs px-2.5 py-2 rounded-lg border transition-all text-left ${
+                sortBy === opt.value
+                  ? "bg-[#7CFC00]/15 text-[#7CFC00] border-[#7CFC00]/30"
+                  : "bg-white/5 text-white/60 border-white/10 hover:bg-white/10 hover:text-white"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </FilterGroup>
+
+      {/* Category */}
+      <FilterGroup title="Category">
+        <div className="space-y-0.5 max-h-72 overflow-y-auto pr-1 sidebar-scroll">
+          <button
+            onClick={() => setCategory("All")}
+            className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center justify-between ${
+              category === "All"
+                ? "bg-[#7CFC00]/15 text-[#7CFC00]"
+                : "text-white/60 hover:bg-white/5 hover:text-white"
+            }`}
+          >
+            All Categories
+            <span className="text-xs text-white/40">{totalCount}</span>
+          </button>
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setCategory(cat)}
+              className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center justify-between ${
+                category === cat
+                  ? "bg-[#7CFC00]/15 text-[#7CFC00]"
+                  : "text-white/60 hover:bg-white/5 hover:text-white"
+              }`}
+            >
+              <span className="truncate">{cat}</span>
+            </button>
+          ))}
+        </div>
+      </FilterGroup>
+
+      {/* Difficulty */}
+      <FilterGroup title="Difficulty">
+        <div className="space-y-1">
+          <FilterRadio
+            active={difficulty === "ALL"}
+            onClick={() => setDifficulty("ALL")}
+            label="All Difficulties"
+          />
+          {(["EASY", "MEDIUM", "HARD", "EXTREME"] as DifficultyLevel[]).map((d) => (
+            <FilterRadio
+              key={d}
+              active={difficulty === d}
+              onClick={() => setDifficulty(d)}
+              label={difficultyLabels[d]}
+              badgeClass={difficultyColors[d]}
+            />
+          ))}
+        </div>
+      </FilterGroup>
+
+      {/* Scope */}
+      <FilterGroup title="Scope">
+        <div className="space-y-1">
+          <FilterRadio
+            active={scope === "ALL"}
+            onClick={() => setScope("ALL")}
+            label="All Scopes"
+          />
+          {(["GLOBAL", "REGIONAL", "NATIONAL", "LOCAL"] as ProblemScope[]).map((s) => (
+            <FilterRadio
+              key={s}
+              active={scope === s}
+              onClick={() => setScope(s)}
+              label={scopeLabels[s]}
+            />
+          ))}
+        </div>
+      </FilterGroup>
+
+      {/* Project type */}
+      <FilterGroup title="Project Type">
+        <div className="space-y-1">
+          {projectTypeOptions.map((t) => (
+            <button
+              key={t}
+              onClick={() => toggleProjectType(t)}
+              className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center gap-2 ${
+                projectTypes.includes(t)
+                  ? "bg-[#7CFC00]/15 text-[#7CFC00]"
+                  : "text-white/60 hover:bg-white/5 hover:text-white"
+              }`}
+            >
+              <span
+                className={`w-4 h-4 rounded border flex items-center justify-center text-[10px] ${
+                  projectTypes.includes(t)
+                    ? "bg-[#7CFC00] border-[#7CFC00] text-[#0A150A]"
+                    : "border-white/20"
+                }`}
+              >
+                {projectTypes.includes(t) ? "✓" : ""}
+              </span>
+              {t}
+            </button>
+          ))}
+        </div>
+      </FilterGroup>
+
+      {/* Tags */}
+      {allTags.length > 0 && (
+        <FilterGroup title="Tags">
+          <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto sidebar-scroll">
+            {allTags.slice(0, 30).map((t) => (
+              <button
+                key={t}
+                onClick={() => toggleTag(t)}
+                className={`text-xs px-2 py-1 rounded-md border transition-all ${
+                  activeTags.includes(t)
+                    ? "bg-[#7CFC00]/15 text-[#7CFC00] border-[#7CFC00]/30"
+                    : "bg-white/5 text-white/50 border-white/10 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+        </FilterGroup>
+      )}
+
+      {/* Footer count */}
+      {!isMobile && (
+        <div className="pt-2 border-t border-white/5 text-xs text-white/40">
+          <span className="text-white font-medium">{resultCount}</span> of {totalCount} problems
+        </div>
+      )}
+    </div>
+  )
+}
+
+function FilterGroup({
+  title,
+  children,
+}: {
+  title: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10">
+      <h3 className="text-xs font-bold text-white/40 uppercase tracking-wide mb-3">{title}</h3>
+      {children}
+    </div>
+  )
+}
+
+function FilterRadio({
+  active,
+  onClick,
+  label,
+  badgeClass,
+}: {
+  active: boolean
+  onClick: () => void
+  label: string
+  badgeClass?: string
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center gap-2 ${
+        active ? "bg-[#7CFC00]/15 text-[#7CFC00]" : "text-white/60 hover:bg-white/5 hover:text-white"
+      }`}
+    >
+      <span
+        className={`w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center ${
+          active ? "border-[#7CFC00]" : "border-white/20"
+        }`}
+      >
+        {active && <span className="w-1.5 h-1.5 rounded-full bg-[#7CFC00]" />}
+      </span>
+      {label}
+      {badgeClass && (
+        <span
+          className={`ml-auto text-[10px] px-1.5 py-0.5 rounded border ${badgeClass}`}
+        >
+          ●
+        </span>
+      )}
+    </button>
   )
 }
 
