@@ -79,7 +79,7 @@ export default function Stats() {
             href="/solve-them"
             className="inline-flex items-center gap-2 bg-[#3B82F6] text-white rounded-full px-7 py-3 text-sm sm:text-base font-semibold hover:bg-[#2563EB] transition-colors duration-300 group shadow-lg shadow-[#3B82F6]/20"
           >
-            EXPLORE PROBLEMS
+            Explore Problems
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>

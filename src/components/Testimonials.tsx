@@ -159,7 +159,7 @@ export default function Testimonials() {
             href="/success-stories"
             className="inline-flex items-center gap-2 bg-[#0F1B3D] text-white rounded-full px-7 py-3 text-sm sm:text-base font-medium hover:bg-[#1E3A8A] transition-colors duration-300 group"
           >
-            READ SUCCESS STORIES
+            Read Success Stories
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

@@ -47,7 +47,7 @@ export default function CTASection() {
                 href="/dashboard"
                 className="bg-[#3B82F6] text-white rounded-full px-8 py-3.5 text-sm sm:text-base font-semibold hover:bg-[#2563EB] transition-all duration-300 shadow-lg shadow-[#3B82F6]/25 flex items-center gap-2 group"
               >
-                GO TO DASHBOARD
+                Go to Dashboard
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             ) : (
@@ -56,14 +56,14 @@ export default function CTASection() {
                   href="/solve-them"
                   className="bg-[#3B82F6] text-white rounded-full px-8 py-3.5 text-sm sm:text-base font-semibold hover:bg-[#2563EB] transition-all duration-300 shadow-lg shadow-[#3B82F6]/25 flex items-center gap-2 group"
                 >
-                  EXPLORE PROBLEMS
+                  Explore Problems
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
                   href="/auth/signup"
                   className="border border-white/40 text-white rounded-full px-8 py-3.5 text-sm sm:text-base font-medium hover:bg-white hover:text-[#0F1B3D] transition-all duration-300 backdrop-blur-sm"
                 >
-                  CREATE FREE ACCOUNT
+                  Create Free Account
                 </Link>
               </>
             )}

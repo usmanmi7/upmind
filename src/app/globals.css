@@ -190,6 +190,28 @@
   border: 1px solid rgba(147, 197, 253, 0.3);
 }
 
+/* ─── Button Capitalization ────────────────────────────────────────────────────
+   Apply text-transform: capitalize to all button-like elements across the site.
+   Targets:
+   - Native <button> elements
+   - shadcn Button ([data-slot="button"])
+   - Link-styled buttons (anchors that look like buttons via rounded + bg/border + px pattern)
+   - Submit / button inputs
+   Excluded:
+   - Elements with explicit `uppercase` class (eyebrow/kicker labels keep their style)
+   - Icon-only buttons (no direct text node)
+-------------------------------------------------------------------------------- */
+button,
+[data-slot="button"],
+input[type="submit"],
+input[type="button"],
+a.rounded-full[class*="px-"]:not([class*="uppercase"]),
+a.rounded-md[class*="px-"]:not([class*="uppercase"]),
+a.rounded-lg[class*="px-"]:not([class*="uppercase"]),
+a.rounded-xl[class*="px-"]:not([class*="uppercase"]) {
+  text-transform: capitalize;
+}
+
 .dark .glass {
   background: rgba(15, 27, 61, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.1);
