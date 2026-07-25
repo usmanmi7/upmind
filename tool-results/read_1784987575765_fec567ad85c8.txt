@@ -1,0 +1,828 @@
+     1→"use client"
+     2→
+     3→import { useState, useMemo } from "react"
+     4→import Link from "next/link"
+     5→import { motion } from "framer-motion"
+     6→import {
+     7→  Search,
+     8→  Filter,
+     9→  TrendingUp,
+    10→  AlertCircle,
+    11→  Sparkles,
+    12→  Users,
+    13→  Globe,
+    14→  Lock,
+    15→  X,
+    16→  SlidersHorizontal,
+    17→  ArrowRight,
+    18→  Compass,
+    19→  Microscope,
+    20→  Hammer,
+    21→  Rocket,
+    22→  CheckCircle2,
+    23→} from "lucide-react"
+    24→import PublicNavbar from "@/components/PublicNavbar"
+    25→import PublicFooter from "@/components/PublicFooter"
+    26→import PageHero from "@/components/PageHero"
+    27→import {
+    28→  getAllProblems,
+    29→  getAllCategories,
+    30→  getAllTags,
+    31→  getProblemStats,
+    32→  filterProblems,
+    33→} from "@/lib/solve-them"
+    34→import type { DifficultyLevel, ProblemScope } from "@/lib/solve-them/types"
+    35→
+    36→const difficultyColors: Record<DifficultyLevel, string> = {
+    37→  EASY: "bg-emerald-100 text-emerald-700",
+    38→  MEDIUM: "bg-amber-100 text-amber-700",
+    39→  HARD: "bg-orange-100 text-orange-700",
+    40→  EXTREME: "bg-rose-100 text-rose-700",
+    41→}
+    42→
+    43→const difficultyLabels: Record<DifficultyLevel, string> = {
+    44→  EASY: "Easy",
+    45→  MEDIUM: "Medium",
+    46→  HARD: "Hard",
+    47→  EXTREME: "Frontier",
+    48→}
+    49→
+    50→const scopeLabels: Record<ProblemScope, string> = {
+    51→  GLOBAL: "Global",
+    52→  REGIONAL: "Regional",
+    53→  NATIONAL: "National",
+    54→  LOCAL: "Local",
+    55→}
+    56→
+    57→const projectTypeOptions = [
+    58→  "Startup",
+    59→  "Research",
+    60→  "Product",
+    61→  "Hardware",
+    62→  "NGO",
+    63→  "Open Source",
+    64→  "Government",
+    65→  "Infrastructure",
+    66→]
+    67→
+    68→const container = {
+    69→  hidden: { opacity: 0 },
+    70→  show: { opacity: 1, transition: { staggerChildren: 0.05 } },
+    71→}
+    72→
+    73→const item = {
+    74→  hidden: { opacity: 0, y: 20 },
+    75→  show: { opacity: 1, y: 0 },
+    76→}
+    77→
+    78→const processSteps = [
+    79→  {
+    80→    step: "01",
+    81→    icon: Compass,
+    82→    title: "Discover",
+    83→    description:
+    84→      "Browse curated world problems sourced from WHO, UN, IEA, IPCC and more. Filter by category, scope, and difficulty to find what resonates.",
+    85→  },
+    86→  {
+    87→    step: "02",
+    88→    icon: Microscope,
+    89→    title: "Analyze",
+    90→    description:
+    91→      "Open any problem to see severity, impact, market need, affected regions, and the engineering skills required to make a dent.",
+    92→  },
+    93→  {
+    94→    step: "03",
+    95→    icon: Hammer,
+    96→    title: "Build",
+    97→    description:
+    98→      "Use the recommended team templates, build roadmap, and starter solutions to launch a project that actually moves the needle.",
+    99→  },
+   100→  {
+   101→    step: "04",
+   102→    icon: Rocket,
+   103→    title: "Scale",
+   104→    description:
+   105→      "Open-source your work, attract collaborators through the Innovation Engine, and turn an engineering project into a real venture.",
+   106→  },
+   107→]
+   108→
+   109→export default function SolveThemPage() {
+   110→  const allProblems = useMemo(() => getAllProblems(), [])
+   111→  const categories = useMemo(() => getAllCategories(), [])
+   112→  const allTags = useMemo(() => getAllTags(), [])
+   113→  const stats = useMemo(() => getProblemStats(), [])
+   114→
+   115→  const [query, setQuery] = useState("")
+   116→  const [category, setCategory] = useState("All")
+   117→  const [difficulty, setDifficulty] = useState<DifficultyLevel | "ALL">("ALL")
+   118→  const [scope, setScope] = useState<ProblemScope | "ALL">("ALL")
+   119→  const [projectTypes, setProjectTypes] = useState<string[]>([])
+   120→  const [activeTags, setActiveTags] = useState<string[]>([])
+   121→  const [sortBy, setSortBy] = useState<
+   122→    "impactScore" | "severity" | "innovationScore" | "marketNeed" | "futureImportance"
+   123→  >("impactScore")
+   124→  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+   125→
+   126→  const filtered = useMemo(
+   127→    () =>
+   128→      filterProblems({
+   129→        query,
+   130→        category,
+   131→        difficulty,
+   132→        scope,
+   133→        tags: activeTags,
+   134→        sortBy,
+   135→      }).filter(
+   136→        (p) =>
+   137→          projectTypes.length === 0 ||
+   138→          projectTypes.some((t) => p.projectTypes.includes(t))
+   139→      ),
+   140→    [query, category, difficulty, scope, activeTags, projectTypes, sortBy]
+   141→  )
+   142→
+   143→  const activeFilterCount =
+   144→    (category !== "All" ? 1 : 0) +
+   145→    (difficulty !== "ALL" ? 1 : 0) +
+   146→    (scope !== "ALL" ? 1 : 0) +
+   147→    projectTypes.length +
+   148→    activeTags.length
+   149→
+   150→  const clearAll = () => {
+   151→    setQuery("")
+   152→    setCategory("All")
+   153→    setDifficulty("ALL")
+   154→    setScope("ALL")
+   155→    setProjectTypes([])
+   156→    setActiveTags([])
+   157→  }
+   158→
+   159→  const toggleProjectType = (t: string) => {
+   160→    setProjectTypes((prev) =>
+   161→      prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+   162→    )
+   163→  }
+   164→
+   165→  const toggleTag = (t: string) => {
+   166→    setActiveTags((prev) =>
+   167→      prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+   168→    )
+   169→  }
+   170→
+   171→  return (
+   172→    <div className="min-h-screen flex flex-col bg-background">
+   173→      <PublicNavbar />
+   174→
+   175→      <main className="flex-1">
+   176→        <PageHero
+   177→          badge="Solve Them"
+   178→          title="Find problems"
+   179→          highlight="worth solving"
+   180→          description={`${stats.total}+ curated world problems across ${stats.categories} categories — each one a chance to build something that matters. Sourced from WHO, UN, IEA, IPCC, and more.`}
+   181→        />
+   182→
+   183→        {/* STATS BAR */}
+   184→        <section className="pb-12">
+   185→          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
+   186→            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+   187→              <StatCard label="Problems" value={`${stats.total}+`} />
+   188→              <StatCard label="Categories" value={`${stats.categories}`} />
+   189→              <StatCard label="People Affected" value={stats.totalPeopleAffected} />
+   190→              <StatCard label="Avg Impact" value={`${stats.avgImpact}/100`} />
+   191→            </div>
+   192→          </div>
+   193→        </section>
+   194→
+   195→        {/* BODY: LEFT FILTERS + RIGHT GRID */}
+   196→        <section className="pb-20">
+   197→          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
+   198→            <div className="flex gap-8">
+   199→              {/* LEFT FILTERS (desktop) */}
+   200→              <aside className="hidden lg:block w-72 flex-shrink-0">
+   201→                <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-1 sidebar-scroll space-y-4">
+   202→                  <FiltersPanel
+   203→                    query={query}
+   204→                    setQuery={setQuery}
+   205→                    category={category}
+   206→                    setCategory={setCategory}
+   207→                    difficulty={difficulty}
+   208→                    setDifficulty={setDifficulty}
+   209→                    scope={scope}
+   210→                    setScope={setScope}
+   211→                    projectTypes={projectTypes}
+   212→                    toggleProjectType={toggleProjectType}
+   213→                    activeTags={activeTags}
+   214→                    toggleTag={toggleTag}
+   215→                    sortBy={sortBy}
+   216→                    setSortBy={setSortBy}
+   217→                    clearAll={clearAll}
+   218→                    activeFilterCount={activeFilterCount}
+   219→                    categories={categories}
+   220→                    allTags={allTags}
+   221→                    resultCount={filtered.length}
+   222→                    totalCount={allProblems.length}
+   223→                  />
+   224→                </div>
+   225→              </aside>
+   226→
+   227→              {/* RIGHT: GRID */}
+   228→              <div className="flex-1 min-w-0">
+   229→                {/* Mobile: search bar + filter toggle */}
+   230→                <div className="lg:hidden mb-4 flex gap-2">
+   231→                  <div className="relative flex-1">
+   232→                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+   233→                    <input
+   234→                      type="text"
+   235→                      value={query}
+   236→                      onChange={(e) => setQuery(e.target.value)}
+   237→                      placeholder="Search problems..."
+   238→                      className="w-full pl-12 pr-4 py-3 bg-card border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/50"
+   239→                    />
+   240→                  </div>
+   241→                  <button
+   242→                    onClick={() => setMobileFiltersOpen(true)}
+   243→                    className="px-4 py-3 rounded-xl bg-card border text-foreground hover:bg-muted flex items-center gap-2 relative"
+   244→                  >
+   245→                    <SlidersHorizontal className="w-5 h-5" />
+   246→                    Filters
+   247→                    {activeFilterCount > 0 && (
+   248→                      <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#3B82F6] text-white text-xs font-bold flex items-center justify-center">
+   249→                        {activeFilterCount}
+   250→                      </span>
+   251→                    )}
+   252→                  </button>
+   253→                </div>
+   254→
+   255→                {/* Result count + clear (desktop inline) */}
+   256→                <div className="hidden lg:flex items-center justify-between mb-5">
+   257→                  <div className="text-sm text-muted-foreground flex items-center gap-2">
+   258→                    <Filter className="w-4 h-4" />
+   259→                    Showing <span className="text-foreground font-medium">{filtered.length}</span> of{" "}
+   260→                    {allProblems.length} problems
+   261→                  </div>
+   262→                  {activeFilterCount > 0 && (
+   263→                    <button
+   264→                      onClick={clearAll}
+   265→                      className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
+   266→                    >
+   267→                      <X className="w-3.5 h-3.5" />
+   268→                      Clear {activeFilterCount} filter{activeFilterCount > 1 ? "s" : ""}
+   269→                    </button>
+   270→                  )}
+   271→                </div>
+   272→
+   273→                {/* GRID */}
+   274→                {filtered.length === 0 ? (
+   275→                  <div className="text-center py-20">
+   276→                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
+   277→                      <Search className="w-8 h-8 text-muted-foreground" />
+   278→                    </div>
+   279→                    <h3 className="text-xl font-semibold mb-2">No problems found</h3>
+   280→                    <p className="text-muted-foreground mb-4">Try a different search or filter.</p>
+   281→                    <button
+   282→                      onClick={clearAll}
+   283→                      className="px-4 py-2 rounded-xl bg-card border hover:bg-muted text-sm"
+   284→                    >
+   285→                      Clear all filters
+   286→                    </button>
+   287→                  </div>
+   288→                ) : (
+   289→                  <motion.div
+   290→                    variants={container}
+   291→                    initial="hidden"
+   292→                    animate="show"
+   293→                    className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-5"
+   294→                  >
+   295→                    {filtered.map((problem) => (
+   296→                      <motion.div key={problem.slug} variants={item}>
+   297→                        <ProblemCard problem={problem} />
+   298→                      </motion.div>
+   299→                    ))}
+   300→                  </motion.div>
+   301→                )}
+   302→              </div>
+   303→            </div>
+   304→          </div>
+   305→        </section>
+   306→
+   307→        {/* HOW WE WORK */}
+   308→        <section className="py-20 bg-muted/30">
+   309→          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
+   310→            <div className="text-center max-w-2xl mx-auto mb-12">
+   311→              <h2 className="text-2xl sm:text-3xl font-heading font-bold">
+   312→                How <span className="font-serif-accent-italic gradient-text">Solve Them</span> works
+   313→              </h2>
+   314→              <p className="mt-4 text-muted-foreground">
+   315→                A four-step path from "I want to build something that matters" to a real engineering project.
+   316→              </p>
+   317→            </div>
+   318→            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+   319→              {processSteps.map((step, i) => (
+   320→                <motion.div
+   321→                  key={step.step}
+   322→                  initial={{ opacity: 0, y: 20 }}
+   323→                  whileInView={{ opacity: 1, y: 0 }}
+   324→                  viewport={{ once: true }}
+   325→                  transition={{ delay: i * 0.15 }}
+   326→                  className="relative"
+   327→                >
+   328→                  <div className="p-6 rounded-2xl bg-card border shadow-sm text-center h-full">
+   329→                    <div className="text-4xl font-bold gradient-text mb-4">{step.step}</div>
+   330→                    <div className="w-12 h-12 rounded-xl bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 flex items-center justify-center mx-auto mb-4">
+   331→                      <step.icon className="size-6 text-[#1E3A8A] dark:text-[#3B82F6]" />
+   332→                    </div>
+   333→                    <h3 className="text-lg font-heading font-semibold mb-2">{step.title}</h3>
+   334→                    <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+   335→                  </div>
+   336→                  {i < processSteps.length - 1 && (
+   337→                    <div className="hidden lg:block absolute top-1/2 -right-3 w-6 text-muted-foreground/30">
+   338→                      <ArrowRight className="size-6" />
+   339→                    </div>
+   340→                  )}
+   341→                </motion.div>
+   342→              ))}
+   343→            </div>
+   344→          </div>
+   345→        </section>
+   346→
+   347→        {/* CTA */}
+   348→        <section className="py-20">
+   349→          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+   350→            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] relative overflow-hidden">
+   351→              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iYSIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVHJhbnNmb3JtPSJyb3RhdGUoNDUpIj48cGF0aCBkPSJNLTEwIDMwaDYwdi0yMGgtNjB6IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDMpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCBmaWxsPSJ1cmwoI2EpIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+PC9zdmc+')] opacity-50" />
+   352→              <div className="relative z-10">
+   353→                <h2 className="text-3xl sm:text-4xl font-heading font-bold">
+   354→                  Don&apos;t know where to{' '}
+   355→                  <span className="font-serif-accent-italic">start?</span>
+   356→                </h2>
+   357→                <p className="mt-4 text-lg text-[#0F1B3D]/80 max-w-xl mx-auto">
+   358→                  Tell us your skills and interests. Our AI Innovation Engine will match you to problems
+   359→                  you&apos;re uniquely positioned to solve.
+   360→                </p>
+   361→                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+   362→                  <Link
+   363→                    href="/dashboard/innovation-engine"
+   364→                    className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white text-[#1E3A8A] font-semibold hover:bg-white/90 shadow-xl text-base h-12"
+   365→                  >
+   366→                    <Sparkles className="w-5 h-5" />
+   367→                    Launch Innovation Engine
+   368→                    <ArrowRight className="w-5 h-5" />
+   369→                  </Link>
+   370→                </div>
+   371→              </div>
+   372→            </div>
+   373→          </div>
+   374→        </section>
+   375→      </main>
+   376→
+   377→      {/* MOBILE FILTERS DRAWER */}
+   378→      {mobileFiltersOpen && (
+   379→        <div className="lg:hidden fixed inset-0 z-50 flex">
+   380→          <div
+   381→            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+   382→            onClick={() => setMobileFiltersOpen(false)}
+   383→          />
+   384→          <div className="relative ml-auto w-full max-w-sm h-full bg-background border-l overflow-y-auto">
+   385→            <div className="sticky top-0 bg-background border-b p-4 flex items-center justify-between z-10">
+   386→              <h2 className="text-lg font-bold flex items-center gap-2">
+   387→                <SlidersHorizontal className="w-5 h-5" />
+   388→                Filters
+   389→              </h2>
+   390→              <button
+   391→                onClick={() => setMobileFiltersOpen(false)}
+   392→                className="w-9 h-9 flex items-center justify-center rounded-full bg-muted hover:bg-muted/70"
+   393→              >
+   394→                <X className="w-5 h-5" />
+   395→              </button>
+   396→            </div>
+   397→            <div className="p-4">
+   398→              <FiltersPanel
+   399→                query={query}
+   400→                setQuery={setQuery}
+   401→                category={category}
+   402→                setCategory={setCategory}
+   403→                difficulty={difficulty}
+   404→                setDifficulty={setDifficulty}
+   405→                scope={scope}
+   406→                setScope={setScope}
+   407→                projectTypes={projectTypes}
+   408→                toggleProjectType={toggleProjectType}
+   409→                activeTags={activeTags}
+   410→                toggleTag={toggleTag}
+   411→                sortBy={sortBy}
+   412→                setSortBy={setSortBy}
+   413→                clearAll={clearAll}
+   414→                activeFilterCount={activeFilterCount}
+   415→                categories={categories}
+   416→                allTags={allTags}
+   417→                resultCount={filtered.length}
+   418→                totalCount={allProblems.length}
+   419→                isMobile
+   420→              />
+   421→              <button
+   422→                onClick={() => setMobileFiltersOpen(false)}
+   423→                className="mt-4 w-full px-4 py-3 rounded-xl bg-[#3B82F6] text-white font-semibold hover:bg-[#2563EB]"
+   424→              >
+   425→                Show {filtered.length} results
+   426→              </button>
+   427→            </div>
+   428→          </div>
+   429→        </div>
+   430→      )}
+   431→
+   432→      <PublicFooter />
+   433→    </div>
+   434→  )
+   435→}
+   436→
+   437→function FiltersPanel({
+   438→  query,
+   439→  setQuery,
+   440→  category,
+   441→  setCategory,
+   442→  difficulty,
+   443→  setDifficulty,
+   444→  scope,
+   445→  setScope,
+   446→  projectTypes,
+   447→  toggleProjectType,
+   448→  activeTags,
+   449→  toggleTag,
+   450→  sortBy,
+   451→  setSortBy,
+   452→  clearAll,
+   453→  activeFilterCount,
+   454→  categories,
+   455→  allTags,
+   456→  resultCount,
+   457→  totalCount,
+   458→  isMobile = false,
+   459→}: {
+   460→  query: string
+   461→  setQuery: (v: string) => void
+   462→  category: string
+   463→  setCategory: (v: string) => void
+   464→  difficulty: DifficultyLevel | "ALL"
+   465→  setDifficulty: (v: DifficultyLevel | "ALL") => void
+   466→  scope: ProblemScope | "ALL"
+   467→  setScope: (v: ProblemScope | "ALL") => void
+   468→  projectTypes: string[]
+   469→  toggleProjectType: (t: string) => void
+   470→  activeTags: string[]
+   471→  toggleTag: (t: string) => void
+   472→  sortBy: "impactScore" | "severity" | "innovationScore" | "marketNeed" | "futureImportance"
+   473→  setSortBy: (
+   474→    v: "impactScore" | "severity" | "innovationScore" | "marketNeed" | "futureImportance"
+   475→  ) => void
+   476→  clearAll: () => void
+   477→  activeFilterCount: number
+   478→  categories: string[]
+   479→  allTags: string[]
+   480→  resultCount: number
+   481→  totalCount: number
+   482→  isMobile?: boolean
+   483→}) {
+   484→  return (
+   485→    <div className="space-y-4">
+   486→      {/* Header */}
+   487→      <div className="flex items-center justify-between">
+   488→        <h2 className="text-sm font-bold uppercase tracking-wide flex items-center gap-2">
+   489→          <Filter className="w-4 h-4 text-[#1E3A8A] dark:text-[#3B82F6]" />
+   490→          Filters
+   491→          {activeFilterCount > 0 && (
+   492→            <span className="text-xs px-2 py-0.5 rounded-full bg-[#3B82F6]/15 text-[#1E3A8A] dark:text-[#3B82F6] border border-[#3B82F6]/30">
+   493→              {activeFilterCount}
+   494→            </span>
+   495→          )}
+   496→        </h2>
+   497→        {activeFilterCount > 0 && (
+   498→          <button
+   499→            onClick={clearAll}
+   500→            className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
+   501→          >
+   502→            <X className="w-3 h-3" />
+   503→            Clear
+   504→          </button>
+   505→        )}
+   506→      </div>
+   507→
+   508→      {/* Search */}
+   509→      <div className="relative">
+   510→        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+   511→        <input
+   512→          type="text"
+   513→          value={query}
+   514→          onChange={(e) => setQuery(e.target.value)}
+   515→          placeholder="Search problems..."
+   516→          className="w-full pl-10 pr-3 py-2.5 text-sm bg-card border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/50"
+   517→        />
+   518→      </div>
+   519→
+   520→      {/* Sort */}
+   521→      <FilterGroup title="Sort by">
+   522→        <div className="grid grid-cols-2 gap-1.5">
+   523→          {[
+   524→            { value: "impactScore", label: "Impact" },
+   525→            { value: "severity", label: "Severity" },
+   526→            { value: "innovationScore", label: "Innovation" },
+   527→            { value: "marketNeed", label: "Market Need" },
+   528→            { value: "futureImportance", label: "Future" },
+   529→          ].map((opt) => (
+   530→            <button
+   531→              key={opt.value}
+   532→              onClick={() => setSortBy(opt.value as typeof sortBy)}
+   533→              className={`text-xs px-2.5 py-2 rounded-lg border transition-all text-left ${
+   534→                sortBy === opt.value
+   535→                  ? "bg-[#1E3A8A] text-white border-[#1E3A8A] dark:bg-[#3B82F6]/15 dark:text-[#3B82F6] dark:border-[#3B82F6]/30"
+   536→                  : "bg-card text-muted-foreground border-border hover:bg-muted hover:text-foreground"
+   537→              }`}
+   538→            >
+   539→              {opt.label}
+   540→            </button>
+   541→          ))}
+   542→        </div>
+   543→      </FilterGroup>
+   544→
+   545→      {/* Category */}
+   546→      <FilterGroup title="Category">
+   547→        <div className="space-y-0.5 max-h-72 overflow-y-auto pr-1 sidebar-scroll">
+   548→          <button
+   549→            onClick={() => setCategory("All")}
+   550→            className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center justify-between ${
+   551→              category === "All"
+   552→                ? "bg-[#1E3A8A]/10 text-[#1E3A8A] dark:bg-[#3B82F6]/15 dark:text-[#3B82F6]"
+   553→                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+   554→            }`}
+   555→          >
+   556→            All Categories
+   557→            <span className="text-xs text-muted-foreground">{totalCount}</span>
+   558→          </button>
+   559→          {categories.map((cat) => (
+   560→            <button
+   561→              key={cat}
+   562→              onClick={() => setCategory(cat)}
+   563→              className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center justify-between ${
+   564→                category === cat
+   565→                  ? "bg-[#1E3A8A]/10 text-[#1E3A8A] dark:bg-[#3B82F6]/15 dark:text-[#3B82F6]"
+   566→                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+   567→              }`}
+   568→            >
+   569→              <span className="truncate">{cat}</span>
+   570→            </button>
+   571→          ))}
+   572→        </div>
+   573→      </FilterGroup>
+   574→
+   575→      {/* Difficulty */}
+   576→      <FilterGroup title="Difficulty">
+   577→        <div className="space-y-1">
+   578→          <FilterRadio
+   579→            active={difficulty === "ALL"}
+   580→            onClick={() => setDifficulty("ALL")}
+   581→            label="All Difficulties"
+   582→          />
+   583→          {(["EASY", "MEDIUM", "HARD", "EXTREME"] as DifficultyLevel[]).map((d) => (
+   584→            <FilterRadio
+   585→              key={d}
+   586→              active={difficulty === d}
+   587→              onClick={() => setDifficulty(d)}
+   588→              label={difficultyLabels[d]}
+   589→              badgeClass={difficultyColors[d]}
+   590→            />
+   591→          ))}
+   592→        </div>
+   593→      </FilterGroup>
+   594→
+   595→      {/* Scope */}
+   596→      <FilterGroup title="Scope">
+   597→        <div className="space-y-1">
+   598→          <FilterRadio
+   599→            active={scope === "ALL"}
+   600→            onClick={() => setScope("ALL")}
+   601→            label="All Scopes"
+   602→          />
+   603→          {(["GLOBAL", "REGIONAL", "NATIONAL", "LOCAL"] as ProblemScope[]).map((s) => (
+   604→            <FilterRadio
+   605→              key={s}
+   606→              active={scope === s}
+   607→              onClick={() => setScope(s)}
+   608→              label={scopeLabels[s]}
+   609→            />
+   610→          ))}
+   611→        </div>
+   612→      </FilterGroup>
+   613→
+   614→      {/* Project type */}
+   615→      <FilterGroup title="Project Type">
+   616→        <div className="space-y-1">
+   617→          {projectTypeOptions.map((t) => (
+   618→            <button
+   619→              key={t}
+   620→              onClick={() => toggleProjectType(t)}
+   621→              className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center gap-2 ${
+   622→                projectTypes.includes(t)
+   623→                  ? "bg-[#1E3A8A]/10 text-[#1E3A8A] dark:bg-[#3B82F6]/15 dark:text-[#3B82F6]"
+   624→                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+   625→              }`}
+   626→            >
+   627→              <span
+   628→                className={`w-4 h-4 rounded border flex items-center justify-center text-[10px] ${
+   629→                  projectTypes.includes(t)
+   630→                    ? "bg-[#3B82F6] border-[#3B82F6] text-[#0F1B3D]"
+   631→                    : "border-border"
+   632→                }`}
+   633→              >
+   634→                {projectTypes.includes(t) ? "✓" : ""}
+   635→              </span>
+   636→              {t}
+   637→            </button>
+   638→          ))}
+   639→        </div>
+   640→      </FilterGroup>
+   641→
+   642→      {/* Tags */}
+   643→      {allTags.length > 0 && (
+   644→        <FilterGroup title="Tags">
+   645→          <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto sidebar-scroll">
+   646→            {allTags.slice(0, 30).map((t) => (
+   647→              <button
+   648→                key={t}
+   649→                onClick={() => toggleTag(t)}
+   650→                className={`text-xs px-2 py-1 rounded-md border transition-all ${
+   651→                  activeTags.includes(t)
+   652→                    ? "bg-[#1E3A8A]/10 text-[#1E3A8A] border-[#1E3A8A]/30 dark:bg-[#3B82F6]/15 dark:text-[#3B82F6] dark:border-[#3B82F6]/30"
+   653→                    : "bg-card text-muted-foreground border-border hover:bg-muted hover:text-foreground"
+   654→                }`}
+   655→              >
+   656→                {t}
+   657→              </button>
+   658→            ))}
+   659→          </div>
+   660→        </FilterGroup>
+   661→      )}
+   662→
+   663→      {/* Footer count */}
+   664→      {!isMobile && (
+   665→        <div className="pt-2 border-t text-xs text-muted-foreground">
+   666→          <span className="text-foreground font-medium">{resultCount}</span> of {totalCount} problems
+   667→        </div>
+   668→      )}
+   669→    </div>
+   670→  )
+   671→}
+   672→
+   673→function FilterGroup({
+   674→  title,
+   675→  children,
+   676→}: {
+   677→  title: string
+   678→  children: React.ReactNode
+   679→}) {
+   680→  return (
+   681→    <div className="p-4 rounded-xl bg-card border">
+   682→      <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wide mb-3">{title}</h3>
+   683→      {children}
+   684→    </div>
+   685→  )
+   686→}
+   687→
+   688→function FilterRadio({
+   689→  active,
+   690→  onClick,
+   691→  label,
+   692→  badgeClass,
+   693→}: {
+   694→  active: boolean
+   695→  onClick: () => void
+   696→  label: string
+   697→  badgeClass?: string
+   698→}) {
+   699→  return (
+   700→    <button
+   701→      onClick={onClick}
+   702→      className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors flex items-center gap-2 ${
+   703→        active
+   704→          ? "bg-[#1E3A8A]/10 text-[#1E3A8A] dark:bg-[#3B82F6]/15 dark:text-[#3B82F6]"
+   705→          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+   706→      }`}
+   707→    >
+   708→      <span
+   709→        className={`w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center ${
+   710→          active ? "border-[#1E3A8A] dark:border-[#3B82F6]" : "border-border"
+   711→        }`}
+   712→      >
+   713→        {active && <span className="w-1.5 h-1.5 rounded-full bg-[#1E3A8A] dark:bg-[#3B82F6]" />}
+   714→      </span>
+   715→      {label}
+   716→      {badgeClass && (
+   717→        <span className={`ml-auto text-[10px] px-1.5 py-0.5 rounded ${badgeClass}`}>
+   718→          ●
+   719→        </span>
+   720→      )}
+   721→    </button>
+   722→  )
+   723→}
+   724→
+   725→function StatCard({ label, value }: { label: string; value: string }) {
+   726→  return (
+   727→    <div className="p-4 rounded-xl bg-card border shadow-sm">
+   728→      <div className="text-2xl sm:text-3xl font-bold gradient-text">{value}</div>
+   729→      <div className="text-sm text-muted-foreground mt-1">{label}</div>
+   730→    </div>
+   731→  )
+   732→}
+   733→
+   734→function ProblemCard({ problem }: { problem: ReturnType<typeof getAllProblems>[0] }) {
+   735→  return (
+   736→    <Link
+   737→      href={`/solve-them/${problem.slug}`}
+   738→      className="group p-6 rounded-2xl bg-card border shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col"
+   739→    >
+   740→      {/* Category + difficulty */}
+   741→      <div className="flex items-start justify-between gap-3 mb-4">
+   742→        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-[#3B82F6]/10 text-[#1E3A8A] dark:text-[#3B82F6] border border-[#3B82F6]/20">
+   743→          {problem.category}
+   744→        </span>
+   745→        <span
+   746→          className={`text-xs font-medium px-2.5 py-1 rounded-full ${difficultyColors[problem.difficultyLevel]}`}
+   747→        >
+   748→          {difficultyLabels[problem.difficultyLevel]}
+   749→        </span>
+   750→      </div>
+   751→
+   752→      {/* Title */}
+   753→      <h3 className="text-lg font-heading font-semibold mb-2 group-hover:text-[#1E3A8A] dark:group-hover:text-[#3B82F6] transition-colors line-clamp-2">
+   754→        {problem.title}
+   755→      </h3>
+   756→
+   757→      {/* Summary */}
+   758→      <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 flex-1">
+   759→        {problem.summary}
+   760→      </p>
+   761→
+   762→      {/* Tags */}
+   763→      <div className="flex flex-wrap gap-1.5 mb-4">
+   764→        {problem.tags.slice(0, 3).map((tag) => (
+   765→          <span
+   766→            key={tag}
+   767→            className="text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground"
+   768→          >
+   769→            {tag}
+   770→          </span>
+   771→        ))}
+   772→        {problem.tags.length > 3 && (
+   773→          <span className="text-xs px-2 py-0.5 text-muted-foreground">+{problem.tags.length - 3}</span>
+   774→        )}
+   775→      </div>
+   776→
+   777→      {/* Metrics */}
+   778→      <div className="grid grid-cols-3 gap-2 mb-4 pt-4 border-t">
+   779→        <Metric icon={AlertCircle} label="Severity" value={problem.severity} color="text-rose-500" />
+   780→        <Metric icon={TrendingUp} label="Impact" value={problem.impactScore} color="text-emerald-500" />
+   781→        <Metric icon={Sparkles} label="Innovation" value={problem.innovationScore} color="text-amber-500" />
+   782→      </div>
+   783→
+   784→      {/* Footer */}
+   785→      <div className="flex items-center justify-between text-xs text-muted-foreground">
+   786→        <span className="flex items-center gap-1">
+   787→          <Users className="w-3 h-3" />
+   788→          {problem.teamTemplates[0]?.minMembers || 3}+ engineers
+   789→        </span>
+   790→        <span className="flex items-center gap-1">
+   791→          {problem.estimatedTimelineMonths ? `${problem.estimatedTimelineMonths}mo` : "—"}
+   792→          <Globe className="w-3 h-3 ml-2" />
+   793→          {problem.scope}
+   794→        </span>
+   795→      </div>
+   796→
+   797→      {/* Locked indicator */}
+   798→      <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground/70">
+   799→        <Lock className="w-3 h-3" />
+   800→        Solutions, skills, team templates & roadmap unlocked on detail page
+   801→        <CheckCircle2 className="w-3 h-3 ml-auto text-[#1E3A8A] dark:text-[#3B82F6]" />
+   802→      </div>
+   803→    </Link>
+   804→  )
+   805→}
+   806→
+   807→function Metric({
+   808→  icon: Icon,
+   809→  label,
+   810→  value,
+   811→  color,
+   812→}: {
+   813→  icon: typeof TrendingUp
+   814→  label: string
+   815→  value: number
+   816→  color: string
+   817→}) {
+   818→  return (
+   819→    <div>
+   820→      <div className="flex items-center gap-1 text-muted-foreground mb-0.5">
+   821→        <Icon className={`w-3 h-3 ${color}`} />
+   822→        <span className="text-[10px] uppercase tracking-wide">{label}</span>
+   823→      </div>
+   824→      <div className={`text-sm font-bold ${color}`}>{value}</div>
+   825→    </div>
+   826→  )
+   827→}
+   828→
