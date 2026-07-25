@@ -345,30 +345,31 @@ export default function SolveThemPage() {
         </section>
 
         {/* CTA */}
-        <section className="py-20">
+        <section className="py-20 bg-[#0F1B3D]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] relative overflow-hidden">
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iYSIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVHJhbnNmb3JtPSJyb3RhdGUoNDUpIj48cGF0aCBkPSJNLTEwIDMwaDYwdi0yMGgtNjB6IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDMpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCBmaWxsPSJ1cmwoI2EpIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+PC9zdmc+')] opacity-50" />
-              <div className="relative z-10">
-                <h2 className="text-3xl sm:text-4xl font-heading font-bold">
-                  Don&apos;t know where to{' '}
-                  <span className="font-serif-accent-italic">start?</span>
-                </h2>
-                <p className="mt-4 text-lg text-[#0F1B3D]/80 max-w-xl mx-auto">
-                  Tell us your skills and interests. Our AI Innovation Engine will match you to problems
-                  you&apos;re uniquely positioned to solve.
-                </p>
-                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Link
-                    href="/dashboard/innovation-engine"
-                    className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white text-[#1E3A8A] font-semibold hover:bg-white/90 shadow-xl text-base h-12"
-                  >
-                    <Sparkles className="w-5 h-5" />
-                    Launch Innovation Engine
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                </div>
-              </div>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-white mb-6">
+              Don&apos;t know where to{" "}
+              <span className="font-serif-accent-italic text-[#93C5FD]">start?</span>
+            </h2>
+            <p className="text-white/60 text-base sm:text-lg max-w-xl mx-auto mb-8">
+              Tell us your skills and interests. Our AI Innovation Engine will match you to problems
+              you&apos;re uniquely positioned to solve.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/dashboard/innovation-engine"
+                className="bg-[#3B82F6] text-white rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#2563EB] transition-all duration-300 shadow-lg shadow-[#3B82F6]/20 flex items-center gap-2 group"
+              >
+                <Sparkles className="w-5 h-5" />
+                Launch Innovation Engine
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link
+                href="/about"
+                className="text-white/80 border border-white/15 rounded-full px-8 py-3.5 text-base font-medium hover:bg-white/5 hover:border-white/25 transition-all duration-300"
+              >
+                Learn More
+              </Link>
             </div>
           </div>
         </section>
