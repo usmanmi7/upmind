@@ -58,9 +58,33 @@ export default function Hero() {
       {/* Layer 6 — Bottom fade into next section */}
       <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#0F1B3D]" />
 
-      {/* Layer 7 — Bottom divider line (separates Hero from Stats) */}
-      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/40 to-transparent" />
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-px bg-[#3B82F6]" />
+      {/* Layer 7 — Bottom engineering divider (separates Hero from Stats) */}
+      <div className="absolute bottom-0 inset-x-0 z-20">
+        {/* Soft blue glow underneath the divider */}
+        <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-[#3B82F6]/10 via-[#3B82F6]/3 to-transparent pointer-events-none" />
+
+        {/* Schematic line + center chip */}
+        <div className="relative h-10 flex items-center px-4 sm:px-8">
+          {/* Left dashed trace */}
+          <div className="flex-1 h-px border-t border-dashed border-[#3B82F6]/30" />
+          {/* Left node dot */}
+          <div className="flex-shrink-0 w-2 h-2 rounded-full bg-[#3B82F6]/50 mx-2 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
+          {/* Center chip — looks like a PCB label */}
+          <div className="flex-shrink-0 px-4 py-1.5 rounded-full border border-[#3B82F6]/40 bg-[#0F1B3D]/80 backdrop-blur-sm flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6] animate-pulse" />
+            <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#93C5FD]">
+              Enginst // v1.0
+            </span>
+          </div>
+          {/* Right node dot */}
+          <div className="flex-shrink-0 w-2 h-2 rounded-full bg-[#3B82F6]/50 mx-2 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
+          {/* Right dashed trace */}
+          <div className="flex-1 h-px border-t border-dashed border-[#3B82F6]/30" />
+        </div>
+
+        {/* Solid baseline accent */}
+        <div className="h-px bg-gradient-to-r from-transparent via-[#3B82F6]/60 to-transparent" />
+      </div>
 
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 w-full text-center">
