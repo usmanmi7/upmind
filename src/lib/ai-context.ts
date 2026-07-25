@@ -173,7 +173,7 @@ export function renderUserContext(ctx: UserContext | null): string {
   if (ctx.bio) lines.push(`Bio: ${truncate(ctx.bio, 240)}`)
   if (ctx.country) lines.push(`Location: ${ctx.country}`)
   if (ctx.plan) {
-    lines.push(`Upmind plan: ${ctx.plan}${ctx.subscriptionStatus ? ` (${ctx.subscriptionStatus.toLowerCase()})` : ""}`)
+    lines.push(`Enginest plan: ${ctx.plan}${ctx.subscriptionStatus ? ` (${ctx.subscriptionStatus.toLowerCase()})` : ""}`)
   }
 
   if (ctx.startup) {

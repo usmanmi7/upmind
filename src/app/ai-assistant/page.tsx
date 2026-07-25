@@ -564,8 +564,7 @@ export default function PublicAIAssistantPage() {
                         Hi{session?.user?.name ? `, ${session.user.name.split(" ")[0]}` : " there"}!
                       </h3>
                       <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto leading-relaxed">
-                        I&apos;m Upmind&apos;s AI consultant. Ask me anything about strategy,
-                        planning, growth, or get feedback on your ideas.
+                        I&apos;m Enginest&apos;s AI assistant. Ask me anything about engineering problems, build decisions, skill matching, or get feedback on your ideas.
                       </p>
                     </motion.div>
 
@@ -640,7 +639,7 @@ export default function PublicAIAssistantPage() {
                             {msg.role === "assistant" && (
                               <div className="flex items-center gap-1.5 mb-1.5 px-1">
                                 <span className="text-[11px] font-medium text-muted-foreground">
-                                  Upmind AI · {modelLabel}
+                                  Enginest AI · {modelLabel}
                                 </span>
                               </div>
                             )}

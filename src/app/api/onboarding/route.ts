@@ -132,7 +132,7 @@ export async function POST(req: NextRequest) {
     await db.notification.create({
       data: {
         userId: session.user.id,
-        title: "Welcome to Upmind! 🎉",
+        title: "Welcome to Enginest! 🎉",
         message: "Your account is set up and ready to go. Explore your dashboard to get started.",
         type: "SYSTEM",
       },

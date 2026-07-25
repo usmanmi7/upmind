@@ -64,7 +64,7 @@ function AdminSidebarContent({ collapsed = false }: { collapsed?: boolean }) {
         {!collapsed && (
           <div className="flex flex-col">
             <span className="text-lg font-bold font-heading text-sidebar-foreground">
-              Upmind
+              Enginest
             </span>
             <span className="text-[10px] text-[#3B82F6] font-medium uppercase tracking-wider">Admin Panel</span>
           </div>

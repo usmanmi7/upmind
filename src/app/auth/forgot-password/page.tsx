@@ -74,10 +74,10 @@ export default function ForgotPasswordPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
-              <span className="font-bold text-lg text-[#0F1B3D]">U</span>
+              <span className="font-bold text-lg text-white">E</span>
             </div>
             <span className="text-2xl font-bold font-heading text-[#0F1B3D] dark:text-white">
-              Upmind
+              Enginest
             </span>
           </Link>
         </div>

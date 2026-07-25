@@ -5,9 +5,9 @@ import { Linkedin, Twitter, Instagram, ArrowRight } from 'lucide-react';
 
 const productLinks = [
   { label: 'Services', href: '/services' },
-  { label: 'Pricing', href: '/pricing' },
   { label: 'Success Stories', href: '/success-stories' },
   { label: 'Resources', href: '/resources' },
+  { label: 'Solve Them', href: '/solve-them' },
 ];
 
 const companyLinks = [
@@ -33,7 +33,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-2 mb-4">
               <span className="w-3 h-3 rounded-full bg-[#3B82F6]" />
               <span className="text-[#3B82F6] font-bold text-xl tracking-tight font-heading">
-                Upmind
+                Enginest
               </span>
             </Link>
             <p className="text-white/40 text-sm leading-relaxed max-w-xs mb-6">
@@ -99,10 +99,10 @@ export default function Footer() {
             <ul className="space-y-2.5">
               <li>
                 <a
-                  href="mailto:hello@upmind.io"
+                  href="mailto:hello@enginest.io"
                   className="text-white/50 hover:text-[#3B82F6] text-sm transition-colors duration-200"
                 >
-                  hello@upmind.io
+                  hello@enginest.io
                 </a>
               </li>
               <li>
@@ -143,7 +143,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-white/30 text-xs sm:text-sm">
-            &copy; {new Date().getFullYear()} Upmind. All rights reserved.
+            &copy; {new Date().getFullYear()} Enginest. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             {legalLinks.map((link) => (

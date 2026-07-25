@@ -150,11 +150,11 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2 px-4 h-16 border-b border-sidebar-border hover:bg-sidebar-accent/30 transition-colors">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center shrink-0">
-          <span className="text-[#0F1B3D] font-bold text-base">U</span>
+          <span className="text-white font-bold text-base">E</span>
         </div>
         {!collapsed && (
           <span className="text-xl font-bold font-heading text-sidebar-foreground">
-            Upmind
+            Enginest
           </span>
         )}
         {isAdmin && !collapsed && (

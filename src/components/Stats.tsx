@@ -40,7 +40,7 @@ export default function Stats() {
             transition={{ duration: 0.5 }}
             className="text-[#3B82F6] text-sm font-semibold tracking-[0.15em] uppercase block mb-4"
           >
-            WHY UPMIND
+            WHY ENGINEST
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 30 }}

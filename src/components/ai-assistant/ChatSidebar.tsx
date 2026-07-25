@@ -69,7 +69,7 @@ export function ChatSidebarContent({
           <span className="size-7 rounded-lg bg-[#3B82F6]/15 text-[#3B82F6] grid place-items-center shrink-0">
             <Sparkles className="size-4" />
           </span>
-          <span className="text-foreground truncate">Upmind AI</span>
+          <span className="text-foreground truncate">Enginest AI</span>
         </Link>
 
         <Button

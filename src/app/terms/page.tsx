@@ -17,14 +17,14 @@ export default function TermsPage() {
             <section>
               <h2 className="text-xl font-heading font-semibold">1. Acceptance of Terms</h2>
               <p className="text-muted-foreground leading-relaxed">
-                By accessing or using the Upmind platform (&ldquo;Service&rdquo;), you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use the Service.
+                By accessing or using the Enginest platform (&ldquo;Service&rdquo;), you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use the Service.
               </p>
             </section>
 
             <section>
               <h2 className="text-xl font-heading font-semibold">2. Description of Service</h2>
               <p className="text-muted-foreground leading-relaxed">
-                Upmind provides a strategic consulting platform for startups, including access to consultants, AI-powered insights, resource libraries, roadmap tools, and document management. The Service is provided &ldquo;as is&rdquo; and we reserve the right to modify, suspend, or discontinue any aspect of the Service at any time.
+                Enginest provides an engineering innovation platform — including a curated problem database, AI-powered skill matching, resource libraries, roadmap tools, and project tracking. The Service is provided &ldquo;as is&rdquo; and we reserve the right to modify, suspend, or discontinue any aspect of the Service at any time.
               </p>
             </section>
 
@@ -42,23 +42,23 @@ export default function TermsPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-heading font-semibold">4. Subscription Plans & Payments</h2>
+              <h2 className="text-xl font-heading font-semibold">4. Accounts & Access</h2>
               <p className="text-muted-foreground leading-relaxed">
-                Paid plans are billed in advance on a monthly or annual basis. All fees are non-refundable except as expressly set forth in our refund policy. We reserve the right to change our pricing at any time, with 30 days notice for existing subscribers. Auto-renewal can be disabled at any time from your account settings.
+                Most features of Enginest are free to use, including browsing the curated problem database, reading public resources, and running the Innovation Engine within usage limits. Some premium features may require a paid plan in the future. We reserve the right to introduce, change, or remove paid plans at any time, with 30 days notice for existing subscribers.
               </p>
             </section>
 
             <section>
               <h2 className="text-xl font-heading font-semibold">5. Intellectual Property</h2>
               <p className="text-muted-foreground leading-relaxed">
-                All content, features, and functionality of the Service are owned by Upmind and protected by international copyright, trademark, and other intellectual property laws. You may not copy, modify, distribute, sell, or lease any part of our Service without prior written consent.
+                All content, features, and functionality of the Service are owned by Enginest and protected by international copyright, trademark, and other intellectual property laws. You may not copy, modify, distribute, sell, or lease any part of our Service without prior written consent.
               </p>
             </section>
 
             <section>
               <h2 className="text-xl font-heading font-semibold">6. User Content</h2>
               <p className="text-muted-foreground leading-relaxed">
-                You retain ownership of any content you submit, post, or display on the Service. By submitting content, you grant Upmind a worldwide, non-exclusive, royalty-free license to use, reproduce, and process that content solely for the purpose of providing the Service to you.
+                You retain ownership of any content you submit, post, or display on the Service. By submitting content, you grant Enginest a worldwide, non-exclusive, royalty-free license to use, reproduce, and process that content solely for the purpose of providing the Service to you.
               </p>
             </section>
 
@@ -78,7 +78,7 @@ export default function TermsPage() {
             <section>
               <h2 className="text-xl font-heading font-semibold">8. Limitation of Liability</h2>
               <p className="text-muted-foreground leading-relaxed">
-                To the maximum extent permitted by law, Upmind shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly. Our total liability shall not exceed the amount paid by you for the Service in the 12 months preceding the claim.
+                To the maximum extent permitted by law, Enginest shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly. Our total liability shall not exceed the amount paid by you for the Service in the 12 months preceding the claim.
               </p>
             </section>
 
@@ -92,7 +92,7 @@ export default function TermsPage() {
             <section>
               <h2 className="text-xl font-heading font-semibold">10. Contact</h2>
               <p className="text-muted-foreground leading-relaxed">
-                For questions about these Terms, please contact us at legal@upmind.io or write to us at: Upmind, Inc., 123 Innovation Drive, San Francisco, CA 94105.
+                For questions about these Terms, please contact us at legal@enginest.io or write to us at: Enginest, Inc., 123 Innovation Drive, San Francisco, CA 94105.
               </p>
             </section>
           </div>

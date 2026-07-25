@@ -115,7 +115,7 @@ export default function AIAssistantCTA() {
                   </div>
                   <div className="flex-1 mx-6">
                     <div className="bg-white/5 rounded-md px-3 py-1.5 text-white/30 text-xs text-center max-w-xs mx-auto">
-                      app.upmind.io/dashboard/innovation-engine
+                      app.enginest.io/dashboard/innovation-engine
                     </div>
                   </div>
                 </div>

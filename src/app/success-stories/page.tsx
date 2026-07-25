@@ -22,7 +22,7 @@ const fallbackTestimonials = [
     name: "Marcus Johnson",
     role: "Hardware Engineer",
     company: "Open Source Contributor",
-    content: "I'd been building IoT side projects for years without direction. Upmind's curated air-quality problem showed me the missing middle — accurate sensors at affordable prices. The team template told me exactly who I needed to find.",
+    content: "I'd been building IoT side projects for years without direction. Enginest's curated air-quality problem showed me the missing middle — accurate sensors at affordable prices. The team template told me exactly who I needed to find.",
     rating: 5,
   },
   {
@@ -149,7 +149,7 @@ export default function SuccessStoriesPage() {
           badge="Builder Stories"
           title="Engineers who found"
           highlight="what to build"
-          description="Real stories from engineers, researchers, and builders who used Upmind to find problems worth solving — and shipped solutions that matter."
+          description="Real stories from engineers, researchers, and builders who used Enginest to find problems worth solving — and shipped solutions that matter."
         />
 
         {/* Stats */}

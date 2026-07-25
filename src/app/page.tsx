@@ -10,7 +10,6 @@ import About from "@/components/About"
 import Services from "@/components/Services"
 import HowWeWork from "@/components/HowWeWork"
 import Testimonials from "@/components/Testimonials"
-import Pricing from "@/components/Pricing"
 import Resources from "@/components/Resources"
 import CTASection from "@/components/CTASection"
 import Footer from "@/components/Footer"
@@ -31,7 +30,6 @@ export default function Home() {
         <HowWeWork />
         <AIAssistantCTA />
         <Testimonials />
-        <Pricing />
         <Resources />
         <CTASection />
       </main>

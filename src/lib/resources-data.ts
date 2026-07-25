@@ -52,7 +52,7 @@ export const RESOURCE_CATEGORIES = [
 
 export const RESOURCE_TYPES: ResourceType[] = ["BLOG", "TEMPLATE", "VIDEO", "PDF", "GUIDE"];
 
-const UP = { id: "upmind-team", name: "Upmind Team", image: null, bio: "Engineering Innovation Platform team — curating playbooks for builders." };
+const UP = { id: "enginest-team", name: "Enginest Team", image: null, bio: "Engineering Innovation Platform team — curating playbooks for builders." };
 
 export const RESOURCES: EngineeringResource[] = [
   {
@@ -183,7 +183,7 @@ Some problems are intellectually fascinating but have no leverage. Ask:
 
 If the answer to any is no, file it and move on.
 
-## Where Upmind helps
+## Where Enginest helps
 
 The [Solve Them](/solve-them) database does steps 1-4 for you across 26 categories. Each problem is pre-validated against multilateral sources, with severity, impact, and engineering skill requirements attached.
 
@@ -288,7 +288,7 @@ Use this framework before committing to a path.`,
     slug: "skill-to-problem-matching-explained",
     title: "Skill-to-Problem Matching, Explained",
     description:
-      "How Upmind's Innovation Engine scores your skills against real-world problems — the algorithm, the weights, and how to interpret your matches.",
+      "How Enginest's Innovation Engine scores your skills against real-world problems — the algorithm, the weights, and how to interpret your matches.",
     content: `# Skill-to-Problem Matching, Explained
 
 The Innovation Engine takes your skills, interests, time, and team size, then scores every problem in the Solve Them database for fit. Here's how the scoring actually works.
@@ -666,7 +666,7 @@ Honest questions:
 
 The right path is the one where you'll still be engaged in 5 years — not the one that looks most prestigious today.
 
-## What Upmind can do
+## What Enginest can do
 
 The Solve Them database + Innovation Engine are designed to support any of these paths. Founders find venture-scale problems. Research engineers find paper-worthy gaps. Open source maintainers find infrastructure needs. Field engineers find deployment-ready problems. Builder-investors find sectors worth funding.`,
     type: "BLOG",
@@ -805,7 +805,7 @@ Abandoned-but-not-archived projects are worse than no project — they waste use
       "30 essential books, papers, and long-form essays for engineers who want to build things that matter — spanning systems thinking, problem framing, and impact at scale.",
     content: `# Reading List for Engineering Innovators
 
-These are the 30 readings that most shaped how we think about engineering innovation at Upmind. Grouped by theme.
+These are the 30 readings that most shaped how we think about engineering innovation at Enginest. Grouped by theme.
 
 ## Systems Thinking
 

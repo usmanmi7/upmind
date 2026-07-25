@@ -16,7 +16,7 @@ const values = [
   {
     icon: Users,
     title: "Engineer-Built",
-    description: "Upmind is built by engineers for engineers. We know the pain of building something nobody wanted, and we're obsessed with making problem selection as rigorous as engineering itself.",
+    description: "Enginest is built by engineers for engineers. We know the pain of building something nobody wanted, and we're obsessed with making problem selection as rigorous as engineering itself.",
   },
   {
     icon: Lightbulb,
@@ -66,7 +66,7 @@ const team = [
   {
     name: "The Community",
     role: "Open Contributors",
-    description: "Engineers, students, researchers, and founders who contribute problems, review briefs, and share build lessons. Upmind is theirs as much as ours.",
+    description: "Engineers, students, researchers, and founders who contribute problems, review briefs, and share build lessons. Enginest is theirs as much as ours.",
   },
 ]
 
@@ -80,7 +80,7 @@ export default function AboutPage() {
           badge="About Us"
           title="We help engineers build"
           highlight="what matters"
-          description="Upmind is an engineering innovation platform. We curate real-world problems, match them to engineering skills with AI, and give builders the playbooks to ship solutions that count."
+          description="Enginest is an engineering innovation platform. We curate real-world problems, match them to engineering skills with AI, and give builders the playbooks to ship solutions that count."
         />
 
         {/* Story Section */}
@@ -101,7 +101,7 @@ export default function AboutPage() {
                   <span className="font-serif-accent-italic text-[#1E3A8A]">builders</span>
                 </h2>
                 <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">
-                  Upmind started with a simple observation: talented engineers keep building clever
+                  Enginest started with a simple observation: talented engineers keep building clever
                   solutions in search of problems. The technology is rarely the bottleneck —
                   problem selection is. We watched friends burn years on products nobody wanted,
                   while real, documented problems went unsolved.
@@ -113,7 +113,7 @@ export default function AboutPage() {
                   skills that can actually move the needle.
                 </p>
                 <p className="text-[#666666] text-base sm:text-lg leading-relaxed">
-                  Today, Upmind is the home for engineers who want their work to matter: a curated
+                  Today, Enginest is the home for engineers who want their work to matter: a curated
                   problem database, an AI Innovation Engine for skill matching, playbooks for
                   building, and a community of people shipping things that count.
                 </p>
@@ -182,7 +182,7 @@ export default function AboutPage() {
               </span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-4">
                 The people behind{' '}
-                <span className="font-serif-accent-italic text-[#1E3A8A]">Upmind</span>
+                <span className="font-serif-accent-italic text-[#1E3A8A]">Enginest</span>
               </h2>
               <p className="text-[#666666] text-base sm:text-lg">
                 A small core team, a global field network, and a community of builders — all working to make engineering innovation more accessible.

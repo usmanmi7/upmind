@@ -13,13 +13,13 @@ import * as React from "react"
 // Fallback hardcoded FAQs used when database is empty
 const fallbackFaqs: Record<string, { q: string; a: string }[]> = {
   General: [
-    { q: "What is Upmind?", a: "Upmind is an engineering innovation platform. We curate real-world problems from WHO, UN, IEA, IPCC, and other authoritative sources, then use AI to match them to your engineering skills — so you spend your time on problems you can actually solve." },
-    { q: "Who is Upmind for?", a: "Upmind is for engineers, researchers, builders, and innovators who want their work to matter. Whether you're a student looking for a meaningful project, a senior engineer considering a startup, or a research lab hunting for high-impact problems — Upmind helps you find what to build." },
-    { q: "How does Upmind differ from startup consulting?", a: "Traditional consulting starts from your idea and tries to find a market. Upmind flips the workflow — we start from real, documented problems and match them to engineering skills. No more clever tech in search of a problem." },
+    { q: "What is Enginest?", a: "Enginest is an engineering innovation platform. We curate real-world problems from WHO, UN, IEA, IPCC, and other authoritative sources, then use AI to match them to your engineering skills — so you spend your time on problems you can actually solve." },
+    { q: "Who is Enginest for?", a: "Enginest is for engineers, researchers, builders, and innovators who want their work to matter. Whether you're a student looking for a meaningful project, a senior engineer considering a startup, or a research lab hunting for high-impact problems — Enginest helps you find what to build." },
+    { q: "How does Enginest differ from startup consulting?", a: "Traditional consulting starts from your idea and tries to find a market. Enginest flips the workflow — we start from real, documented problems and match them to engineering skills. No more clever tech in search of a problem." },
     { q: "Is my data secure?", a: "Absolutely. We use enterprise-grade encryption, follow SOC 2 best practices, and never share your data with third parties. Your skill profile and project notes are protected with the highest security standards." },
   ],
-  Pricing: [
-    { q: "Is there a free plan?", a: "Yes! Our Free plan includes browsing all 30+ curated problems, public metrics, 1 Innovation Engine run per month, and community access. It's a great way to experience Upmind before upgrading." },
+  Plans: [
+    { q: "Is there a free plan?", a: "Yes! Our Free plan includes browsing all 30+ curated problems, public metrics, 1 Innovation Engine run per month, and community access. It's a great way to experience Enginest before upgrading." },
     { q: "Can I switch plans at any time?", a: "Yes, you can upgrade or downgrade at any time. Upgrades take effect immediately with prorated billing, and downgrades take effect at the next billing cycle." },
     { q: "Do you offer refunds?", a: "We offer a 30-day money-back guarantee on all paid plans. If you're not satisfied, contact support for a full refund." },
     { q: "Do you offer discounts for students, researchers, or nonprofits?", a: "Yes! We offer special pricing for students, academic research labs, and nonprofit engineering teams. Contact our team for details." },
@@ -41,7 +41,7 @@ const fallbackFaqs: Record<string, { q: string; a: string }[]> = {
     { q: "Are resources free?", a: "Most resources are free to read. Some premium templates and deep-dive guides require a Builder Pro or Team plan. Sign-in is required to read full articles." },
   ],
   Technical: [
-    { q: "What browsers are supported?", a: "Upmind works on all modern browsers including Chrome, Firefox, Safari, and Edge. We recommend keeping your browser updated for the best experience." },
+    { q: "What browsers are supported?", a: "Enginest works on all modern browsers including Chrome, Firefox, Safari, and Edge. We recommend keeping your browser updated for the best experience." },
     { q: "Is there a mobile app?", a: "Our platform is fully responsive and works great on mobile browsers. A dedicated mobile app is on our roadmap." },
   ],
 }
@@ -115,7 +115,7 @@ export default function FAQPage() {
           badge="FAQ"
           title="Got questions?"
           highlight="we've got answers"
-          description="Find answers to the most common questions about Upmind, the Solve Them database, the Innovation Engine, and our pricing."
+          description="Find answers to the most common questions about Enginest, the Solve Them database, and the Innovation Engine."
         />
 
         {/* Search */}

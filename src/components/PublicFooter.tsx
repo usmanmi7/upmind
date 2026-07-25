@@ -10,9 +10,9 @@ export default function PublicFooter() {
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
-                <span className="text-[#0F1B3D] font-bold text-base">U</span>
+                <span className="text-white font-bold text-base">E</span>
               </div>
-              <span className="text-xl font-bold font-heading">Upmind</span>
+              <span className="text-xl font-bold font-heading">Enginest</span>
             </Link>
             <p className="text-sm text-white/60">
               An engineering innovation platform. Find problems worth solving, match your skills with AI, and build things that matter.
@@ -22,9 +22,9 @@ export default function PublicFooter() {
             <h4 className="font-semibold mb-3 text-sm">Product</h4>
             <ul className="space-y-2 text-sm text-white/60">
               <li><Link href="/services" className="hover:text-[#3B82F6] transition-smooth">Services</Link></li>
-              <li><Link href="/pricing" className="hover:text-[#3B82F6] transition-smooth">Pricing</Link></li>
               <li><Link href="/resources" className="hover:text-[#3B82F6] transition-smooth">Resources</Link></li>
               <li><Link href="/success-stories" className="hover:text-[#3B82F6] transition-smooth">Success Stories</Link></li>
+              <li><Link href="/solve-them" className="hover:text-[#3B82F6] transition-smooth">Solve Them</Link></li>
             </ul>
           </div>
           <div>
@@ -54,7 +54,7 @@ export default function PublicFooter() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-white/10 text-center text-sm text-white/40">
-          &copy; {new Date().getFullYear()} Upmind. All rights reserved.
+          &copy; {new Date().getFullYear()} Enginest. All rights reserved.
         </div>
       </div>
     </footer>

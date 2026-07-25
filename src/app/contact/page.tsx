@@ -22,7 +22,7 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email Us",
-    detail: "hello@upmind.io",
+    detail: "hello@enginest.io",
     description: "We respond within 24 hours",
     color: "from-[#1E3A8A] to-[#93C5FD]",
   },
@@ -119,7 +119,7 @@ export default function ContactPage() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="general">General Inquiry</SelectItem>
-                          <SelectItem value="sales">Sales & Pricing</SelectItem>
+                          <SelectItem value="sales">Sales & Plans</SelectItem>
                           <SelectItem value="support">Technical Support</SelectItem>
                           <SelectItem value="partnership">Partnership</SelectItem>
                           <SelectItem value="feedback">Feedback</SelectItem>

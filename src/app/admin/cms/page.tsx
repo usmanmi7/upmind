@@ -387,7 +387,7 @@ export default function AdminCMSPage() {
             <DialogDescription>{isEditFaq ? "Update" : "Create"} a frequently asked question for the website</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <div><Label>Question</Label><Input value={faqForm.question} onChange={(e) => setFaqForm((p) => ({ ...p, question: e.target.value }))} placeholder="e.g., What is Upmind?" /></div>
+            <div><Label>Question</Label><Input value={faqForm.question} onChange={(e) => setFaqForm((p) => ({ ...p, question: e.target.value }))} placeholder="e.g., What is Enginest?" /></div>
             <div><Label>Answer</Label><Textarea value={faqForm.answer} onChange={(e) => setFaqForm((p) => ({ ...p, answer: e.target.value }))} rows={4} placeholder="Provide a clear answer..." /></div>
             <div><Label>Category</Label><Input value={faqForm.category} onChange={(e) => setFaqForm((p) => ({ ...p, category: e.target.value }))} placeholder="e.g., General, Pricing, Consulting" /></div>
             <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">

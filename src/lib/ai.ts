@@ -1,5 +1,5 @@
 /**
- * AI Provider System for Upmind
+ * AI Provider System for Enginest
  *
  * Uses a multi-provider fallback strategy:
  * 1. Z AI SDK (primary - works in local development with internal gateway)
@@ -333,7 +333,7 @@ export async function directAIChat(
   const result = await getAIResponse(messages, {
     searchWeb: options?.searchWeb,
     searchQuery: options?.searchQuery,
-    systemPrompt: `You are a helpful AI assistant on the Upmind platform. You can help users with ANY topic, not just startups. Feel free to answer questions about technology, science, health, education, business, creative writing, programming, current events, and anything else. Be helpful, accurate, and conversational.
+    systemPrompt: `You are a helpful AI assistant on the Enginest platform. You can help users with ANY topic, not just startups. Feel free to answer questions about technology, science, health, education, business, creative writing, programming, current events, and anything else. Be helpful, accurate, and conversational.
 
 Format your responses clearly. Use markdown formatting when helpful (headers, bullet points, bold, code blocks). Be concise but thorough.`,
   })

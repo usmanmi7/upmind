@@ -30,7 +30,7 @@ export default function About() {
               <span className="font-serif-accent-italic text-[#1E3A8A]">builders</span>
             </h2>
             <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">
-              Upmind was founded by engineers who kept watching talented friends build clever
+              Enginest was founded by engineers who kept watching talented friends build clever
               solutions in search of problems. The pattern was always the same — a beautiful
               technical idea, a missing market, a slow drift toward irrelevance. The technology
               wasn&apos;t the bottleneck. The problem selection was.
@@ -42,7 +42,7 @@ export default function About() {
               that can actually move the needle.
             </p>
             <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-8">
-              Today, Upmind is the home for engineers who want their work to matter: a curated
+              Today, Enginest is the home for engineers who want their work to matter: a curated
               problem database, an AI Innovation Engine for skill matching, playbooks for building,
               and a community of people shipping things that count.
             </p>

@@ -43,7 +43,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Upmind Blue Brand Colors */
+  /* Enginest Blue Brand Colors */
   --color-navy: #0F1B3D;
   --color-navy-light: #1E3A8A;
   --color-electric-blue: #3B82F6;
@@ -59,7 +59,7 @@
 
 :root {
   --radius: 0.625rem;
-  /* Upmind blue palette - light theme */
+  /* Enginest blue palette - light theme */
   --background: oklch(0.985 0.005 250);
   --foreground: oklch(0.18 0.04 260);
   --card: oklch(1 0.003 250);

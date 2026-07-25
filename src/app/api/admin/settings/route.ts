@@ -4,17 +4,17 @@ import { authOptions } from "@/lib/auth"
 
 // In-memory settings store (in production, this would be in the database)
 let platformSettings = {
-  siteName: "Upmind",
-  siteDescription: "Strategic consulting platform for startups",
-  contactEmail: "hello@upmind.io",
+  siteName: "Enginest",
+  siteDescription: "Engineering innovation platform for builders who want their work to matter",
+  contactEmail: "hello@enginest.io",
   contactPhone: "+1 (555) 000-0000",
   socialLinks: {
-    twitter: "https://twitter.com/upmind",
-    linkedin: "https://linkedin.com/company/upmind",
-    github: "https://github.com/upmind",
+    twitter: "https://twitter.com/enginest",
+    linkedin: "https://linkedin.com/company/enginest",
+    github: "https://github.com/enginest",
   },
   emailTemplates: {
-    welcome: "Welcome to Upmind! We're excited to have you on board. Start by creating your startup profile and exploring our resources.",
+    welcome: "Welcome to Enginest! We're excited to have you on board. Start by exploring the Solve Them database and running the Innovation Engine.",
     appointmentReminder: "Hi {name}, this is a reminder for your appointment with {consultant} tomorrow at {time}.",
     paymentConfirmation: "Hi {name}, your payment of ${amount} has been successfully processed. Thank you for your subscription!",
     planExpiryNotice: "Hi {name}, your {plan} subscription will expire on {date}. Renew now to continue enjoying premium features.",

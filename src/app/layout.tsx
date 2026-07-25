@@ -28,11 +28,11 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: "Upmind — Engineering Innovation Platform",
+  title: "Enginest — Engineering Innovation Platform",
   description:
     "We help engineers find problems worth solving. Curated world problems, AI-powered skill matching, and playbooks for builders who want to make things that matter.",
-  keywords: ["Upmind", "engineering innovation", "problems worth solving", "innovation engine", "build"],
-  authors: [{ name: "Upmind" }],
+  keywords: ["Enginest", "engineering innovation", "problems worth solving", "innovation engine", "build"],
+  authors: [{ name: "Enginest" }],
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "16x16 32x32 48x48" },

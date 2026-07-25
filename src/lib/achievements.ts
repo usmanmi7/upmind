@@ -10,7 +10,7 @@ export const ACHIEVEMENT_DEFS: Record<string, { title: string; description: stri
   MILESTONE_5: { title: "5 Milestones Strong", description: "Completed 5 roadmap tasks", xp: 40 },
   MILESTONE_10: { title: "Double Digits", description: "Completed 10 roadmap tasks", xp: 75 },
   COMMUNITY_MEMBER: { title: "Community Builder", description: "Created your first community post", xp: 20 },
-  EARLY_ADOPTER: { title: "Early Adopter", description: "Joined Upmind during early access", xp: 35 },
+  EARLY_ADOPTER: { title: "Early Adopter", description: "Joined Enginest during early access", xp: 35 },
   ROADMAP_STARTER: { title: "Roadmap Starter", description: "Added your first roadmap task", xp: 15 },
   RESOURCE_EXPLORER: { title: "Resource Explorer", description: "Saved 5 resources to your library", xp: 30 },
   SOCIAL_BUTTERFLY: { title: "Social Butterfly", description: "Created 5 community posts", xp: 45 },

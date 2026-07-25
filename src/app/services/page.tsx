@@ -154,7 +154,7 @@ export default function ServicesPage() {
           <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <h2 className="text-2xl sm:text-3xl font-heading font-bold">
-                How <span className="gradient-text">Upmind</span> Works
+                How <span className="gradient-text">Enginest</span> Works
               </h2>
               <p className="mt-4 text-muted-foreground">
                 A four-step path from "I want to build something that matters" to a real engineering project.

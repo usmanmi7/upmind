@@ -53,7 +53,7 @@ const allAchievements = [
   { type: "TASK_MASTER", title: "Task Master", description: "Completed 10 tasks on your roadmap", icon: Zap, color: "from-yellow-500 to-orange-500", xp: 50 },
   { type: "SOCIAL_BUTTERFLY", title: "Social Butterfly", description: "Created 5 community posts", icon: UsersRound, color: "from-pink-500 to-rose-500", xp: 45 },
   { type: "MILESTONE_10", title: "Double Digits", description: "Completed 10 roadmap tasks", icon: Trophy, color: "from-[#93C5FD] to-[#1E3A8A]", xp: 75 },
-  { type: "EARLY_ADOPTER", title: "Early Adopter", description: "Joined Upmind during early access", icon: Clock, color: "from-[#1E3A8A] to-[#0F1B3D]", xp: 35 },
+  { type: "EARLY_ADOPTER", title: "Early Adopter", description: "Joined Enginest during early access", icon: Clock, color: "from-[#1E3A8A] to-[#0F1B3D]", xp: 35 },
 ]
 
 function AchievementGrid() {

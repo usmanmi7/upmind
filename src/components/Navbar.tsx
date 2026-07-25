@@ -60,7 +60,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center gap-2 group">
             <span className="w-3 h-3 rounded-full bg-[#3B82F6] group-hover:scale-110 transition-transform" />
             <span className="text-white font-bold text-xl tracking-tight font-heading">
-              Upmind
+              Enginest
             </span>
           </Link>
 

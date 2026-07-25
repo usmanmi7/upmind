@@ -17,7 +17,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-xl font-heading font-semibold">1. Introduction</h2>
               <p className="text-muted-foreground leading-relaxed">
-                Upmind, Inc. (&ldquo;Upmind,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;) respects your privacy and is committed to protecting your personal data. This privacy policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.
+                Enginest, Inc. (&ldquo;Enginest,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;) respects your privacy and is committed to protecting your personal data. This privacy policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.
               </p>
             </section>
 
@@ -85,7 +85,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-xl font-heading font-semibold">8. Contact Us</h2>
               <p className="text-muted-foreground leading-relaxed">
-                If you have questions about this Privacy Policy, please contact us at privacy@upmind.io or write to us at: Upmind, Inc., 123 Innovation Drive, San Francisco, CA 94105.
+                If you have questions about this Privacy Policy, please contact us at privacy@enginest.io or write to us at: Enginest, Inc., 123 Innovation Drive, San Francisco, CA 94105.
               </p>
             </section>
           </div>

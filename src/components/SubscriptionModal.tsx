@@ -133,7 +133,7 @@ export default function SubscriptionModal({ isOpen, onClose, type }: Subscriptio
                     </div>
 
                     <Link
-                      href="/pricing"
+                      href="/dashboard/subscription"
                       className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#3B82F6] to-[#1E3A8A] text-[#0F1B3D] rounded-full px-8 py-3.5 text-base font-bold hover:shadow-lg hover:shadow-[#3B82F6]/20 transition-all"
                     >
                       <Crown className="w-4 h-4" />
