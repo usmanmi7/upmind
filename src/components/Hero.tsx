@@ -58,6 +58,10 @@ export default function Hero() {
       {/* Layer 6 — Bottom fade into next section */}
       <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#0F1B3D]" />
 
+      {/* Layer 7 — Bottom divider line (separates Hero from Stats) */}
+      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/40 to-transparent" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-px bg-[#3B82F6]" />
+
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 w-full text-center">
         {/* Pill Badge */}
