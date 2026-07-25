@@ -58,32 +58,43 @@ export default function Hero() {
       {/* Layer 6 — Bottom fade into next section */}
       <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#0F1B3D]" />
 
-      {/* Layer 7 — Bottom engineering divider (separates Hero from Stats) */}
+      {/* Layer 7 — Bottom engineering divider (separates Hero from WHY ENGINEST) */}
       <div className="absolute bottom-0 inset-x-0 z-20">
-        {/* Soft blue glow underneath the divider */}
-        <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-[#3B82F6]/10 via-[#3B82F6]/3 to-transparent pointer-events-none" />
+        {/* Wide blue glow strip underneath */}
+        <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#3B82F6]/15 via-[#3B82F6]/5 to-transparent pointer-events-none" />
 
-        {/* Schematic line + center chip */}
-        <div className="relative h-10 flex items-center px-4 sm:px-8">
-          {/* Left dashed trace */}
-          <div className="flex-1 h-px border-t border-dashed border-[#3B82F6]/30" />
-          {/* Left node dot */}
-          <div className="flex-shrink-0 w-2 h-2 rounded-full bg-[#3B82F6]/50 mx-2 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
-          {/* Center chip — looks like a PCB label */}
-          <div className="flex-shrink-0 px-4 py-1.5 rounded-full border border-[#3B82F6]/40 bg-[#0F1B3D]/80 backdrop-blur-sm flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6] animate-pulse" />
-            <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#93C5FD]">
-              Enginst // v1.0
-            </span>
+        {/* Divider band */}
+        <div className="relative h-16 sm:h-14 flex items-center px-4 sm:px-8">
+          {/* Left: solid line + dashed trace */}
+          <div className="flex-1 flex items-center">
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#3B82F6]/70" />
+            <div className="flex-shrink-0 w-2 h-2 rounded-full bg-[#3B82F6] mr-2 shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
+            <div className="flex-1 h-px border-t border-dashed border-[#3B82F6]/40" />
+            <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#3B82F6]/60 mx-2" />
           </div>
-          {/* Right node dot */}
-          <div className="flex-shrink-0 w-2 h-2 rounded-full bg-[#3B82F6]/50 mx-2 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
-          {/* Right dashed trace */}
-          <div className="flex-1 h-px border-t border-dashed border-[#3B82F6]/30" />
+
+          {/* Center chip — section pointer */}
+          <div className="flex-shrink-0 px-5 sm:px-6 py-2 rounded-full border border-[#3B82F6]/50 bg-[#0F1B3D] backdrop-blur-sm flex items-center gap-2.5 shadow-[0_0_24px_rgba(59,130,246,0.25)]">
+            <span className="w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.9)]" />
+            <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.25em] text-white font-semibold">
+              Why Enginest
+            </span>
+            <svg className="w-3 h-3 text-[#93C5FD]" viewBox="0 0 12 12" fill="none">
+              <path d="M6 2v8M2 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+
+          {/* Right: dashed trace + solid line */}
+          <div className="flex-1 flex items-center">
+            <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#3B82F6]/60 mx-2" />
+            <div className="flex-1 h-px border-t border-dashed border-[#3B82F6]/40" />
+            <div className="flex-shrink-0 w-2 h-2 rounded-full bg-[#3B82F6] ml-2 shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
+            <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#3B82F6]/70" />
+          </div>
         </div>
 
-        {/* Solid baseline accent */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[#3B82F6]/60 to-transparent" />
+        {/* Bottom thick accent line */}
+        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent opacity-70" />
       </div>
 
       {/* Content */}
