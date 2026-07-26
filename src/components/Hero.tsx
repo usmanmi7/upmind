@@ -103,9 +103,6 @@ export default function Hero() {
         <div className="absolute bottom-[78px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
           <div className="w-2.5 h-2.5 rounded-full bg-[#3B82F6] shadow-[0_0_12px_rgba(59,130,246,0.9)] animate-pulse" />
         </div>
-
-        {/* Solid baseline accent */}
-        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/30 to-transparent" />
       </div>
 
       {/* Content */}

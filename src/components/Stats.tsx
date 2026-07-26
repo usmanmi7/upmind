@@ -120,14 +120,6 @@ export default function Stats() {
                 </motion.div>
               );
             })}
-
-            {/* Bottom accent line */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={isInView ? { scaleX: 1 } : {}}
-              transition={{ duration: 1, delay: 0.6 }}
-              className="h-px bg-gradient-to-r from-[#3B82F6] via-[#3B82F6]/40 to-transparent origin-left mt-2"
-            />
           </div>
         </div>
       </div>
