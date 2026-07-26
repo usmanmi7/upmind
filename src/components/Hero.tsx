@@ -58,43 +58,54 @@ export default function Hero() {
       {/* Layer 6 — Bottom fade into next section */}
       <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#0F1B3D]" />
 
-      {/* Layer 7 — Bottom engineering divider (separates Hero from WHY ENGINEST) */}
-      <div className="absolute bottom-0 inset-x-0 z-20">
-        {/* Wide blue glow strip underneath */}
-        <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#3B82F6]/15 via-[#3B82F6]/5 to-transparent pointer-events-none" />
+      {/* Layer 7 — Bottom two-curve divider (separates Hero from WHY ENGINEST) */}
+      <div className="absolute bottom-0 inset-x-0 z-20 pointer-events-none">
+        {/* Soft blue glow under the curves */}
+        <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-[#3B82F6]/10 via-[#3B82F6]/3 to-transparent" />
 
-        {/* Divider band */}
-        <div className="relative h-16 sm:h-14 flex items-center px-4 sm:px-8">
-          {/* Left: solid line + dashed trace */}
-          <div className="flex-1 flex items-center">
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#3B82F6]/70" />
-            <div className="flex-shrink-0 w-2 h-2 rounded-full bg-[#3B82F6] mr-2 shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
-            <div className="flex-1 h-px border-t border-dashed border-[#3B82F6]/40" />
-            <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#3B82F6]/60 mx-2" />
-          </div>
+        {/* Two concentric arc curves */}
+        <svg
+          className="absolute bottom-0 inset-x-0 w-full"
+          viewBox="0 0 1440 120"
+          preserveAspectRatio="none"
+          fill="none"
+          aria-hidden="true"
+        >
+          {/* Outer curve — wider, soft blue */}
+          <path
+            d="M0,80 C360,160 1080,160 1440,80"
+            stroke="url(#curveOuter)"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          {/* Inner curve — tighter, brighter blue */}
+          <path
+            d="M0,95 C360,40 1080,40 1440,95"
+            stroke="url(#curveInner)"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+          <defs>
+            <linearGradient id="curveOuter" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#3B82F6" stopOpacity="0" />
+              <stop offset="50%" stopColor="#3B82F6" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
+            </linearGradient>
+            <linearGradient id="curveInner" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#93C5FD" stopOpacity="0" />
+              <stop offset="50%" stopColor="#93C5FD" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#93C5FD" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+        </svg>
 
-          {/* Center chip — section pointer */}
-          <div className="flex-shrink-0 px-5 sm:px-6 py-2 rounded-full border border-[#3B82F6]/50 bg-[#0F1B3D] backdrop-blur-sm flex items-center gap-2.5 shadow-[0_0_24px_rgba(59,130,246,0.25)]">
-            <span className="w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.9)]" />
-            <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.25em] text-white font-semibold">
-              Why Enginest
-            </span>
-            <svg className="w-3 h-3 text-[#93C5FD]" viewBox="0 0 12 12" fill="none">
-              <path d="M6 2v8M2 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-
-          {/* Right: dashed trace + solid line */}
-          <div className="flex-1 flex items-center">
-            <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#3B82F6]/60 mx-2" />
-            <div className="flex-1 h-px border-t border-dashed border-[#3B82F6]/40" />
-            <div className="flex-shrink-0 w-2 h-2 rounded-full bg-[#3B82F6] ml-2 shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
-            <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#3B82F6]/70" />
-          </div>
+        {/* Center node dot — sits on the curve intersection */}
+        <div className="absolute bottom-[78px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#3B82F6] shadow-[0_0_12px_rgba(59,130,246,0.9)] animate-pulse" />
         </div>
 
-        {/* Bottom thick accent line */}
-        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent opacity-70" />
+        {/* Solid baseline accent */}
+        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/30 to-transparent" />
       </div>
 
       {/* Content */}
