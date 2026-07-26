@@ -1,8 +1,9 @@
 "use client"
 
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useSession } from "next-auth/react"
-import { ChevronDown, Menu, X, HelpCircle, Briefcase, Phone, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield, Trophy, Sparkles, type LucideIcon } from "lucide-react"
+import { ChevronDown, Menu, X, HelpCircle, Briefcase, Phone, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield, Trophy, type LucideIcon } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { signOut } from "next-auth/react"
 import * as React from "react"
@@ -11,12 +12,11 @@ interface NavLink {
   label: string;
   href: string;
   icon?: LucideIcon;
-  highlight?: boolean;
 }
 
 const navLinks: NavLink[] = [
   { label: "Resources", href: "/resources" },
-  { label: "Solve Them", href: "/solve-them", icon: Sparkles, highlight: true },
+  { label: "Solve Them", href: "/solve-them" },
   { label: "AI Assistant", href: "/ai-assistant" },
   { label: "About", href: "/about" },
 ]
@@ -28,11 +28,18 @@ const moreLinks: NavLink[] = [
   { label: "FAQ", href: "/faq", icon: HelpCircle },
 ]
 
+function isActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/"
+  return pathname === href || pathname.startsWith(href + "/")
+}
+
 export default function PublicNavbar() {
   const { data: session } = useSession()
+  const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [moreOpen, setMoreOpen] = React.useState(false)
   const [userMenuOpen, setUserMenuOpen] = React.useState(false)
+  const moreHasActive = moreLinks.some((l) => isActive(pathname, l.href))
 
   return (
     <header className="sticky top-0 z-50 bg-[#0F1B3D]/95 backdrop-blur-lg border-b border-white/5">
@@ -49,20 +56,23 @@ export default function PublicNavbar() {
           {/* Desktop Nav + CTA - Right Aligned */}
           <div className="hidden lg:flex items-center gap-7">
             {navLinks.map((link) => {
-              const Icon = link.icon
+              const active = isActive(pathname, link.href)
               return (
                 <Link
                   key={link.label}
                   href={link.href}
                   className={`text-base font-medium capitalize transition-colors relative group flex items-center gap-1.5 ${
-                    link.highlight
-                      ? "text-[#3B82F6] hover:text-[#2563EB]"
-                      : "text-white/80 hover:text-white"
+                    active
+                      ? "text-white"
+                      : "text-white/70 hover:text-white"
                   }`}
                 >
-                  {link.highlight && Icon && <Icon className="w-4 h-4" />}
                   {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#3B82F6] transition-all group-hover:w-full" />
+                  <span
+                    className={`absolute -bottom-1.5 left-0 h-0.5 bg-[#3B82F6] transition-all duration-300 ${
+                      active ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
+                  />
                 </Link>
               )
             })}
@@ -72,10 +82,17 @@ export default function PublicNavbar() {
               <button
                 onClick={() => setMoreOpen(!moreOpen)}
                 onBlur={() => setTimeout(() => setMoreOpen(false), 200)}
-                className="text-white/80 hover:text-white text-base font-medium capitalize transition-colors flex items-center gap-1 group"
+                className={`text-base font-medium capitalize transition-colors flex items-center gap-1 group relative ${
+                  moreHasActive ? "text-white" : "text-white/70 hover:text-white"
+                }`}
               >
                 More
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${moreOpen ? "rotate-180" : ""}`} />
+                <span
+                  className={`absolute -bottom-1.5 left-0 h-0.5 bg-[#3B82F6] transition-all duration-300 ${
+                    moreHasActive ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                />
               </button>
               <AnimatePresence>
                 {moreOpen && (
@@ -88,11 +105,16 @@ export default function PublicNavbar() {
                   >
                     {moreLinks.map((link) => {
                       const Icon = link.icon
+                      const active = isActive(pathname, link.href)
                       return (
                         <Link
                           key={link.label}
                           href={link.href}
-                          className="flex items-center gap-2 px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 text-sm capitalize transition-colors"
+                          className={`flex items-center gap-2 px-4 py-3 text-sm capitalize transition-colors ${
+                            active
+                              ? "text-[#3B82F6] bg-[#3B82F6]/10"
+                              : "text-white/70 hover:text-white hover:bg-white/5"
+                          }`}
                           onClick={() => setMoreOpen(false)}
                         >
                           {Icon && <Icon className="w-4 h-4" />}
@@ -252,18 +274,19 @@ export default function PublicNavbar() {
               <div className="py-4 space-y-1">
                 {[...navLinks, ...moreLinks].map((link) => {
                   const Icon = link.icon
+                  const active = isActive(pathname, link.href)
                   return (
                     <Link
                       key={link.label}
                       href={link.href}
                       className={`flex items-center gap-2 text-base font-medium capitalize py-2.5 px-3 rounded-lg transition-colors ${
-                        link.highlight
-                          ? "text-[#3B82F6] hover:bg-[#3B82F6]/10"
+                        active
+                          ? "text-[#3B82F6] bg-[#3B82F6]/10"
                           : "text-white/80 hover:text-white hover:bg-white/5"
                       }`}
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      {link.highlight && Icon && <Icon className="w-4 h-4" />}
+                      {Icon && <Icon className="w-4 h-4" />}
                       {link.label}
                     </Link>
                   )
