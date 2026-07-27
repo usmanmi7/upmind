@@ -140,7 +140,7 @@ export default function InnovationEnginePage() {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-8">
+    <div className="space-y-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h1 className="text-3xl font-bold text-foreground tracking-tight flex items-center gap-3">
