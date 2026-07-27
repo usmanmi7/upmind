@@ -156,7 +156,7 @@ export default function PublicAIAssistantPage() {
       }))
       setChats(list)
     } catch {
-      // ignore — sidebar just shows empty state
+      // ignore, sidebar just shows empty state
     } finally {
       setChatsLoading(false)
     }
@@ -205,7 +205,7 @@ export default function PublicAIAssistantPage() {
         return
       }
 
-      // Authed path — fetch from server
+      // Authed path, fetch from server
       try {
         const res = await fetch(`/api/ai/chats/${id}`, { cache: "no-store" })
         if (!res.ok) return
@@ -297,7 +297,7 @@ export default function PublicAIAssistantPage() {
     setInput("")
     setLoading(true)
     // The "picking up where we left off" banner has served its purpose once
-    // the user sends a new message — clear it so it doesn't linger.
+    // the user sends a new message, clear it so it doesn't linger.
     setReopenSummary(null)
 
     // If this is the first message of a new chat, derive a title and persist the chat
@@ -318,7 +318,7 @@ export default function PublicAIAssistantPage() {
             chatId = data.chat.id
           }
         } catch {
-          // continue even if chat couldn't be created — message still works
+          // continue even if chat couldn't be created, message still works
         }
       } else {
         chatId = `guest-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
@@ -439,7 +439,7 @@ export default function PublicAIAssistantPage() {
             )
           )
         } catch {
-          // ignore — chat still works in-session
+          // ignore, chat still works in-session
         }
       } else if (chatId && !isAuthenticated) {
         const g = guestChatsRef.current.get(chatId)

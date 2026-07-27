@@ -26,7 +26,7 @@ interface AIInsightsResponse {
 // ─── In-memory cache (5-minute TTL, per-user) ────────────────────────────────
 //
 // Note: this cache is per-process. On Vercel serverless, different instances
-// won't share the cache — but the same instance typically handles the same
+// won't share the cache, but the same instance typically handles the same
 // user's recent traffic (warm lambdas), so it still significantly cuts LLM
 // calls. For local dev and single-instance deployments it's perfect.
 
@@ -44,7 +44,7 @@ const insightsCache = new Map<string, CacheEntry>()
 /**
  * Fetch a compact, LLM-friendly snapshot of the user's analytics.
  *
- * Deliberately leaner than the /api/analytics GET handler — we only pull
+ * Deliberately leaner than the /api/analytics GET handler, we only pull
  * what the AI needs to generate useful, grounded insights (no charts, no
  * notifications, no full task list).
  */
@@ -59,7 +59,7 @@ async function buildAnalyticsSnapshot(userId: string): Promise<AnalyticsSnapshot
     }),
   ])
 
-  // Roadmap depends on startup id — fetch in a second round.
+  // Roadmap depends on startup id, fetch in a second round.
   const roadmapItems = startup?.id
     ? await db.roadmapItem.findMany({ where: { startupId: startup.id } })
     : []
@@ -195,14 +195,14 @@ interface AnalyticsSnapshot {
 
 /**
  * Render the snapshot into a compact text block for the LLM.
- * We keep this short to conserve tokens — only what the AI needs to reason.
+ * We keep this short to conserve tokens, only what the AI needs to reason.
  */
 function renderSnapshot(snapshot: AnalyticsSnapshot): string {
   const lines: string[] = []
   lines.push("USER ANALYTICS SNAPSHOT:")
   lines.push(`Startup score: ${snapshot.startupScore}/100`)
   lines.push(
-    `Score breakdown — tasks: ${snapshot.scoreBreakdown.tasks}/25, appointments: ${snapshot.scoreBreakdown.appointments}/25, resources: ${snapshot.scoreBreakdown.resources}/25, profile: ${snapshot.scoreBreakdown.profile}/25`
+    `Score breakdown, tasks: ${snapshot.scoreBreakdown.tasks}/25, appointments: ${snapshot.scoreBreakdown.appointments}/25, resources: ${snapshot.scoreBreakdown.resources}/25, profile: ${snapshot.scoreBreakdown.profile}/25`
   )
 
   if (snapshot.startup) {
@@ -265,7 +265,7 @@ function renderSnapshot(snapshot: AnalyticsSnapshot): string {
   return lines.join("\n")
 }
 
-const SYSTEM_PROMPT = `You are an expert startup advisor analyzing a founder's dashboard analytics. Your job is to generate 3-5 concise, actionable insights grounded in the SPECIFIC numbers in the snapshot — not generic advice.
+const SYSTEM_PROMPT = `You are an expert startup advisor analyzing a founder's dashboard analytics. Your job is to generate 3-5 concise, actionable insights grounded in the SPECIFIC numbers in the snapshot, not generic advice.
 
 RULES:
 1. Every insight MUST reference a concrete data point from the snapshot (a score, a count, a specific roadmap item, a missing profile field, etc.). If you can't tie an insight to a specific number or fact in the snapshot, don't include it.
@@ -341,7 +341,7 @@ function parseInsightsResponse(raw: string): { summary: string; insights: AIInsi
     }
   }
 
-  // Fallback — return a generic safe insight so the UI isn't broken
+  // Fallback, return a generic safe insight so the UI isn't broken
   return {
     summary: "We couldn't generate AI insights right now. Try refreshing in a moment.",
     insights: [
@@ -386,7 +386,7 @@ export async function GET(req: NextRequest) {
     // We check BEFORE the LLM call. Only increment AFTER success.
     const quota = await checkUserQuota(userId, session.user.role)
     if (!quota.allowed) {
-      // Don't blow away a valid cached entry if quota is exhausted — return
+      // Don't blow away a valid cached entry if quota is exhausted, return
       // the stale cache instead of an error so the UI keeps working.
       const cached = insightsCache.get(userId)
       if (cached) {

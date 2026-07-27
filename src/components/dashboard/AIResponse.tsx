@@ -11,11 +11,11 @@ import type {
  * 5-responseType structured AI response renderer.
  *
  * The AI picks ONE responseType per question, based on what fits best:
- *   1. steps      — numbered step-by-step (sequential how-to)
- *   2. paragraph  — prose paragraphs (opinion / concept / case study / ideas)
- *   3. quick      — one punchy answer (short factual question)
- *   4. comparison — two labeled options side by side (X vs Y)
- *   5. clarify    — heading + clarifying question back to user (vague input)
+ *   1. steps     , numbered step-by-step (sequential how-to)
+ *   2. paragraph , prose paragraphs (opinion / concept / case study / ideas)
+ *   3. quick     , one punchy answer (short factual question)
+ *   4. comparison, two labeled options side by side (X vs Y)
+ *   5. clarify   , heading + clarifying question back to user (vague input)
  *
  * Backward-compat:
  *   - If `responseType` is missing, the component maps the legacy `style`
@@ -103,7 +103,7 @@ function resolveResponseType(data: StructuredAIResponse): AIResponseType {
       break
   }
 
-  // Infer from payload — handles old saved messages and any case where the
+  // Infer from payload, handles old saved messages and any case where the
   // model's responseType field didn't parse but the body fields did.
   if (data.question) return "clarify"
   if (data.optionA || data.optionB) return "comparison"

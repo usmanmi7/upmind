@@ -178,7 +178,7 @@ function extractPartialStringArray(
   }
 
   // For steps, prefix with "1. ", "2. " etc. only if we have a complete
-  // array OR more than one item — otherwise just show the raw text.
+  // array OR more than one item, otherwise just show the raw text.
   if (key === "steps" && (arrayClosed || items.length > 1)) {
     return items.map((s, idx) => `${idx + 1}. ${s}`).join("\n")
   }
@@ -230,13 +230,13 @@ export function extractDisplayFromStream(buffer: string): string {
   // optionA / optionB are objects with label+text
   const optAText = extractPartialString(cleaned, "optionA")
     || extractPartialString(cleaned, "text") // when partial inside optionA
-  // Skip options during streaming — too fiddly to extract reliably from
+  // Skip options during streaming, too fiddly to extract reliably from
   // partial JSON with nested objects. They'll snap into place at `done`.
 
   const question = extractPartialString(cleaned, "question")
   if (question) parts.push(question)
 
-  void optAText // (intentionally unused — see comment above)
+  void optAText // (intentionally unused, see comment above)
 
   return parts.filter(Boolean).join("\n\n")
 }

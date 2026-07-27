@@ -13,9 +13,9 @@ import * as React from "react"
 // Fallback hardcoded FAQs used when database is empty
 const fallbackFaqs: Record<string, { q: string; a: string }[]> = {
   General: [
-    { q: "What is Enginest?", a: "Enginest is an engineering innovation platform. We curate real-world problems from WHO, UN, IEA, IPCC, and other authoritative sources, then use AI to match them to your engineering skills — so you spend your time on problems you can actually solve." },
-    { q: "Who is Enginest for?", a: "Enginest is for engineers, researchers, builders, and innovators who want their work to matter. Whether you're a student looking for a meaningful project, a senior engineer considering a startup, or a research lab hunting for high-impact problems — Enginest helps you find what to build." },
-    { q: "How does Enginest differ from startup consulting?", a: "Traditional consulting starts from your idea and tries to find a market. Enginest flips the workflow — we start from real, documented problems and match them to engineering skills. No more clever tech in search of a problem." },
+    { q: "What is Enginest?", a: "Enginest is an engineering innovation platform. We curate real-world problems from WHO, UN, IEA, IPCC, and other authoritative sources, then use AI to match them to your engineering skills, so you spend your time on problems you can actually solve." },
+    { q: "Who is Enginest for?", a: "Enginest is for engineers, researchers, builders, and innovators who want their work to matter. Whether you're a student looking for a meaningful project, a senior engineer considering a startup, or a research lab hunting for high-impact problems, Enginest helps you find what to build." },
+    { q: "How does Enginest differ from startup consulting?", a: "Traditional consulting starts from your idea and tries to find a market. Enginest flips the workflow, we start from real, documented problems and match them to engineering skills. No more clever tech in search of a problem." },
     { q: "Is my data secure?", a: "Absolutely. We use enterprise-grade encryption, follow SOC 2 best practices, and never share your data with third parties. Your skill profile and project notes are protected with the highest security standards." },
   ],
   Plans: [
@@ -25,19 +25,19 @@ const fallbackFaqs: Record<string, { q: string; a: string }[]> = {
     { q: "Do you offer discounts for students, researchers, or nonprofits?", a: "Yes! We offer special pricing for students, academic research labs, and nonprofit engineering teams. Contact our team for details." },
   ],
   "Solve Them": [
-    { q: "Where do the problems come from?", a: "Problems are curated from authoritative multilateral sources — WHO, UN, UNICEF, World Bank, IEA, IPCC, FAO, UNESCO, UNEP, NIST, ESA, and WEF. Each problem includes a source citation and is validated for engineering leverage." },
-    { q: "How are problems scored?", a: "Each problem has severity (0-100), impact score, innovation score, market need, global demand, and future importance — all derived from source data and editorial review. Difficulty is rated Easy / Medium / Hard / Frontier based on technical complexity." },
+    { q: "Where do the problems come from?", a: "Problems are curated from authoritative multilateral sources, WHO, UN, UNICEF, World Bank, IEA, IPCC, FAO, UNESCO, UNEP, NIST, ESA, and WEF. Each problem includes a source citation and is validated for engineering leverage." },
+    { q: "How are problems scored?", a: "Each problem has severity (0-100), impact score, innovation score, market need, global demand, and future importance, all derived from source data and editorial review. Difficulty is rated Easy / Medium / Hard / Frontier based on technical complexity." },
     { q: "How often are new problems added?", a: "We add new problems monthly. The curated database grows over time as we cover more categories and dive deeper into specific domains." },
-    { q: "Can I suggest a problem?", a: "Yes — Team plan subscribers can request custom problems. We also accept community suggestions through our contact form." },
+    { q: "Can I suggest a problem?", a: "Yes, Team plan subscribers can request custom problems. We also accept community suggestions through our contact form." },
   ],
   "Innovation Engine": [
     { q: "How does the AI matching work?", a: "The Innovation Engine scores each problem against your profile using a weighted algorithm: skill coverage (60%), interest overlap (30%), plus bonuses for difficulty fit, time commitment, and team size. Each match includes reason highlights explaining why." },
-    { q: "What should I enter as my skills?", a: "Enter 5-8 specific engineering skills — e.g., 'Python, Machine Learning, Distributed Systems, React, Embedded C'. The more specific, the better the matches. Avoid vague terms like 'programming'." },
-    { q: "How many matches do I get?", a: "The Engine returns your top 12 matches, sorted by match score. Matches below 50 are filtered out — they're likely not the right problems for your current skill set." },
-    { q: "Can I save my matches?", a: "Yes — Builder Pro and Team plans include project tracking. Save matched problems, add notes, and track your build progress over time." },
+    { q: "What should I enter as my skills?", a: "Enter 5-8 specific engineering skills, e.g., 'Python, Machine Learning, Distributed Systems, React, Embedded C'. The more specific, the better the matches. Avoid vague terms like 'programming'." },
+    { q: "How many matches do I get?", a: "The Engine returns your top 12 matches, sorted by match score. Matches below 50 are filtered out, they're likely not the right problems for your current skill set." },
+    { q: "Can I save my matches?", a: "Yes, Builder Pro and Team plans include project tracking. Save matched problems, add notes, and track your build progress over time." },
   ],
   Resources: [
-    { q: "What types of resources are available?", a: "Field guides, templates, and frameworks written for engineers — problem-discovery guides, build-vs-research decision frameworks, team templates, 12-month roadmap templates, ethics frameworks, funding field guides, and reading lists." },
+    { q: "What types of resources are available?", a: "Field guides, templates, and frameworks written for engineers, problem-discovery guides, build-vs-research decision frameworks, team templates, 12-month roadmap templates, ethics frameworks, funding field guides, and reading lists." },
     { q: "Are resources free?", a: "Most resources are free to read. Some premium templates and deep-dive guides require a Builder Pro or Team plan. Sign-in is required to read full articles." },
   ],
   Technical: [

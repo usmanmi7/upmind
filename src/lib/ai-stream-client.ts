@@ -34,7 +34,7 @@ export interface StreamCallbacks {
  *
  * Pass an `AbortController.signal` via the optional `signal` field on the
  * callbacks object so the caller can cancel mid-stream (the "Stop
- * generating" button). When aborted, no callback is fired — the caller
+ * generating" button). When aborted, no callback is fired, the caller
  * is responsible for updating its UI state on cancel.
  */
 export async function streamChat(
@@ -68,7 +68,7 @@ export async function streamChat(
     try {
       payload = await res.json()
     } catch {
-      // ignore — leave payload empty
+      // ignore, leave payload empty
     }
     cbs.onDone(payload)
     return
@@ -140,7 +140,7 @@ export async function streamChat(
         }
       }
     }
-    // Stream ended without an explicit `done` event — treat as error
+    // Stream ended without an explicit `done` event, treat as error
     // UNLESS the caller aborted (in which case onError should NOT fire).
     if (signal?.aborted) return
     cbs.onError?.("Stream ended unexpectedly.")

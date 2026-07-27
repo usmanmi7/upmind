@@ -55,7 +55,7 @@ export default function AIAssistantCTA() {
                 className="text-white/70 text-base sm:text-lg leading-relaxed mb-8 max-w-lg"
               >
                 Tell us your engineering skills, interests, time, and team size. Our AI scores every
-                problem in the database for fit, so you start with problems you can actually solve —
+                problem in the database for fit, so you start with problems you can actually solve,
                 not clever ideas in search of a market.
               </motion.p>
 

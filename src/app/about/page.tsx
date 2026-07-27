@@ -11,7 +11,7 @@ const values = [
   {
     icon: Compass,
     title: "Problem-First",
-    description: "We start with real, documented problems — not clever technology in search of a market. Every problem in our database is sourced from authoritative bodies and validated for engineering leverage.",
+    description: "We start with real, documented problems, not clever technology in search of a market. Every problem in our database is sourced from authoritative bodies and validated for engineering leverage.",
   },
   {
     icon: Users,
@@ -21,7 +21,7 @@ const values = [
   {
     icon: Lightbulb,
     title: "AI-Matched",
-    description: "Your time is finite. Our Innovation Engine uses AI to match your specific skills to problems you can actually solve — so you start with leverage instead of uphill battles.",
+    description: "Your time is finite. Our Innovation Engine uses AI to match your specific skills to problems you can actually solve, so you start with leverage instead of uphill battles.",
   },
   {
     icon: Code,
@@ -31,12 +31,12 @@ const values = [
   {
     icon: Globe,
     title: "Global Perspective",
-    description: "The hardest problems are global — climate, health, energy, food. We source from WHO, UN, IEA, IPCC because that's where real, sized, documented problems live.",
+    description: "The hardest problems are global, climate, health, energy, food. We source from WHO, UN, IEA, IPCC because that's where real, sized, documented problems live.",
   },
   {
     icon: Target,
     title: "Impact-Oriented",
-    description: "We measure what matters. Every problem includes severity, people affected, and impact scores — so you can pick work that moves real numbers, not vanity metrics.",
+    description: "We measure what matters. Every problem includes severity, people affected, and impact scores, so you can pick work that moves real numbers, not vanity metrics.",
   },
 ]
 
@@ -102,14 +102,14 @@ export default function AboutPage() {
                 </h2>
                 <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">
                   Enginest started with a simple observation: talented engineers keep building clever
-                  solutions in search of problems. The technology is rarely the bottleneck —
+                  solutions in search of problems. The technology is rarely the bottleneck,
                   problem selection is. We watched friends burn years on products nobody wanted,
                   while real, documented problems went unsolved.
                 </p>
                 <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">
                   So we flipped the workflow. Instead of starting from what you can build, start
                   from what actually needs building. We curate real, documented problems from WHO,
-                  UN, IEA, IPCC, and other authoritative sources — then match them to engineering
+                  UN, IEA, IPCC, and other authoritative sources, then match them to engineering
                   skills that can actually move the needle.
                 </p>
                 <p className="text-[#666666] text-base sm:text-lg leading-relaxed">
@@ -185,7 +185,7 @@ export default function AboutPage() {
                 <span className="font-serif-accent-italic text-[#1E3A8A]">Enginest</span>
               </h2>
               <p className="text-[#666666] text-base sm:text-lg">
-                A small core team, a global field network, and a community of builders — all working to make engineering innovation more accessible.
+                A small core team, a global field network, and a community of builders, all working to make engineering innovation more accessible.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

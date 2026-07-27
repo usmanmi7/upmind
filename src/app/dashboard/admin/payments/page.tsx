@@ -301,7 +301,7 @@ export default function AdminPaymentsPage() {
                         </Badge>
                       </TableCell>
                       <TableCell className="hidden md:table-cell text-sm text-muted-foreground capitalize">
-                        {payment.method || "—"}
+                        {payment.method || ","}
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline" className={paymentStatusColors[payment.status] || ""}>

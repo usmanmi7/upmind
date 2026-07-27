@@ -1,5 +1,5 @@
 /**
- * Solve Them — Engineering Innovation Platform
+ * Solve Them, Engineering Innovation Platform
  * Type definitions for the Problems dataset.
  *
  * This module is the single source of truth for the world-problems dataset

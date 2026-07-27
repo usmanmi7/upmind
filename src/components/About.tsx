@@ -31,14 +31,14 @@ export default function About() {
             </h2>
             <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">
               Enginest was founded by engineers who kept watching talented friends build clever
-              solutions in search of problems. The pattern was always the same — a beautiful
+              solutions in search of problems. The pattern was always the same, a beautiful
               technical idea, a missing market, a slow drift toward irrelevance. The technology
               wasn&apos;t the bottleneck. The problem selection was.
             </p>
             <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-6">
               So we flipped the workflow. Instead of starting from what you can build, start from
               what actually needs building. We curate real, documented problems from WHO, UN, IEA,
-              IPCC, and other authoritative sources — then match them to the engineering skills
+              IPCC, and other authoritative sources, then match them to the engineering skills
               that can actually move the needle.
             </p>
             <p className="text-[#666666] text-base sm:text-lg leading-relaxed mb-8">
@@ -86,7 +86,7 @@ export default function About() {
                 </div>
                 <p className="text-[#666666] text-sm mb-6">
                   Real-world engineering problems sourced from WHO, UN, IEA, IPCC, World Bank, and
-                  more — each one validated, sized, and ready for an engineering team to attack.
+                  more, each one validated, sized, and ready for an engineering team to attack.
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {tags.map((tag) => (

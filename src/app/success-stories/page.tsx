@@ -15,21 +15,21 @@ const fallbackTestimonials = [
     name: "Sarah Chen",
     role: "ML Engineer",
     company: "Independent",
-    content: "I was about to take another FAANG job. The Innovation Engine matched me to an early-warning pandemic surveillance problem — my ML + distributed systems skills covered 64% of the requirements. Six months in, we have a working pilot with a national health agency.",
+    content: "I was about to take another FAANG job. The Innovation Engine matched me to an early-warning pandemic surveillance problem, my ML + distributed systems skills covered 64% of the requirements. Six months in, we have a working pilot with a national health agency.",
     rating: 5,
   },
   {
     name: "Marcus Johnson",
     role: "Hardware Engineer",
     company: "Open Source Contributor",
-    content: "I'd been building IoT side projects for years without direction. Enginest's curated air-quality problem showed me the missing middle — accurate sensors at affordable prices. The team template told me exactly who I needed to find.",
+    content: "I'd been building IoT side projects for years without direction. Enginest's curated air-quality problem showed me the missing middle, accurate sensors at affordable prices. The team template told me exactly who I needed to find.",
     rating: 5,
   },
   {
     name: "Priya Sharma",
     role: "Research Engineer",
     company: "University Lab",
-    content: "The resources library alone is worth it. The build-vs-research decision framework helped me pick the right output type for my water-quality work — open source, not a startup. Saved me from a wrong path.",
+    content: "The resources library alone is worth it. The build-vs-research decision framework helped me pick the right output type for my water-quality work, open source, not a startup. Saved me from a wrong path.",
     rating: 5,
   },
   {
@@ -60,7 +60,7 @@ const caseStudies = [
     company: "AirNet",
     industry: "Climate Hardware",
     challenge: "Senior hardware engineer wanted out of consumer IoT but didn't know which climate problem to attack.",
-    solution: "Used Solve Them + Innovation Engine. Air-quality monitoring surfaced as the missing middle — accurate sensors at affordable prices. Used the team template to recruit a firmware engineer and field-ops lead.",
+    solution: "Used Solve Them + Innovation Engine. Air-quality monitoring surfaced as the missing middle, accurate sensors at affordable prices. Used the team template to recruit a firmware engineer and field-ops lead.",
     result: "Deployed 50 sensors across Delhi within 18 months. Now expanding to 4 more countries with foundation funding.",
     color: "from-[#1E3A8A] to-[#93C5FD]",
   },
@@ -149,7 +149,7 @@ export default function SuccessStoriesPage() {
           badge="Builder Stories"
           title="Engineers who found"
           highlight="what to build"
-          description="Real stories from engineers, researchers, and builders who used Enginest to find problems worth solving — and shipped solutions that matter."
+          description="Real stories from engineers, researchers, and builders who used Enginest to find problems worth solving, and shipped solutions that matter."
         />
 
         {/* Stats */}

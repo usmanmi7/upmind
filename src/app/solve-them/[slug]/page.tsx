@@ -190,7 +190,7 @@ export default function ProblemDetailPage() {
                 </div>
               )}
 
-              {/* SOLUTIONS — LOCKED */}
+              {/* SOLUTIONS, LOCKED */}
               <LockedSection
                 title="Engineering Solutions"
                 icon={Lightbulb}
@@ -202,7 +202,7 @@ export default function ProblemDetailPage() {
                 }))}
               />
 
-              {/* ROADMAP — LOCKED */}
+              {/* ROADMAP, LOCKED */}
               <LockedSection
                 title="Build Roadmap"
                 icon={Rocket}
@@ -216,7 +216,7 @@ export default function ProblemDetailPage() {
                 }))}
               />
 
-              {/* SKILLS — LOCKED */}
+              {/* SKILLS, LOCKED */}
               <LockedSection
                 title="Skills Required"
                 icon={Brain}
@@ -228,7 +228,7 @@ export default function ProblemDetailPage() {
                 }))}
               />
 
-              {/* TEAM TEMPLATES — LOCKED */}
+              {/* TEAM TEMPLATES, LOCKED */}
               <LockedSection
                 title="Recommended Team"
                 icon={Users}

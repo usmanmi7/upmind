@@ -12,7 +12,7 @@ const resources = [
     tag: 'Guide',
     title: 'How to Find Problems Worth Solving',
     description:
-      'A field guide for engineers — sourcing real problems from WHO, UN, IEA, and direct field research instead of brainstorming from a whiteboard.',
+      'A field guide for engineers, sourcing real problems from WHO, UN, IEA, and direct field research instead of brainstorming from a whiteboard.',
     link: '/resources',
   },
   {
@@ -20,7 +20,7 @@ const resources = [
     tag: 'Template',
     title: 'Engineering Project Roadmap (12-month)',
     description:
-      'A 4-phase roadmap template — validation, prototype, pilot, scale — with milestones, deliverables, and exit criteria for engineering innovation projects.',
+      'A 4-phase roadmap template, validation, prototype, pilot, scale, with milestones, deliverables, and exit criteria for engineering innovation projects.',
     link: '/resources',
   },
   {
@@ -28,7 +28,7 @@ const resources = [
     tag: 'Reading List',
     title: 'Reading List for Engineering Innovators',
     description:
-      '30 essential books, papers, and long-form essays for engineers who want to build things that matter — across systems, climate, AI, and field work.',
+      '30 essential books, papers, and long-form essays for engineers who want to build things that matter, across systems, climate, AI, and field work.',
     link: '/resources',
   },
 ];
@@ -64,7 +64,7 @@ export default function Resources() {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="text-[#666666] text-base sm:text-lg"
           >
-            Field guides, templates, and frameworks written for engineers — not generic startup advice.
+            Field guides, templates, and frameworks written for engineers, not generic startup advice.
           </motion.p>
         </div>
 

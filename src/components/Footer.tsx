@@ -38,7 +38,7 @@ export default function Footer() {
             </Link>
             <p className="text-white/40 text-sm leading-relaxed max-w-xs mb-6">
               An engineering innovation platform. We help engineers find
-              problems worth solving — curated, AI-matched, and ready to build.
+              problems worth solving, curated, AI-matched, and ready to build.
             </p>
             {/* Newsletter CTA */}
             <div className="flex items-center gap-2">

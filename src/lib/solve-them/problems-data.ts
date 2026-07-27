@@ -1,7 +1,7 @@
 import type { Problem } from "./types";
 
 /**
- * Solve Them — v1 problems dataset.
+ * Solve Them, v1 problems dataset.
  *
  * Curated from WHO, UN, UNICEF, World Bank, WEF, UNDP, research papers, and
  * global risk reports. Each entry carries rich metadata for filtering,
@@ -21,7 +21,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Most deaths from cancer, TB, and diabetes in low-income regions happen because disease is caught too late. AI on cheap mobile devices can change that.",
     description:
-      "In low- and middle-income countries, over 70% of cancer cases are detected at late stages when treatment is far less effective. Rural clinics lack pathologists, radiologists, and specialists. A single misdiagnosed X-ray can mean the difference between life and death. The opportunity is to build AI models that run on edge devices — cheap smartphones, low-power edge TPUs — and give a clinic nurse the diagnostic power of a specialist. The WHO estimates that scaling early detection could save 7+ million lives per year. The challenge is not the model accuracy alone; it's robustness across populations with different genetics, diets, and environmental exposures than the training data, plus the user-experience challenge of integrating AI into a 5-minute consultation.",
+      "In low- and middle-income countries, over 70% of cancer cases are detected at late stages when treatment is far less effective. Rural clinics lack pathologists, radiologists, and specialists. A single misdiagnosed X-ray can mean the difference between life and death. The opportunity is to build AI models that run on edge devices, cheap smartphones, low-power edge TPUs, and give a clinic nurse the diagnostic power of a specialist. The WHO estimates that scaling early detection could save 7+ million lives per year. The challenge is not the model accuracy alone; it's robustness across populations with different genetics, diets, and environmental exposures than the training data, plus the user-experience challenge of integrating AI into a 5-minute consultation.",
     category: "Healthcare",
     tags: ["AI", "Diagnostics", "Mobile Health", "Edge Computing", "Global Health"],
     source: "WHO Global Cancer Report",
@@ -145,7 +145,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "800 women die every day from preventable pregnancy causes. Connected, AI-flagged monitoring saves lives.",
     description:
-      "Approximately 800 women die every day from preventable causes related to pregnancy and childbirth, with 95% of these deaths occurring in low- and middle-income countries. Conditions like preeclampsia, gestational diabetes, and obstructed labor are predictable with regular monitoring but go undetected because rural mothers rarely see a clinician. The opportunity: build a kit — blood pressure cuff, simple urine test strip, weight scale — paired with a phone app that flags danger signs and routes high-risk mothers to facilities before crisis. The technical challenge is designing for low-literacy users, intermittent connectivity, and integration with overstretched rural health systems.",
+      "Approximately 800 women die every day from preventable causes related to pregnancy and childbirth, with 95% of these deaths occurring in low- and middle-income countries. Conditions like preeclampsia, gestational diabetes, and obstructed labor are predictable with regular monitoring but go undetected because rural mothers rarely see a clinician. The opportunity: build a kit, blood pressure cuff, simple urine test strip, weight scale, paired with a phone app that flags danger signs and routes high-risk mothers to facilities before crisis. The technical challenge is designing for low-literacy users, intermittent connectivity, and integration with overstretched rural health systems.",
     category: "Healthcare",
     tags: ["Maternal Health", "IoT", "Mobile Health", "AI Triage"],
     source: "UNICEF State of the World's Children",
@@ -196,7 +196,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Floods displace 30M+ people yearly. AI forecasting 24-72 hours ahead could cut displacement by half.",
     description:
-      "Flooding affects more people than any other natural hazard — over 30 million displaced annually, with economic damages exceeding $40B. South Asia, Southeast Asia, and West Africa bear the brunt. Existing flood models are either globally coarse (satellite-based) or locally expensive (custom hydrology per basin). The opportunity: train AI models on satellite imagery, rainfall forecasts, and historical flood extents to predict inundation 24-72 hours ahead at 30m resolution, and deliver SMS alerts to at-risk villages. The challenge is ground-truth data scarcity in exactly the regions that need it most.",
+      "Flooding affects more people than any other natural hazard, over 30 million displaced annually, with economic damages exceeding $40B. South Asia, Southeast Asia, and West Africa bear the brunt. Existing flood models are either globally coarse (satellite-based) or locally expensive (custom hydrology per basin). The opportunity: train AI models on satellite imagery, rainfall forecasts, and historical flood extents to predict inundation 24-72 hours ahead at 30m resolution, and deliver SMS alerts to at-risk villages. The challenge is ground-truth data scarcity in exactly the regions that need it most.",
     category: "Climate Change",
     tags: ["AI", "Flooding", "Satellite", "Disaster Prediction", "Remote Sensing"],
     source: "World Bank Climate Change Knowledge Portal",
@@ -245,7 +245,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "800M people still lack electricity. Solar microgrids + smart load balancing can leapfrog the grid.",
     description:
-      "Despite two decades of electrification programs, 800M people still live without electricity, and billions more suffer unreliable supply. Extending the central grid to remote communities is prohibitively expensive — often $5,000+ per connection. Decentralized solar microgrids with battery storage can power a village for $500/household, but they face challenges: load balancing across diverse users (homes, businesses, schools), payment collection in cash economies, and maintenance in remote areas. The engineering opportunity is end-to-end: smart inverters, IoT load management, mobile money integration, and predictive maintenance.",
+      "Despite two decades of electrification programs, 800M people still live without electricity, and billions more suffer unreliable supply. Extending the central grid to remote communities is prohibitively expensive, often $5,000+ per connection. Decentralized solar microgrids with battery storage can power a village for $500/household, but they face challenges: load balancing across diverse users (homes, businesses, schools), payment collection in cash economies, and maintenance in remote areas. The engineering opportunity is end-to-end: smart inverters, IoT load management, mobile money integration, and predictive maintenance.",
     category: "Climate Change",
     tags: ["Energy Access", "Solar", "Microgrids", "IoT", "Decentralization"],
     source: "IEA Energy Access Report",
@@ -293,7 +293,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Current DAC costs $600+/ton. To stay under 1.5°C, we need DAC at $50/ton by 2035.",
     description:
-      "The IPCC is clear: staying under 1.5°C requires not just emissions cuts but active removal of 5-10 gigatons of CO₂ per year by 2050. Direct Air Capture (DAC) is one of the few technologies that can do this at scale, but current costs are $600-1,000/ton — 10x too expensive. The bottleneck is not physics but engineering: sorbent materials, heat recovery, modular plant design, and integration with cheap renewable power. The opportunity is enormous: whoever cracks $50/ton DAC unlocks a trillion-dollar carbon removal market.",
+      "The IPCC is clear: staying under 1.5°C requires not just emissions cuts but active removal of 5-10 gigatons of CO₂ per year by 2050. Direct Air Capture (DAC) is one of the few technologies that can do this at scale, but current costs are $600-1,000/ton, 10x too expensive. The bottleneck is not physics but engineering: sorbent materials, heat recovery, modular plant design, and integration with cheap renewable power. The opportunity is enormous: whoever cracks $50/ton DAC unlocks a trillion-dollar carbon removal market.",
     category: "Climate Change",
     tags: ["Carbon Capture", "Materials Science", "Climate Tech", "Direct Air Capture"],
     source: "IPCC AR6 Working Group III",
@@ -347,7 +347,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "GPT works in 100 languages. 6,500+ languages have zero AI. Billions are excluded from the AI economy.",
     description:
-      "Modern LLMs work well in ~100 high-resource languages, but the world has 7,000+ languages. Speakers of the other 6,500+ languages — billions of people — are locked out of AI tools, from translation to education to voice assistants. This isn't just a fairness issue; it's a massive lost opportunity. Building LLMs for low-resource languages requires creative approaches: cross-lingual transfer, synthetic data generation, mobile-first inference, and partnerships with native speakers. The technical challenge is that traditional ML requires millions of examples — many of these languages have only thousands.",
+      "Modern LLMs work well in ~100 high-resource languages, but the world has 7,000+ languages. Speakers of the other 6,500+ languages, billions of people, are locked out of AI tools, from translation to education to voice assistants. This isn't just a fairness issue; it's a massive lost opportunity. Building LLMs for low-resource languages requires creative approaches: cross-lingual transfer, synthetic data generation, mobile-first inference, and partnerships with native speakers. The technical challenge is that traditional ML requires millions of examples, many of these languages have only thousands.",
     category: "Artificial Intelligence",
     tags: ["NLP", "LLM", "Low-Resource Languages", "Translation", "Voice"],
     source: "Ethnologue / UNESCO Atlas of Languages in Danger",
@@ -396,7 +396,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "We don't understand why LLMs do what they do. As models get smarter, this becomes a civilization-level risk.",
     description:
-      "Modern LLMs are black boxes: they work, but we don't know why they produce any specific output. As models approach and exceed human capability, this opacity becomes a civilization-level risk. Mechanistic interpretability — the project of reverse-engineering neural networks to understand their internal computations — is one of the most important research directions of our time. Without it, we cannot reliably detect deception, bias, or emergent dangerous capabilities. The field is in its infancy: we can interpret small models, but trillion-parameter systems remain opaque.",
+      "Modern LLMs are black boxes: they work, but we don't know why they produce any specific output. As models approach and exceed human capability, this opacity becomes a civilization-level risk. Mechanistic interpretability, the project of reverse-engineering neural networks to understand their internal computations, is one of the most important research directions of our time. Without it, we cannot reliably detect deception, bias, or emergent dangerous capabilities. The field is in its infancy: we can interpret small models, but trillion-parameter systems remain opaque.",
     category: "Artificial Intelligence",
     tags: ["AI Safety", "Interpretability", "Alignment", "Research"],
     source: "Anthropic / OpenAI Research",
@@ -448,7 +448,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Quantum computers will break RSA & ECC by 2035. The entire internet needs to migrate. We're 5% done.",
     description:
-      "Shor's algorithm, run on a sufficiently large quantum computer, breaks RSA and elliptic-curve cryptography — the foundation of HTTPS, SSH, code signing, and blockchain. NIST estimates a 50% chance of cryptographically-relevant quantum computers by 2033. Migrating the internet to post-quantum cryptography (PQC) is a multi-decade, multi-trillion-dollar engineering project. The challenge is enormous: every TLS certificate, every code signing key, every IoT device, every banking system must be upgraded. We're roughly 5% done. The 'harvest now, decrypt later' threat means data encrypted today is already at risk.",
+      "Shor's algorithm, run on a sufficiently large quantum computer, breaks RSA and elliptic-curve cryptography, the foundation of HTTPS, SSH, code signing, and blockchain. NIST estimates a 50% chance of cryptographically-relevant quantum computers by 2033. Migrating the internet to post-quantum cryptography (PQC) is a multi-decade, multi-trillion-dollar engineering project. The challenge is enormous: every TLS certificate, every code signing key, every IoT device, every banking system must be upgraded. We're roughly 5% done. The 'harvest now, decrypt later' threat means data encrypted today is already at risk.",
     category: "Cyber Security",
     tags: ["Quantum", "Cryptography", "PQC", "Infrastructure"],
     source: "NIST PQC Standardization",
@@ -497,7 +497,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Enterprise SIEMs cost $100k+/year. 99% of SMBs can't afford them and get breached because of it.",
     description:
-      "Security Information and Event Management (SIEM) platforms — Splunk, IBM QRadar, Microsoft Sentinel — start at $100k/year and quickly exceed $1M for mid-size deployments. This prices out 99% of small and medium businesses, who then become the soft underbelly of the internet: easy targets for ransomware that cascades through supply chains. The opportunity is an open-source SIEM that any SMB can self-host or run as a managed service for <$50/month, with the detection quality of enterprise tools. The technical challenge is doing this with 1/1000th the compute budget.",
+      "Security Information and Event Management (SIEM) platforms, Splunk, IBM QRadar, Microsoft Sentinel, start at $100k/year and quickly exceed $1M for mid-size deployments. This prices out 99% of small and medium businesses, who then become the soft underbelly of the internet: easy targets for ransomware that cascades through supply chains. The opportunity is an open-source SIEM that any SMB can self-host or run as a managed service for <$50/month, with the detection quality of enterprise tools. The technical challenge is doing this with 1/1000th the compute budget.",
     category: "Cyber Security",
     tags: ["SIEM", "Open Source", "SMB", "Threat Detection", "Log Analysis"],
     source: "Verizon Data Breach Investigations Report",
@@ -546,9 +546,9 @@ export const PROBLEMS: Problem[] = [
     slug: "precision-agriculture-smallholders",
     title: "Precision Agriculture for 500M Smallholder Farmers",
     summary:
-      "Big-farm precision ag is solved. Smallholders (under 2 hectares) get nothing — and feed 80% of Asia and Africa.",
+      "Big-farm precision ag is solved. Smallholders (under 2 hectares) get nothing, and feed 80% of Asia and Africa.",
     description:
-      "Precision agriculture — satellite imagery, soil sensors, variable-rate input application — is standard on large Western farms. But 500M smallholder farmers in Asia and Africa, who cultivate under 2 hectares and feed 80% of those continents, have no access. They farm on intuition, get 1/3 the yield per hectare of large farms, and over-apply fertilizers that pollute watersheds. The opportunity: SMS and basic-app based advisory that uses free satellite data, weather forecasts, and crop models to tell a smallholder exactly when to plant, water, fertilize, and harvest. The challenge is delivery: many users have feature phones, intermittent connectivity, and limited literacy.",
+      "Precision agriculture, satellite imagery, soil sensors, variable-rate input application, is standard on large Western farms. But 500M smallholder farmers in Asia and Africa, who cultivate under 2 hectares and feed 80% of those continents, have no access. They farm on intuition, get 1/3 the yield per hectare of large farms, and over-apply fertilizers that pollute watersheds. The opportunity: SMS and basic-app based advisory that uses free satellite data, weather forecasts, and crop models to tell a smallholder exactly when to plant, water, fertilize, and harvest. The challenge is delivery: many users have feature phones, intermittent connectivity, and limited literacy.",
     category: "Agriculture",
     tags: ["Precision Agriculture", "Satellite", "Smallholder", "Mobile", "Food Security"],
     source: "FAO Smallholder Data Portfolio",
@@ -596,7 +596,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Soil stores 3x more carbon than air. Farmers want to sell credits but measurement costs $50/sample. We need $5.",
     description:
-      "Soil is the largest terrestrial carbon sink — 3x more carbon than the atmosphere. Regenerative farming practices (cover crops, no-till, rotational grazing) can sequester tons of CO₂ per acre per year, but farmers can't monetize this because verifying soil carbon costs $50-100 per lab sample. With 500M farms globally, this is a $50B+ measurement problem. The opportunity: cheap, scalable soil carbon measurement — either via spectroscopy, soil DNA, or remote sensing fusion — that brings the cost to $5 or less per sample.",
+      "Soil is the largest terrestrial carbon sink, 3x more carbon than the atmosphere. Regenerative farming practices (cover crops, no-till, rotational grazing) can sequester tons of CO₂ per acre per year, but farmers can't monetize this because verifying soil carbon costs $50-100 per lab sample. With 500M farms globally, this is a $50B+ measurement problem. The opportunity: cheap, scalable soil carbon measurement, either via spectroscopy, soil DNA, or remote sensing fusion, that brings the cost to $5 or less per sample.",
     category: "Agriculture",
     tags: ["Carbon", "Soil", "Sensors", "Carbon Markets", "Climate Tech"],
     source: "IPCC Special Report on Land Use",
@@ -648,7 +648,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "GPT-4 tutors at $20/month. 600M kids in low-income countries can't pay $20/year. Cheaper AI = global literacy.",
     description:
-      "UNESCO estimates 600M children worldwide are not achieving minimum proficiency in reading and math. The shortage of qualified teachers is acute: Sub-Saharan Africa needs 17M more teachers by 2030. AI tutors like Khan Academy's Khanmigo work — but at $20/month they're 50x too expensive for the children who need them most. The opportunity: build an AI tutor that runs at <$0.10/month per student, offline-first, in local languages. The technical challenge is cost compression — smaller models, distillation, on-device inference — without losing pedagogical quality.",
+      "UNESCO estimates 600M children worldwide are not achieving minimum proficiency in reading and math. The shortage of qualified teachers is acute: Sub-Saharan Africa needs 17M more teachers by 2030. AI tutors like Khan Academy's Khanmigo work, but at $20/month they're 50x too expensive for the children who need them most. The opportunity: build an AI tutor that runs at <$0.10/month per student, offline-first, in local languages. The technical challenge is cost compression, smaller models, distillation, on-device inference, without losing pedagogical quality.",
     category: "Education",
     tags: ["AI", "Education", "EdTech", "Low-Bandwidth", "Literacy"],
     source: "UNESCO Global Education Monitoring Report",
@@ -699,7 +699,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Solar/wind need 24h+ storage to replace coal. Lithium batteries max out at 4h. New chemistry needed.",
     description:
-      "Solar and wind are now the cheapest electricity in history, but they're intermittent. To replace fossil baseload, we need 24+ hours of grid-scale storage. Lithium-ion batteries top out at ~4 hours economically — beyond that, costs explode. The opportunity is in long-duration storage: iron-air, sodium-ion, flow batteries, thermal storage, compressed air, gravity. Each has 10x cost reduction potential at scale. The technical challenges vary by chemistry but all require fundamental materials and manufacturing innovation.",
+      "Solar and wind are now the cheapest electricity in history, but they're intermittent. To replace fossil baseload, we need 24+ hours of grid-scale storage. Lithium-ion batteries top out at ~4 hours economically, beyond that, costs explode. The opportunity is in long-duration storage: iron-air, sodium-ion, flow batteries, thermal storage, compressed air, gravity. Each has 10x cost reduction potential at scale. The technical challenges vary by chemistry but all require fundamental materials and manufacturing innovation.",
     category: "Energy",
     tags: ["Batteries", "Energy Storage", "Grid", "Materials Science"],
     source: "IEA Net Zero by 2050 Roadmap",
@@ -720,7 +720,7 @@ export const PROBLEMS: Problem[] = [
     difficultyLevel: "EXTREME",
     projectTypes: ["Startup", "Hardware", "Research"],
     solutions: [
-      { title: "Iron-Air Battery", description: "Reversible rusting chemistry — $20/kWh, 100h duration, earth-abundant materials." },
+      { title: "Iron-Air Battery", description: "Reversible rusting chemistry, $20/kWh, 100h duration, earth-abundant materials." },
       { title: "Sodium-Ion at Scale", description: "Sodium chemistries that replace lithium for stationary storage, 30% cheaper." },
       { title: "Thermal Storage", description: "Store heat in cheap materials (crushed rock, molten salt) for industrial + grid use." },
     ],
@@ -748,7 +748,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Fusion could give humanity unlimited clean energy. We've broken even. Now we need 10x more for commercial power.",
     description:
-      "Fusion — the energy that powers the sun — could provide effectively unlimited clean energy with no long-lived waste. For 70 years it's been 30 years away. In December 2022, NIF achieved scientific breakeven (more energy out than in). Now the race is to commercial fusion: net-positive Q>10, sustained plasma, breedable tritium fuel cycle, and economically competitive electricity. Private fusion startups have raised $7B+ and several target demo plants by 2030. This is the highest-impact engineering challenge in human history.",
+      "Fusion, the energy that powers the sun, could provide effectively unlimited clean energy with no long-lived waste. For 70 years it's been 30 years away. In December 2022, NIF achieved scientific breakeven (more energy out than in). Now the race is to commercial fusion: net-positive Q>10, sustained plasma, breedable tritium fuel cycle, and economically competitive electricity. Private fusion startups have raised $7B+ and several target demo plants by 2030. This is the highest-impact engineering challenge in human history.",
     category: "Energy",
     tags: ["Fusion", "Energy", "Plasma Physics", "Materials Science", "Decarbonization"],
     source: "DOE Fusion Energy Strategy",
@@ -770,7 +770,7 @@ export const PROBLEMS: Problem[] = [
     projectTypes: ["Startup", "Research", "Hardware", "National Lab"],
     solutions: [
       { title: "High-Temperature Superconductor Magnets", description: "REBCO HTS magnets enabling smaller, cheaper tokamaks (Commonwealth Fusion Systems approach)." },
-      { title: "Tritium Breeding Blanket", description: "Lithium blanket that breeds tritium fuel from fusion neutrons — critical unsolved problem." },
+      { title: "Tritium Breeding Blanket", description: "Lithium blanket that breeds tritium fuel from fusion neutrons, critical unsolved problem." },
       { title: "Plasma Disruption Mitigation", description: "AI-controlled massive gas injection system that prevents plasma disruptions in milliseconds." },
     ],
     skills: [
@@ -801,7 +801,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "2B people lack safely managed drinking water. Centralized treatment plants won't reach them. We need $20 household purifiers.",
     description:
-      "2 billion people lack safely managed drinking water, and 3.6 billion lack safely managed sanitation. The traditional solution — centralized water treatment plants and piped infrastructure — costs $50,000+ per village and takes decades to build. Decentralized purification — devices that can be installed in a home, school, or village for under $50 and operate without electricity or chemicals — could leapfrog the entire problem. The technical challenges: long lifetime without maintenance, removing both pathogens and chemical contaminants, and verifying water quality cheaply.",
+      "2 billion people lack safely managed drinking water, and 3.6 billion lack safely managed sanitation. The traditional solution, centralized water treatment plants and piped infrastructure, costs $50,000+ per village and takes decades to build. Decentralized purification, devices that can be installed in a home, school, or village for under $50 and operate without electricity or chemicals, could leapfrog the entire problem. The technical challenges: long lifetime without maintenance, removing both pathogens and chemical contaminants, and verifying water quality cheaply.",
     category: "Water & Sanitation",
     tags: ["Water", "Purification", "Decentralized", "Hardware", "WASH"],
     source: "WHO/UNICEF Joint Monitoring Programme",
@@ -853,7 +853,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "1B rural residents are cut off from markets, schools, and hospitals by lack of transport. Cheap EVs + digital mapping can fix this.",
     description:
-      "Over 1 billion rural residents in developing countries lack reliable year-round access to markets, schools, and healthcare due to poor roads and no transport services. The economic cost is staggering: farmers can't sell produce, kids can't attend school, pregnant women can't reach clinics. Traditional solutions — paved roads and buses — cost $100k+/km. The opportunity: ultra-low-cost electric vehicles (3-wheelers, e-bikes) coupled with digital ride-sharing and route optimization for underserved rural corridors. The challenge is building vehicles that cost $1,000, last 10 years on dirt roads, and operate profitably at $0.10/km fare.",
+      "Over 1 billion rural residents in developing countries lack reliable year-round access to markets, schools, and healthcare due to poor roads and no transport services. The economic cost is staggering: farmers can't sell produce, kids can't attend school, pregnant women can't reach clinics. Traditional solutions, paved roads and buses, cost $100k+/km. The opportunity: ultra-low-cost electric vehicles (3-wheelers, e-bikes) coupled with digital ride-sharing and route optimization for underserved rural corridors. The challenge is building vehicles that cost $1,000, last 10 years on dirt roads, and operate profitably at $0.10/km fare.",
     category: "Transportation",
     tags: ["EV", "Rural", "Mobility", "Last-Mile", "Developing Markets"],
     source: "World Bank Transport for Development",
@@ -905,7 +905,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "1.6B people lack adequate housing. 3D-printed homes in 24h for $5k could be the answer.",
     description:
-      "1.6 billion people lack adequate housing, and the global housing affordability crisis affects both developed and developing nations. Traditional construction is slow (3-6 months), labor-intensive, and expensive ($20k+ per home in developing countries). 3D printing with local materials — earth, geopolymer, recycled concrete — can produce a 50m² home in 24 hours for under $5,000 in materials. The technology is proven at demo scale; the engineering challenge is reliability, building code approval, and scaling to millions of homes.",
+      "1.6 billion people lack adequate housing, and the global housing affordability crisis affects both developed and developing nations. Traditional construction is slow (3-6 months), labor-intensive, and expensive ($20k+ per home in developing countries). 3D printing with local materials, earth, geopolymer, recycled concrete, can produce a 50m² home in 24 hours for under $5,000 in materials. The technology is proven at demo scale; the engineering challenge is reliability, building code approval, and scaling to millions of homes.",
     category: "Housing",
     tags: ["3D Printing", "Construction", "Affordable Housing", "Hardware"],
     source: "UN-Habitat World Cities Report",
@@ -955,9 +955,9 @@ export const PROBLEMS: Problem[] = [
     slug: "ai-therapist-low-income",
     title: "AI Therapist for the 70% Without Mental Health Care",
     summary:
-      "1 in 8 people have a mental health disorder. 70% get no treatment. There aren't enough therapists — AI can fill the gap.",
+      "1 in 8 people have a mental health disorder. 70% get no treatment. There aren't enough therapists, AI can fill the gap.",
     description:
-      "1 in 8 people globally live with a mental health disorder, but 70% receive no treatment. In low-income countries, the treatment gap exceeds 90% — there are simply no therapists. Even in wealthy countries, waitlists are months long and costs are $200+/session. Evidence-based AI therapy — grounded in CBT, DBT, and motivational interviewing — can deliver meaningful care at <1% of the cost. The technical challenge is clinical safety: AI must recognize crisis situations, avoid harmful responses, and know when to escalate to a human.",
+      "1 in 8 people globally live with a mental health disorder, but 70% receive no treatment. In low-income countries, the treatment gap exceeds 90%, there are simply no therapists. Even in wealthy countries, waitlists are months long and costs are $200+/session. Evidence-based AI therapy, grounded in CBT, DBT, and motivational interviewing, can deliver meaningful care at <1% of the cost. The technical challenge is clinical safety: AI must recognize crisis situations, avoid harmful responses, and know when to escalate to a human.",
     category: "Mental Health",
     tags: ["AI", "Mental Health", "Therapy", "CBT", "Digital Health"],
     source: "WHO World Mental Health Report",
@@ -1007,9 +1007,9 @@ export const PROBLEMS: Problem[] = [
     slug: "digital-identity-1-billion",
     title: "Digital Identity for 1 Billion People Without ID",
     summary:
-      "1B people have no ID — no bank account, no school, no healthcare. Self-sovereign digital ID changes everything.",
+      "1B people have no ID, no bank account, no school, no healthcare. Self-sovereign digital ID changes everything.",
     description:
-      "1 billion people worldwide lack official identification — no birth certificate, no national ID, nothing. Without ID, you can't open a bank account, enroll in school, claim government benefits, vote, or even prove your age. The World Bank estimates that providing ID to everyone would unlock $100B+ in economic value annually. The opportunity is self-sovereign digital identity: biometric-based, privacy-preserving, works offline, and puts the user in control of their data. India's Aadhaar covers 1.3B people but raises privacy concerns; the next generation must do better.",
+      "1 billion people worldwide lack official identification, no birth certificate, no national ID, nothing. Without ID, you can't open a bank account, enroll in school, claim government benefits, vote, or even prove your age. The World Bank estimates that providing ID to everyone would unlock $100B+ in economic value annually. The opportunity is self-sovereign digital identity: biometric-based, privacy-preserving, works offline, and puts the user in control of their data. India's Aadhaar covers 1.3B people but raises privacy concerns; the next generation must do better.",
     category: "Poverty",
     tags: ["Identity", "Digital ID", "Self-Sovereign", "Privacy", "Financial Inclusion"],
     source: "World Bank ID4D Initiative",
@@ -1061,7 +1061,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "30% of food grown in developing nations rots before reaching market. $5k solar cold rooms change the math.",
     description:
-      "30% of food grown in developing nations rots before reaching market — a loss of $310B annually and a major contributor to hunger. The lack of cold storage at the farm level means tomatoes, mangoes, leafy greens, and dairy spoil within days of harvest. Solar-powered cold rooms costing $5,000-10,000 can extend shelf life by 2-4 weeks, doubling farmer income and cutting waste. The challenge: low upfront cost, reliable operation off-grid, and financing models that work for smallholders.",
+      "30% of food grown in developing nations rots before reaching market, a loss of $310B annually and a major contributor to hunger. The lack of cold storage at the farm level means tomatoes, mangoes, leafy greens, and dairy spoil within days of harvest. Solar-powered cold rooms costing $5,000-10,000 can extend shelf life by 2-4 weeks, doubling farmer income and cutting waste. The challenge: low upfront cost, reliable operation off-grid, and financing models that work for smallholders.",
     category: "Hunger",
     tags: ["Cold Storage", "Solar", "Agriculture", "Food Security", "Hardware"],
     source: "FAO Food Waste Report",
@@ -1113,7 +1113,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Women earn 77 cents on the dollar globally. Companies want to fix this but can't measure it. AI can.",
     description:
-      "Globally, women earn 77 cents for every dollar men earn — a gap that closes by less than 1% per year at current rates. Companies increasingly want to address pay equity but lack the tools to audit themselves: the analysis is complex, requires controlling for role, experience, performance, and unconscious bias in promotion. The opportunity: AI-powered pay equity auditing that ingests HR data, controls for legitimate factors, surfaces unexplained gaps, and recommends specific remediation. The challenge is rigor (legal exposure), privacy, and trust.",
+      "Globally, women earn 77 cents for every dollar men earn, a gap that closes by less than 1% per year at current rates. Companies increasingly want to address pay equity but lack the tools to audit themselves: the analysis is complex, requires controlling for role, experience, performance, and unconscious bias in promotion. The opportunity: AI-powered pay equity auditing that ingests HR data, controls for legitimate factors, surfaces unexplained gaps, and recommends specific remediation. The challenge is rigor (legal exposure), privacy, and trust.",
     category: "Equality",
     tags: ["AI", "Gender Equality", "HR Tech", "Bias", "Compliance"],
     source: "UN Women Gender Pay Gap Report",
@@ -1165,7 +1165,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "After earthquakes and floods, aid takes days to reach the right places. AI satellite assessment in 24h saves lives.",
     description:
-      "After major disasters, the first 72 hours are critical for saving lives. But damage assessment traditionally takes days — satellite imagery has to be manually analyzed, building-by-building. AI can compress this to hours: post-disaster satellite imagery is fed through CNN models that output damage heatmaps at building resolution, helping responders direct search-and-rescue to where it matters most. The challenge is model robustness across disaster types (earthquakes, floods, hurricanes, wildfires) and speed of deployment.",
+      "After major disasters, the first 72 hours are critical for saving lives. But damage assessment traditionally takes days, satellite imagery has to be manually analyzed, building-by-building. AI can compress this to hours: post-disaster satellite imagery is fed through CNN models that output damage heatmaps at building resolution, helping responders direct search-and-rescue to where it matters most. The challenge is model robustness across disaster types (earthquakes, floods, hurricanes, wildfires) and speed of deployment.",
     category: "Disaster Response",
     tags: ["AI", "Satellite", "Disaster Response", "Computer Vision", "Remote Sensing"],
     source: "UN OCHA Humanitarian Response",
@@ -1216,7 +1216,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "11M tons of plastic enter the ocean yearly. River interceptors + autonomous cleanup drones can stop it.",
     description:
-      "11 million tons of plastic enter the ocean every year, and that number is projected to triple by 2040. Once plastic reaches the open ocean, cleanup is nearly impossible. The most effective intervention point is at rivers — 80% of ocean plastic comes from 1,000 rivers. Autonomous solar-powered drones that intercept plastic in rivers before it reaches the ocean could solve this. The engineering challenges: autonomy in debris-heavy environments, sorting plastic from organic matter, and maintenance in remote locations.",
+      "11 million tons of plastic enter the ocean every year, and that number is projected to triple by 2040. Once plastic reaches the open ocean, cleanup is nearly impossible. The most effective intervention point is at rivers, 80% of ocean plastic comes from 1,000 rivers. Autonomous solar-powered drones that intercept plastic in rivers before it reaches the ocean could solve this. The engineering challenges: autonomy in debris-heavy environments, sorting plastic from organic matter, and maintenance in remote locations.",
     category: "Ocean & Marine",
     tags: ["Robotics", "Drones", "Plastic Pollution", "Ocean", "Autonomous Systems"],
     source: "UNEP Marine Plastic Pollution Report",
@@ -1268,7 +1268,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "We're losing species faster than we can count them. AI + satellite + acoustics can track biodiversity globally.",
     description:
-      "Earth is experiencing its sixth mass extinction, with species disappearing 100-1000x faster than background rates. But we can't protect what we can't measure — current biodiversity monitoring is manual, slow, and expensive. The opportunity: integrate satellite imagery (vegetation), acoustic sensors (bird/frog/insect calls), camera traps (mammals), and eDNA (water samples) into a unified AI-powered biodiversity monitoring platform that can track ecosystem health globally. The challenge is multi-modal data fusion and ground truth scarcity in exactly the biodiverse regions that need monitoring.",
+      "Earth is experiencing its sixth mass extinction, with species disappearing 100-1000x faster than background rates. But we can't protect what we can't measure, current biodiversity monitoring is manual, slow, and expensive. The opportunity: integrate satellite imagery (vegetation), acoustic sensors (bird/frog/insect calls), camera traps (mammals), and eDNA (water samples) into a unified AI-powered biodiversity monitoring platform that can track ecosystem health globally. The challenge is multi-modal data fusion and ground truth scarcity in exactly the biodiverse regions that need monitoring.",
     category: "Biodiversity",
     tags: ["AI", "Biodiversity", "Satellite", "Bioacoustics", "Conservation"],
     source: "IPBES Global Assessment Report",
@@ -1320,7 +1320,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Recycling fails because sorting is too expensive. AI computer vision + robotic sorting changes the economics.",
     description:
-      "Recycling is in crisis. China's 2018 ban on imported waste collapsed Western recycling markets, and contamination rates of 25%+ make most recycled material unsellable. The root cause: sorting is done by humans who are slow, expensive, and error-prone. AI-powered robotic sorting — computer vision identifies each item on the conveyor belt, robotic arms sort at 2x human speed with 95%+ accuracy — can make recycled material cheaper than virgin. The challenge is robustness across wildly variable waste streams and cost-competitiveness with landfill.",
+      "Recycling is in crisis. China's 2018 ban on imported waste collapsed Western recycling markets, and contamination rates of 25%+ make most recycled material unsellable. The root cause: sorting is done by humans who are slow, expensive, and error-prone. AI-powered robotic sorting, computer vision identifies each item on the conveyor belt, robotic arms sort at 2x human speed with 95%+ accuracy, can make recycled material cheaper than virgin. The challenge is robustness across wildly variable waste streams and cost-competitiveness with landfill.",
     category: "Waste Management",
     tags: ["AI", "Robotics", "Recycling", "Computer Vision", "Circular Economy"],
     source: "World Bank What a Waste 2.0",
@@ -1372,7 +1372,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Kessler Syndrome could make LEO unusable for centuries. Active debris removal is the only solution.",
     description:
-      "Low Earth Orbit (LEO) is increasingly congested, with 30,000+ tracked debris objects and millions of untracked smaller pieces. The Kessler Syndrome — a cascading collision cascade — could render LEO unusable for centuries, killing the satellite industry that powers modern GPS, weather forecasting, and internet. Active Debris Removal (ADR) — rendezvous with dead satellites and deorbit them — is technically feasible but commercially unproven. The first company to demonstrate reliable ADR at scale will define a new multi-billion-dollar industry and protect orbital infrastructure for humanity.",
+      "Low Earth Orbit (LEO) is increasingly congested, with 30,000+ tracked debris objects and millions of untracked smaller pieces. The Kessler Syndrome, a cascading collision cascade, could render LEO unusable for centuries, killing the satellite industry that powers modern GPS, weather forecasting, and internet. Active Debris Removal (ADR), rendezvous with dead satellites and deorbit them, is technically feasible but commercially unproven. The first company to demonstrate reliable ADR at scale will define a new multi-billion-dollar industry and protect orbital infrastructure for humanity.",
     category: "Space",
     tags: ["Space", "Debris", "Satellite", "Robotics", "Orbital"],
     source: "ESA Space Debris Office",
@@ -1424,7 +1424,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Today's quantum computers have ~1,000 noisy qubits. Useful QC needs millions of error-corrected qubits. We need 1000x.",
     description:
-      "Quantum computers could solve problems intractable for classical computers — drug discovery, materials science, cryptography, optimization. Today's devices have ~1,000 noisy physical qubits and can run for microseconds before decoherence. To run useful algorithms (Shor's, quantum chemistry), we need millions of error-corrected logical qubits, each requiring ~1,000 physical qubits. The challenge is scalable quantum error correction: surface codes, transversal gates, and real-time classical control at GHz speeds. This is the central bottleneck of the entire field.",
+      "Quantum computers could solve problems intractable for classical computers, drug discovery, materials science, cryptography, optimization. Today's devices have ~1,000 noisy physical qubits and can run for microseconds before decoherence. To run useful algorithms (Shor's, quantum chemistry), we need millions of error-corrected logical qubits, each requiring ~1,000 physical qubits. The challenge is scalable quantum error correction: surface codes, transversal gates, and real-time classical control at GHz speeds. This is the central bottleneck of the entire field.",
     category: "Quantum Computing",
     tags: ["Quantum Computing", "Error Correction", "Quantum Information", "Hardware"],
     source: "National Quantum Initiative / arXiv quantum-ph",
@@ -1474,9 +1474,9 @@ export const PROBLEMS: Problem[] = [
     slug: "general-purpose-humanoid-robot",
     title: "General-Purpose Humanoid Robots for $20k",
     summary:
-      "Humanoid robots that do real work — construction, care, manufacturing — for under $20k would transform labor.",
+      "Humanoid robots that do real work, construction, care, manufacturing, for under $20k would transform labor.",
     description:
-      "The labor market is fragmented: construction workers, caregivers, warehouse workers, and household helpers all do physical work that humans don't want to do or can't do enough of. A general-purpose humanoid robot priced at $20,000 — the cost of a cheap car — could transform labor economics. Recent advances (Tesla Optimus, Figure, Agility Robotics) prove the hardware is feasible; the challenges are dexterous manipulation, generalizable AI for novel tasks, and manufacturing cost reduction. Whoever wins this race defines a multi-trillion-dollar industry.",
+      "The labor market is fragmented: construction workers, caregivers, warehouse workers, and household helpers all do physical work that humans don't want to do or can't do enough of. A general-purpose humanoid robot priced at $20,000, the cost of a cheap car, could transform labor economics. Recent advances (Tesla Optimus, Figure, Agility Robotics) prove the hardware is feasible; the challenges are dexterous manipulation, generalizable AI for novel tasks, and manufacturing cost reduction. Whoever wins this race defines a multi-trillion-dollar industry.",
     category: "Robotics",
     tags: ["Humanoid", "Robotics", "AI", "Manufacturing", "Labor"],
     source: "WEF Future of Jobs Report",
@@ -1529,7 +1529,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Bringing a new drug to market costs $2.6B and takes 12 years. AI can compress this to $200M and 4 years.",
     description:
-      "Drug discovery is broken: $2.6B average cost, 12-year timeline, 90% failure rate in clinical trials. The bottleneck is the search space — 10^60 possible molecules — which is impossible to explore experimentally. AI changes this: generative models design novel molecules, structure prediction (AlphaFold) replaces wet-lab crystallography, and active learning prioritizes which molecules to synthesize. AI-first pharma companies (Insilico, Recursion) are already advancing drugs in 4 years at 1/10th the cost. The opportunity is still wide open: every major disease class needs AI-driven pipelines.",
+      "Drug discovery is broken: $2.6B average cost, 12-year timeline, 90% failure rate in clinical trials. The bottleneck is the search space, 10^60 possible molecules, which is impossible to explore experimentally. AI changes this: generative models design novel molecules, structure prediction (AlphaFold) replaces wet-lab crystallography, and active learning prioritizes which molecules to synthesize. AI-first pharma companies (Insilico, Recursion) are already advancing drugs in 4 years at 1/10th the cost. The opportunity is still wide open: every major disease class needs AI-driven pipelines.",
     category: "Biotechnology",
     tags: ["AI", "Drug Discovery", "Biotech", "Pharma", "Generative Models"],
     source: "DiMasi et al. / Pharma R&D Economics",
@@ -1581,7 +1581,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "Materials science discovers ~100 new materials per year. AI can do 10,000+ per year. Batteries, superconductors, catalysts.",
     description:
-      "Throughout history, new materials have driven civilizational progress: bronze, steel, silicon. Today, materials discovery is slow — ~100 new materials per year globally, mostly through trial-and-error. AI changes this: Google DeepMind's GNoME discovered 2.2M new crystal structures in 2023, 800,000 of which are stable. The opportunity is to build AI-driven materials discovery platforms that synthesize and characterize materials at industrial scale, unlocking better batteries, room-temperature superconductors, carbon capture catalysts, and room-temperature quantum devices.",
+      "Throughout history, new materials have driven civilizational progress: bronze, steel, silicon. Today, materials discovery is slow, ~100 new materials per year globally, mostly through trial-and-error. AI changes this: Google DeepMind's GNoME discovered 2.2M new crystal structures in 2023, 800,000 of which are stable. The opportunity is to build AI-driven materials discovery platforms that synthesize and characterize materials at industrial scale, unlocking better batteries, room-temperature superconductors, carbon capture catalysts, and room-temperature quantum devices.",
     category: "Materials Science",
     tags: ["AI", "Materials Science", "Discovery", "Energy", "Catalysis"],
     source: "DeepMind GNoME paper / Nature",
@@ -1633,7 +1633,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "68% of us will live in cities by 2050. AI urban planning tools can make cities walkable, livable, and low-carbon.",
     description:
-      "By 2050, 68% of humanity will live in cities — 6.7 billion people. Most cities are car-dependent, sprawling, and environmentally destructive. The 15-minute city concept — where everything you need (work, school, healthcare, groceries) is within a 15-minute walk or bike — could cut emissions, improve health, and reduce inequality. But implementing it requires complex trade-offs: zoning changes, transit routing, density planning, economic modeling. AI tools that simulate urban interventions and predict their multi-dimensional impact could empower city planners to make data-driven decisions.",
+      "By 2050, 68% of humanity will live in cities, 6.7 billion people. Most cities are car-dependent, sprawling, and environmentally destructive. The 15-minute city concept, where everything you need (work, school, healthcare, groceries) is within a 15-minute walk or bike, could cut emissions, improve health, and reduce inequality. But implementing it requires complex trade-offs: zoning changes, transit routing, density planning, economic modeling. AI tools that simulate urban interventions and predict their multi-dimensional impact could empower city planners to make data-driven decisions.",
     category: "Urban Planning",
     tags: ["AI", "Urban Planning", "Cities", "Sustainability", "Mobility"],
     source: "UN World Urbanization Prospects",
@@ -1685,7 +1685,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "1.7B adults have no bank account and no credit score. Mobile data + AI can unlock credit for billions.",
     description:
-      "1.7 billion adults remain unbanked — they have no bank account, no credit history, and no access to loans beyond loan sharks. Traditional credit scoring (FICO) requires decades of banking data, locking the unbanked out of the formal economy. But mobile phones generate rich behavioral data: call patterns, mobile money transactions, app usage. AI models trained on this alternative data can accurately predict creditworthiness, unlocking microloans, mortgages, and business financing for billions. The challenge is fairness, regulatory approval, and avoiding predatory lending.",
+      "1.7 billion adults remain unbanked, they have no bank account, no credit history, and no access to loans beyond loan sharks. Traditional credit scoring (FICO) requires decades of banking data, locking the unbanked out of the formal economy. But mobile phones generate rich behavioral data: call patterns, mobile money transactions, app usage. AI models trained on this alternative data can accurately predict creditworthiness, unlocking microloans, mortgages, and business financing for billions. The challenge is fairness, regulatory approval, and avoiding predatory lending.",
     category: "Financial Inclusion",
     tags: ["Fintech", "AI", "Credit Scoring", "Mobile", "Developing Markets"],
     source: "World Bank Global Findex Database",
@@ -1737,7 +1737,7 @@ export const PROBLEMS: Problem[] = [
     summary:
       "70M people use sign language as their first language. Real-time translation to/from spoken language changes everything.",
     description:
-      "70 million deaf people worldwide use sign language as their primary language, but the hearing world doesn't speak it. Communication with hearing people requires slow, error-prone human interpreters, who cost $50-100/hour and aren't available on demand. Real-time sign language translation — bidirectional, on a phone, supporting multiple sign languages — would transform deaf people's access to education, employment, healthcare, and daily life. The technical challenge is enormous: sign language has its own grammar, uses 3D space, and varies by country (ASL, BSL, ISL, JSL, etc.).",
+      "70 million deaf people worldwide use sign language as their primary language, but the hearing world doesn't speak it. Communication with hearing people requires slow, error-prone human interpreters, who cost $50-100/hour and aren't available on demand. Real-time sign language translation, bidirectional, on a phone, supporting multiple sign languages, would transform deaf people's access to education, employment, healthcare, and daily life. The technical challenge is enormous: sign language has its own grammar, uses 3D space, and varies by country (ASL, BSL, ISL, JSL, etc.).",
     category: "Accessibility",
     tags: ["Accessibility", "Sign Language", "Computer Vision", "Deaf", "Translation"],
     source: "World Federation of the Deaf",

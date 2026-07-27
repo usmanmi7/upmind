@@ -24,43 +24,43 @@ import {
 const services = [
   {
     icon: Compass,
-    title: "Solve Them — Problem Database",
-    description: "30+ curated world problems across 26 categories. Each problem is sourced from WHO, UN, IEA, IPCC, and other authoritative bodies — with severity, scope, affected populations, and existing-solution analysis.",
+    title: "Solve Them, Problem Database",
+    description: "30+ curated world problems across 26 categories. Each problem is sourced from WHO, UN, IEA, IPCC, and other authoritative bodies, with severity, scope, affected populations, and existing-solution analysis.",
     features: ["26 problem categories", "Severity & impact scoring (0-100)", "Regional & scope filters", "Sources from multilateral orgs"],
     color: "from-[#1E3A8A] to-[#93C5FD]",
   },
   {
     icon: Sparkles,
     title: "AI Innovation Engine",
-    description: "Tell us your engineering skills, interests, time, and team size. Our matching algorithm scores every problem in the database for fit — so you start with problems you can actually solve.",
+    description: "Tell us your engineering skills, interests, time, and team size. Our matching algorithm scores every problem in the database for fit, so you start with problems you can actually solve.",
     features: ["Skill-coverage scoring (0-60)", "Interest overlap matching (0-30)", "Team & time constraint bonuses", "Reason-highlight explanations"],
     color: "from-[#3B82F6] to-[#1E3A8A]",
   },
   {
     icon: Wrench,
     title: "Engineering Build Playbooks",
-    description: "Open any problem to see engineering solutions, a 4-phase build roadmap, required skills, and recommended team templates — everything you need to move from problem to project.",
+    description: "Open any problem to see engineering solutions, a 4-phase build roadmap, required skills, and recommended team templates, everything you need to move from problem to project.",
     features: ["Engineering solution briefs", "12-month roadmap templates", "Skill requirement maps", "Battle-tested team templates"],
     color: "from-blue-500 to-blue-700",
   },
   {
     icon: BookOpen,
     title: "Engineering Resources Library",
-    description: "Field guides, templates, and frameworks written for engineers — not generic startup advice. Reading lists, ethics frameworks, funding field guides, and lessons from builders in the field.",
+    description: "Field guides, templates, and frameworks written for engineers, not generic startup advice. Reading lists, ethics frameworks, funding field guides, and lessons from builders in the field.",
     features: ["Problem-discovery guides", "Engineering skills self-assessment", "Career paths for innovators", "Open-source playbooks"],
     color: "from-[#93C5FD] to-[#1E3A8A]",
   },
   {
     icon: Users,
     title: "Team Templates",
-    description: "Five battle-tested team structures for software, hardware, research, open source, and field-deployment projects — including role definitions, sizes, and hiring sequences.",
+    description: "Five battle-tested team structures for software, hardware, research, open source, and field-deployment projects, including role definitions, sizes, and hiring sequences.",
     features: ["Lean software (3-5 people)", "Hardware + software (5-8)", "Research lab (3-6)", "Field deployment (6-12)"],
     color: "from-indigo-500 to-blue-700",
   },
   {
     icon: Cpu,
     title: "AI Assistant",
-    description: "An AI assistant trained on our engineering innovation framework — interview-first protocol, problem framing, build decisions, and pointers to the right resources for where you are.",
+    description: "An AI assistant trained on our engineering innovation framework, interview-first protocol, problem framing, build decisions, and pointers to the right resources for where you are.",
     features: ["Interview-first protocol", "Problem framing help", "Build-vs-research guidance", "Resource recommendations"],
     color: "from-sky-500 to-blue-700",
   },
@@ -77,7 +77,7 @@ const processSteps = [
     step: "02",
     icon: Lightbulb,
     title: "Match",
-    description: "Run the Innovation Engine. Tell us your skills, interests, time, and team — get a ranked shortlist of problems you can actually solve.",
+    description: "Run the Innovation Engine. Tell us your skills, interests, time, and team, get a ranked shortlist of problems you can actually solve.",
   },
   {
     step: "03",
@@ -113,7 +113,7 @@ export default function ServicesPage() {
           badge="What We Built"
           title="A complete platform for"
           highlight="engineering innovators"
-          description="From problem discovery to deployment — everything engineers need to find problems worth solving, match them to skills, and ship solutions that matter."
+          description="From problem discovery to deployment, everything engineers need to find problems worth solving, match them to skills, and ship solutions that matter."
         />
 
         {/* Services Grid */}

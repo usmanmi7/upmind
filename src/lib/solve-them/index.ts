@@ -1,5 +1,5 @@
 /**
- * Solve Them — Access Layer
+ * Solve Them, Access Layer
  *
  * Wraps the static problems dataset with the same shape as a Prisma client
  * would, so we can swap to DB-backed data later without touching the UI.
@@ -98,7 +98,7 @@ export function getProblemStats() {
 }
 
 /**
- * AI Innovation Engine — matches a user's skills + interests to problems.
+ * AI Innovation Engine, matches a user's skills + interests to problems.
  * Pure client-side scoring; can be upgraded to LLM-based matching later.
  */
 export interface InnovationInput {
@@ -123,7 +123,7 @@ export function matchInnovations(input: InnovationInput): InnovationMatchResult[
   const results: InnovationMatchResult[] = PROBLEMS.map((problem) => {
     const problemSkillsLower = problem.skills.map((s) => s.skill.toLowerCase());
 
-    // Skill match — most important
+    // Skill match, most important
     const matchedSkills: string[] = [];
     let skillOverlap = 0;
     let skillImportanceSum = 0;
@@ -146,7 +146,7 @@ export function matchInnovations(input: InnovationInput): InnovationMatchResult[
     const skillCoverage =
       skillImportanceSum > 0 ? matchedImportanceSum / skillImportanceSum : 0;
 
-    // Interest match — checks tags, category, title keywords
+    // Interest match, checks tags, category, title keywords
     let interestOverlap = 0;
     userInterestsLower.forEach((ui) => {
       if (!ui) return;
@@ -164,7 +164,7 @@ export function matchInnovations(input: InnovationInput): InnovationMatchResult[
       }
     }
 
-    // Time commitment — bonus if problem fits in user's time
+    // Time commitment, bonus if problem fits in user's time
     let timeBonus = 0;
     if (input.timeCommitmentMonths && problem.estimatedTimelineMonths) {
       if (problem.estimatedTimelineMonths <= input.timeCommitmentMonths) {

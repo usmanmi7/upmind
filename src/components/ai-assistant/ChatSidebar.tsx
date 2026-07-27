@@ -48,7 +48,7 @@ function relativeTime(dateStr: string): string {
 }
 
 /**
- * Inner content of the chat sidebar — used by both the desktop sticky aside
+ * Inner content of the chat sidebar, used by both the desktop sticky aside
  * and the mobile Sheet drawer. Stateless; all behavior comes from props.
  */
 export function ChatSidebarContent({

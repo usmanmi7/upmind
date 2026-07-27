@@ -93,7 +93,7 @@ export default function ResourcesPage() {
   )
 
   const handleResourceClick = () => {
-    // No-op — detail page handles auth overlay
+    // No-op, detail page handles auth overlay
   }
 
   const formatDate = (dateStr: string) => {
@@ -113,7 +113,7 @@ export default function ResourcesPage() {
           badge="Resources"
           title="Playbooks for"
           highlight="engineering innovators"
-          description="Field guides, templates, and frameworks for engineers who want to build things that matter — sourced from real-world problem solving, not generic startup advice."
+          description="Field guides, templates, and frameworks for engineers who want to build things that matter, sourced from real-world problem solving, not generic startup advice."
         />
 
         {/* Search & Filters */}
@@ -402,7 +402,7 @@ export default function ResourcesPage() {
                   Find a problem worth your skills
                 </h2>
                 <p className="text-lg text-white/70 max-w-xl mx-auto mb-8">
-                  These resources pair with our Solve Them database — 30+ curated world problems matched to your engineering skills.
+                  These resources pair with our Solve Them database, 30+ curated world problems matched to your engineering skills.
                 </p>
                 <Link
                   href="/solve-them"

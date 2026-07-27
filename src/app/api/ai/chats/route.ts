@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       title = body.title.trim().slice(0, 200)
     }
   } catch {
-    // empty body is fine — default title used
+    // empty body is fine, default title used
   }
 
   const chat = await db.chat.create({

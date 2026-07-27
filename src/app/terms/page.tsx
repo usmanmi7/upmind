@@ -24,7 +24,7 @@ export default function TermsPage() {
             <section>
               <h2 className="text-xl font-heading font-semibold">2. Description of Service</h2>
               <p className="text-muted-foreground leading-relaxed">
-                Enginest provides an engineering innovation platform — including a curated problem database, AI-powered skill matching, resource libraries, roadmap tools, and project tracking. The Service is provided &ldquo;as is&rdquo; and we reserve the right to modify, suspend, or discontinue any aspect of the Service at any time.
+                Enginest provides an engineering innovation platform, including a curated problem database, AI-powered skill matching, resource libraries, roadmap tools, and project tracking. The Service is provided &ldquo;as is&rdquo; and we reserve the right to modify, suspend, or discontinue any aspect of the Service at any time.
               </p>
             </section>
 

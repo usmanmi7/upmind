@@ -10,10 +10,10 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#0F1B3D]">
-      {/* Layer 1 — Vertical navy gradient base */}
+      {/* Layer 1, Vertical navy gradient base */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#1E3A8A] via-[#0F1B3D] to-[#0A1428]" />
 
-      {/* Layer 2 — Blueprint grid pattern */}
+      {/* Layer 2, Blueprint grid pattern */}
       <div
         className="absolute inset-0 opacity-[0.18]"
         style={{
@@ -25,7 +25,7 @@ export default function Hero() {
         }}
       />
 
-      {/* Layer 3 — Dotted secondary grid (tighter, very faint) */}
+      {/* Layer 3, Dotted secondary grid (tighter, very faint) */}
       <div
         className="absolute inset-0 opacity-[0.10]"
         style={{
@@ -37,12 +37,12 @@ export default function Hero() {
         }}
       />
 
-      {/* Layer 4 — Glow orbs (electric blue) */}
+      {/* Layer 4, Glow orbs (electric blue) */}
       <div className="absolute -top-40 -right-32 w-[600px] h-[600px] rounded-full bg-[#3B82F6]/25 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-40 -left-32 w-[500px] h-[500px] rounded-full bg-[#1E3A8A]/30 blur-3xl pointer-events-none" />
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[400px] rounded-full bg-[#93C5FD]/8 blur-3xl pointer-events-none" />
 
-      {/* Layer 5 — Diagonal accent lines (engineering schematic feel) */}
+      {/* Layer 5, Diagonal accent lines (engineering schematic feel) */}
       <div className="absolute inset-0 opacity-[0.06] pointer-events-none">
         <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 800" fill="none">
           <path d="M0,200 L1200,500" stroke="#93C5FD" strokeWidth="1" />
@@ -55,10 +55,10 @@ export default function Hero() {
         </svg>
       </div>
 
-      {/* Layer 6 — Bottom fade into next section */}
+      {/* Layer 6, Bottom fade into next section */}
       <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#0F1B3D]" />
 
-      {/* Layer 7 — Bottom two-curve divider (separates Hero from WHY ENGINEST) */}
+      {/* Layer 7, Bottom two-curve divider (separates Hero from WHY ENGINEST) */}
       <div className="absolute bottom-0 inset-x-0 z-20 pointer-events-none">
         {/* Soft blue glow under the curves */}
         <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-[#3B82F6]/10 via-[#3B82F6]/3 to-transparent" />
@@ -71,14 +71,14 @@ export default function Hero() {
           fill="none"
           aria-hidden="true"
         >
-          {/* Outer curve — wider, soft blue */}
+          {/* Outer curve, wider, soft blue */}
           <path
             d="M0,80 C360,160 1080,160 1440,80"
             stroke="url(#curveOuter)"
             strokeWidth="1.5"
             strokeLinecap="round"
           />
-          {/* Inner curve — tighter, brighter blue */}
+          {/* Inner curve, tighter, brighter blue */}
           <path
             d="M0,95 C360,40 1080,40 1440,95"
             stroke="url(#curveInner)"
@@ -99,7 +99,7 @@ export default function Hero() {
           </defs>
         </svg>
 
-        {/* Center node dot — sits on the curve intersection */}
+        {/* Center node dot, sits on the curve intersection */}
         <div className="absolute bottom-[78px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
           <div className="w-2.5 h-2.5 rounded-full bg-[#3B82F6] shadow-[0_0_12px_rgba(59,130,246,0.9)] animate-pulse" />
         </div>

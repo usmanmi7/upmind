@@ -344,7 +344,7 @@ export default function AdminCMSPage() {
                           <p className="text-xs text-muted-foreground">{t.role || ""} {t.company ? `at ${t.company}` : ""}</p>
                         </div>
                       </TableCell>
-                      <TableCell className="hidden md:table-cell text-sm">{t.company || "—"}</TableCell>
+                      <TableCell className="hidden md:table-cell text-sm">{t.company || ","}</TableCell>
                       <TableCell className="hidden lg:table-cell">
                         <div className="flex items-center gap-1">
                           <span className="text-sm">{"★".repeat(t.rating || 0)}</span>

@@ -146,7 +146,7 @@ export function AIUpgradeDialog({
           <DialogDescription className="text-center">
             {reason ||
               (currentPlan === "ANONYMOUS"
-                ? "You've used your free AI answer. Sign up to get 1 AI question every month — no credit card required."
+                ? "You've used your free AI answer. Sign up to get 1 AI question every month, no credit card required."
                 : "You've reached your monthly AI question limit. Upgrade to keep getting personalized startup advice.")}
           </DialogDescription>
         </DialogHeader>

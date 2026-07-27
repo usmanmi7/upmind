@@ -159,13 +159,13 @@ export async function POST(req: NextRequest) {
       plainResponse = derived
     } else if (looksLikeJson(raw)) {
       // The model returned something JSON-shaped but we couldn't extract
-      // any usable fields. Don't dump raw JSON at the user — show a
+      // any usable fields. Don't dump raw JSON at the user, show a
       // friendly retry message instead.
       plainResponse =
         "I had trouble formatting that response. Could you try asking again?"
       structured = {}
     } else {
-      // Plain text response (no JSON at all) — show as-is.
+      // Plain text response (no JSON at all), show as-is.
       plainResponse = cleanText(raw)
       structured = {}
     }

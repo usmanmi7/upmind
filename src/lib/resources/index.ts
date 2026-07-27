@@ -1,5 +1,5 @@
 /**
- * Engineering Resources — Access Layer
+ * Engineering Resources, Access Layer
  *
  * Wraps the static resources dataset with the same shape as a Prisma client
  * would, so we can swap to DB-backed data later without touching the UI.

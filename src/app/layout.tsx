@@ -28,7 +28,7 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: "Enginest — Engineering Innovation Platform",
+  title: "Enginest, Engineering Innovation Platform",
   description:
     "We help engineers find problems worth solving. Curated world problems, AI-powered skill matching, and playbooks for builders who want to make things that matter.",
   keywords: ["Enginest", "engineering innovation", "problems worth solving", "innovation engine", "build"],

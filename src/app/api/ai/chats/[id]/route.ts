@@ -10,7 +10,7 @@ type Ctx = { params: Promise<{ id: string }> }
  * GET /api/ai/chats/[id]
  * Fetch a single chat with all its messages, ordered by createdAt asc.
  *
- * Also returns a `reopenSummary` field — a short "Picking up where we left
+ * Also returns a `reopenSummary` field, a short "Picking up where we left
  * off…" string the frontend can show above the messages so the user gets
  * instant context about what they were last discussing. Generated
  * heuristically (no LLM call) from the last user question + last AI heading.
@@ -43,7 +43,7 @@ export async function GET(_req: NextRequest, { params }: Ctx) {
   }
 
   // Generate a "where we left off" summary if this is a returning chat
-  // (more than 1 message — i.e., not a freshly-created empty chat).
+  // (more than 1 message, i.e., not a freshly-created empty chat).
   const reopenSummary =
     chat.messages.length > 1
       ? buildReopenSummary(

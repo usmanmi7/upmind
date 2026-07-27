@@ -177,7 +177,7 @@ export default function SolveThemPage() {
           badge="Solve Them"
           title="Find problems"
           highlight="worth solving"
-          description={`${stats.total}+ curated world problems across ${stats.categories} categories — each one a chance to build something that matters. Sourced from WHO, UN, IEA, IPCC, and more.`}
+          description={`${stats.total}+ curated world problems across ${stats.categories} categories, each one a chance to build something that matters. Sourced from WHO, UN, IEA, IPCC, and more.`}
         />
 
         {/* STATS BAR */}
@@ -789,7 +789,7 @@ function ProblemCard({ problem }: { problem: ReturnType<typeof getAllProblems>[0
           {problem.teamTemplates[0]?.minMembers || 3}+ engineers
         </span>
         <span className="flex items-center gap-1">
-          {problem.estimatedTimelineMonths ? `${problem.estimatedTimelineMonths}mo` : "—"}
+          {problem.estimatedTimelineMonths ? `${problem.estimatedTimelineMonths}mo` : ","}
           <Globe className="w-3 h-3 ml-2" />
           {problem.scope}
         </span>

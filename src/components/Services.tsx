@@ -19,7 +19,7 @@ const services = [
     icon: Sparkles,
     title: 'AI Innovation Engine',
     description:
-      'Tell us your skills, interests, time, and team size. Our matching algorithm scores every problem in the database for fit — so you start with problems you can actually solve.',
+      'Tell us your skills, interests, time, and team size. Our matching algorithm scores every problem in the database for fit, so you start with problems you can actually solve.',
     features: ['Skill-coverage scoring', 'Interest overlap matching', 'Team & time constraints', 'Reason-highlight explanations'],
     color: 'from-[#3B82F6] to-[#1E3A8A]',
   },
@@ -27,7 +27,7 @@ const services = [
     icon: Wrench,
     title: 'Build Playbooks',
     description:
-      'Open any problem to see engineering solutions, a 4-phase build roadmap, required skills, and recommended team templates — everything you need to move from problem to project.',
+      'Open any problem to see engineering solutions, a 4-phase build roadmap, required skills, and recommended team templates, everything you need to move from problem to project.',
     features: ['Engineering solution briefs', '12-month roadmap templates', 'Skill requirement maps', 'Battle-tested team templates'],
     color: 'from-blue-500 to-blue-700',
   },
@@ -35,7 +35,7 @@ const services = [
     icon: BookOpen,
     title: 'Engineering Resources',
     description:
-      'Field guides, templates, and frameworks written for engineers — not generic startup advice. Reading lists, ethics frameworks, funding field guides, and lessons from builders in the field.',
+      'Field guides, templates, and frameworks written for engineers, not generic startup advice. Reading lists, ethics frameworks, funding field guides, and lessons from builders in the field.',
     features: ['Problem-discovery guides', 'Engineering skills self-assessment', 'Career paths for innovators', 'Open-source playbooks'],
     color: 'from-[#93C5FD] to-[#1E3A8A]',
   },
@@ -43,7 +43,7 @@ const services = [
     icon: Users,
     title: 'Team Templates',
     description:
-      'Five battle-tested team structures for software, hardware, research, open source, and field-deployment projects — including role definitions, sizes, and hiring sequences.',
+      'Five battle-tested team structures for software, hardware, research, open source, and field-deployment projects, including role definitions, sizes, and hiring sequences.',
     features: ['Lean software (3-5)', 'Hardware + software (5-8)', 'Research lab (3-6)', 'Field deployment (6-12)'],
     color: 'from-indigo-500 to-blue-700',
   },
@@ -51,7 +51,7 @@ const services = [
     icon: Cpu,
     title: 'AI Assistant',
     description:
-      'An AI assistant trained on our engineering innovation framework — interview-first protocol, problem framing, build decisions, and pointers to the right resources for where you are.',
+      'An AI assistant trained on our engineering innovation framework, interview-first protocol, problem framing, build decisions, and pointers to the right resources for where you are.',
     features: ['Interview-first protocol', 'Problem framing help', 'Build-vs-research guidance', 'Resource recommendations'],
     color: 'from-sky-500 to-blue-700',
   },
@@ -89,7 +89,7 @@ export default function Services() {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="text-[#666666] text-base sm:text-lg"
           >
-            A complete platform for engineers who want to spend their time on meaningful innovation — from problem discovery to deployment.
+            A complete platform for engineers who want to spend their time on meaningful innovation, from problem discovery to deployment.
           </motion.p>
         </div>
 

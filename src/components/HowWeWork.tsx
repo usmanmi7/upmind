@@ -17,7 +17,7 @@ const steps = [
     number: '2/5',
     title: 'Match Your Skills',
     description:
-      'Run the AI Innovation Engine. Tell us your skills, interests, time, and team size — get a ranked shortlist of problems you are uniquely positioned to solve, with match reasons.',
+      'Run the AI Innovation Engine. Tell us your skills, interests, time, and team size, get a ranked shortlist of problems you are uniquely positioned to solve, with match reasons.',
   },
   {
     number: '3/5',
@@ -29,7 +29,7 @@ const steps = [
     number: '4/5',
     title: 'Build the Solution',
     description:
-      'Use the engineering solution briefs, skill requirements, and team templates to assemble a project. Tap our resources library for playbooks on every stage — from prototype to pilot.',
+      'Use the engineering solution briefs, skill requirements, and team templates to assemble a project. Tap our resources library for playbooks on every stage, from prototype to pilot.',
   },
   {
     number: '5/5',

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 
-// Sourced / aligned organizations — placeholders representing the kinds of
+// Sourced / aligned organizations, placeholders representing the kinds of
 // authoritative bodies we pull problem data from.
 const partners = [
   { name: 'WHO', icon: '⚕' },

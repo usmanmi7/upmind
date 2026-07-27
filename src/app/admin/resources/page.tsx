@@ -292,7 +292,7 @@ export default function AdminResourcesPage() {
                           </Badge>
                         </TableCell>
                         <TableCell className="hidden md:table-cell text-sm text-muted-foreground">
-                          {resource.category || "—"}
+                          {resource.category || ","}
                         </TableCell>
                         <TableCell>
                           {resource.isPremium ? (

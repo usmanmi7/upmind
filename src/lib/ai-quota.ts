@@ -1,4 +1,4 @@
-// AI Assistant quota helpers (stubbed — quota system disabled).
+// AI Assistant quota helpers (stubbed, quota system disabled).
 //
 // Per product direction, the AI Assistant is unlimited for all users
 // (logged-in and anonymous). These helpers exist for backwards
@@ -48,7 +48,7 @@ export async function checkAnonymousQuota(
 }
 
 export async function incrementAnonymousUsage(_identifier: string): Promise<void> {
-  // No-op — quota disabled.
+  // No-op, quota disabled.
   return
 }
 
@@ -71,7 +71,7 @@ export async function checkUserQuota(
 }
 
 export async function incrementUserUsage(_userId: string): Promise<void> {
-  // No-op — quota disabled.
+  // No-op, quota disabled.
   return
 }
 

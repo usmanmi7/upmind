@@ -116,7 +116,7 @@ export async function fetchUserContext(
       }
     }
 
-    // Last chat topic (most recent chat title) — gives the AI a sense of
+    // Last chat topic (most recent chat title), gives the AI a sense of
     // continuity across sessions.
     const lastChat = await db.chat.findFirst({
       where: { userId },
@@ -149,7 +149,7 @@ export async function fetchUserContext(
       recentChatTopic: lastChat?.title,
     }
   } catch (err) {
-    // Fail soft — if the DB is unreachable or a field is missing, just
+    // Fail soft, if the DB is unreachable or a field is missing, just
     // return null so the caller falls back to the generic prompt.
     console.error("fetchUserContext failed:", err)
     return null
@@ -168,7 +168,7 @@ export function renderUserContext(ctx: UserContext | null): string {
 
   const lines: string[] = []
 
-  lines.push(`YOU ARE TALKING TO A SPECIFIC USER — use this to personalize your advice:`)
+  lines.push(`YOU ARE TALKING TO A SPECIFIC USER, use this to personalize your advice:`)
   lines.push(`User name: ${ctx.name}`)
   if (ctx.bio) lines.push(`Bio: ${truncate(ctx.bio, 240)}`)
   if (ctx.country) lines.push(`Location: ${ctx.country}`)
@@ -211,16 +211,16 @@ export function renderUserContext(ctx: UserContext | null): string {
 
   if (ctx.recentChatTopic && ctx.recentChatTopic !== "New chat") {
     lines.push("")
-    lines.push(`LAST CONVERSATION TOPIC: "${ctx.recentChatTopic}" — if relevant, you can reference what you discussed before.`)
+    lines.push(`LAST CONVERSATION TOPIC: "${ctx.recentChatTopic}", if relevant, you can reference what you discussed before.`)
   }
 
   lines.push("")
   lines.push(`HOW TO USE THIS CONTEXT:`)
   lines.push(`- Address the user by their first name occasionally, not every message.`)
-  lines.push(`- Reference their startup, industry, and stage when giving advice — don't give generic answers a stranger would give.`)
+  lines.push(`- Reference their startup, industry, and stage when giving advice, don't give generic answers a stranger would give.`)
   lines.push(`- If they're stuck on a roadmap item, address that specifically.`)
   lines.push(`- Don't invent facts about them. If the context above is empty on something, ask, don't assume.`)
-  lines.push(`- The INTERVIEW-FIRST protocol in your system prompt applies — but skip any question whose answer is already in the context block above. You already know this user's industry, stage, team size, etc. — don't re-ask those. Only ask about the SPECIFIC PROBLEM they want help with right now.`)
+  lines.push(`- The INTERVIEW-FIRST protocol in your system prompt applies, but skip any question whose answer is already in the context block above. You already know this user's industry, stage, team size, etc., don't re-ask those. Only ask about the SPECIFIC PROBLEM they want help with right now.`)
 
   return lines.join("\n")
 }
@@ -250,7 +250,7 @@ ${userBlock}`
  * messages (everything before the most recent N) get squashed into a
  * single system message that summarizes what was discussed.
  *
- * This is a simple heuristic summarizer — it doesn't call the LLM. It
+ * This is a simple heuristic summarizer, it doesn't call the LLM. It
  * extracts the user's questions and the assistant's headings/first
  * sentences so the model has a rough sense of the conversation arc
  * without burning tokens on full old messages.
@@ -292,7 +292,7 @@ export function trimHistoryWithSummary(
 }
 
 /**
- * Heuristic summarizer. Doesn't call the LLM — just extracts the gist of
+ * Heuristic summarizer. Doesn't call the LLM, just extracts the gist of
  * each old message so the model has continuity context cheaply.
  *
  * For user messages: keep the first ~120 chars (usually the question).
@@ -324,7 +324,7 @@ function summarizeMessages(messages: HistoryMessage[]): string {
     return "EARLIER CONVERSATION SUMMARY: (no extractable content)"
   }
 
-  return `EARLIER CONVERSATION SUMMARY (so you have continuity — these messages have been compressed to save context):
+  return `EARLIER CONVERSATION SUMMARY (so you have continuity, these messages have been compressed to save context):
 ${points.map((p) => `  - ${p}`).join("\n")}
 
 Reference this if the user asks about something you discussed earlier, but don't repeat it verbatim.`
@@ -345,7 +345,7 @@ function tryExtractHeading(content: string): string | undefined {
       return truncate(parsed.heading.trim(), 100)
     }
   } catch {
-    // Not JSON — fall through
+    // Not JSON, fall through
   }
 
   // Try regex extraction as a fallback (handles malformed JSON)

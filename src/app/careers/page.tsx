@@ -368,7 +368,7 @@ export default function CareersPage() {
 
       <PublicFooter />
 
-      {/* Auth Gate Dialog — for non-logged-in users */}
+      {/* Auth Gate Dialog, for non-logged-in users */}
       <Dialog open={authDialogOpen} onOpenChange={setAuthDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -414,7 +414,7 @@ export default function CareersPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Application Form Dialog — for logged-in users */}
+      {/* Application Form Dialog, for logged-in users */}
       <Dialog open={applyDialogOpen} onOpenChange={closeApplyDialog}>
         <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
           {submitted ? (

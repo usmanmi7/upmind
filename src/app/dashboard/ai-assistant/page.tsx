@@ -140,7 +140,7 @@ export default function AIAssistantPage() {
 
       // Capture structured fields if the API returned valid JSON.
       // Must pass ALL fields through (paragraphs, answer, optionA/B, question,
-      // responseType) — otherwise the AIResponse component can't render the
+      // responseType), otherwise the AIResponse component can't render the
       // body and falls back to "I'm sorry, I couldn't generate a response."
       const hasStructured =
         data.responseType ||

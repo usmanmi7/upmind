@@ -11,14 +11,14 @@ const stats = [
     value: '30+',
     label: 'Curated world problems',
     description:
-      'Hand-picked from WHO, UN, IEA, IPCC, and other authoritative sources — every entry is a real, build-worthy challenge.',
+      'Hand-picked from WHO, UN, IEA, IPCC, and other authoritative sources, every entry is a real, build-worthy challenge.',
     icon: Compass,
   },
   {
     value: '26',
     label: 'Engineering categories',
     description:
-      'From energy and water to robotics, biotech, and space — problems span the full landscape of engineering work.',
+      'From energy and water to robotics, biotech, and space, problems span the full landscape of engineering work.',
     icon: Layers,
   },
   {
@@ -38,7 +38,7 @@ export default function Stats() {
     <section id="about-us" className="bg-[#0F1B3D] py-16 sm:py-20 lg:py-24">
       <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={ref} className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* LEFT — Editorial intro */}
+          {/* LEFT, Editorial intro */}
           <div className="lg:col-span-5 lg:sticky lg:top-28">
             <motion.span
               initial={{ opacity: 0, y: 20 }}
@@ -81,7 +81,7 @@ export default function Stats() {
             </motion.div>
           </div>
 
-          {/* RIGHT — Stat rows */}
+          {/* RIGHT, Stat rows */}
           <div className="lg:col-span-7 space-y-0">
             {stats.map((stat, i) => {
               const Icon = stat.icon;
