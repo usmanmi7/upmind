@@ -181,7 +181,7 @@ export default function SolveThemPage() {
         />
 
         {/* STATS BAR */}
-        <section className="pb-12">
+        <section className="pt-12 pb-12">
           <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <StatCard label="Problems" value={`${stats.total}+`} />
