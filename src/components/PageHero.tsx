@@ -41,7 +41,7 @@ export default function PageHero({ badge, title, highlight, description }: PageH
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center max-w-3xl mx-auto"
+          className="text-center max-w-3xl mx-auto pt-20"
         >
           {badge && (
             <div className="inline-flex items-center gap-2 bg-[#3B82F6]/15 border border-[#3B82F6]/30 text-[#93C5FD] text-sm font-medium px-4 py-1.5 rounded-full mb-6">
