@@ -18,11 +18,8 @@ export default function Hero() {
         fill
         priority
         sizes="100vw"
-        className="object-cover object-center opacity-60"
+        className="object-cover object-center"
       />
-
-      {/* Dark overlay for text contrast (keeps image visible) */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0F1B3D]/55 via-[#0F1B3D]/65 to-[#0A1428]/85" />
 
       {/* Bottom fade into next section */}
       <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#0F1B3D] z-10" />
