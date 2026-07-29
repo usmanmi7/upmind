@@ -34,7 +34,7 @@ function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(href + "/")
 }
 
-export default function PublicNavbar() {
+export default function PublicNavbar({ solid = false }: { solid?: boolean } = {}) {
   const { data: session } = useSession()
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
@@ -43,7 +43,13 @@ export default function PublicNavbar() {
   const moreHasActive = moreLinks.some((l) => isActive(pathname, l.href))
 
   return (
-    <header className="absolute top-0 inset-x-0 z-50 bg-transparent">
+    <header
+      className={
+        solid
+          ? "sticky top-0 z-50 bg-[#0F1B3D] border-b border-white/5 backdrop-blur-md"
+          : "absolute top-0 inset-x-0 z-50 bg-transparent"
+      }
+    >
       <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
