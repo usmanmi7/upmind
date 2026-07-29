@@ -62,14 +62,11 @@ export default function Navbar() {
             <Image
               src="/images/logo.png"
               alt="Enginest logo"
-              width={36}
-              height={36}
+              width={140}
+              height={44}
               priority
-              className="rounded-lg group-hover:scale-110 transition-transform"
+              className="h-9 w-auto group-hover:scale-105 transition-transform"
             />
-            <span className="text-white font-bold text-xl tracking-tight font-heading">
-              Enginest
-            </span>
           </Link>
 
           {/* Desktop Nav Links + CTA - Right Aligned */}
