@@ -27,53 +27,6 @@ export default function Hero() {
       {/* Bottom fade into next section */}
       <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#0F1B3D] z-10" />
 
-      {/* Bottom two-curve divider (separates Hero from WHY ENGINEST) */}
-      <div className="absolute bottom-0 inset-x-0 z-20 pointer-events-none">
-        {/* Soft blue glow under the curves */}
-        <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-[#3B82F6]/10 via-[#3B82F6]/3 to-transparent" />
-
-        {/* Two concentric arc curves */}
-        <svg
-          className="absolute bottom-0 inset-x-0 w-full"
-          viewBox="0 0 1440 120"
-          preserveAspectRatio="none"
-          fill="none"
-          aria-hidden="true"
-        >
-          {/* Outer curve, wider, soft blue */}
-          <path
-            d="M0,80 C360,160 1080,160 1440,80"
-            stroke="url(#curveOuter)"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          {/* Inner curve, tighter, brighter blue */}
-          <path
-            d="M0,95 C360,40 1080,40 1440,95"
-            stroke="url(#curveInner)"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-          <defs>
-            <linearGradient id="curveOuter" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#3B82F6" stopOpacity="0" />
-              <stop offset="50%" stopColor="#3B82F6" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
-            </linearGradient>
-            <linearGradient id="curveInner" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#93C5FD" stopOpacity="0" />
-              <stop offset="50%" stopColor="#93C5FD" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#93C5FD" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-        </svg>
-
-        {/* Center node dot, sits on the curve intersection */}
-        <div className="absolute bottom-[78px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#3B82F6] shadow-[0_0_12px_rgba(59,130,246,0.9)] animate-pulse" />
-        </div>
-      </div>
-
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 w-full text-center">
         {/* Pill Badge */}
