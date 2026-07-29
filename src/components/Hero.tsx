@@ -18,7 +18,7 @@ export default function Hero() {
         fill
         priority
         sizes="100vw"
-        className="object-cover object-center opacity-10"
+        className="object-cover object-center opacity-60"
       />
 
       {/* Bottom fade into next section */}
