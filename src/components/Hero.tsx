@@ -11,65 +11,23 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#0F1B3D] -mt-16 sm:-mt-20">
-      {/* Layer 0, Background image */}
+      {/* Background image */}
       <Image
         src="/images/hero-bg-engineerst.png"
         alt=""
         fill
         priority
         sizes="100vw"
-        className="object-cover object-center opacity-40"
+        className="object-cover object-center opacity-60"
       />
 
-      {/* Layer 1, Vertical navy gradient base (sits on top of image to darken for text contrast) */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#1E3A8A]/85 via-[#0F1B3D]/90 to-[#0A1428]/95" />
+      {/* Dark overlay for text contrast (keeps image visible) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0F1B3D]/55 via-[#0F1B3D]/65 to-[#0A1428]/85" />
 
-      {/* Layer 2, Blueprint grid pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.18]"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, rgba(147,197,253,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(147,197,253,0.12) 1px, transparent 1px)',
-          backgroundSize: '56px 56px',
-          maskImage: 'radial-gradient(ellipse at center, black 35%, transparent 75%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at center, black 35%, transparent 75%)',
-        }}
-      />
+      {/* Bottom fade into next section */}
+      <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#0F1B3D] z-10" />
 
-      {/* Layer 3, Dotted secondary grid (tighter, very faint) */}
-      <div
-        className="absolute inset-0 opacity-[0.10]"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle, rgba(147,197,253,0.35) 1px, transparent 1px)',
-          backgroundSize: '28px 28px',
-          maskImage: 'radial-gradient(ellipse at center, black 20%, transparent 60%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at center, black 20%, transparent 60%)',
-        }}
-      />
-
-      {/* Layer 4, Glow orbs (electric blue) */}
-      <div className="absolute -top-40 -right-32 w-[600px] h-[600px] rounded-full bg-[#3B82F6]/25 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-40 -left-32 w-[500px] h-[500px] rounded-full bg-[#1E3A8A]/30 blur-3xl pointer-events-none" />
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[400px] rounded-full bg-[#93C5FD]/8 blur-3xl pointer-events-none" />
-
-      {/* Layer 5, Diagonal accent lines (engineering schematic feel) */}
-      <div className="absolute inset-0 opacity-[0.06] pointer-events-none">
-        <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 800" fill="none">
-          <path d="M0,200 L1200,500" stroke="#93C5FD" strokeWidth="1" />
-          <path d="M0,350 L1200,650" stroke="#93C5FD" strokeWidth="1" />
-          <path d="M0,500 L1200,200" stroke="#93C5FD" strokeWidth="1" />
-          <circle cx="200" cy="200" r="4" fill="#3B82F6" />
-          <circle cx="1000" cy="600" r="4" fill="#3B82F6" />
-          <circle cx="600" cy="100" r="3" fill="#93C5FD" />
-          <circle cx="900" cy="300" r="3" fill="#93C5FD" />
-        </svg>
-      </div>
-
-      {/* Layer 6, Bottom fade into next section */}
-      <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#0F1B3D]" />
-
-      {/* Layer 7, Bottom two-curve divider (separates Hero from WHY ENGINEST) */}
+      {/* Bottom two-curve divider (separates Hero from WHY ENGINEST) */}
       <div className="absolute bottom-0 inset-x-0 z-20 pointer-events-none">
         {/* Soft blue glow under the curves */}
         <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-[#3B82F6]/10 via-[#3B82F6]/3 to-transparent" />
@@ -149,7 +107,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-white/70 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-white/80 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-md"
         >
           Curated world problems, an AI engine that matches them to your engineering skills,
           and playbooks for builders who want to ship things that matter.
@@ -181,7 +139,7 @@ export default function Hero() {
               </Link>
               <Link
                 href="/dashboard/innovation-engine"
-                className="text-white/85 border border-white/20 rounded-full px-8 py-3.5 text-base font-medium hover:bg-white/5 hover:border-white/35 transition-all duration-300 flex items-center gap-2 backdrop-blur-sm"
+                className="text-white/90 border border-white/30 rounded-full px-8 py-3.5 text-base font-medium hover:bg-white/10 hover:border-white/50 transition-all duration-300 flex items-center gap-2 backdrop-blur-md"
               >
                 <Sparkles className="w-4 h-4" />
                 Try Innovation Engine
@@ -195,18 +153,18 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-white/40 text-sm"
+          className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-white/60 text-sm"
         >
           <span className="flex items-center gap-2">
             <span className="w-1 h-1 rounded-full bg-[#3B82F6]" />
             30+ curated problems
           </span>
-          <span className="hidden sm:inline text-white/15">|</span>
+          <span className="hidden sm:inline text-white/30">|</span>
           <span className="flex items-center gap-2">
             <span className="w-1 h-1 rounded-full bg-[#3B82F6]" />
             Sourced from WHO, UN, IEA
           </span>
-          <span className="hidden sm:inline text-white/15">|</span>
+          <span className="hidden sm:inline text-white/30">|</span>
           <span className="flex items-center gap-2">
             <span className="w-1 h-1 rounded-full bg-[#3B82F6]" />
             Skill-matched by AI
