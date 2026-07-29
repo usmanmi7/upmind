@@ -3,15 +3,26 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 
 export default function Hero() {
   const { data: session } = useSession();
 
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#0F1B3D]">
-      {/* Layer 1, Vertical navy gradient base */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#1E3A8A] via-[#0F1B3D] to-[#0A1428]" />
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#0F1B3D] -mt-16 sm:-mt-20">
+      {/* Layer 0, Background image */}
+      <Image
+        src="/images/hero-bg-engineerst.png"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover object-center opacity-40"
+      />
+
+      {/* Layer 1, Vertical navy gradient base (sits on top of image to darken for text contrast) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#1E3A8A]/85 via-[#0F1B3D]/90 to-[#0A1428]/95" />
 
       {/* Layer 2, Blueprint grid pattern */}
       <div
