@@ -51,10 +51,10 @@ export default function PublicNavbar() {
             <Image
               src="/images/logo.png"
               alt="Enginest logo"
-              width={140}
-              height={44}
+              width={200}
+              height={64}
               priority
-              className="h-9 w-auto group-hover:scale-105 transition-transform"
+              className="h-12 w-auto group-hover:scale-105 transition-transform"
             />
           </Link>
 

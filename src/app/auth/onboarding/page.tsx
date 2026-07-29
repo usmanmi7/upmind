@@ -195,14 +195,11 @@ export default function OnboardingPage() {
             <Image
               src="/images/logo.png"
               alt="Enginest logo"
-              width={40}
-              height={40}
+              width={240}
+              height={96}
               priority
-              className="rounded-lg"
+              className="h-16 w-auto"
             />
-            <span className="text-2xl font-bold font-heading text-[#0F1B3D] dark:text-white">
-              Enginest
-            </span>
           </div>
           <h1 className="text-2xl font-heading font-bold">Set up your account</h1>
           <p className="text-muted-foreground mt-1">

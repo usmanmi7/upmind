@@ -35,14 +35,11 @@ export default function Footer() {
               <Image
                 src="/images/logo.png"
                 alt="Enginest logo"
-                width={36}
-                height={36}
+                width={200}
+                height={80}
                 priority
-                className="rounded-lg"
+                className="h-16 w-auto"
               />
-              <span className="text-[#3B82F6] font-bold text-xl tracking-tight font-heading">
-                Enginest
-              </span>
             </Link>
             <p className="text-white/40 text-sm leading-relaxed max-w-xs mb-6">
               An engineering innovation platform. We help engineers find

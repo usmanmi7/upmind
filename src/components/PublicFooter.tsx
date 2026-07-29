@@ -13,12 +13,11 @@ export default function PublicFooter() {
               <Image
                 src="/images/logo.png"
                 alt="Enginest logo"
-                width={36}
-                height={36}
+                width={200}
+                height={80}
                 priority
-                className="rounded-lg"
+                className="h-16 w-auto"
               />
-              <span className="text-xl font-bold font-heading">Enginest</span>
             </Link>
             <p className="text-sm text-white/60">
               An engineering innovation platform. Find problems worth solving, match your skills with AI, and build things that matter.
