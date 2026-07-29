@@ -6,7 +6,7 @@ import Image from "next/image"
 export default function PublicFooter() {
   return (
     <footer className="bg-[#0F1B3D] text-white">
-      <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">

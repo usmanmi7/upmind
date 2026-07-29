@@ -153,10 +153,10 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
         <Image
           src="/images/logo.png"
           alt="Enginest logo"
-          width={160}
-          height={32}
+          width={220}
+          height={44}
           priority
-          className="h-8 w-auto shrink-0"
+          className="h-11 w-auto shrink-0"
         />
         {isAdmin && !collapsed && (
           <span className="text-[10px] font-medium bg-[#3B82F6]/20 text-[#3B82F6] px-1.5 py-0.5 rounded ml-auto">
