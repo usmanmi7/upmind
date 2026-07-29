@@ -10,7 +10,7 @@ export default function Hero() {
   const { data: session } = useSession();
 
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#0F1B3D] -mt-16 sm:-mt-20">
+    <section className="relative h-screen min-h-[600px] flex items-center overflow-hidden bg-[#0F1B3D] -mt-16 sm:-mt-20">
       {/* Background image */}
       <Image
         src="/images/hero-bg-engineerst.png"
