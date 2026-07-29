@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useSession, signOut } from "next-auth/react"
 import { cn } from "@/lib/utils"
@@ -149,9 +150,14 @@ function SidebarContent({ collapsed = false }: { collapsed?: boolean }) {
     <div className="flex flex-col h-full">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2 px-4 h-16 border-b border-sidebar-border hover:bg-sidebar-accent/30 transition-colors">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center shrink-0">
-          <span className="text-white font-bold text-base">E</span>
-        </div>
+        <Image
+          src="/images/logo.png"
+          alt="Enginest logo"
+          width={36}
+          height={36}
+          priority
+          className="rounded-lg shrink-0"
+        />
         {!collapsed && (
           <span className="text-xl font-bold font-heading text-sidebar-foreground">
             Enginest

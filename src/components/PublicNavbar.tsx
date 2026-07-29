@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { ChevronDown, Menu, X, HelpCircle, Briefcase, Phone, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield, Trophy, type LucideIcon } from "lucide-react"
@@ -47,7 +48,14 @@ export default function PublicNavbar() {
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="w-3 h-3 rounded-full bg-[#3B82F6] group-hover:scale-110 transition-transform" />
+            <Image
+              src="/images/logo.png"
+              alt="Enginest logo"
+              width={36}
+              height={36}
+              priority
+              className="rounded-lg group-hover:scale-110 transition-transform"
+            />
             <span className="text-white font-bold text-xl tracking-tight font-heading">
               Enginest
             </span>

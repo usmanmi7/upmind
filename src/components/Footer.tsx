@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Linkedin, Twitter, Instagram, ArrowRight } from 'lucide-react';
 
 const productLinks = [
@@ -31,7 +32,14 @@ export default function Footer() {
           {/* Logo & Description */}
           <div className="col-span-2 md:col-span-4 lg:col-span-2 mb-4 lg:mb-0">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <span className="w-3 h-3 rounded-full bg-[#3B82F6]" />
+              <Image
+                src="/images/logo.png"
+                alt="Enginest logo"
+                width={36}
+                height={36}
+                priority
+                className="rounded-lg"
+              />
               <span className="text-[#3B82F6] font-bold text-xl tracking-tight font-heading">
                 Enginest
               </span>

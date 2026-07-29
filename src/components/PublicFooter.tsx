@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 
 export default function PublicFooter() {
   return (
@@ -9,9 +10,14 @@ export default function PublicFooter() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
-                <span className="text-white font-bold text-base">E</span>
-              </div>
+              <Image
+                src="/images/logo.png"
+                alt="Enginest logo"
+                width={36}
+                height={36}
+                priority
+                className="rounded-lg"
+              />
               <span className="text-xl font-bold font-heading">Enginest</span>
             </Link>
             <p className="text-sm text-white/60">

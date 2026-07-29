@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
 import { Button } from "@/components/ui/button"
@@ -92,9 +93,14 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
-              <span className="font-bold text-lg text-white">E</span>
-            </div>
+            <Image
+              src="/images/logo.png"
+              alt="Enginest logo"
+              width={40}
+              height={40}
+              priority
+              className="rounded-lg"
+            />
             <span className="text-2xl font-bold font-heading text-[#0F1B3D] dark:text-white">
               Enginest
             </span>
