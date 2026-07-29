@@ -238,7 +238,7 @@ export default function PublicNavbar() {
               <>
                 <Link
                   href="/auth/login"
-                  className="text-white border border-white/30 rounded-full px-5 py-2 text-sm font-medium hover:bg-white hover:text-[#0F1B3D] transition-all duration-300"
+                  className="text-white bg-white/10 border border-white/30 rounded-full px-5 py-2 text-sm font-medium hover:bg-white/20 hover:border-white/50 backdrop-blur-md transition-all duration-300"
                 >
                   Sign In
                 </Link>
@@ -364,7 +364,7 @@ export default function PublicNavbar() {
                     <>
                       <Link
                         href="/auth/login"
-                        className="block text-white border border-white/30 rounded-full px-6 py-2.5 text-sm font-medium text-center hover:bg-white hover:text-[#0F1B3D] transition-all duration-300"
+                        className="block text-white bg-white/10 border border-white/30 rounded-full px-6 py-2.5 text-sm font-medium text-center hover:bg-white/20 hover:border-white/50 backdrop-blur-md transition-all duration-300"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Sign In

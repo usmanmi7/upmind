@@ -89,7 +89,7 @@ export default function Hero() {
               </Link>
               <Link
                 href="/dashboard/innovation-engine"
-                className="bg-white text-black rounded-full px-8 py-3.5 text-base font-medium hover:bg-white/90 transition-all duration-300 flex items-center gap-2"
+                className="text-white bg-white/10 border border-white/30 rounded-full px-8 py-3.5 text-base font-medium hover:bg-white/20 hover:border-white/50 backdrop-blur-md transition-all duration-300 flex items-center gap-2"
               >
                 <Sparkles className="w-4 h-4" />
                 Try Innovation Engine
