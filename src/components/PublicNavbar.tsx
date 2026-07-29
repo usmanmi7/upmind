@@ -42,7 +42,7 @@ export default function PublicNavbar() {
   const moreHasActive = moreLinks.some((l) => isActive(pathname, l.href))
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0F1B3D]/95 backdrop-blur-lg border-b border-white/5">
+    <header className="sticky top-0 z-50 bg-transparent backdrop-blur-md">
       <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
