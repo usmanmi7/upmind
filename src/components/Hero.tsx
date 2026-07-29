@@ -82,14 +82,14 @@ export default function Hero() {
             <>
               <Link
                 href="/solve-them"
-                className="bg-[#3B82F6] text-white rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#2563EB] transition-all duration-300 shadow-lg shadow-[#3B82F6]/30 flex items-center gap-2 group"
+                className="bg-white text-black rounded-full px-8 py-3.5 text-base font-semibold hover:bg-white/90 transition-all duration-300 shadow-lg shadow-black/20 flex items-center gap-2 group"
               >
                 Explore Problems
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 href="/dashboard/innovation-engine"
-                className="text-white/90 border border-white/30 rounded-full px-8 py-3.5 text-base font-medium hover:bg-white/10 hover:border-white/50 transition-all duration-300 flex items-center gap-2 backdrop-blur-md"
+                className="bg-white text-black rounded-full px-8 py-3.5 text-base font-medium hover:bg-white/90 transition-all duration-300 flex items-center gap-2"
               >
                 <Sparkles className="w-4 h-4" />
                 Try Innovation Engine

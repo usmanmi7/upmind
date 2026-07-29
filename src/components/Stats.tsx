@@ -73,7 +73,7 @@ export default function Stats() {
             >
               <Link
                 href="/solve-them"
-                className="inline-flex items-center gap-2 bg-[#3B82F6] text-white rounded-full px-7 py-3 text-sm sm:text-base font-semibold hover:bg-[#2563EB] transition-colors duration-300 group shadow-lg shadow-[#3B82F6]/20"
+                className="inline-flex items-center gap-2 bg-white text-black rounded-full px-7 py-3 text-sm sm:text-base font-semibold hover:bg-white/90 transition-colors duration-300 group shadow-lg shadow-black/20"
               >
                 Explore Problems
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

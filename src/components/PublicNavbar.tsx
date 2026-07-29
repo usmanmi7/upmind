@@ -244,7 +244,7 @@ export default function PublicNavbar() {
                 </Link>
                 <Link
                   href="/auth/signup"
-                  className="bg-[#3B82F6] text-white rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#2563EB] transition-all duration-300 shadow-lg shadow-[#3B82F6]/20"
+                  className="bg-white text-black rounded-full px-6 py-2 text-sm font-semibold hover:bg-white/90 transition-all duration-300 shadow-lg shadow-black/20"
                 >
                   Get Started
                 </Link>
@@ -371,7 +371,7 @@ export default function PublicNavbar() {
                       </Link>
                       <Link
                         href="/auth/signup"
-                        className="block bg-[#3B82F6] text-white rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-[#2563EB] transition-all duration-300"
+                        className="block bg-white text-black rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-white/90 transition-all duration-300"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Get Started
