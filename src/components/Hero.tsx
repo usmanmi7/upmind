@@ -25,7 +25,7 @@ export default function Hero() {
       <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#0F1B3D] z-10" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 w-full text-center">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-[calc(6rem+60px)] pb-20 w-full text-center">
         {/* Pill Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
