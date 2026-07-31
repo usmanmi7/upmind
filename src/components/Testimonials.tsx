@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Quote, ArrowRight, Star, Loader2 } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight, Quote, ArrowRight, Star } from 'lucide-react';
 import Link from 'next/link';
 
 interface Testimonial {
@@ -13,47 +13,48 @@ interface Testimonial {
   rating: number;
 }
 
+// Phase 1: static testimonials so the home page renders without a database.
+// In Phase 3 (dashboard) you can swap this back to a fetch('/api/testimonials') call.
+const testimonials: Testimonial[] = [
+  {
+    quote:
+      'Enginest matched me to a water-sanitation problem I actually had the skills to solve. Six months later we have a working pilot in two villages.',
+    author: 'Priya Anand',
+    role: 'Mechanical Engineer, Field Deployment Lead',
+    rating: 5,
+  },
+  {
+    quote:
+      'The Innovation Engine cut three months of problem-discovery down to an afternoon. The match reasons alone were worth it.',
+    author: 'Marcus Chen',
+    role: 'Full-stack Engineer, Solo Builder',
+    rating: 5,
+  },
+  {
+    quote:
+      'I came in looking for a side project. I left with a 12-month roadmap, a team template, and a problem worth my career.',
+    author: 'Sara Okafor',
+    role: 'Robotics Engineer, Hardware Lead',
+    rating: 5,
+  },
+  {
+    quote:
+      'The playbooks are written for engineers, not generic startup founders. That difference shows up in every page.',
+    author: 'David Park',
+    role: 'Research Engineer, Biotech',
+    rating: 5,
+  },
+];
+
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
-
-  useEffect(() => {
-    async function fetchTestimonials() {
-      try {
-        const res = await fetch('/api/testimonials');
-        if (res.ok) {
-          const data = await res.json();
-          const dbList = data.testimonials;
-          if (dbList && dbList.length > 0) {
-            setTestimonials(
-              dbList.map((t: { content: string; name: string; role: string | null; company: string | null; rating: number | null }) => ({
-                quote: t.content,
-                author: t.name,
-                role: `${t.role || ''}${t.company ? (t.role ? ', ' : '') + t.company : ''}`,
-                rating: t.rating || 5,
-              }))
-            );
-          }
-        }
-      } catch {
-        // Database unavailable
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchTestimonials();
-  }, []);
 
   const prev = () =>
     setCurrent((c) => (c > 0 ? c - 1 : testimonials.length - 1));
   const next = () =>
     setCurrent((c) => (c < testimonials.length - 1 ? c + 1 : 0));
-
-  // Don't render section if no testimonials
-  if (!loading && testimonials.length === 0) return null;
 
   return (
     <section className="bg-white py-16 sm:py-20 lg:py-24">
@@ -79,17 +80,12 @@ export default function Testimonials() {
             say
           </motion.h2>
 
-          {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <Loader2 className="size-8 animate-spin text-[#3B82F6]" />
-            </div>
-          ) : (
-            <>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
+          <>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
                 <Quote className="w-10 h-10 text-[#3B82F6]/30 mx-auto mb-6" />
 
                 {/* Star Rating */}
@@ -118,41 +114,40 @@ export default function Testimonials() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+            </motion.div>
 
-              {/* Navigation - only show if more than 1 testimonial */}
-              {testimonials.length > 1 && (
-                <div className="flex items-center justify-center gap-3 mb-10">
-                  <button
-                    onClick={prev}
-                    className="w-11 h-11 rounded-full border border-[#0F1B3D]/20 flex items-center justify-center text-[#0F1B3D]/50 hover:border-[#3B82F6] hover:text-[#0F1B3D] transition-colors duration-300"
-                    aria-label="Previous testimonial"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                  <div className="flex gap-2">
-                    {testimonials.map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setCurrent(i)}
-                        className={`h-1.5 rounded-full transition-all duration-300 ${
-                          i === current ? 'w-8 bg-[#3B82F6]' : 'w-4 bg-[#0F1B3D]/15'
-                        }`}
-                        aria-label={`Go to testimonial ${i + 1}`}
-                      />
-                    ))}
-                  </div>
-                  <button
-                    onClick={next}
-                    className="w-11 h-11 rounded-full border border-[#0F1B3D]/20 flex items-center justify-center text-[#0F1B3D]/50 hover:border-[#3B82F6] hover:text-[#0F1B3D] transition-colors duration-300"
-                    aria-label="Next testimonial"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
+            {/* Navigation - only show if more than 1 testimonial */}
+            {testimonials.length > 1 && (
+              <div className="flex items-center justify-center gap-3 mb-10">
+                <button
+                  onClick={prev}
+                  className="w-11 h-11 rounded-full border border-[#0F1B3D]/20 flex items-center justify-center text-[#0F1B3D]/50 hover:border-[#3B82F6] hover:text-[#0F1B3D] transition-colors duration-300"
+                  aria-label="Previous testimonial"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <div className="flex gap-2">
+                  {testimonials.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrent(i)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        i === current ? 'w-8 bg-[#3B82F6]' : 'w-4 bg-[#0F1B3D]/15'
+                      }`}
+                      aria-label={`Go to testimonial ${i + 1}`}
+                    />
+                  ))}
                 </div>
-              )}
-            </>
-          )}
+                <button
+                  onClick={next}
+                  className="w-11 h-11 rounded-full border border-[#0F1B3D]/20 flex items-center justify-center text-[#0F1B3D]/50 hover:border-[#3B82F6] hover:text-[#0F1B3D] transition-colors duration-300"
+                  aria-label="Next testimonial"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            )}
+          </>
 
           {/* CTA */}
           <Link
