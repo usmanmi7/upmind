@@ -485,3 +485,13 @@ a.rounded-xl[class*="px-"]:not([class*="uppercase"]) {
 .article-content > h3:first-child {
   margin-top: 0;
 }
+
+/* ── Partners marquee ── */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
