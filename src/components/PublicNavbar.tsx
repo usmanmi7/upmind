@@ -42,12 +42,15 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
   const [userMenuOpen, setUserMenuOpen] = React.useState(false)
   const moreHasActive = moreLinks.some((l) => isActive(pathname, l.href))
 
-  // Auto-enable solid bg for pages that don't sit under a dark hero
-  // (resources + solve-them use light page backgrounds, so the navbar
-  // needs its own dark background to keep white nav text legible).
+  // Auto-enable solid bg only on detail/sub pages under /resources and /solve-them.
+  // The listing pages (/resources, /solve-them) have a dark PageHero so the
+  // transparent overlay navbar looks correct there. Detail pages have light
+  // backgrounds, so the navbar needs its own dark bg to stay legible.
   const autoSolid =
-    pathname?.startsWith("/resources") ||
-    pathname?.startsWith("/solve-them") ||
+    (pathname?.startsWith("/resources/") &&
+      pathname !== "/resources") ||
+    (pathname?.startsWith("/solve-them/") &&
+      pathname !== "/solve-them") ||
     false
   const isSolid = solid ?? autoSolid
 
