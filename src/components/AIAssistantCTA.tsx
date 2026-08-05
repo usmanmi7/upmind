@@ -73,7 +73,7 @@ export default function AIAssistantCTA() {
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
-                  href="/ai-assistant"
+                  href="/dashboard/ai-assistant"
                   className="text-white/80 border border-white/15 rounded-full px-7 py-3.5 text-sm sm:text-base font-medium hover:bg-white/5 hover:border-white/25 transition-all duration-300"
                 >
                   Talk to the AI Assistant
@@ -88,7 +88,7 @@ export default function AIAssistantCTA() {
               >
                 <span className="flex items-center gap-1.5">
                   <Zap className="w-3.5 h-3.5 text-[#3B82F6]" />
-                  No sign-up needed
+                  Free to try
                 </span>
                 <span className="hidden sm:inline text-white/10">|</span>
                 <span className="flex items-center gap-1.5">

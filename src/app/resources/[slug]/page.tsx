@@ -1,11 +1,9 @@
 "use client"
 
 import { useParams } from "next/navigation"
-import { useSession } from "next-auth/react"
 import Link from "next/link"
 import PublicNavbar from "@/components/PublicNavbar"
 import PublicFooter from "@/components/PublicFooter"
-import SubscriptionModal from "@/components/SubscriptionModal"
 import { motion } from "framer-motion"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -20,11 +18,9 @@ import {
   Eye,
   Calendar,
   Crown,
-  Lock,
   ArrowRight,
   Check,
   Sparkles,
-  X,
 } from "lucide-react"
 import * as React from "react"
 import {
@@ -51,7 +47,6 @@ const typeColors: Record<string, string> = {
 
 export default function ResourceDetailPage() {
   const params = useParams()
-  const { data: session, status } = useSession()
   const slug = params.slug as string
 
   const resource = React.useMemo<EngineeringResource | undefined>(
@@ -62,21 +57,6 @@ export default function ResourceDetailPage() {
     () => (resource ? getRelatedResources(slug, 3) : []),
     [slug, resource]
   )
-
-  const [modalOpen, setModalOpen] = React.useState(false)
-  const [modalType, setModalType] = React.useState<"signin" | "upgrade">("signin")
-
-  // Timed overlay for non-logged-in users
-  const [showAuthOverlay, setShowAuthOverlay] = React.useState(false)
-
-  React.useEffect(() => {
-    if (status === "unauthenticated") {
-      const timer = setTimeout(() => {
-        setShowAuthOverlay(true)
-      }, 5000)
-      return () => clearTimeout(timer)
-    }
-  }, [status])
 
   if (!resource) {
     return (
@@ -102,9 +82,6 @@ export default function ResourceDetailPage() {
 
   const Icon = typeIcons[resource.type] || BookOpen
   const colorClass = typeColors[resource.type] || "bg-gray-100 text-gray-700"
-  // All resources are currently free in our static dataset; show full content
-  // to logged-in users, and a preview with overlay to anonymous users.
-  const isLocked = status === "unauthenticated"
 
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString("en-US", {
@@ -206,41 +183,9 @@ export default function ResourceDetailPage() {
                 {/* Content */}
                 <div className="article-content">
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {isLocked
-                      ? resource.content.split("\n\n").slice(0, 3).join("\n\n") + "\n\n..."
-                      : resource.content}
+                    {resource.content}
                   </ReactMarkdown>
                 </div>
-
-                {/* Auth overlay for non-logged-in users */}
-                {isLocked && (
-                  <div className="relative mt-12">
-                    <div
-                      className="absolute -top-32 left-0 right-0 h-32 pointer-events-none"
-                      style={{
-                        background:
-                          "linear-gradient(to bottom, transparent, var(--background))",
-                      }}
-                    />
-                    <div className="text-center py-8 px-6 rounded-2xl border bg-card">
-                      <div className="inline-flex flex-col items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-[#0F1B3D] flex items-center justify-center">
-                          <Lock className="w-5 h-5 text-[#3B82F6]" />
-                        </div>
-                        <p className="font-semibold">
-                          Sign in to read the full article
-                        </p>
-                        <Link
-                          href="/auth/login"
-                          className="inline-flex items-center gap-2 bg-[#0F1B3D] text-white rounded-full px-6 py-2.5 text-sm font-medium hover:bg-[#1E3A8A] transition-colors"
-                        >
-                          Sign In
-                          <ArrowRight className="w-4 h-4" />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                )}
 
                 {/* Tags */}
                 {resource.tags && (
@@ -351,78 +296,6 @@ export default function ResourceDetailPage() {
       </main>
 
       <PublicFooter />
-
-      {/* Upgrade Modal - for logged-in free users */}
-      <SubscriptionModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        type={modalType}
-      />
-
-      {/* Unskippable Auth Overlay - for non-logged-in users (appears after 5s) */}
-      {showAuthOverlay && status === "unauthenticated" && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-          {/* Backdrop - click to dismiss */}
-          <div
-            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-            onClick={() => setShowAuthOverlay(false)}
-            aria-hidden="true"
-          />
-
-          {/* Modal */}
-          <div className="relative w-full max-w-lg bg-card rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
-            {/* Close button */}
-            <button
-              onClick={() => setShowAuthOverlay(false)}
-              aria-label="Close"
-              className="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-muted hover:bg-muted/70 transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
-
-            <div className="p-8 sm:p-10">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center mb-6">
-                <Sparkles className="w-8 h-8 text-white" />
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-bold mb-3">
-                Unlock engineering innovation playbooks
-              </h2>
-              <p className="text-muted-foreground text-base leading-relaxed mb-8">
-                Sign in to access our full library of engineering playbooks, build templates, and problem-discovery guides. Join thousands of engineers building things that matter.
-              </p>
-
-              <div className="space-y-3 mb-8">
-                {[
-                  "Read full playbooks on problem discovery & building",
-                  "Access team templates and project roadmaps",
-                  "Match your skills to problems via the Innovation Engine",
-                ].map((line) => (
-                  <div key={line} className="flex items-center gap-3">
-                    <div className="w-5 h-5 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0">
-                      <Check className="w-3 h-3 text-[#1E3A8A]" />
-                    </div>
-                    <span className="text-sm">{line}</span>
-                  </div>
-                ))}
-              </div>
-
-              <Link
-                href="/auth/login"
-                className="w-full flex items-center justify-center gap-2 bg-[#0F1B3D] text-white rounded-full px-8 py-3.5 text-base font-semibold hover:bg-[#1E3A8A] transition-colors"
-              >
-                Sign In to Continue
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <p className="text-center text-sm text-muted-foreground mt-4">
-                Don&apos;t have an account?{" "}
-                <Link href="/auth/signup" className="text-[#1E3A8A] dark:text-[#3B82F6] font-semibold hover:underline">
-                  Sign up free
-                </Link>
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

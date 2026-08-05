@@ -3,7 +3,6 @@
 import { useMemo } from "react"
 import { useParams, notFound } from "next/navigation"
 import Link from "next/link"
-import { useSession } from "next-auth/react"
 import {
   ArrowLeft,
   AlertCircle,
@@ -11,7 +10,6 @@ import {
   Sparkles,
   Users,
   Globe,
-  Lock,
   CheckCircle2,
   Target,
   Lightbulb,
@@ -44,7 +42,6 @@ const difficultyLabels: Record<DifficultyLevel, string> = {
 
 export default function ProblemDetailPage() {
   const params = useParams<{ slug: string }>()
-  const { data: session } = useSession()
   const problem = useMemo(
     () => getProblemBySlug(params.slug as string),
     [params.slug]
@@ -53,8 +50,6 @@ export default function ProblemDetailPage() {
   if (!problem) {
     notFound()
   }
-
-  const isSignedIn = !!session
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -190,24 +185,22 @@ export default function ProblemDetailPage() {
                 </div>
               )}
 
-              {/* SOLUTIONS, LOCKED */}
+              {/* SOLUTIONS */}
               <LockedSection
                 title="Engineering Solutions"
                 icon={Lightbulb}
                 description="Concrete things engineers can build to address this problem."
-                isSignedIn={isSignedIn}
                 items={problem.solutions.map((s) => ({
                   title: s.title,
                   body: s.description,
                 }))}
               />
 
-              {/* ROADMAP, LOCKED */}
+              {/* ROADMAP */}
               <LockedSection
                 title="Build Roadmap"
                 icon={Rocket}
                 description="Phased plan from research to scale. The realistic path to impact."
-                isSignedIn={isSignedIn}
                 phases={problem.roadmaps.map((r) => ({
                   phase: r.phase,
                   title: r.title,
@@ -216,24 +209,22 @@ export default function ProblemDetailPage() {
                 }))}
               />
 
-              {/* SKILLS, LOCKED */}
+              {/* SKILLS */}
               <LockedSection
                 title="Skills Required"
                 icon={Brain}
                 description="What you need to know to take this on."
-                isSignedIn={isSignedIn}
                 skills={problem.skills.map((s) => ({
                   skill: s.skill,
                   importance: s.importance,
                 }))}
               />
 
-              {/* TEAM TEMPLATES, LOCKED */}
+              {/* TEAM TEMPLATES */}
               <LockedSection
                 title="Recommended Team"
                 icon={Users}
                 description="Roles you need on the team and rough timeline."
-                isSignedIn={isSignedIn}
                 teams={problem.teamTemplates.map((t) => ({
                   templateName: t.templateName,
                   minMembers: t.minMembers,
@@ -251,27 +242,15 @@ export default function ProblemDetailPage() {
                 <div className="p-6 rounded-2xl bg-gradient-to-br from-[#DBEAFE] to-[#EFF6FF] dark:from-[#1E3A8A]/30 dark:to-[#0F1B3D]/30 border border-[#3B82F6]/30">
                   <h3 className="text-lg font-bold text-foreground mb-2">Ready to take this on?</h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    {isSignedIn
-                      ? "Run this through the AI Innovation Engine to validate your match."
-                      : "Sign in to unlock solutions, roadmap, skills, and team templates."}
+                    Run this through the AI Innovation Engine to validate your match.
                   </p>
-                  {isSignedIn ? (
-                    <Link
-                      href={`/dashboard/innovation-engine?problem=${problem.slug}`}
-                      className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-[#3B82F6] text-white font-semibold hover:bg-[#2563EB] transition-all shadow-sm"
-                    >
-                      <Sparkles className="w-4 h-4" />
-                      Check My Match
-                    </Link>
-                  ) : (
-                    <Link
-                      href={`/auth/signin?callbackUrl=/solve-them/${problem.slug}`}
-                      className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-[#3B82F6] text-white font-semibold hover:bg-[#2563EB] transition-all shadow-sm"
-                    >
-                      <Lock className="w-4 h-4" />
-                      Sign in to unlock
-                    </Link>
-                  )}
+                  <Link
+                    href="/dashboard/innovation-engine"
+                    className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-[#3B82F6] text-white font-semibold hover:bg-[#2563EB] transition-all shadow-sm"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    Open Innovation Engine
+                  </Link>
                   <Link
                     href="/dashboard/ai-assistant"
                     className="mt-2 flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-card border text-foreground font-medium hover:bg-muted transition-all"
@@ -364,7 +343,6 @@ function LockedSection({
   title,
   icon: Icon,
   description,
-  isSignedIn,
   items,
   phases,
   skills,
@@ -373,7 +351,6 @@ function LockedSection({
   title: string
   icon: typeof Lightbulb
   description: string
-  isSignedIn: boolean
   items?: { title: string; body: string }[]
   phases?: { phase: string; title: string; description: string; duration?: string }[]
   skills?: { skill: string; importance: number }[]
@@ -393,24 +370,7 @@ function LockedSection({
       </h2>
       <p className="text-muted-foreground text-sm mb-5">{description}</p>
 
-      {!isSignedIn ? (
-        <div className="p-8 rounded-2xl bg-card border border-dashed text-center">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#DBEAFE] dark:bg-[#1E3A8A]/30 mb-3">
-            <Lock className="w-5 h-5 text-[#1E3A8A] dark:text-[#3B82F6]" />
-          </div>
-          <div className="text-foreground font-medium mb-1">Sign in to unlock</div>
-          <p className="text-sm text-muted-foreground mb-4 max-w-sm mx-auto">
-            Detailed {title.toLowerCase()} are available to signed-in engineers.
-          </p>
-          <Link
-            href="/auth/signin"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#3B82F6] text-white text-sm font-semibold hover:bg-[#2563EB] transition-all shadow-sm"
-          >
-            <Lock className="w-3.5 h-3.5" />
-            Sign in
-          </Link>
-        </div>
-      ) : items ? (
+      {items ? (
         <div className="space-y-3">
           {items.map((item, i) => (
             <div

@@ -11,7 +11,6 @@ import {
   Sparkles,
   Users,
   Globe,
-  Lock,
   X,
   SlidersHorizontal,
   ArrowRight,
@@ -795,11 +794,11 @@ function ProblemCard({ problem }: { problem: ReturnType<typeof getAllProblems>[0
         </span>
       </div>
 
-      {/* Locked indicator */}
+      {/* Detail-page hint */}
       <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground/70">
-        <Lock className="w-3 h-3" />
-        Solutions, skills, team templates & roadmap unlocked on detail page
-        <CheckCircle2 className="w-3 h-3 ml-auto text-[#1E3A8A] dark:text-[#3B82F6]" />
+        <CheckCircle2 className="w-3 h-3" />
+        Solutions, skills, team templates & roadmap on detail page
+        <ArrowRight className="w-3 h-3 ml-auto text-[#1E3A8A] dark:text-[#3B82F6]" />
       </div>
     </Link>
   )
