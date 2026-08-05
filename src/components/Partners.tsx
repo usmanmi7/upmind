@@ -169,7 +169,7 @@ export default function Partners() {
             return (
               <div
                 key={`${partner.name}-${i}`}
-                className="flex items-center justify-center shrink-0 px-8 sm:px-12 lg:px-16"
+                className="flex items-center justify-center shrink-0 px-4 sm:px-6 lg:px-8"
               >
                 <div className="opacity-60 hover:opacity-100 transition-opacity duration-300">
                   <Logo />
