@@ -3,12 +3,13 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ArrowRight, FileText, Compass, BookOpen } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const resources = [
   {
-    icon: Compass,
+    image: '/images/resources/guide.jpg',
     tag: 'Guide',
     title: 'How to Find Problems Worth Solving',
     description:
@@ -16,7 +17,7 @@ const resources = [
     link: '/resources',
   },
   {
-    icon: FileText,
+    image: '/images/resources/template.jpg',
     tag: 'Template',
     title: 'Engineering Project Roadmap (12-month)',
     description:
@@ -24,7 +25,7 @@ const resources = [
     link: '/resources',
   },
   {
-    icon: BookOpen,
+    image: '/images/resources/reading-list.jpg',
     tag: 'Reading List',
     title: 'Reading List for Engineering Innovators',
     description:
@@ -75,27 +76,41 @@ export default function Resources() {
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }}
-              className="group bg-[#F5F7FB] rounded-2xl p-6 sm:p-8 hover:shadow-lg transition-all duration-300 border border-transparent hover:border-[#3B82F6]/20"
+              className="group bg-[#F5F7FB] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 border border-transparent hover:border-[#3B82F6]/20 flex flex-col"
             >
-              <div className="w-12 h-12 rounded-xl bg-[#0F1B3D] flex items-center justify-center mb-5 group-hover:bg-[#3B82F6] transition-colors duration-300">
-                <resource.icon className="w-6 h-6 text-white group-hover:text-white transition-colors duration-300" />
+              {/* Image */}
+              <div className="relative w-full aspect-[16/10] overflow-hidden bg-[#0F1B3D]">
+                <Image
+                  src={resource.image}
+                  alt={resource.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                {/* Tag overlay */}
+                <div className="absolute top-4 left-4">
+                  <span className="inline-block bg-[#0F1B3D]/90 backdrop-blur-sm text-[#93C5FD] text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full border border-white/10">
+                    {resource.tag}
+                  </span>
+                </div>
               </div>
-              <span className="text-[#3B82F6] text-xs font-semibold tracking-wider uppercase">
-                {resource.tag}
-              </span>
-              <h3 className="text-lg sm:text-xl font-bold text-[#1A1A1A] mt-2 mb-3 group-hover:text-[#0F1B3D] transition-colors">
-                {resource.title}
-              </h3>
-              <p className="text-[#666666] text-sm sm:text-base leading-relaxed mb-5">
-                {resource.description}
-              </p>
-              <Link
-                href={resource.link}
-                className="inline-flex items-center gap-1.5 text-[#0F1B3D] text-sm font-semibold group-hover:text-[#3B82F6] transition-colors"
-              >
-                Read Now
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
+
+              {/* Content */}
+              <div className="p-6 sm:p-8 flex flex-col flex-1">
+                <h3 className="text-lg sm:text-xl font-bold text-[#1A1A1A] mb-3 group-hover:text-[#0F1B3D] transition-colors">
+                  {resource.title}
+                </h3>
+                <p className="text-[#666666] text-sm sm:text-base leading-relaxed mb-5 flex-1">
+                  {resource.description}
+                </p>
+                <Link
+                  href={resource.link}
+                  className="inline-flex items-center gap-1.5 text-[#0F1B3D] text-sm font-semibold group-hover:text-[#3B82F6] transition-colors"
+                >
+                  Read Now
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </motion.div>
           ))}
         </div>
