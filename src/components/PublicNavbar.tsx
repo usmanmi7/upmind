@@ -34,7 +34,7 @@ function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(href + "/")
 }
 
-export default function PublicNavbar({ solid = false }: { solid?: boolean } = {}) {
+export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
   const { data: session } = useSession()
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
@@ -42,10 +42,19 @@ export default function PublicNavbar({ solid = false }: { solid?: boolean } = {}
   const [userMenuOpen, setUserMenuOpen] = React.useState(false)
   const moreHasActive = moreLinks.some((l) => isActive(pathname, l.href))
 
+  // Auto-enable solid bg for pages that don't sit under a dark hero
+  // (resources + solve-them use light page backgrounds, so the navbar
+  // needs its own dark background to keep white nav text legible).
+  const autoSolid =
+    pathname?.startsWith("/resources") ||
+    pathname?.startsWith("/solve-them") ||
+    false
+  const isSolid = solid ?? autoSolid
+
   return (
     <header
       className={
-        solid
+        isSolid
           ? "sticky top-0 z-50 bg-[#0F1B3D] border-b border-white/5 backdrop-blur-md"
           : "absolute top-0 inset-x-0 z-50 bg-transparent"
       }
