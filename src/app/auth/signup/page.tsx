@@ -131,12 +131,20 @@ export default function SignUpPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
             <Image
+              src="/images/logo-light.png"
+              alt="Enginest logo"
+              width={240}
+              height={96}
+              priority
+              className="h-16 w-auto dark:hidden"
+            />
+            <Image
               src="/images/logo.png"
               alt="Enginest logo"
               width={240}
               height={96}
               priority
-              className="h-16 w-auto"
+              className="h-16 w-auto hidden dark:block"
             />
           </Link>
         </div>

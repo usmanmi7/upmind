@@ -193,12 +193,20 @@ export default function OnboardingPage() {
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
             <Image
+              src="/images/logo-light.png"
+              alt="Enginest logo"
+              width={240}
+              height={96}
+              priority
+              className="h-16 w-auto dark:hidden"
+            />
+            <Image
               src="/images/logo.png"
               alt="Enginest logo"
               width={240}
               height={96}
               priority
-              className="h-16 w-auto"
+              className="h-16 w-auto hidden dark:block"
             />
           </div>
           <h1 className="text-2xl font-heading font-bold">Set up your account</h1>
