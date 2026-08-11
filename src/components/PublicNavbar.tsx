@@ -313,7 +313,7 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                     </Link>
                   )
                 })}
-                <div className="pt-4 space-y-3 border-t border-white/10 mt-2">
+                <div className="pt-4 space-y-3 border-t border-white/10 mt-2 px-3 pb-3">
                   {session ? (
                     <>
                       <Link
