@@ -4,14 +4,52 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { useRef, useEffect } from 'react';
 
 export default function Hero() {
   const { data: session } = useSession();
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Force play if the browser blocked autoplay, and re-play on end as a
+  // belt-and-suspenders fallback to the native `loop` attribute (Safari
+  // iOS sometimes ignores `loop` for muted autoplay videos).
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+
+    const ensurePlay = () => {
+      const p = v.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(() => {
+          // Autoplay was blocked; try again on first user interaction.
+          const retry = () => {
+            v.play().catch(() => {});
+            window.removeEventListener('click', retry);
+            window.removeEventListener('touchstart', retry);
+          };
+          window.addEventListener('click', retry, { once: true });
+          window.addEventListener('touchstart', retry, { once: true });
+        });
+      }
+    };
+
+    ensurePlay();
+
+    const onEnded = () => {
+      // Safety net: if `loop` attr fails, restart manually.
+      v.currentTime = 0;
+      ensurePlay();
+    };
+
+    v.addEventListener('ended', onEnded);
+    return () => v.removeEventListener('ended', onEnded);
+  }, []);
 
   return (
     <section className="relative h-screen min-h-[600px] flex items-center overflow-hidden bg-[#0F1B3D] -mt-16 sm:-mt-20">
-      {/* Background video */}
+      {/* Background video - endless loop */}
       <video
+        ref={videoRef}
         autoPlay
         muted
         loop
