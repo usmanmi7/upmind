@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 
 export default function Hero() {
@@ -11,15 +10,21 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen min-h-[600px] flex items-center overflow-hidden bg-[#0F1B3D] -mt-16 sm:-mt-20">
-      {/* Background image */}
-      <Image
-        src="/images/hero-bg-engineerst.png"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-center opacity-60"
-      />
+      {/* Background video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover opacity-60"
+      >
+        <source src="/videos/hero-bg.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark overlay tint to keep text legible over the video */}
+      <div className="absolute inset-0 bg-[#0F1B3D]/40 z-[1]" />
 
       {/* Bottom fade into next section */}
       <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-[#0F1B3D] z-10" />
@@ -45,7 +50,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.05] mb-7 tracking-tight"
+          className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.05] mb-7 tracking-tight drop-shadow-md"
         >
           Find problems{' '}
           <span className="font-serif-accent-italic text-[#93C5FD]">worth</span>{' '}
@@ -57,7 +62,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-white/80 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-md"
+          className="text-white/85 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-md"
         >
           Curated world problems, an AI engine that matches them to your engineering skills,
           and playbooks for builders who want to ship things that matter.
@@ -103,7 +108,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-white/60 text-sm"
+          className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-white/70 text-sm"
         >
           <span className="flex items-center gap-2">
             <span className="w-1 h-1 rounded-full bg-[#3B82F6]" />
