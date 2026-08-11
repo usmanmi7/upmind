@@ -291,7 +291,7 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden border-t border-white/10"
+              className="lg:hidden border-t border-white/10 bg-[#0F1B3D]/95 backdrop-blur-md"
             >
               <div className="py-4 space-y-1">
                 {[...navLinks, ...moreLinks].map((link) => {
