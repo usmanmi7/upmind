@@ -85,11 +85,15 @@ export default function Resources() {
                   alt={resource.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="object-cover group-hover:scale-110 transition-transform duration-[1.2s] ease-out"
                 />
+                {/* Navy gradient overlay for depth + brand cohesion */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0F1B3D]/70 via-[#0F1B3D]/10 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-500" />
+                {/* Subtle electric-blue tint on hover */}
+                <div className="absolute inset-0 bg-[#3B82F6]/0 group-hover:bg-[#3B82F6]/8 transition-colors duration-500 pointer-events-none" />
                 {/* Tag overlay */}
                 <div className="absolute top-4 left-4">
-                  <span className="inline-block bg-[#0F1B3D]/90 backdrop-blur-sm text-[#93C5FD] text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full border border-white/10">
+                  <span className="inline-block bg-[#0F1B3D]/90 backdrop-blur-sm text-[#93C5FD] text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full border border-white/10 group-hover:border-[#3B82F6]/40 transition-colors duration-300">
                     {resource.tag}
                   </span>
                 </div>

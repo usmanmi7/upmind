@@ -117,18 +117,20 @@ export default function HowWeWork() {
           initial={{ opacity: 0, x: 40 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="relative min-h-[300px] lg:min-h-0"
+          className="relative min-h-[300px] lg:min-h-0 overflow-hidden group/img"
         >
           <img
             src="/images/howwework-team.jpg"
             alt="Engineers working together on a build"
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover/img:scale-105"
           />
-          {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0F1B3D]/20 lg:bg-gradient-to-l lg:from-transparent lg:to-[#0F1B3D]/10" />
+          {/* Cinematic navy gradient overlay for brand cohesion + text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#0F1B3D]/10 to-[#0F1B3D]/40 lg:from-transparent lg:via-[#0F1B3D]/5 lg:to-[#0F1B3D]/25 transition-opacity duration-500" />
+          {/* Subtle electric-blue tint on hover */}
+          <div className="absolute inset-0 bg-[#3B82F6]/0 group-hover/img:bg-[#3B82F6]/5 transition-colors duration-500 pointer-events-none" />
           {/* Blue circular overlay graphic */}
-          <div className="absolute -left-16 top-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-[3px] border-[#3B82F6]/30 hidden lg:block" />
-          <div className="absolute -left-8 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-[#3B82F6]/10 hidden lg:block" />
+          <div className="absolute -left-16 top-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-[3px] border-[#3B82F6]/30 hidden lg:block transition-all duration-700 group-hover/img:scale-125 group-hover/img:border-[#3B82F6]/50" />
+          <div className="absolute -left-8 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-[#3B82F6]/10 hidden lg:block transition-all duration-700 group-hover/img:scale-110 group-hover/img:bg-[#3B82F6]/20" />
         </motion.div>
       </div>
     </section>
