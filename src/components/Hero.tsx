@@ -9,14 +9,14 @@ import { useSession } from 'next-auth/react';
 /**
  * Hero
  * ----
- * Full-viewport hero with a dark abstract background image and a 60% navy
- * overlay so white text stays legible. All hero content (badge, headline,
- * CTAs, trust line) sits on top with motion-controlled entrance animations.
+ * Full-viewport hero with a background photo and a 60% navy overlay so white
+ * text stays legible. All hero content (badge, headline, CTAs, trust line)
+ * sits on top with motion-controlled entrance animations.
  *
- * Background image: /public/images/hero-bg-engineerst.png
- *  - Dark navy + electric blue abstract with glowing bars and circuit patterns
- *  - Already brand-aligned (matches #0F1B3D + #3B82F6)
- *  - VLM-verified as suitable for tech SaaS hero with text overlay
+ * Background image: /public/images/pexels-mikhail-nilov-8297485.jpg
+ *  - Photo by Mikhail Nilov (Pexels): two professionals collaborating at a desk
+ *    in a bright, airy office with cityscape backdrop
+ *  - Conveys "real people solving real problems" — fits the platform's mission
  *
  * Overlay stack (bottom -> top):
  *  1. <Image> background (object-cover, fills section)
@@ -30,9 +30,9 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen min-h-[600px] bg-[#0F1B3D] -mt-16 sm:-mt-20 overflow-hidden">
-      {/* Background image — abstract navy + electric blue (already brand-aligned) */}
+      {/* Background image — two professionals collaborating in a bright office */}
       <Image
-        src="/images/hero-bg-engineerst.png"
+        src="/images/pexels-mikhail-nilov-8297485.jpg"
         alt=""
         fill
         priority
