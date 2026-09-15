@@ -33,7 +33,10 @@ function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(href + "/")
 }
 
-export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
+// `solid` prop is now a no-op kept for backward compatibility — the navbar
+// is always solid (white background) since the transparent overlay style was
+// only legible on dark hero sections and broke on light-background pages.
+export default function PublicNavbar({ solid: _solid }: { solid?: boolean } = {}) {
   const { data: session } = useSession()
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
@@ -41,32 +44,14 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
   const [userMenuOpen, setUserMenuOpen] = React.useState(false)
   const moreHasActive = moreLinks.some((l) => isActive(pathname, l.href))
 
-  // Auto-enable solid bg only on detail/sub pages under /resources and /solve-them.
-  // The listing pages (/resources, /solve-them) have a dark PageHero so the
-  // transparent overlay navbar looks correct there. Detail pages have light
-  // backgrounds, so the navbar needs its own dark bg to stay legible.
-  const autoSolid =
-    (pathname?.startsWith("/resources/") &&
-      pathname !== "/resources") ||
-    (pathname?.startsWith("/solve-them/") &&
-      pathname !== "/solve-them") ||
-    false
-  const isSolid = solid ?? autoSolid
-
   return (
-    <header
-      className={
-        isSolid
-          ? "sticky top-0 z-50 bg-[#0F1B3D] border-b border-white/5 backdrop-blur-md"
-          : "absolute top-0 inset-x-0 z-50 bg-transparent"
-      }
-    >
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <Image
-              src="/images/logo.png"
+              src="/images/logo-light.png"
               alt="Enginest logo"
               width={200}
               height={64}
@@ -85,13 +70,13 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                   href={link.href}
                   className={`text-base font-medium capitalize transition-colors relative group flex items-center gap-1.5 ${
                     active
-                      ? "text-white"
-                      : "text-white/70 hover:text-white"
+                      ? "text-blue-600"
+                      : "text-gray-700 hover:text-gray-900"
                   }`}
                 >
                   {link.label}
                   <span
-                    className={`absolute -bottom-1.5 left-0 h-0.5 bg-[#3B82F6] transition-all duration-300 ${
+                    className={`absolute -bottom-1.5 left-0 h-0.5 bg-blue-600 transition-all duration-300 ${
                       active ? "w-full" : "w-0 group-hover:w-full"
                     }`}
                   />
@@ -105,13 +90,13 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                 onClick={() => setMoreOpen(!moreOpen)}
                 onBlur={() => setTimeout(() => setMoreOpen(false), 200)}
                 className={`text-base font-medium capitalize transition-colors flex items-center gap-1 group relative ${
-                  moreHasActive ? "text-white" : "text-white/70 hover:text-white"
+                  moreHasActive ? "text-blue-600" : "text-gray-700 hover:text-gray-900"
                 }`}
               >
                 More
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${moreOpen ? "rotate-180" : ""}`} />
                 <span
-                  className={`absolute -bottom-1.5 left-0 h-0.5 bg-[#3B82F6] transition-all duration-300 ${
+                  className={`absolute -bottom-1.5 left-0 h-0.5 bg-blue-600 transition-all duration-300 ${
                     moreHasActive ? "w-full" : "w-0 group-hover:w-full"
                   }`}
                 />
@@ -123,7 +108,7 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute top-full right-0 mt-2 w-48 bg-[#0F1B3D] border border-white/10 rounded-xl shadow-xl overflow-hidden"
+                    className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-xl overflow-hidden"
                   >
                     {moreLinks.map((link) => {
                       const Icon = link.icon
@@ -134,8 +119,8 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                           href={link.href}
                           className={`flex items-center gap-2 px-4 py-3 text-sm capitalize transition-colors ${
                             active
-                              ? "text-[#3B82F6] bg-[#3B82F6]/10"
-                              : "text-white/70 hover:text-white hover:bg-white/5"
+                              ? "text-blue-600 bg-blue-50"
+                              : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                           }`}
                           onClick={() => setMoreOpen(false)}
                         >
@@ -150,14 +135,14 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
             </div>
 
             {/* Divider */}
-            <div className="w-px h-6 bg-white/15" />
+            <div className="w-px h-6 bg-gray-200" />
 
             {/* CTA Buttons */}
             {session ? (
               <div className="flex items-center gap-3">
                 <Link
                   href="/contact"
-                  className="bg-[#3B82F6] text-white rounded-full px-6 py-2 text-sm font-semibold hover:bg-[#2563EB] transition-all duration-300 shadow-lg shadow-[#3B82F6]/20"
+                  className="bg-blue-600 text-white rounded-full px-6 py-2 text-sm font-semibold hover:bg-blue-700 transition-all duration-300 shadow-lg shadow-blue-600/20"
                 >
                   Contact
                 </Link>
@@ -169,14 +154,14 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                     className="flex items-center gap-2"
                     aria-label="User menu"
                   >
-                    <div className="w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all duration-200">
+                    <div className="w-9 h-9 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center hover:bg-gray-200 transition-all duration-200">
                       {session.user?.image ? (
                         <img src={session.user.image} alt={session.user.name || 'User'} className="w-full h-full rounded-full object-cover" />
                       ) : (
-                        <User className="w-4 h-4 text-white" />
+                        <User className="w-4 h-4 text-gray-700" />
                       )}
                     </div>
-                    <ChevronDown className={`w-3.5 h-3.5 text-white/60 transition-transform duration-200 ${userMenuOpen ? "rotate-180" : ""}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 text-gray-500 transition-transform duration-200 ${userMenuOpen ? "rotate-180" : ""}`} />
                   </button>
                   <AnimatePresence>
                     {userMenuOpen && (
@@ -185,22 +170,22 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.95 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute top-full right-0 mt-2 w-56 bg-[#0F1B3D] border border-white/10 rounded-xl shadow-xl overflow-hidden"
+                        className="absolute top-full right-0 mt-2 w-56 bg-white border border-gray-100 rounded-xl shadow-xl overflow-hidden"
                       >
                         {/* User Info */}
-                        <div className="px-4 py-3 border-b border-white/10">
+                        <div className="px-4 py-3 border-b border-gray-100">
                           <div className="flex items-center gap-2">
-                            <p className="text-white text-sm font-medium truncate">{session.user?.name || 'User'}</p>
+                            <p className="text-gray-900 text-sm font-medium truncate">{session.user?.name || 'User'}</p>
                             {(session.user?.role === "ADMIN" || session.user?.role === "SUPER_ADMIN") && (
-                              <span className="text-[9px] font-semibold bg-[#3B82F6]/20 text-[#3B82F6] px-1.5 py-0.5 rounded">ADMIN</span>
+                              <span className="text-[9px] font-semibold bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">ADMIN</span>
                             )}
                           </div>
-                          <p className="text-white/50 text-xs truncate">{session.user?.email}</p>
+                          <p className="text-gray-500 text-xs truncate">{session.user?.email}</p>
                         </div>
                         {/* Menu Items */}
                         <Link
                           href="/"
-                          className="flex items-center gap-2.5 px-4 py-2.5 text-white/70 hover:text-white hover:bg-white/5 text-sm transition-colors"
+                          className="flex items-center gap-2.5 px-4 py-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 text-sm transition-colors"
                           onClick={() => setUserMenuOpen(false)}
                         >
                           <Home className="w-4 h-4" />
@@ -208,7 +193,7 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                         </Link>
                         <Link
                           href="/dashboard"
-                          className="flex items-center gap-2.5 px-4 py-2.5 text-white/70 hover:text-white hover:bg-white/5 text-sm transition-colors"
+                          className="flex items-center gap-2.5 px-4 py-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 text-sm transition-colors"
                           onClick={() => setUserMenuOpen(false)}
                         >
                           <LayoutDashboard className="w-4 h-4" />
@@ -216,7 +201,7 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                         </Link>
                         <Link
                           href="/dashboard/settings"
-                          className="flex items-center gap-2.5 px-4 py-2.5 text-white/70 hover:text-white hover:bg-white/5 text-sm transition-colors"
+                          className="flex items-center gap-2.5 px-4 py-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 text-sm transition-colors"
                           onClick={() => setUserMenuOpen(false)}
                         >
                           <Settings className="w-4 h-4" />
@@ -225,7 +210,7 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                         {(session.user?.role === "FREE_USER" || session.user?.role === "PAID_USER") && (
                           <Link
                             href="/dashboard/subscription"
-                            className="flex items-center gap-2.5 px-4 py-2.5 text-white/70 hover:text-white hover:bg-white/5 text-sm transition-colors"
+                            className="flex items-center gap-2.5 px-4 py-2.5 text-gray-700 hover:text-gray-900 hover:bg-gray-50 text-sm transition-colors"
                             onClick={() => setUserMenuOpen(false)}
                           >
                             <CreditCard className="w-4 h-4" />
@@ -235,17 +220,17 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                         {(session.user?.role === "ADMIN" || session.user?.role === "SUPER_ADMIN") && (
                           <Link
                             href="/admin"
-                            className="flex items-center gap-2.5 px-4 py-2.5 text-[#3B82F6] hover:text-[#3B82F6] hover:bg-[#3B82F6]/5 text-sm transition-colors"
+                            className="flex items-center gap-2.5 px-4 py-2.5 text-blue-600 hover:bg-blue-50 text-sm transition-colors"
                             onClick={() => setUserMenuOpen(false)}
                           >
                             <Shield className="w-4 h-4" />
                             Admin Panel
                           </Link>
                         )}
-                        <div className="border-t border-white/10">
+                        <div className="border-t border-gray-100">
                           <button
                             onClick={() => { setUserMenuOpen(false); signOut({ callbackUrl: '/' }); }}
-                            className="w-full flex items-center gap-2.5 px-4 py-2.5 text-red-400 hover:text-red-300 hover:bg-white/5 text-sm transition-colors"
+                            className="w-full flex items-center gap-2.5 px-4 py-2.5 text-red-600 hover:text-red-700 hover:bg-red-50 text-sm transition-colors"
                           >
                             <LogOut className="w-4 h-4" />
                             Log Out
@@ -260,13 +245,13 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
               <>
                 <Link
                   href="/auth/login"
-                  className="text-white bg-white/10 border border-white/30 rounded-full px-5 py-2 text-sm font-medium hover:bg-white/20 hover:border-white/50 backdrop-blur-md transition-all duration-300"
+                  className="text-gray-900 bg-white border border-gray-300 rounded-full px-5 py-2 text-sm font-medium hover:bg-gray-50 hover:border-gray-400 transition-all duration-300"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/auth/signup"
-                  className="bg-white text-black rounded-full px-6 py-2 text-sm font-semibold hover:bg-white/90 transition-all duration-300 shadow-lg shadow-black/20"
+                  className="bg-blue-600 text-white rounded-full px-6 py-2 text-sm font-semibold hover:bg-blue-700 transition-all duration-300 shadow-lg shadow-blue-600/20"
                 >
                   Get Started
                 </Link>
@@ -276,7 +261,7 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden text-white p-2"
+            className="lg:hidden text-gray-900 p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -291,7 +276,7 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden border-t border-white/10 bg-[#0F1B3D]/95 backdrop-blur-md"
+              className="lg:hidden border-t border-gray-200 bg-white"
             >
               <div className="py-4 space-y-1">
                 {[...navLinks, ...moreLinks].map((link) => {
@@ -303,8 +288,8 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                       href={link.href}
                       className={`flex items-center gap-2 text-base font-medium capitalize py-2.5 px-3 rounded-lg transition-colors ${
                         active
-                          ? "text-[#3B82F6] bg-[#3B82F6]/10"
-                          : "text-white/80 hover:text-white hover:bg-white/5"
+                          ? "text-blue-600 bg-blue-50"
+                          : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                       }`}
                       onClick={() => setMobileMenuOpen(false)}
                     >
@@ -313,33 +298,33 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                     </Link>
                   )
                 })}
-                <div className="pt-4 space-y-3 border-t border-white/10 mt-2 px-3 pb-3">
+                <div className="pt-4 space-y-3 border-t border-gray-200 mt-2 px-3 pb-3">
                   {session ? (
                     <>
                       <Link
                         href="/dashboard"
-                        className="block bg-[#3B82F6] text-white rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-[#2563EB] transition-all duration-300"
+                        className="block bg-blue-600 text-white rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-blue-700 transition-all duration-300"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Dashboard
                       </Link>
                       <div className="flex items-center gap-3 pt-2 pb-1">
-                        <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center flex-shrink-0">
                           {session.user?.image ? (
                             <img src={session.user.image} alt={session.user.name || 'User'} className="w-full h-full rounded-full object-cover" />
                           ) : (
-                            <User className="w-4 h-4 text-white" />
+                            <User className="w-4 h-4 text-gray-700" />
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-white text-sm font-medium truncate">{session.user?.name || 'User'}</p>
-                          <p className="text-white/40 text-xs truncate">{session.user?.email}</p>
+                          <p className="text-gray-900 text-sm font-medium truncate">{session.user?.name || 'User'}</p>
+                          <p className="text-gray-500 text-xs truncate">{session.user?.email}</p>
                         </div>
                       </div>
                       <div className="space-y-0.5">
                         <Link
                           href="/"
-                          className="flex items-center gap-2.5 text-white/70 hover:text-white text-sm py-2 px-3 rounded-lg hover:bg-white/5 transition-colors"
+                          className="flex items-center gap-2.5 text-gray-700 hover:text-gray-900 text-sm py-2 px-3 rounded-lg hover:bg-gray-50 transition-colors"
                           onClick={() => setMobileMenuOpen(false)}
                         >
                           <Home className="w-4 h-4" />
@@ -347,7 +332,7 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                         </Link>
                         <Link
                           href="/dashboard/settings"
-                          className="flex items-center gap-2.5 text-white/70 hover:text-white text-sm py-2 px-3 rounded-lg hover:bg-white/5 transition-colors"
+                          className="flex items-center gap-2.5 text-gray-700 hover:text-gray-900 text-sm py-2 px-3 rounded-lg hover:bg-gray-50 transition-colors"
                           onClick={() => setMobileMenuOpen(false)}
                         >
                           <Settings className="w-4 h-4" />
@@ -356,7 +341,7 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                         {(session.user?.role === "FREE_USER" || session.user?.role === "PAID_USER") && (
                           <Link
                             href="/dashboard/subscription"
-                            className="flex items-center gap-2.5 text-white/70 hover:text-white text-sm py-2 px-3 rounded-lg hover:bg-white/5 transition-colors"
+                            className="flex items-center gap-2.5 text-gray-700 hover:text-gray-900 text-sm py-2 px-3 rounded-lg hover:bg-gray-50 transition-colors"
                             onClick={() => setMobileMenuOpen(false)}
                           >
                             <CreditCard className="w-4 h-4" />
@@ -366,7 +351,7 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                         {(session.user?.role === "ADMIN" || session.user?.role === "SUPER_ADMIN") && (
                           <Link
                             href="/admin"
-                            className="flex items-center gap-2.5 text-[#3B82F6] text-sm py-2 px-3 rounded-lg hover:bg-[#3B82F6]/5 transition-colors"
+                            className="flex items-center gap-2.5 text-blue-600 text-sm py-2 px-3 rounded-lg hover:bg-blue-50 transition-colors"
                             onClick={() => setMobileMenuOpen(false)}
                           >
                             <Shield className="w-4 h-4" />
@@ -375,7 +360,7 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                         )}
                         <button
                           onClick={() => { setMobileMenuOpen(false); signOut({ callbackUrl: '/' }); }}
-                          className="flex items-center gap-2.5 text-red-400 hover:text-red-300 text-sm py-2 px-3 rounded-lg hover:bg-white/5 transition-colors w-full"
+                          className="flex items-center gap-2.5 text-red-600 hover:text-red-700 text-sm py-2 px-3 rounded-lg hover:bg-red-50 transition-colors w-full"
                         >
                           <LogOut className="w-4 h-4" />
                           Log Out
@@ -386,14 +371,14 @@ export default function PublicNavbar({ solid }: { solid?: boolean } = {}) {
                     <>
                       <Link
                         href="/auth/login"
-                        className="block text-white bg-white/10 border border-white/30 rounded-full px-6 py-2.5 text-sm font-medium text-center hover:bg-white/20 hover:border-white/50 backdrop-blur-md transition-all duration-300"
+                        className="block text-gray-900 bg-white border border-gray-300 rounded-full px-6 py-2.5 text-sm font-medium text-center hover:bg-gray-50 hover:border-gray-400 transition-all duration-300"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Sign In
                       </Link>
                       <Link
                         href="/auth/signup"
-                        className="block bg-white text-black rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-white/90 transition-all duration-300"
+                        className="block bg-blue-600 text-white rounded-full px-6 py-2.5 text-sm font-semibold text-center hover:bg-blue-700 transition-all duration-300"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Get Started
