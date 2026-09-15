@@ -47,7 +47,7 @@ function checkRateLimit(ip: string): { allowed: boolean; remaining: number; rese
 
 const systemPrompt = AI_SYSTEM_PROMPT
 
-const DEFAULT_MODEL = "z-ai/glm-5.2"
+const DEFAULT_MODEL = "moonshotai/kimi-k3"
 
 function getClientIP(req: NextRequest): string {
   return (
@@ -232,6 +232,6 @@ export async function GET() {
     },
     hint: configured
       ? undefined
-      : "Set NVIDIA_API_KEY in Vercel env vars to enable the AI. Get a free key at https://build.nvidia.com/z-ai/glm-5.2",
+      : "Set NVIDIA_API_KEY in Vercel env vars to enable the AI. Get a free key at https://build.nvidia.com/moonshotai/kimi-k3",
   })
 }

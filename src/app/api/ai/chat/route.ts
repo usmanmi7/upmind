@@ -16,10 +16,10 @@ import {
 export const runtime = "nodejs"
 export const maxDuration = 60 // NVIDIA inference can take 10-30s on cold start
 
-// Default model is GLM-5.2 (https://build.nvidia.com/z-ai/glm-5.2).
+// Default model is Kimi K3 (https://build.nvidia.com/moonshotai/kimi-k3).
 // Override with NVIDIA_MODEL env var if you want to switch to e.g.
-// "meta/llama-3.1-70b-instruct" or "google/gemma-3-12b-it".
-const DEFAULT_MODEL = "z-ai/glm-5.2"
+// "z-ai/glm-5.2" or "meta/llama-3.1-70b-instruct" or "google/gemma-3-12b-it".
+const DEFAULT_MODEL = "moonshotai/kimi-k3"
 
 export async function POST(req: NextRequest) {
   try {
@@ -183,6 +183,6 @@ export async function GET() {
     nvidiaConfigured: configured,
     hint: configured
       ? undefined
-      : "Set NVIDIA_API_KEY in Vercel env vars to enable the AI. Get a free key at https://build.nvidia.com/z-ai/glm-5.2",
+      : "Set NVIDIA_API_KEY in Vercel env vars to enable the AI. Get a free key at https://build.nvidia.com/moonshotai/kimi-k3",
   })
 }

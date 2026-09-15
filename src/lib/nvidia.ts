@@ -4,7 +4,7 @@ import OpenAI from "openai"
  * NVIDIA Build API Client
  *
  * Connects to NVIDIA Build (build.nvidia.com) which hosts open models like
- * GLM-5.2, GLM-4, Gemma 3 12B, Llama 3, Mistral, etc. behind an
+ * Kimi K3, GLM-5.2, GLM-4, Gemma 3 12B, Llama 3, Mistral, etc. behind an
  * OpenAI-compatible /v1/chat/completions endpoint.
  *
  * Why this exists:
@@ -14,18 +14,18 @@ import OpenAI from "openai"
  *
  * Setup (one-time):
  *   1. Sign in at https://build.nvidia.com
- *   2. Click any model (e.g. z-ai/glm-5.2) -> "Get API Key"
+ *   2. Click any model (e.g. moonshotai/kimi-k3) -> "Get API Key"
  *   3. Generate a key (starts with "nvapi-...")
  *   4. In Vercel project settings -> Environment Variables, add:
  *        NVIDIA_API_KEY   = nvapi-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
- *        NVIDIA_MODEL     = z-ai/glm-5.2               (optional, has sensible default)
+ *        NVIDIA_MODEL     = moonshotai/kimi-k3           (optional, has sensible default)
  *        NVIDIA_BASE_URL  = https://integrate.api.nvidia.com/v1  (optional)
  *
  * Free tier: 1,000 credits per month (resets monthly). Each chat call costs ~1 credit.
  */
 
 const DEFAULT_BASE_URL = "https://integrate.api.nvidia.com/v1"
-const DEFAULT_MODEL = "z-ai/glm-5.2"
+const DEFAULT_MODEL = "moonshotai/kimi-k3"
 
 let cachedClient: OpenAI | null = null
 
