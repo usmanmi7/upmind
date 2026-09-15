@@ -13,7 +13,7 @@ import { useSession } from 'next-auth/react';
  * text stays legible. All hero content (badge, headline, CTAs, trust line)
  * sits on top with motion-controlled entrance animations.
  *
- * Background image: /public/images/pexels-mikhail-nilov-8297570.jpg
+ * Background image: /public/images/pexels-mikhail-nilov-8297487.jpg
  *  - Photo by Mikhail Nilov (Pexels)
  *  - Conveys "real people solving real problems" — fits the platform's mission
  *
@@ -31,7 +31,7 @@ export default function Hero() {
     <section className="relative h-screen min-h-[600px] bg-[#0F1B3D] -mt-16 sm:-mt-20 overflow-hidden">
       {/* Background image — Photo by Mikhail Nilov (Pexels) */}
       <Image
-        src="/images/pexels-mikhail-nilov-8297570.jpg"
+        src="/images/pexels-mikhail-nilov-8297487.jpg"
         alt=""
         fill
         priority
