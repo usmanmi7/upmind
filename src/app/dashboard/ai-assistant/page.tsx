@@ -36,49 +36,49 @@ interface ChatMessage {
 
 const quickPrompts = [
   {
-    label: "Analyze my startup",
+    label: "Find a problem to solve",
     icon: BarChart3,
-    prompt: "Can you analyze my startup and give me an overall assessment?",
+    prompt: "I'm an engineer looking for a real-world problem worth solving. What global challenges should I consider tackling based on my skills?",
     color: "from-[#1E3A8A] to-[#93C5FD]",
   },
   {
-    label: "Business plan help",
+    label: "Validate my build idea",
     icon: FileText,
-    prompt: "Help me create a business plan for my startup. What sections should I include?",
+    prompt: "I have an engineering project idea. How do I figure out if it's actually worth building before I invest months into it?",
     color: "from-[#3B82F6] to-[#1E3A8A]",
   },
   {
-    label: "Pitch feedback",
+    label: "Build vs research",
     icon: MessageSquare,
-    prompt: "I'd like feedback on my pitch. What makes a great startup pitch?",
+    prompt: "For an engineering problem I want to solve, how do I decide whether to build a new solution myself or research and adapt existing solutions?",
     color: "from-green-500 to-emerald-500",
   },
   {
-    label: "Growth strategy",
+    label: "Plan the build",
     icon: TrendingUp,
-    prompt: "What growth strategies should I consider for early-stage user acquisition?",
+    prompt: "Help me scope a phased roadmap for turning an engineering idea into a working prototype. What should I tackle first?",
     color: "from-orange-500 to-red-500",
   },
 ]
 
 const insightCards = [
   {
-    title: "Market Opportunity",
-    description: "Ask me about market analysis and competitive positioning.",
+    title: "Problem Discovery",
+    description: "Find world problems that match your engineering skills and interests.",
     icon: Target,
     color: "text-[#3B82F6]",
     bg: "bg-[#DBEAFE] dark:bg-[#1E3A8A]/30",
   },
   {
-    title: "Strategy Planning",
-    description: "Get help with business plans, roadmaps, and growth strategies.",
+    title: "Build Roadmap",
+    description: "Turn an engineering idea into a phased plan you can actually ship.",
     icon: Sparkles,
     color: "text-[#1E3A8A]",
     bg: "bg-[#DBEAFE] dark:bg-[#1E3A8A]/30",
   },
   {
-    title: "Revenue Model",
-    description: "Discuss pricing, monetization, and financial projections.",
+    title: "Skill Matching",
+    description: "See which problems your technical stack is best suited to solve.",
     icon: Lightbulb,
     color: "text-green-500",
     bg: "bg-green-100 dark:bg-green-900/30",
@@ -201,7 +201,7 @@ export default function AIAssistantPage() {
             Enginest AI
           </h1>
           <p className="text-muted-foreground mt-1">
-            Get personalized startup advice powered by AI
+            Find problems worth solving and plan the build
           </p>
         </div>
         <Badge variant="secondary" className="w-fit">

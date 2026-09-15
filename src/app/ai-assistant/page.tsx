@@ -54,27 +54,27 @@ interface AIStatus {
 
 const quickPrompts = [
   {
-    label: "Analyze my startup idea",
+    label: "Find a problem to solve",
     icon: Target,
-    prompt: "I have an idea for a SaaS tool for solo founders. What should I think about first?",
+    prompt: "I'm an engineer looking for a real-world problem worth solving. What global challenges should I consider tackling based on my skills?",
     color: "from-[#1E3A8A] to-[#93C5FD]",
   },
   {
-    label: "Business plan help",
+    label: "Validate my build idea",
     icon: FileText,
-    prompt: "Help me create a business plan for my startup. What sections should I include?",
+    prompt: "I have an engineering project idea. How do I figure out if it's actually worth building before I invest months into it?",
     color: "from-[#3B82F6] to-[#1E3A8A]",
   },
   {
-    label: "Growth strategy",
+    label: "Build vs research",
     icon: TrendingUp,
-    prompt: "What growth strategies should I consider for early-stage user acquisition?",
+    prompt: "For an engineering problem I want to solve, how do I decide whether to build a new solution myself or research and adapt existing solutions?",
     color: "from-emerald-500 to-green-600",
   },
   {
-    label: "Pitch feedback",
+    label: "Plan the build",
     icon: MessageSquare,
-    prompt: "What makes a great startup pitch? Give me tips for a 5-minute pitch.",
+    prompt: "Help me scope a phased roadmap for turning an engineering idea into a working prototype. What should I tackle first?",
     color: "from-amber-500 to-orange-600",
   },
 ]
