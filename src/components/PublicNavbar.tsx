@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useSession } from "next-auth/react"
-import { ChevronDown, Menu, X, HelpCircle, Briefcase, Phone, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield, Trophy, type LucideIcon } from "lucide-react"
+import { ChevronDown, Menu, X, HelpCircle, Briefcase, Phone, User, LogOut, LayoutDashboard, Settings, Home, CreditCard, Shield, Trophy, Sparkles, type LucideIcon } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { signOut } from "next-auth/react"
 import * as React from "react"
@@ -16,6 +16,7 @@ interface NavLink {
 }
 
 const navLinks: NavLink[] = [
+  { label: "AI Assistant", href: "/ai-assistant", icon: Sparkles },
   { label: "Resources", href: "/resources" },
   { label: "Solve Them", href: "/solve-them" },
   { label: "About", href: "/about" },
@@ -64,6 +65,7 @@ export default function PublicNavbar({ solid: _solid }: { solid?: boolean } = {}
           <div className="hidden lg:flex items-center gap-7">
             {navLinks.map((link) => {
               const active = isActive(pathname, link.href)
+              const Icon = link.icon
               return (
                 <Link
                   key={link.label}
@@ -74,6 +76,7 @@ export default function PublicNavbar({ solid: _solid }: { solid?: boolean } = {}
                       : "text-gray-700 hover:text-gray-900"
                   }`}
                 >
+                  {Icon && <Icon className="w-4 h-4" />}
                   {link.label}
                   <span
                     className={`absolute -bottom-1.5 left-0 h-0.5 bg-blue-600 transition-all duration-300 ${
