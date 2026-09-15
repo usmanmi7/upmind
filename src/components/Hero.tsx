@@ -3,19 +3,26 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 
 /**
  * Hero
  * ----
- * Full-viewport hero with a static navy gradient background. All hero content
- * (badge, headline, CTAs, trust line) sits on top with motion-controlled
- * entrance animations.
+ * Full-viewport hero with a dark abstract background image and a 60% navy
+ * overlay so white text stays legible. All hero content (badge, headline,
+ * CTAs, trust line) sits on top with motion-controlled entrance animations.
  *
- * Notes:
- *  - Background uses layered CSS gradients (no video) for fast load and
- *    consistent rendering across devices.
- *  - Subtle vignette keeps attention focused on center content.
+ * Background image: /public/images/hero-bg-engineerst.png
+ *  - Dark navy + electric blue abstract with glowing bars and circuit patterns
+ *  - Already brand-aligned (matches #0F1B3D + #3B82F6)
+ *  - VLM-verified as suitable for tech SaaS hero with text overlay
+ *
+ * Overlay stack (bottom -> top):
+ *  1. <Image> background (object-cover, fills section)
+ *  2. Solid navy overlay at 60% opacity — primary legibility layer
+ *  3. Radial vignette — focuses attention on center content
+ *  4. Bottom fade — smooth transition into the next section
  */
 
 export default function Hero() {
@@ -23,16 +30,19 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen min-h-[600px] bg-[#0F1B3D] -mt-16 sm:-mt-20 overflow-hidden">
-      {/* Layered gradient background (replaces previous looping video) */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(ellipse at 30% 20%, rgba(59,130,246,0.25) 0%, rgba(15,27,61,0) 55%), ' +
-            'radial-gradient(ellipse at 80% 80%, rgba(30,58,138,0.35) 0%, rgba(15,27,61,0) 60%), ' +
-            'linear-gradient(180deg, #0F1B3D 0%, #0A1228 100%)',
-        }}
+      {/* Background image — abstract navy + electric blue (already brand-aligned) */}
+      <Image
+        src="/images/hero-bg-engineerst.png"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+        aria-hidden="true"
       />
+
+      {/* 60% navy overlay — keeps white hero text highly legible over the image */}
+      <div className="absolute inset-0 bg-[#0F1B3D]/60 z-[1]" />
 
       {/* Subtle vignette to focus attention on center content */}
       <div
