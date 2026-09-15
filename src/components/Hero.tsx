@@ -8,18 +8,14 @@ import { useSession } from 'next-auth/react';
 /**
  * Hero
  * ----
- * Looping background video hero. The video plays continuously on a sticky
- * full-viewport container. All hero content (badge, headline, CTAs, trust
- * line) sits on top with motion-controlled entrance animations.
+ * Full-viewport hero with a static navy gradient background. All hero content
+ * (badge, headline, CTAs, trust line) sits on top with motion-controlled
+ * entrance animations.
  *
  * Notes:
- *  - Video uses `autoPlay loop muted playsInline` — required for autoplay
- *    to work in all browsers (Chrome, Safari, iOS, Firefox).
- *  - `preload="auto"` so the video starts playing ASAP.
- *  - A `poster` (first frame) is set on the <video> so there's no flash
- *    of empty navy before the video starts.
- *  - Reduced-motion users see the poster image only (video doesn't play).
- *  - Video opacity kept at 0.55 so white hero text remains legible.
+ *  - Background uses layered CSS gradients (no video) for fast load and
+ *    consistent rendering across devices.
+ *  - Subtle vignette keeps attention focused on center content.
  */
 
 export default function Hero() {
@@ -27,22 +23,16 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen min-h-[600px] bg-[#0F1B3D] -mt-16 sm:-mt-20 overflow-hidden">
-      {/* Background video — loops continuously, autoplay-muted (browser req) */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: 0.55 }}
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        aria-hidden="true"
-      >
-        <source src="/videos/hero-bg.mp4" type="video/mp4" />
-      </video>
-
-      {/* Dark overlay tint to keep text legible over the video */}
-      <div className="absolute inset-0 bg-[#0F1B3D]/40 z-[1]" />
+      {/* Layered gradient background (replaces previous looping video) */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse at 30% 20%, rgba(59,130,246,0.25) 0%, rgba(15,27,61,0) 55%), ' +
+            'radial-gradient(ellipse at 80% 80%, rgba(30,58,138,0.35) 0%, rgba(15,27,61,0) 60%), ' +
+            'linear-gradient(180deg, #0F1B3D 0%, #0A1228 100%)',
+        }}
+      />
 
       {/* Subtle vignette to focus attention on center content */}
       <div
