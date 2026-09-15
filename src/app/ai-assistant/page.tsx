@@ -474,7 +474,7 @@ export default function PublicAIAssistantPage() {
 
   const resetChat = () => startNewChat()
 
-  const modelLabel = status?.label || "GLM-5.2"
+  const modelLabel = status?.label || "Enginest 5.1"
   const isOnline = status?.online ?? false
 
   // Sidebar props shared by desktop + mobile
@@ -564,7 +564,7 @@ export default function PublicAIAssistantPage() {
                         Hi{session?.user?.name ? `, ${session.user.name.split(" ")[0]}` : " there"}!
                       </h3>
                       <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto leading-relaxed">
-                        I&apos;m Enginest&apos;s AI assistant. Ask me anything about engineering problems, build decisions, skill matching, or get feedback on your ideas.
+                        I&apos;m Enginest AI. Ask me anything about engineering problems, build decisions, skill matching, or get feedback on your ideas.
                       </p>
                     </motion.div>
 

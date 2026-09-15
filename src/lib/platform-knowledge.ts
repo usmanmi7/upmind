@@ -50,7 +50,7 @@ The matching algorithm scores:
 Users can also deep-link from a specific problem's detail page (e.g. /dashboard/innovation-engine?problem=ai-flood-prediction-platform) to see their match score for that specific problem.
 
 CORE FEATURE: AI ASSISTANT (/dashboard/ai-assistant)
-The AI Assistant is a strategic co-pilot for engineers and innovators. It follows an interview-first protocol: before giving growth, strategy, or tactical advice on a problem or project, it asks up to 2 targeted questions to understand:
+Enginest AI is a strategic co-pilot for engineers and innovators. It follows an interview-first protocol: before giving growth, strategy, or tactical advice on a problem or project, it asks up to 2 targeted questions to understand:
 1. What the user is building (one-liner)
 2. Current stage (idea / prototype / MVP / launched / scaling)
 3. Target users / beneficiaries
@@ -59,7 +59,7 @@ The AI Assistant is a strategic co-pilot for engineers and innovators. It follow
 
 The assistant skips the interview for purely factual, conceptual, comparison, or case-study questions. It also skips any question whose answer is already in the user's session context.
 
-The assistant returns structured JSON responses with one of 5 response types: paragraph, steps, comparison, quick, clarify. It is powered by GLM-5.2 from NVIDIA Build.
+The assistant returns structured JSON responses with one of 5 response types: paragraph, steps, comparison, quick, clarify. It is powered by Enginest 5.1 (built on NVIDIA Build infrastructure).
 
 OTHER PLATFORM FEATURES (legacy, still available)
 - Resources library with free and premium content (/resources, /dashboard/resources).
@@ -74,8 +74,8 @@ OTHER PLATFORM FEATURES (legacy, still available)
 - Admin panel for platform management (/admin).
 
 PRICING (3 plans, monthly and annual billing, annual saves 20%)
-1. Free - $0/month. Includes: Browse Solve Them public problems, 1 startup profile, basic resources, community access, AI Assistant with rate limits, email support.
-2. Growth Pro (Most Popular) - $49/month or $39/month annual. Includes: Full Solve Them access (all locked content), unlimited startup profiles, premium resources, AI Innovation Engine, priority AI Assistant (no rate limits), priority consultations (4/mo), custom roadmap builder, advanced analytics, document vault.
+1. Free - $0/month. Includes: Browse Solve Them public problems, 1 startup profile, basic resources, community access, Enginest AI with rate limits, email support.
+2. Growth Pro (Most Popular) - $49/month or $39/month annual. Includes: Full Solve Them access (all locked content), unlimited startup profiles, premium resources, AI Innovation Engine, priority Enginest AI (no rate limits), priority consultations (4/mo), custom roadmap builder, advanced analytics, document vault.
 3. Enterprise - $149/month or $119/month annual. For teams and accelerators. Includes: Everything in Growth Pro, team collaboration (up to 10), custom integrations & API, white-label options, dedicated account manager, SLA guarantee (99.9%), unlimited consultations, priority phone support.
 
 DASHBOARD SECTIONS (logged-in user area, 14 sections)
@@ -89,7 +89,7 @@ DASHBOARD SECTIONS (logged-in user area, 14 sections)
 8. Documents (/dashboard/documents) - storage for plans, contracts, files.
 9. Analytics (/dashboard/analytics) - data and performance tracking.
 10. Innovation Engine (/dashboard/innovation-engine) - AI matching of skills+interests to problems.
-11. AI Assistant (/dashboard/ai-assistant) - the AI co-pilot for advice.
+11. Enginest AI (/dashboard/ai-assistant) - the AI co-pilot for advice.
 12. Subscription (/dashboard/subscription) - manage plan and billing.
 13. Notifications (/dashboard/notifications) - updates and alerts.
 14. Settings (/dashboard/settings) - account and profile management.
@@ -105,7 +105,7 @@ KEY LINKS TO POINT USERS TO
 - Browse problems: /solve-them
 - Specific problem: /solve-them/[slug]
 - Innovation Engine: /dashboard/innovation-engine
-- AI Assistant: /dashboard/ai-assistant
+- Enginest AI: /dashboard/ai-assistant
 - View all services: /services
 - Learn more about Enginest: /about
 - Success stories: /success-stories

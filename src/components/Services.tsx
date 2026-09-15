@@ -49,7 +49,7 @@ const services = [
   },
   {
     icon: Cpu,
-    title: 'AI Assistant',
+    title: 'Enginest AI',
     description:
       'An AI assistant trained on our engineering innovation framework, interview-first protocol, problem framing, build decisions, and pointers to the right resources for where you are.',
     features: ['Interview-first protocol', 'Problem framing help', 'Build-vs-research guidance', 'Resource recommendations'],

@@ -76,7 +76,7 @@ export default function AIAssistantCTA() {
                   href="/dashboard/ai-assistant"
                   className="text-white/80 border border-white/15 rounded-full px-7 py-3.5 text-sm sm:text-base font-medium hover:bg-white/5 hover:border-white/25 transition-all duration-300"
                 >
-                  Talk to the AI Assistant
+                  Talk to Enginest AI
                 </Link>
               </motion.div>
 

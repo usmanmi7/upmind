@@ -196,7 +196,7 @@ export function GlmSearchBar() {
     }
   }
 
-  const modelLabel = status?.label || "AI Assistant"
+  const modelLabel = status?.label || "Enginest AI"
   const isOnline = status?.online ?? false
   const firstName = session?.user?.name?.split(" ")[0] || "there"
 
@@ -209,7 +209,7 @@ export function GlmSearchBar() {
             <button
               type="button"
               className="group w-full flex items-center gap-3 px-4 py-3 rounded-full bg-background/95 backdrop-blur border border-border shadow-lg shadow-black/10 hover:shadow-xl hover:border-[#3B82F6]/50 transition-all duration-200"
-              aria-label="Open AI Assistant"
+              aria-label="Open Enginest AI"
             >
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                 <Sparkles className="size-4 text-white" />
@@ -241,7 +241,7 @@ export function GlmSearchBar() {
                   <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#3B82F6] to-[#1E3A8A] flex items-center justify-center">
                     <Sparkles className="size-4 text-white" />
                   </div>
-                  <span>AI Assistant</span>
+                  <span>Enginest AI</span>
                   <Badge variant="secondary" className="text-xs ml-1">
                     <Brain className="size-3 mr-1 text-[#3B82F6]" />
                     {modelLabel}

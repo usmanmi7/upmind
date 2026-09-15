@@ -346,7 +346,7 @@ function AdminDashboardFallback() {
           </CardContent>
         </Card>
       </div>
-      {/* AI Assistant Search Bar (GLM via NVIDIA Build) */}
+      {/* Enginest AI Search Bar (GLM via NVIDIA Build) */}
       <GlmSearchBar />
     </div>
   )
@@ -719,7 +719,7 @@ function UserDashboard() {
           </Card>
         </div>
       </div>
-      {/* AI Assistant Search Bar (GLM via NVIDIA Build) */}
+      {/* Enginest AI Search Bar (GLM via NVIDIA Build) */}
       <GlmSearchBar />
     </div>
   )

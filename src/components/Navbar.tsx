@@ -18,7 +18,7 @@ interface NavLink {
 const navLinks: NavLink[] = [
   { label: 'Resources', href: '/resources' },
   { label: 'Solve Them', href: '/solve-them', icon: Sparkles, highlight: true },
-  { label: 'AI Assistant', href: '/ai-assistant' },
+  { label: 'Enginest AI', href: '/ai-assistant' },
   { label: 'About', href: '/about' },
 ];
 

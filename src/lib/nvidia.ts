@@ -101,36 +101,18 @@ export function getNVIDIAModel(): string {
 }
 
 /**
- * Pretty label for the badge in the UI, e.g. "GLM-5.2", "GLM-4 9B", "Gemma 3 12B".
- * Strips the org prefix (e.g. "z-ai/", "thudm/") and common suffixes.
+ * Pretty label for the badge in the UI.
+ *
+ * Always returns "Enginest 5.1" for user-facing display, regardless of the
+ * underlying model configured via NVIDIA_MODEL. The actual model ID (e.g.
+ * "z-ai/glm-5.2") is still used for API calls — this function only controls
+ * the brand label shown to users in the chat header and badge.
+ *
+ * To change the displayed version, edit the string below. To change the
+ * actual underlying model, set the NVIDIA_MODEL env var.
  */
 export function getNVIDIAModelLabel(): string {
-  const raw = getNVIDIAModel()
-  const withoutOrg = raw.split("/").pop() || raw
-
-  // Special case: preserve dotted version numbers like "glm-5.2" -> "GLM-5.2"
-  // We do this BEFORE replacing dashes with spaces, so "glm-5.2" stays together.
-  // Strategy: temporarily replace ".<digit>" with a placeholder, then restore.
-  const protectedVersion = withoutOrg.replace(/\.(\d)/g, "\u0001$1")
-
-  // glm-4-9b-chat -> GLM-4 9B
-  // gemma-3-12b-it -> Gemma 3 12B
-  // glm-5.2 -> GLM-5.2
-  let cleaned = protectedVersion
-    .replace(/-chat$/i, "")
-    .replace(/-it$/i, "")
-    .replace(/-/g, " ")
-    .replace(/\b(\d+b)\b/gi, (m) => m.toUpperCase())
-    .replace(/\bglm\b/i, "GLM")
-    .replace(/\bgemma\b/i, "Gemma")
-    .replace(/\bllama\b/i, "Llama")
-    .replace(/\bmistral\b/i, "Mistral")
-
-  // Restore dotted versions: "GLM 5\u00012" -> "GLM-5.2"
-  // Note: the dash-before-version is now a space; collapse "GLM 5.2" to "GLM-5.2"
-  cleaned = cleaned.replace(/\u0001/g, ".").replace(/(GLM|Gemma|Llama|Mistral)\s+(\d+\.\d+)/i, "$1-$2")
-
-  return cleaned
+  return "Enginest 5.1"
 }
 
 /**

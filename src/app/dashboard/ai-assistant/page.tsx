@@ -90,7 +90,7 @@ export default function AIAssistantPage() {
   const [messages, setMessages] = React.useState<ChatMessage[]>([])
   const [input, setInput] = React.useState("")
   const [loading, setLoading] = React.useState(false)
-  const [modelLabel, setModelLabel] = React.useState("GLM-5.2")
+  const [modelLabel, setModelLabel] = React.useState("Enginest 5.1")
   const messagesEndRef = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
@@ -198,7 +198,7 @@ export default function AIAssistantPage() {
         <div>
           <h1 className="text-2xl font-heading font-bold flex items-center gap-2">
             <Sparkles className="size-6 text-[#3B82F6]" />
-            AI Assistant
+            Enginest AI
           </h1>
           <p className="text-muted-foreground mt-1">
             Get personalized startup advice powered by AI
@@ -289,7 +289,7 @@ export default function AIAssistantPage() {
                               <Sparkles className="size-3 text-white" />
                             </div>
                             <span className="text-xs font-medium text-muted-foreground">
-                              AI Assistant
+                              Enginest AI
                             </span>
                           </div>
                         )}

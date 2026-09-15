@@ -107,7 +107,7 @@ const sidebarItems: SidebarItem[] = [
     icon: Lightbulb,
   },
   {
-    title: "AI Assistant",
+    title: "Enginest AI",
     href: "/dashboard/ai-assistant",
     icon: Sparkles,
   },
